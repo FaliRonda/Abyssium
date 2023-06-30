@@ -1,8 +1,10 @@
 using Ju.Input;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PJ : MonoBehaviour
 {
+    public Transform spotLightTransform;
     public float playerSpeed = 1;
     public float playerRotationSpeed = 1f;
 
@@ -18,9 +20,11 @@ public class PJ : MonoBehaviour
         if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.LeftArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.A))
         {
             transform.position -= transform.right * (Time.deltaTime * playerSpeed);
+            spotLightTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90));
         } else if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.RightArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.D))
         {
             transform.position += transform.right * (Time.deltaTime * playerSpeed);
+            spotLightTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, -90));
         }
         
         if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.UpArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.W))
@@ -28,10 +32,12 @@ public class PJ : MonoBehaviour
             if (gameIn3D)
             {
                 transform.position += transform.forward * (Time.deltaTime * playerSpeed);
+                spotLightTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
             }
             else
             {
                 transform.position += transform.up * (Time.deltaTime * playerSpeed);
+                spotLightTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
             }
 
         } else if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.DownArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.S))
@@ -39,10 +45,12 @@ public class PJ : MonoBehaviour
             if (gameIn3D)
             {
                 transform.position -= transform.forward * (Time.deltaTime * playerSpeed);
+                spotLightTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, 180));
             }
             else
             {
                 transform.position -= transform.up * (Time.deltaTime * playerSpeed);
+                spotLightTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, 180));
             }
         }
     }
