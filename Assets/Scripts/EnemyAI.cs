@@ -18,13 +18,16 @@ public class EnemyAI : MonoBehaviour
 
     // Behavior tree root node
     private BTNode rootNode;
+    private AudioSource detectedAudio;
 
     private void Start()
     {
+        detectedAudio = GetComponentInChildren<AudioSource>();
+        
         // Create the behavior tree
         rootNode = new BTSelector(
             new BTAttackNode(transform, playerTransform, attackDistance),
-            new BTChaseNode(transform, playerTransform, chaseSpeed),
+            new BTChaseNode(transform, playerTransform, chaseSpeed, detectedAudio),
             new BTPatrolNode(transform, waypoints, patrolSpeed)
         );
     }
