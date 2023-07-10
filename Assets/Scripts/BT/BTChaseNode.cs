@@ -37,4 +37,9 @@ public class BTChaseNode : BTNode
         currentlyChasing = false;
         return BTNodeState.Failure;
     }
+
+    public void ResetChasing()
+    {
+        currentlyChasing = false;
+    }
 }

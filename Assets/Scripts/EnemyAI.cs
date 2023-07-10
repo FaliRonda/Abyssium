@@ -1,5 +1,9 @@
+using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
+using System.Threading.Tasks;
+using Task = UnityEditor.VersionControl.Task;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -13,29 +17,45 @@ public class EnemyAI : MonoBehaviour
 
     // Attack distance
     public float attackDistance = 2f;
-
+    public float spriteBlinkingFrecuency = 0.15f;
     public Transform[] waypoints;
 
     // Behavior tree root node
     private BTNode rootNode;
     private AudioSource detectedAudio;
+    
+    private bool beingDamaged = false;
+    private SpriteRenderer enemySprite;
+    private bool spriteBlinking = false;
+
+    private BTAttackNode attackNode;
+    private BTChaseNode chaseNode;
+    private BTPatrolNode patrolNode;
 
     private void Start()
     {
         detectedAudio = GetComponentInChildren<AudioSource>();
+        enemySprite = GetComponentInChildren<SpriteRenderer>();
+
+        attackNode = new BTAttackNode(transform, playerTransform, attackDistance);
+        chaseNode = new BTChaseNode(transform, playerTransform, chaseSpeed, detectedAudio);
+        patrolNode = new BTPatrolNode(transform, waypoints, patrolSpeed);
         
         // Create the behavior tree
         rootNode = new BTSelector(
-            new BTAttackNode(transform, playerTransform, attackDistance),
-            new BTChaseNode(transform, playerTransform, chaseSpeed, detectedAudio),
-            new BTPatrolNode(transform, waypoints, patrolSpeed)
+            attackNode,
+            chaseNode,
+            patrolNode
         );
     }
 
     private void Update()
     {
-        // Update the behavior tree
-        rootNode.Execute();
+        if (!beingDamaged)
+        {
+            // Update the behavior tree
+            rootNode.Execute();
+        }
     }
     
     private void OnDrawGizmosSelected()
@@ -46,5 +66,39 @@ public class EnemyAI : MonoBehaviour
         
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackDistance);
+    }
+
+    public void GetDamage()
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendCallback(() => beingDamaged = true)
+            .AppendCallback(() => StartCoroutine(SpriteBlinking()))
+            .AppendInterval(2f)
+            .AppendCallback(() => beingDamaged = false);
+    }
+
+    IEnumerator SpriteBlinking()
+    {
+        enemySprite.color = Color.red;
+        
+        while (beingDamaged)
+        {
+            if (!spriteBlinking)
+            {
+                Sequence sequence = DOTween.Sequence();
+                sequence.AppendCallback(() => spriteBlinking = true)
+                    .AppendCallback(() => enemySprite.enabled = false)
+                    .AppendInterval(spriteBlinkingFrecuency)
+                    .AppendCallback(() => enemySprite.enabled = true)
+                    .AppendInterval(spriteBlinkingFrecuency)
+                    .AppendCallback(() => spriteBlinking = false);
+            }
+            
+            yield return null;
+        }
+
+        chaseNode.ResetChasing();
+        enemySprite.color = Color.white;
+        yield return null;
     }
 }

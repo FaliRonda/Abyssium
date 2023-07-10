@@ -24,5 +24,10 @@ public class GameDirector : MonoBehaviour
         {
             pj.DoRotation();
         }
+
+        if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.E))
+        {
+            pj.Attack();
+        }
     }
 }
