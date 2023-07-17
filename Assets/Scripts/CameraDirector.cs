@@ -1,8 +1,5 @@
-using System;
 using Cinemachine;
-using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class CameraDirector : MonoBehaviour
 {
@@ -25,12 +22,15 @@ public class CameraDirector : MonoBehaviour
         if (gameIn3D)
         {
             camera3D.Priority = 15;
-            Camera.main.cullingMask = cullingMask3D;
         }
         else
         {
             camera3D.Priority = 5;
-            Camera.main.cullingMask = _savedLayerMask;
         }
+    }
+
+    public bool CamerasTransitionBlending()
+    {
+        return cinemachineBrain.IsBlending;
     }
 }

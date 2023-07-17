@@ -32,10 +32,14 @@ public class EnemyAI : MonoBehaviour
     private BTChaseNode chaseNode;
     private BTPatrolNode patrolNode;
 
+    private Quaternion defaultEnemySpriteRotation;
+
     private void Start()
     {
         detectedAudio = GetComponentInChildren<AudioSource>();
         enemySprite = GetComponentInChildren<SpriteRenderer>();
+
+        defaultEnemySpriteRotation = enemySprite.transform.rotation;
 
         attackNode = new BTAttackNode(transform, playerTransform, attackDistance);
         chaseNode = new BTChaseNode(transform, playerTransform, chaseSpeed, detectedAudio);
@@ -56,6 +60,8 @@ public class EnemyAI : MonoBehaviour
             // Update the behavior tree
             rootNode.Execute();
         }
+        
+        
     }
     
     private void OnDrawGizmosSelected()
@@ -100,5 +106,24 @@ public class EnemyAI : MonoBehaviour
         chaseNode.ResetChasing();
         enemySprite.color = Color.white;
         yield return null;
+    }
+
+    public void Switch2D3D(bool gameIn3D)
+    {
+        Transform enemySpriteTransform = enemySprite.transform;
+        
+        if (gameIn3D)
+        {
+            enemySpriteTransform.Rotate(new Vector3(-90, 0, 0));
+        }
+        else
+        {
+            enemySpriteTransform.rotation = defaultEnemySpriteRotation;
+        }
+    }
+
+    public void LookAtCamera()
+    {
+        enemySprite.transform.LookAt(Camera.main.transform);
     }
 }
