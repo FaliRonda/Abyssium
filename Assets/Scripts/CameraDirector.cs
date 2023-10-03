@@ -1,9 +1,12 @@
+using System.Collections;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CameraDirector : MonoBehaviour
 {
-    public CinemachineVirtualCamera camera2D;
+    public CinemachineVirtualCamera cameraTD;
+    public CinemachineVirtualCamera cameraBlending;
     public CinemachineVirtualCamera camera3D;
 
     public LayerMask cullingMask3D;
@@ -21,12 +24,22 @@ public class CameraDirector : MonoBehaviour
     {
         if (gameIn3D)
         {
-            camera3D.Priority = 15;
+            cameraBlending.Priority = 15;
+            StartCoroutine(FinishCameraBlending(camera3D, 20));
         }
         else
         {
             camera3D.Priority = 5;
+            StartCoroutine(FinishCameraBlending(cameraBlending, 1));
         }
+    }
+
+    private IEnumerator FinishCameraBlending(CinemachineVirtualCamera virtualCamera, int priority)
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        yield return new WaitUntil(() => !CamerasTransitionBlending());
+        virtualCamera.Priority = priority;
     }
 
     public bool CamerasTransitionBlending()

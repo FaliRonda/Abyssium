@@ -19,7 +19,7 @@ public static class Core
 
     //public static ITimeService Time =>                         ServiceContainer.Get<ITimeService>();
     //public static IUnityService Unity =>                       ServiceContainer.Get<IUnityService>();
-    public static IInputService Input =>                       ServiceContainer.Get<IInputService>();
+    public static IInputService Input =>                         ServiceContainer.Get<IInputService>();
     //public static IPrefabPoolService Pool =>                   ServiceContainer.Get<IPrefabPoolService>();
 
     // ... add more shorthands as you need

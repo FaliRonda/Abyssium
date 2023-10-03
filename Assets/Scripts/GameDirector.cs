@@ -6,6 +6,7 @@ public class GameDirector : MonoBehaviour
     public PJ pj;
     public EnemyAI[] enemies;
     public CameraDirector cameraDirector;
+    public EnvironmentController environmentController;
 
     private bool gameIn3D = false;
     private Vector3 lastDirection = new Vector3();
@@ -23,6 +24,7 @@ public class GameDirector : MonoBehaviour
                 enemy.Switch2D3D(gameIn3D);
             }
             cameraDirector.Switch2D3D(gameIn3D);
+            environmentController.Switch2D3D(gameIn3D);
         } else if (!cameraDirector.CamerasTransitionBlending())
         {
             Vector3 direction = GetMovementDirection();
@@ -50,26 +52,26 @@ public class GameDirector : MonoBehaviour
     {
         Vector3 direction = new Vector3();
 
-        if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.LeftArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.A))
-        {
-            direction = -pj.transform.right;
-            lastDirection = direction;
-        } else if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.RightArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.D))
+        if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.RightArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.D))
         {
             direction = pj.transform.right;
+            lastDirection = direction;
+        } else if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.LeftArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.A))
+        {
+            direction = -pj.transform.right;
             lastDirection = direction;
         }
             
         if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.UpArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.W))
         {
-            direction = pj.transform.forward;
+            direction += pj.transform.forward;
             lastDirection = direction;
         } else if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.DownArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.S))
         {
-            direction = -pj.transform.forward;
+            direction += -pj.transform.forward;
             lastDirection = direction;
         }
-
+        
         return direction;
     }
 }
