@@ -124,6 +124,7 @@ public class EnemyAI : MonoBehaviour
 
     public void LookAtCamera()
     {
-        enemySprite.transform.LookAt(Camera.main.transform);
+        Quaternion lookRotation = Camera.main.transform.rotation;
+        enemySprite.transform.rotation = lookRotation;
     }
 }

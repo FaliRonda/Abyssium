@@ -24,22 +24,39 @@ public class CameraDirector : MonoBehaviour
     {
         if (gameIn3D)
         {
+            bool cameraToOrtographic = false;
             cameraBlending.Priority = 15;
-            StartCoroutine(FinishCameraBlending(camera3D, 20));
+            StartCoroutine(FinishCameraBlending(camera3D, 20, cameraToOrtographic));
         }
         else
         {
+            bool cameraToOrtographic = true;
+            cinemachineBrain.GetComponent<Camera>().orthographic = true;
             camera3D.Priority = 5;
-            StartCoroutine(FinishCameraBlending(cameraBlending, 1));
+            StartCoroutine(FinishCameraBlending(cameraBlending, 1, cameraToOrtographic));
         }
     }
 
-    private IEnumerator FinishCameraBlending(CinemachineVirtualCamera virtualCamera, int priority)
+    private IEnumerator FinishCameraBlending(CinemachineVirtualCamera virtualCamera, int priority, bool cameraToOrtographic)
     {
+        bool perspectiveSwitched = false;
+
+        if (!cameraToOrtographic)
+        {
+            cinemachineBrain.GetComponent<Camera>().orthographic = cameraToOrtographic;
+            perspectiveSwitched = true;
+        }
+        
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfFrame();
         yield return new WaitUntil(() => !CamerasTransitionBlending());
+        
         virtualCamera.Priority = priority;
+
+        if (!perspectiveSwitched)
+        {
+            cinemachineBrain.GetComponent<Camera>().orthographic = cameraToOrtographic;
+        }
     }
 
     public bool CamerasTransitionBlending()
