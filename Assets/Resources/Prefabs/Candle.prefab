@@ -44,9 +44,9 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 0.7877358, a: 1}
-  m_Intensity: 1
-  m_Range: 60
+  m_Color: {r: 1, g: 0.88974947, b: 0.28627455, a: 1}
+  m_Intensity: 1.5
+  m_Range: 3
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -151,7 +151,7 @@ Transform:
   m_Children:
   - {fileID: 7772769676118862615}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!212 &3782969920168881847
 SpriteRenderer:

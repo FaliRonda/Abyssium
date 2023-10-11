@@ -14,8 +14,9 @@ public class PJ : MonoBehaviour
     public float playerRotationSpeed = 1f;
     public float playerRollFactor = 2f;
     public float playerRayMaxDistance = 0.5f;
-
-
+    public float playerDustParticlesDelay = 0.5f;
+    
+    private ParticleSystem pjStepDust;
     private Animator pjAnim;
     private SpriteRenderer pjSprite;
     
@@ -23,6 +24,7 @@ public class PJ : MonoBehaviour
     private Quaternion initialPlayerRotation;
     private Vector3 lastDirection;
 
+    private bool dustParticlesPlaying;
     private bool gameIn3D;
     private bool pjDoingAction;
     private bool pjIsRolling;
@@ -34,8 +36,8 @@ public class PJ : MonoBehaviour
     
     private void Awake()
     {
+        pjStepDust = GetComponentInChildren<ParticleSystem>();
         pjSprite = GetComponentInChildren<SpriteRenderer>();
-        
         pjAnim = GetComponentInChildren<Animator>();
 
         initialPlayerRotation = transform.rotation;
@@ -96,6 +98,7 @@ public class PJ : MonoBehaviour
         {
             SetSpriteXOrientation();
             pjAnim.Play("PJ_run");
+            CreatePlayerDustParticles();
         }
         else
         {
@@ -110,6 +113,18 @@ public class PJ : MonoBehaviour
         }
 
         transform.position += direction * (Time.deltaTime * playerSpeed);
+    }
+
+    private void CreatePlayerDustParticles()
+    {
+        if (!dustParticlesPlaying)
+        {
+            dustParticlesPlaying = true;
+            pjStepDust.Play();
+            Sequence dustResetSequence = DOTween.Sequence();
+            dustResetSequence.AppendInterval(playerDustParticlesDelay)
+                .AppendCallback(() => dustParticlesPlaying = false);
+        }
     }
 
     private static Vector3 FixDiagonalSpeedMovement(Vector3 direction)
@@ -219,10 +234,29 @@ public class PJ : MonoBehaviour
             if (!PjRaycastHit(Color.red) || !PjRayHitWall())
             {
                 rollingTween = transform.DOMove(endPosition, animLenght)
-                    .OnComplete(() => pjIsRolling = false)
-                    .OnKill(() => pjIsRolling = false);
+                    .OnComplete(StopRolling)
+                    .OnKill(StopRolling);
+
+                var emissionModule = pjStepDust.emission;
+                emissionModule.rateOverTime = 100;
+                var mainModule = pjStepDust.main;
+                mainModule.loop = true;
+                pjStepDust.Play();
+                dustParticlesPlaying = true;
             }
         }
+    }
+
+    private void StopRolling()
+    {
+        pjIsRolling = false;
+        
+        var emissionModule = pjStepDust.emission;
+        emissionModule.rateOverTime = 40;
+        var mainModule = pjStepDust.main;
+        mainModule.loop = false;
+        pjStepDust.Stop();
+        dustParticlesPlaying = false;
     }
 
     private float GetPlayerAnimLenght(String animName)
