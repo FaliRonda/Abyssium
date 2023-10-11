@@ -132,8 +132,7 @@ public class PJ : MonoBehaviour
         bool directionIsDiagonal = direction.x != 0 && direction.z != 0;
         if (directionIsDiagonal)
         {
-            direction.x *= 0.75f;
-            direction.z *= 0.75f;
+            direction = direction.normalized;
         }
 
         return direction;
@@ -169,7 +168,7 @@ public class PJ : MonoBehaviour
 
     private bool PjRaycastHit(Color color)
     { 
-        Debug.DrawRay(transform.position, lastDirection, color);
+        Debug.DrawRay(transform.position, lastDirection.normalized, color);
         return Physics.Raycast(ray, out hit, playerRayMaxDistance);
     }
 
