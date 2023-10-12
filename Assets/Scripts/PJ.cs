@@ -265,7 +265,7 @@ public class PJ : MonoBehaviour
 
     private Vector3 GetRollEndPosition()
     {
-        Vector3 endDirection = lastDirection != Vector3.zero ? lastDirection : transform.right;
+        Vector3 endDirection = lastDirection != Vector3.zero ? lastDirection.normalized : transform.right;
         endDirection *= playerRollFactor;
 
         var position = transform.position;
