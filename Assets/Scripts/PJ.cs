@@ -70,7 +70,7 @@ public class PJ : MonoBehaviour
 
     private void StopRollingWhenHitWall()
     {
-        if (pjIsRolling && PjRaycastHit(Color.yellow) && PjRayHitWall())
+        if (pjIsRolling && PjRaycastHit(Color.yellow) && PjRayHitLayer(Layers.WALL_LAYER))
         {
             rollingTween.Kill();
         }
@@ -107,11 +107,19 @@ public class PJ : MonoBehaviour
 
         direction = FixDiagonalSpeedMovement(direction);
 
-        if (PjRaycastHit(Color.blue) && PjRayHitWall())
+        if (PjRaycastHit(Color.blue))
         {
-            direction = Vector3.zero;
+            if (PjRayHitLayer(Layers.WALL_LAYER))
+            {
+                direction = Vector3.zero;
+            }
+            else if (PjRayHitLayer(Layers.DOOR_LAYER))
+            {
+                Door door = hit.transform.GetComponentInParent<Door>();
+                door.OpenDoor();
+            }
         }
-
+        
         transform.position += direction * (Time.deltaTime * playerSpeed);
     }
 
@@ -161,9 +169,9 @@ public class PJ : MonoBehaviour
         lastDirection = !pjDoingAction ? (direction != Vector3.zero ? direction : lastDirection) : lastDirection;
     }
 
-    private bool PjRayHitWall()
+    private bool PjRayHitLayer(int layer)
     {
-        return hit.transform.gameObject.layer == Layers.WALL_LAYER;
+        return hit.transform.gameObject.layer == layer;
     }
 
     private bool PjRaycastHit(Color color)
@@ -230,7 +238,7 @@ public class PJ : MonoBehaviour
             Vector3 endPosition = GetRollEndPosition();
             
             Debug.DrawRay(transform.position, lastDirection, Color.red);
-            if (!PjRaycastHit(Color.red) || !PjRayHitWall())
+            if (!PjRaycastHit(Color.red) || !PjRayHitLayer(Layers.WALL_LAYER))
             {
                 rollingTween = transform.DOMove(endPosition, animLenght)
                     .OnComplete(StopRolling)
