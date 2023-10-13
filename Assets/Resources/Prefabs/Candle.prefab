@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 7615713181295687381}
   - component: {fileID: 3782969920168881847}
   - component: {fileID: 5613369203465253045}
-  - component: {fileID: 6561793037745864402}
+  - component: {fileID: 4189331385678415942}
   m_Layer: 11
   m_Name: Candle
   m_TagString: Untagged
@@ -151,7 +151,7 @@ Transform:
   m_Children:
   - {fileID: 7772769676118862615}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!212 &3782969920168881847
 SpriteRenderer:
@@ -226,7 +226,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6561793037745864402
+--- !u!114 &4189331385678415942
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

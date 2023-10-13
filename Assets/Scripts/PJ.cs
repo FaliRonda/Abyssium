@@ -109,14 +109,15 @@ public class PJ : MonoBehaviour
 
         if (PjRaycastHit(Color.blue))
         {
-            if (PjRayHitLayer(Layers.WALL_LAYER))
+            if (PjRayHitLayer(Layers.WALL_LAYER) || PjRayHitLayer(Layers.DOOR_LAYER))
             {
                 direction = Vector3.zero;
-            }
-            else if (PjRayHitLayer(Layers.DOOR_LAYER))
-            {
-                Door door = hit.transform.GetComponentInParent<Door>();
-                door.OpenDoor();
+                
+                if (PjRayHitLayer(Layers.DOOR_LAYER))
+                {
+                    Door door = hit.transform.GetComponentInParent<Door>();
+                    door.OpenDoor();
+                }
             }
         }
         
@@ -175,8 +176,8 @@ public class PJ : MonoBehaviour
     }
 
     private bool PjRaycastHit(Color color)
-    { 
-        Debug.DrawRay(transform.position, lastDirection.normalized, color);
+    {
+        Debug.DrawRay(ray.origin, ray.direction, color);
         return Physics.Raycast(ray, out hit, playerRayMaxDistance);
     }
 
@@ -206,11 +207,10 @@ public class PJ : MonoBehaviour
             pjDoingAction = true;
             
             pjAnim.Play("PJ_attack");
-            float animLenght = GetPlayerAnimLenght("PJ_attack");
+            float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_attack");
             
             WeaponDamage activeWeapon = inventory.GetActiveWeapon();
             activeWeapon.Attack();
-            
             
             PjActionFalseWhenAnimFinish(animLenght);
         }
@@ -218,9 +218,10 @@ public class PJ : MonoBehaviour
 
     private void PjActionFalseWhenAnimFinish(float animLenght)
     {
-        Sequence sequence = DOTween.Sequence();
-        sequence.AppendInterval(animLenght)
-            .AppendCallback(() => { pjDoingAction = false; });
+        Core.AnimatorHelper.DoOnAnimationFinish(animLenght, s =>
+        {
+            pjDoingAction = false;
+        });
     }
 
     public void Roll(Vector3 direction)
@@ -231,7 +232,7 @@ public class PJ : MonoBehaviour
             pjIsRolling = true;
 
             pjAnim.Play("PJ_roll");
-            float animLenght = GetPlayerAnimLenght("PJ_roll");
+            float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_roll");
             
             PjActionFalseWhenAnimFinish(animLenght);
 
@@ -264,11 +265,6 @@ public class PJ : MonoBehaviour
         mainModule.loop = false;
         pjStepDust.Stop();
         dustParticlesPlaying = false;
-    }
-
-    private float GetPlayerAnimLenght(String animName)
-    {
-        return pjAnim.runtimeAnimatorController.animationClips.Find(element => element.name == animName).length;
     }
 
     private Vector3 GetRollEndPosition()

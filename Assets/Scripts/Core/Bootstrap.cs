@@ -21,5 +21,6 @@ public static class Bootstrap
 		ServiceContainer.RegisterService<IPrefabPoolService, PrefabPoolService>();
 
 		// Register your custom services here
+		ServiceContainer.RegisterService<IAnimatorHelperService, AnimatorHelperService>();
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
@@ -33,6 +34,12 @@ public class EnemyAI : MonoBehaviour
     private BTPatrolNode patrolNode;
 
     private Quaternion defaultEnemySpriteRotation;
+
+    private void Awake()
+    {
+        PJ player = (PJ)FindObjectOfType(typeof(PJ));
+        playerTransform = player.transform;
+    }
 
     private void Start()
     {
