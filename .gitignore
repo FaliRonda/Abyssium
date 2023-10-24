@@ -10,7 +10,7 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
-External/
+ExternalTools/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
