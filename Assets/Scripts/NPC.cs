@@ -18,6 +18,8 @@ public class NPC : MonoBehaviour
         material = GetComponentInChildren<SpriteRenderer>().material;
         canvas = GetComponentInChildren<Canvas>();
         dialogueText = GetComponentInChildren<TMP_Text>();
+
+        canvas.worldCamera = Camera.main;
     }
 
     private void OnTriggerStay(Collider other)

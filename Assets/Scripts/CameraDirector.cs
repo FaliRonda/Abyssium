@@ -63,4 +63,11 @@ public class CameraDirector : MonoBehaviour
     {
         return cinemachineBrain.IsBlending;
     }
+
+    public void Initialize(Transform pjTransform)
+    {
+        cameraTD.Follow = pjTransform;
+        cameraBlending.Follow = pjTransform;
+        camera3D.Follow = pjTransform;
+    }
 }

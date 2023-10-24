@@ -110,6 +110,8 @@ public class GameDirector : MonoBehaviour
         {
             pj = null;
         }
+
+        cameraDirector.Initialize(pj.transform);
     }
 
     private void SwitchGamePerspective()

@@ -213,7 +213,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0.1418423}
+  m_margin: {x: 0.024262697, y: 0.031198978, z: 0.024271488, w: 0.1418423}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -464,7 +464,7 @@ Transform:
   - {fileID: 2273854446663947621}
   - {fileID: 5513413349370503868}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1089570683005105596
 SphereCollider:
