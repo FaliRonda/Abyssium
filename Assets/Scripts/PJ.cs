@@ -84,7 +84,7 @@ public class PJ : MonoBehaviour
         mouseY = Mathf.Clamp(mouseY, -1f, 1f);
         Vector3 anglesIncrement = playerRotationSpeed * new Vector3(0, mouseX, 0);
 
-        if (gameIn3D && !inventory.GetActiveWeapon().IsCurrentlyAttacking())
+        if (gameIn3D && inventory.GetActiveWeapon() != null && !inventory.GetActiveWeapon().IsCurrentlyAttacking())
         {
             transform.eulerAngles += anglesIncrement;
         }
