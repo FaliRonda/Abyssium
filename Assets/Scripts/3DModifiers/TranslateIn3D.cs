@@ -14,7 +14,7 @@ public class TranslateIn3D : MonoBehaviour
     
     public void Start()
     {
-        this.EventSubscribe<SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
+        this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
     }
 
     private void Switch2D3D(bool gameIn3D)

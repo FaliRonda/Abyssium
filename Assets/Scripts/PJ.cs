@@ -81,6 +81,7 @@ public class PJ : MonoBehaviour
         float mouseX;
         float mouseY;
         Core.Input.Mouse.GetPositionDelta(out mouseX, out mouseY);
+        mouseY = Mathf.Clamp(mouseY, -1f, 1f);
         Vector3 anglesIncrement = playerRotationSpeed * new Vector3(0, mouseX, 0);
 
         if (gameIn3D && !inventory.GetActiveWeapon().IsCurrentlyAttacking())
@@ -218,7 +219,7 @@ public class PJ : MonoBehaviour
 
     private void PjActionFalseWhenAnimFinish(float animLenght)
     {
-        Core.AnimatorHelper.DoOnAnimationFinish(animLenght, s =>
+        Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () =>
         {
             pjDoingAction = false;
         });

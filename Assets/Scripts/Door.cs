@@ -2,19 +2,26 @@
 using DG.Tweening;
 using Ju.Extensions;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Door : MonoBehaviour
 {
     public RoomDissolve room;
     public bool doorOpening;
     
+    
+    [System.Serializable]
+    public class DoorOpenedCallbackEvent : UnityEvent<bool> {}
+    public DoorOpenedCallbackEvent doorOpenedCallback;
+    
+    
     private Animator doorAnimator;
-    private BoxCollider collider;
+    private BoxCollider boxCollider;
 
     private void Start()
     {
         doorAnimator = GetComponent<Animator>();
-        collider = GetComponentInChildren<BoxCollider>();
+        boxCollider = GetComponentInChildren<BoxCollider>();
     }
 
     public void OpenDoor()
@@ -24,19 +31,29 @@ public class Door : MonoBehaviour
             doorOpening = true;
             doorAnimator.Play("Door_open");
             float animLenght = Core.AnimatorHelper.GetAnimLenght(doorAnimator, "Door_open");
-            Core.AnimatorHelper.DoOnAnimationFinish(animLenght, OpenAndDissolveRoom);
+            Core.AnimatorHelper.DoOnAnimationFinish(animLenght, CallbackOnDoorOpened);
         }
     }
 
-    void OpenAndDissolveRoom(string t)
+    public void CallbackOnDoorOpened()
     {
-        collider.enabled = false;
+        doorOpenedCallback.Invoke(false);
+    }
+
+    public void OpenAndDissolveRoom()
+    {   
+        boxCollider.enabled = false;
         room.Disolve();
+    }
+
+    public void LoadNewFloor(bool isFloorBelow)
+    {
+        Core.Event.Fire(new GameEvents.LoadFloorSceneEvent() {isFloorBelow = isFloorBelow});
     }
 
     public void CloseDoor()
     {
         doorAnimator.Play("Door_close");
-        collider.enabled = true;
+        boxCollider.enabled = true;
     }
 }

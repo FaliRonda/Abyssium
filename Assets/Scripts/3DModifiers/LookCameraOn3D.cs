@@ -1,7 +1,7 @@
 using Ju.Extensions;
 using UnityEngine;
 
-public class LookToCameraIn3D : MonoBehaviour
+public class LookCameraOn3D : MonoBehaviour
 {
     private bool gameIn3D;
     private Quaternion defaultSpriteRotation;
@@ -9,7 +9,7 @@ public class LookToCameraIn3D : MonoBehaviour
     
     public void Start()
     {
-        this.EventSubscribe<SwitchPerspectiveEvent>((e) =>  this.gameIn3D = e.gameIn3D);
+        this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>((e) =>  this.gameIn3D = e.gameIn3D);
         sprite = GetComponent<SpriteRenderer>();
         defaultSpriteRotation = sprite.transform.rotation;
     }

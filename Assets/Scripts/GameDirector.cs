@@ -1,39 +1,142 @@
+using System.Collections;
 using System.Linq;
 using Ju.Input;
-using Unity.Collections.LowLevel.Unsafe;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
 
 public class GameDirector : MonoBehaviour
 {
-    public PJ pj;
+    public bool debugMode;
+    public float timeLoopDuration = 10f;
+    public GameObject lightHouse;
     public EnemyAI[] enemies;
-    public CameraDirector cameraDirector;
 
+    private PJ pj;
+    private CameraDirector cameraDirector;
     private bool gameIn3D = false;
     private Vector3 lastDirection = new Vector3();
+    private GamepadController gamepad;
+    private bool isInitialLoad = true;
+    private bool isFirstFloorLoad = true;
+    private float initialTimeLoopDuration;
+    private float currentLighthouseYRotation;
+    private float initialLighthouseXRotation;
+
+    private void Awake()
+    {
+        initialTimeLoopDuration = timeLoopDuration;
+        if (!debugMode)
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        var lighthouseRotation = lightHouse.transform.rotation;
+        currentLighthouseYRotation = lighthouseRotation.eulerAngles.y;
+        initialLighthouseXRotation = lighthouseRotation.eulerAngles.x;
+        
+        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(lightHouse.gameObject);
+    }
+    
+    private void Start()
+    {
+        if (Core.Input.Gamepads.Any())
+        {
+            gamepad = (GamepadController)Core.Input.Gamepads.First();
+        }
+        else
+        {
+            gamepad = null;
+        }
+
+        if (!debugMode)
+        {
+            Core.Event.Fire(new GameEvents.LoadInitialFloorSceneEvent());
+        }
+        else
+        {
+            InitializeGameDirector();
+        }
+    }
+    
+    private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        if (isInitialLoad)
+        {
+            isInitialLoad = false;
+        } else if (!isInitialLoad && isFirstFloorLoad)
+        {
+            StartCoroutine(WaitToInitializeGameDirectorAndSwitchPerspective());
+            isFirstFloorLoad = false;
+        }
+        else
+        {
+            StartCoroutine(WaitToInitializeGameDirector());
+        }
+    }
+
+    private IEnumerator WaitToInitializeGameDirectorAndSwitchPerspective()
+    {
+        yield return null;
+
+        InitializeGameDirector();
+        SwitchGamePerspective();
+    }
+
+    private IEnumerator WaitToInitializeGameDirector()
+    {
+        yield return null;
+
+        InitializeGameDirector();
+    }
+
+    private void InitializeGameDirector()
+    {
+        if (Camera.main != null)
+        {
+            cameraDirector = Camera.main.GetComponent<CameraDirector>();
+        }
+        else
+        {
+            cameraDirector = null;
+        }
+
+        var player = FindObjectOfType<PJ>();
+        if (player != null)
+        {
+            pj = player;
+        }
+        else
+        {
+            pj = null;
+        }
+    }
+
+    private void SwitchGamePerspective()
+    {
+        gameIn3D = !gameIn3D;
+                
+        Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() {gameIn3D = gameIn3D});
+
+        lastDirection = new Vector3();
+                
+        pj.Switch2D3D(gameIn3D);
+        foreach  (EnemyAI enemy in enemies)
+        {
+            enemy.Switch2D3D(gameIn3D);
+        }
+        cameraDirector.Switch2D3D(gameIn3D);
+    }
 
     void Update()
     {
-        if (!cameraDirector.CamerasTransitionBlending())
+        if (cameraDirector != null && !cameraDirector.CamerasTransitionBlending())
         {
             if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.C))
             {
-                // Switch camera mode
-                //TODO Hacer todos los cambios con eventos, igual que con los elementos de Environment
-                gameIn3D = !gameIn3D;
-                
-                Core.Event.Fire(new SwitchPerspectiveEvent() {gameIn3D = gameIn3D});
-
-                lastDirection = new Vector3();
-                
-                pj.Switch2D3D(gameIn3D);
-                foreach  (EnemyAI enemy in enemies)
-                {
-                    enemy.Switch2D3D(gameIn3D);
-                }
-                cameraDirector.Switch2D3D(gameIn3D);
-            } else
+                SwitchGamePerspective();
+            } else if (pj != null)
             {
                 // Player
                 Vector3 direction = GetMovementDirection();
@@ -42,13 +145,13 @@ public class GameDirector : MonoBehaviour
                 pj.DoUpdate(direction);
                 
                 if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.E) ||
-                    (Core.Input.Gamepads.ToArray().Length > 0 && Core.Input.Gamepads.First().IsButtonPressed(GamepadButton.B)))
+                    (Core.Input.Gamepads.ToArray().Length > 0 && gamepad != null && gamepad.IsButtonPressed(GamepadButton.B)))
                 {
                     pj.Attack();
                 }
                 
                 if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.RightShift) ||
-                    (Core.Input.Gamepads.ToArray().Length > 0 && Core.Input.Gamepads.First().IsButtonPressed(GamepadButton.A)))
+                    (Core.Input.Gamepads.ToArray().Length > 0 && gamepad != null && gamepad.IsButtonPressed(GamepadButton.A)))
                 {
                     pj.Roll(direction);
                 }
@@ -63,6 +166,40 @@ public class GameDirector : MonoBehaviour
                 }
             }
         }
+        
+        // If time loop is not disabled
+        if (timeLoopDuration != -1)
+        {
+            if (timeLoopDuration > 0)
+            {
+                timeLoopDuration -= Time.deltaTime;
+                UpdateLighthouseRotation();
+            }
+            else
+            {
+                timeLoopDuration = initialTimeLoopDuration;
+                RestartTimeLoop();
+            }
+        }
+    }
+
+    private void UpdateLighthouseRotation()
+    {
+        float rotationSpeed = 360.0f / initialTimeLoopDuration;
+        
+        currentLighthouseYRotation += rotationSpeed * Time.deltaTime;
+
+        // Make sure the rotation value stays within 0 to 360 degrees
+        currentLighthouseYRotation = currentLighthouseYRotation % 360.0f;
+
+        // Apply the rotation to the GameObject
+        lightHouse.transform.rotation = Quaternion.Euler(initialLighthouseXRotation, currentLighthouseYRotation, 0);
+    }
+
+    private void RestartTimeLoop()
+    {
+        isFirstFloorLoad = true;
+        Core.Event.Fire<GameEvents.LoadInitialFloorSceneEvent>();
     }
 
     private Vector3 GetMovementDirection()
@@ -87,18 +224,4 @@ public class GameDirector : MonoBehaviour
         
         return direction;
     }
-}
-
-public static class Layers
-{
-    public static int DOOR_LAYER = 12;
-    public const int ENEMY_LAYER = 9;
-    public const int LIGHT_LAYER = 10;
-    public const int WEAPON_LAYER = 8;
-    public const int WALL_LAYER = 7;
-}
-
-public struct SwitchPerspectiveEvent
-{
-    [FormerlySerializedAs("is3D")] public bool gameIn3D;
 }

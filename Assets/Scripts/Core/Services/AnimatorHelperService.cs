@@ -11,14 +11,13 @@ public class AnimatorHelperService : IAnimatorHelperService, IService
         return animator.runtimeAnimatorController.animationClips.Find(element => element.name == animName).length;
     }
     
-    public void DoOnAnimationFinish(float animLenght, Action<string> callback)
+    public void DoOnAnimationFinish(float animLenght, Action callback)
     {
         Sequence sequence = DOTween.Sequence();
         sequence.AppendInterval(animLenght)
             .AppendCallback(()=>
             {
-                callback("");
-
+                callback();
             });
     }
 }
