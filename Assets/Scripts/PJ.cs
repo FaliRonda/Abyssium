@@ -1,9 +1,11 @@
 using System;
+using Cinemachine;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Ju.Extensions;
 using Ju.Input;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -32,7 +34,9 @@ public class PJ : MonoBehaviour
     private Ray ray;
     private RaycastHit hit;
     private TweenerCore<Vector3, Vector3, VectorOptions> rollingTween;
+    private NPC npcInContact;
 
+    #region Unity events
     
     private void Awake()
     {
@@ -68,6 +72,57 @@ public class PJ : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == Layers.NPC_LAYER)
+        {
+            npcInContact = other.GetComponent<NPC>();
+        }
+    }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == Layers.NPC_LAYER)
+        {
+            npcInContact = null;
+        }
+    }
+
+    #endregion
+
+    #region Roll
+
+    public void DoRoll(Vector3 direction)
+    {
+        if (!pjDoingAction)
+        {
+            pjDoingAction = true;
+            pjIsRolling = true;
+
+            pjAnim.Play("PJ_roll");
+            float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_roll");
+            
+            PjActionFalseWhenAnimFinish(animLenght);
+
+            Vector3 endPosition = GetRollEndPosition();
+            
+            Debug.DrawRay(transform.position, lastDirection, Color.red);
+            if (!PjRaycastHit(Color.red) || !PjRayHitLayer(Layers.WALL_LAYER))
+            {
+                rollingTween = transform.DOMove(endPosition, animLenght)
+                    .OnComplete(StopRolling)
+                    .OnKill(StopRolling);
+
+                var emissionModule = pjStepDust.emission;
+                emissionModule.rateOverTime = 100;
+                var mainModule = pjStepDust.main;
+                mainModule.loop = true;
+                pjStepDust.Play();
+                dustParticlesPlaying = true;
+            }
+        }
+    }
+    
     private void StopRollingWhenHitWall()
     {
         if (pjIsRolling && PjRaycastHit(Color.yellow) && PjRayHitLayer(Layers.WALL_LAYER))
@@ -75,7 +130,34 @@ public class PJ : MonoBehaviour
             rollingTween.Kill();
         }
     }
-    
+
+    private void StopRolling()
+    {
+        pjIsRolling = false;
+        
+        var emissionModule = pjStepDust.emission;
+        emissionModule.rateOverTime = 40;
+        var mainModule = pjStepDust.main;
+        mainModule.loop = false;
+        pjStepDust.Stop();
+        dustParticlesPlaying = false;
+    }
+
+    private Vector3 GetRollEndPosition()
+    {
+        Vector3 endDirection = lastDirection != Vector3.zero ? lastDirection.normalized : transform.right;
+        endDirection *= playerRollFactor;
+
+        var position = transform.position;
+        Vector3 endPosition =
+            new Vector3(position.x + endDirection.x, position.y + endDirection.y, position.z + endDirection.z);
+        return endPosition;
+    }
+
+    #endregion
+
+    #region Movement, rotation and orientation
+
     private void PjDoRotation(Vector3 direction)
     {
         float mouseX;
@@ -84,7 +166,7 @@ public class PJ : MonoBehaviour
         mouseY = Mathf.Clamp(mouseY, -1f, 1f);
         Vector3 anglesIncrement = playerRotationSpeed * new Vector3(0, mouseX, 0);
 
-        if (gameIn3D && inventory.GetActiveWeapon() != null && !inventory.GetActiveWeapon().IsCurrentlyAttacking())
+        if (gameIn3D && (inventory.GetActiveWeapon() == null || !inventory.GetActiveWeapon().IsCurrentlyAttacking()))
         {
             transform.eulerAngles += anglesIncrement;
         }
@@ -124,19 +206,7 @@ public class PJ : MonoBehaviour
         
         transform.position += direction * (Time.deltaTime * playerSpeed);
     }
-
-    private void CreatePlayerDustParticles()
-    {
-        if (!dustParticlesPlaying)
-        {
-            dustParticlesPlaying = true;
-            pjStepDust.Play();
-            Sequence dustResetSequence = DOTween.Sequence();
-            dustResetSequence.AppendInterval(playerDustParticlesDelay)
-                .AppendCallback(() => dustParticlesPlaying = false);
-        }
-    }
-
+    
     private static Vector3 FixDiagonalSpeedMovement(Vector3 direction)
     {
         bool directionIsDiagonal = direction.x != 0 && direction.z != 0;
@@ -146,6 +216,11 @@ public class PJ : MonoBehaviour
         }
 
         return direction;
+    }
+    
+    private void UpdateLastDirection(Vector3 direction)
+    {
+        lastDirection = !pjDoingAction ? (direction != Vector3.zero ? direction : lastDirection) : lastDirection;
     }
 
     private void SetSpriteXOrientation()
@@ -161,14 +236,13 @@ public class PJ : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Raycast
+    
     private void UpdatePjRay()
     {
         ray = new Ray(transform.position, lastDirection);
-    }
-
-    private void UpdateLastDirection(Vector3 direction)
-    {
-        lastDirection = !pjDoingAction ? (direction != Vector3.zero ? direction : lastDirection) : lastDirection;
     }
 
     private bool PjRayHitLayer(int layer)
@@ -182,6 +256,21 @@ public class PJ : MonoBehaviour
         return Physics.Raycast(ray, out hit, playerRayMaxDistance);
     }
 
+    #endregion
+
+    #region Utils
+
+    private void CreatePlayerDustParticles()
+    {
+        if (!dustParticlesPlaying)
+        {
+            dustParticlesPlaying = true;
+            pjStepDust.Play();
+            Sequence dustResetSequence = DOTween.Sequence();
+            dustResetSequence.AppendInterval(playerDustParticlesDelay)
+                .AppendCallback(() => dustParticlesPlaying = false);
+        }
+    }
 
     public void Switch2D3D(bool gameIn3D)
     {
@@ -198,23 +287,67 @@ public class PJ : MonoBehaviour
             transform.rotation = initialPlayerRotation;
             pjSprite.transform.rotation = initialPlayerSpriteRotation;
         }
-        
+    }
+    
+    #endregion
+
+    #region Main Action
+    
+    public void DoMainAction()
+    {
+        if (gameIn3D)
+        {
+            Interact();
+        }
+        else
+        {
+            if (!pjDoingAction)
+            {
+                Attack();
+            }
+        }
     }
 
-    public void Attack()
+    private void Interact()
     {
-        if (!pjDoingAction)
+        pjDoingAction = true;
+        
+        if (npcInContact != null)
         {
-            pjDoingAction = true;
-            
-            pjAnim.Play("PJ_attack");
-            float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_attack");
-            
-            WeaponDamage activeWeapon = inventory.GetActiveWeapon();
-            activeWeapon.Attack();
-            
-            PjActionFalseWhenAnimFinish(animLenght);
+            if (!npcInContact.IsInDialog())
+            {
+                npcInContact.StartDialogue();
+            }
+            else
+            {
+                npcInContact.ContinueDialog();
+                
+                if (!npcInContact.IsInDialog())
+                {
+                    pjDoingAction = false;
+                }
+            }
         }
+        else
+        {
+            pjDoingAction = false;
+        }
+    }
+
+    private void Attack()
+    {
+        pjDoingAction = true;
+        
+        pjAnim.Play("PJ_attack");
+        float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_attack");
+
+        WeaponDamage activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
+        if (activeWeapon != null)
+        {
+            activeWeapon.Attack();
+        }
+
+        PjActionFalseWhenAnimFinish(animLenght);
     }
 
     private void PjActionFalseWhenAnimFinish(float animLenght)
@@ -225,57 +358,5 @@ public class PJ : MonoBehaviour
         });
     }
 
-    public void Roll(Vector3 direction)
-    {
-        if (!pjDoingAction)
-        {
-            pjDoingAction = true;
-            pjIsRolling = true;
-
-            pjAnim.Play("PJ_roll");
-            float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_roll");
-            
-            PjActionFalseWhenAnimFinish(animLenght);
-
-            Vector3 endPosition = GetRollEndPosition();
-            
-            Debug.DrawRay(transform.position, lastDirection, Color.red);
-            if (!PjRaycastHit(Color.red) || !PjRayHitLayer(Layers.WALL_LAYER))
-            {
-                rollingTween = transform.DOMove(endPosition, animLenght)
-                    .OnComplete(StopRolling)
-                    .OnKill(StopRolling);
-
-                var emissionModule = pjStepDust.emission;
-                emissionModule.rateOverTime = 100;
-                var mainModule = pjStepDust.main;
-                mainModule.loop = true;
-                pjStepDust.Play();
-                dustParticlesPlaying = true;
-            }
-        }
-    }
-
-    private void StopRolling()
-    {
-        pjIsRolling = false;
-        
-        var emissionModule = pjStepDust.emission;
-        emissionModule.rateOverTime = 40;
-        var mainModule = pjStepDust.main;
-        mainModule.loop = false;
-        pjStepDust.Stop();
-        dustParticlesPlaying = false;
-    }
-
-    private Vector3 GetRollEndPosition()
-    {
-        Vector3 endDirection = lastDirection != Vector3.zero ? lastDirection.normalized : transform.right;
-        endDirection *= playerRollFactor;
-
-        var position = transform.position;
-        Vector3 endPosition =
-            new Vector3(position.x + endDirection.x, position.y + endDirection.y, position.z + endDirection.z);
-        return endPosition;
-    }
+    #endregion
 }

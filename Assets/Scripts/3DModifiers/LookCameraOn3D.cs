@@ -5,13 +5,11 @@ public class LookCameraOn3D : MonoBehaviour
 {
     private bool gameIn3D;
     private Quaternion defaultSpriteRotation;
-    private SpriteRenderer sprite;
     
     public void Start()
     {
         this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>((e) =>  this.gameIn3D = e.gameIn3D);
-        sprite = GetComponent<SpriteRenderer>();
-        defaultSpriteRotation = sprite.transform.rotation;
+        defaultSpriteRotation = transform.rotation;
     }
 
     private void Update()
@@ -23,7 +21,7 @@ public class LookCameraOn3D : MonoBehaviour
         }
         else
         {
-            sprite.transform.rotation = defaultSpriteRotation;
+            transform.rotation = defaultSpriteRotation;
         }
     }
 }

@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7f8eb2fced1b35a40bc8af790407418b, type: 2}
+  - {fileID: 2100000, guid: 80e39c9e61536e14fb567c52d9f79a25, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -136,7 +136,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7f8eb2fced1b35a40bc8af790407418b, type: 2}
+  - {fileID: 2100000, guid: 80e39c9e61536e14fb567c52d9f79a25, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -200,7 +200,7 @@ Transform:
   - {fileID: 5920493842142313949}
   - {fileID: 5810050830742507134}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &4934463718288545179
 BoxCollider:

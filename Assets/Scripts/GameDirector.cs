@@ -146,13 +146,13 @@ public class GameDirector : MonoBehaviour
                 if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.E) ||
                     (Core.Input.Gamepads.ToArray().Length > 0 && gamepad != null && gamepad.IsButtonPressed(GamepadButton.B)))
                 {
-                    pj.Attack();
+                    pj.DoMainAction();
                 }
                 
                 if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.RightShift) ||
                     (Core.Input.Gamepads.ToArray().Length > 0 && gamepad != null && gamepad.IsButtonPressed(GamepadButton.A)))
                 {
-                    pj.Roll(direction);
+                    pj.DoRoll(direction);
                 }
                 
                 // Enemies

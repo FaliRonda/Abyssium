@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Ju.Extensions;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class RotateIn3D : MonoBehaviour
@@ -12,7 +8,6 @@ public class RotateIn3D : MonoBehaviour
     private void Awake()
     {
         initialRotation = transform.rotation;
-
     }
     
     public void Start()
