@@ -34,7 +34,7 @@ public class PJ : MonoBehaviour
     private Ray ray;
     private RaycastHit hit;
     private TweenerCore<Vector3, Vector3, VectorOptions> rollingTween;
-    private NPC npcInContact;
+    private Interactable interactableInContact;
 
     #region Unity events
     
@@ -76,7 +76,7 @@ public class PJ : MonoBehaviour
     {
         if (other.gameObject.layer == Layers.NPC_LAYER)
         {
-            npcInContact = other.GetComponent<NPC>();
+            interactableInContact = other.GetComponent<NPC>();
         }
     }
     
@@ -84,7 +84,7 @@ public class PJ : MonoBehaviour
     {
         if (other.gameObject.layer == Layers.NPC_LAYER)
         {
-            npcInContact = null;
+            interactableInContact = null;
         }
     }
 
@@ -199,7 +199,7 @@ public class PJ : MonoBehaviour
                 if (PjRayHitLayer(Layers.DOOR_LAYER))
                 {
                     Door door = hit.transform.GetComponentInParent<Door>();
-                    door.OpenDoor();
+                    //TODO commented door.OpenDoor();
                 }
             }
         }
@@ -312,21 +312,14 @@ public class PJ : MonoBehaviour
     {
         pjDoingAction = true;
         
-        if (npcInContact != null)
+        if (interactableInContact != null)
         {
-            if (!npcInContact.IsInDialog())
-            {
-                npcInContact.StartDialogue();
-            }
-            else
-            {
-                npcInContact.ContinueDialog();
-                
-                if (!npcInContact.IsInDialog())
-                {
-                    pjDoingAction = false;
-                }
-            }
+           interactableInContact.Interact();
+           
+           if (!interactableInContact.IsInteracting())
+           {
+               pjDoingAction = false;
+           }
         }
         else
         {

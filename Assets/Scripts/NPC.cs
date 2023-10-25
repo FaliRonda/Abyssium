@@ -1,72 +1,40 @@
 using TMPro;
 using UnityEngine;
 
-public class NPC : MonoBehaviour
+public class NPC : Interactable
 {
     public DialogueSO dialogueData;
     
     private int dialogueIndex = 0;
-    private Material material;
     private Canvas canvas;
     private TMP_Text dialogueText;
-    private bool isInDialog = false;
 
-    #region Unity Events
-    
     private void Start()
     {
-        material = GetComponentInChildren<SpriteRenderer>().material;
         canvas = GetComponentInChildren<Canvas>();
         dialogueText = GetComponentInChildren<TMP_Text>();
 
         canvas.worldCamera = Camera.main;
     }
 
-    private void OnTriggerStay(Collider other)
+    override public void Interact()
     {
-        if (OtherIsPlayer(other))
+        if (!IsInteracting())
         {
-            SetOutlineVisibility(true);
+            StartDialogue();
+        }
+        else
+        {
+            ContinueDialog();
         }
     }
 
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (OtherIsPlayer(other))
-        {
-            SetOutlineVisibility(false);
-        }
-    }
-
-    #endregion
-
-    #region Utils
-    
-    private bool OtherIsPlayer(Collider other)
-    {
-        return other.gameObject.layer == Layers.PJ_LAYER;
-    }
-    
-    private void SetOutlineVisibility(bool isActive)
-    {
-        int activeIntValue = isActive ? 1 : 0;
-        material.SetInt("_OutlineActive", activeIntValue);
-    }
-
-    #endregion
-    
     public void StartDialogue()
     {
-        isInDialog = true;
+        SetInteracting(true);
         canvas.enabled = true;
 
         ShowNextDialog();
-    }
-
-    public bool IsInDialog()
-    {
-        return isInDialog;
     }
 
     public void ContinueDialog()
@@ -89,7 +57,7 @@ public class NPC : MonoBehaviour
 
     private void EndDialogue()
     {
-        isInDialog = false;
+        SetInteracting(false);
         canvas.enabled = false;
 
         dialogueIndex = 0;

@@ -5051,7 +5051,7 @@ GameObject:
   - component: {fileID: 5525544451663568195}
   - component: {fileID: 8619616891320773891}
   - component: {fileID: 3176898652611235957}
-  - component: {fileID: 7740014247560107700}
+  - component: {fileID: 3281779428214807339}
   m_Layer: 6
   m_Name: Controller
   m_TagString: Player
@@ -5122,8 +5122,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!65 &7740014247560107700
-BoxCollider:
+--- !u!136 &3281779428214807339
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5140,9 +5140,11 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 1
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.4, y: 1, z: 0.5}
-  m_Center: {x: 0, y: 0.5, z: 0}
+  serializedVersion: 2
+  m_Radius: 0.75
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6896178349961591389
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using Ju.Extensions;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Door : MonoBehaviour
+public class Door : Interactable
 {
     public RoomDissolve room;
     public bool doorOpening;
