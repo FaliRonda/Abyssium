@@ -17,7 +17,7 @@ public class NPC : Interactable
         canvas.worldCamera = Camera.main;
     }
 
-    override public void Interact()
+    public override void Interact()
     {
         if (!IsInteracting())
         {

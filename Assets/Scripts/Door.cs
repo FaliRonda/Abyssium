@@ -16,12 +16,21 @@ public class Door : Interactable
     
     
     private Animator doorAnimator;
-    private BoxCollider boxCollider;
+    private BoxCollider doorBoxCollider;
 
     private void Start()
     {
-        doorAnimator = GetComponent<Animator>();
-        boxCollider = GetComponentInChildren<BoxCollider>();
+        doorAnimator = GetComponentInParent<Animator>();
+        var colliders = GetComponentsInParent<BoxCollider>();
+        doorBoxCollider = colliders[1];
+    }
+
+    public override void Interact()
+    {
+        if (CanInteract())
+        {
+            OpenDoor();
+        }
     }
 
     public void OpenDoor()
@@ -42,8 +51,12 @@ public class Door : Interactable
 
     public void OpenAndDissolveRoom()
     {   
-        boxCollider.enabled = false;
-        room.Disolve();
+        doorBoxCollider.enabled = false;
+        SetCanInteract(false);
+        if (room != null)
+        {
+            room.Disolve();
+        }
     }
 
     public void LoadNewFloor(bool isFloorBelow)
@@ -54,6 +67,6 @@ public class Door : Interactable
     public void CloseDoor()
     {
         doorAnimator.Play("Door_close");
-        boxCollider.enabled = true;
+        doorBoxCollider.enabled = true;
     }
 }

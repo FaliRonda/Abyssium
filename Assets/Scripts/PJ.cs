@@ -74,15 +74,15 @@ public class PJ : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == Layers.NPC_LAYER)
+        if (other.gameObject.layer == Layers.INTERACTABLE_LAYER)
         {
-            interactableInContact = other.GetComponent<NPC>();
+            interactableInContact = other.GetComponent<Interactable>();
         }
     }
     
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer == Layers.NPC_LAYER)
+        if (other.gameObject.layer == Layers.INTERACTABLE_LAYER)
         {
             interactableInContact = null;
         }
@@ -125,7 +125,7 @@ public class PJ : MonoBehaviour
     
     private void StopRollingWhenHitWall()
     {
-        if (pjIsRolling && PjRaycastHit(Color.yellow) && PjRayHitLayer(Layers.WALL_LAYER))
+        if (pjIsRolling && PjRaycastHit(Color.yellow) && (PjRayHitLayer(Layers.WALL_LAYER) || PjRayHitLayer(Layers.DOOR_LAYER)))
         {
             rollingTween.Kill();
         }
@@ -195,12 +195,6 @@ public class PJ : MonoBehaviour
             if (PjRayHitLayer(Layers.WALL_LAYER) || PjRayHitLayer(Layers.DOOR_LAYER))
             {
                 direction = Vector3.zero;
-                
-                if (PjRayHitLayer(Layers.DOOR_LAYER))
-                {
-                    Door door = hit.transform.GetComponentInParent<Door>();
-                    //TODO commented door.OpenDoor();
-                }
             }
         }
         

@@ -1,9 +1,11 @@
+using Ju.Extensions;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour, I_Interactable
 {
     private Material material;
     private bool isInteracting = false;
+    private bool canInteract = false;
 
     private void Awake()
     {
@@ -27,8 +29,15 @@ public class Interactable : MonoBehaviour, I_Interactable
         {
             material = meshInChildren.material;
         }
+        
+        this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
     }
-    
+
+    private void Switch2D3D(bool gameIn3D)
+    {
+        SetCanInteract(gameIn3D);
+    }
+
     public bool IsInteracting()
     {
         return isInteracting;
@@ -38,10 +47,24 @@ public class Interactable : MonoBehaviour, I_Interactable
     {
         this.isInteracting = isInteracting;
     }
+
+    public bool CanInteract()
+    {
+        return canInteract;
+    }
+
+    public void SetCanInteract(bool canInteract)
+    {
+        this.canInteract = canInteract;
+        if (!this.canInteract)
+        {
+            material.SetInt("_OutlineActive", 0);
+        }
+    }
     
     private void OnTriggerStay(Collider other)
     {
-        if (OtherIsPlayer(other))
+        if (OtherIsPlayer(other) && CanInteract())
         {
             SetOutlineVisibility(true);
         }
@@ -50,7 +73,7 @@ public class Interactable : MonoBehaviour, I_Interactable
 
     private void OnTriggerExit(Collider other)
     {
-        if (OtherIsPlayer(other))
+        if (OtherIsPlayer(other) && CanInteract())
         {
             SetOutlineVisibility(false);
         }

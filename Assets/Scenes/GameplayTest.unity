@@ -25404,10 +25404,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 501539315}
     m_Modifications:
-    - target: {fileID: 3782969920168881847, guid: 761ef39404da55642927e4557ddfa1ce, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 80e39c9e61536e14fb567c52d9f79a25, type: 2}
     - target: {fileID: 5609354520025183269, guid: 761ef39404da55642927e4557ddfa1ce, type: 3}
       propertyPath: m_Name
       value: Candle (1)

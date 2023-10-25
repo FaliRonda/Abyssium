@@ -2,7 +2,7 @@
 {
     public const int PJ_LAYER = 6;
     public const int ENEMY_LAYER = 9;
-    public const int NPC_LAYER = 13;
+    public const int INTERACTABLE_LAYER = 13;
     
     public static int DOOR_LAYER = 12;
     public const int LIGHT_LAYER = 10;
