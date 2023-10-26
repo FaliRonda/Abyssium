@@ -1929,7 +1929,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Warrior_Sheet-Effect_102
+      name: roll1
       rect:
         serializedVersion: 2
         x: 151
@@ -1950,33 +1950,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Warrior_Sheet-Effect_103
+      name: roll2
       rect:
         serializedVersion: 2
         x: 216
         y: 89
-        width: 5
-        height: 5
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 36abe6ed05635184abc501718ca8677b
-      internalID: 1474313429
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Warrior_Sheet-Effect_104
-      rect:
-        serializedVersion: 2
-        x: 221
-        y: 89
-        width: 30
+        width: 35
         height: 18
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -1992,7 +1971,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Warrior_Sheet-Effect_105
+      name: roll3
       rect:
         serializedVersion: 2
         x: 285
@@ -2013,7 +1992,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Warrior_Sheet-Effect_106
+      name: roll4
       rect:
         serializedVersion: 2
         x: 353
@@ -2238,11 +2217,7 @@ TextureImporter:
       Warrior_Sheet-Effect_10: -130939096
       Warrior_Sheet-Effect_100: 867381756
       Warrior_Sheet-Effect_101: 226064862
-      Warrior_Sheet-Effect_102: -302797598
       Warrior_Sheet-Effect_103: 1474313429
-      Warrior_Sheet-Effect_104: -2138057988
-      Warrior_Sheet-Effect_105: 640399916
-      Warrior_Sheet-Effect_106: 2048844359
       Warrior_Sheet-Effect_107: 1456142899
       Warrior_Sheet-Effect_108: -1075040112
       Warrior_Sheet-Effect_109: 2019058719
@@ -2349,6 +2324,10 @@ TextureImporter:
       Warrior_Sheet-Effect_97: -878466470
       Warrior_Sheet-Effect_98: 32707570
       Warrior_Sheet-Effect_99: 1911739485
+      roll1: -302797598
+      roll2: -2138057988
+      roll3: 640399916
+      roll4: 2048844359
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

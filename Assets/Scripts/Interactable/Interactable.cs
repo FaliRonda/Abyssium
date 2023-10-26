@@ -6,28 +6,24 @@ public class Interactable : MonoBehaviour, I_Interactable
     private Material material;
     private bool isInteracting = false;
     private bool canInteract = false;
+    protected SpriteRenderer interactableSprite;
+    protected SkinnedMeshRenderer interactableMesh;
+    protected Collider interactableCollider;
 
     private void Awake()
     {
         //Try get material from sprite
-        var sprite = GetComponent<SpriteRenderer>();
-        var spriteInChildren = GetComponentInChildren<SpriteRenderer>();
-        var mesh = GetComponent<SkinnedMeshRenderer>();
-        var meshInChildren = GetComponentInChildren<SkinnedMeshRenderer>();
+        interactableSprite = GetComponent<SpriteRenderer>() != null ? GetComponent<SpriteRenderer>(): GetComponentInChildren<SpriteRenderer>();
+        interactableMesh = GetComponent<SkinnedMeshRenderer>() != null ? GetComponent<SkinnedMeshRenderer>() : GetComponentInChildren<SkinnedMeshRenderer>();
+        interactableCollider = GetComponent<Collider>() != null ? GetComponent<Collider>() : GetComponentInChildren<Collider>();
 
-        if (sprite != null)
+        if (interactableSprite != null)
         {
-            material = sprite.material;
+            material = interactableSprite.material;
         }
-        else if (spriteInChildren != null)
+        else  if (interactableMesh != null)
         {
-            material = spriteInChildren.material;
-        } else if (mesh != null)
-        {
-            material = mesh.material;
-        } else if (meshInChildren != null)
-        {
-            material = meshInChildren.material;
+            material = interactableMesh.material;
         }
         
         this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
@@ -90,7 +86,7 @@ public class Interactable : MonoBehaviour, I_Interactable
         material.SetInt("_OutlineActive", activeIntValue);
     }
     
-    public virtual void Interact()
+    public virtual void Interact(PJ pj)
     {
         throw new System.NotImplementedException();
     }

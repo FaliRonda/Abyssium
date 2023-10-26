@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class RotateIn3D : MonoBehaviour
 {
+    public bool vertical = true;
+    
     private Quaternion initialRotation;
 
     private void Awake()
@@ -19,7 +21,8 @@ public class RotateIn3D : MonoBehaviour
     {
         if (gameIn3D)
         {
-            transform.Rotate(new Vector3(-45, 0, 0));
+            var xRotation = vertical ? -45 : 45;
+            transform.Rotate(new Vector3(xRotation, 0, 0));
         }
         else
         {

@@ -9,10 +9,23 @@ public class Inventory : MonoBehaviour
     public List<GameObject> items = new List<GameObject>();
 
     private List<Quaternion> initialRotations = new List<Quaternion>();
-    private WeaponDamage activeWeapon;
+    private Weapon activeWeapon;
+
+    private bool hasWhiteOrb = false;
+    private bool hasBlackOrb = false;
+    private bool hasLantern = false;
+    
+    public bool HasWhiteOrb => hasWhiteOrb;
+    public bool HasBlackOrb => hasBlackOrb;
+    public bool HasLantern => hasLantern;
+
+    private Light lantern;
     
     private void Start()
     {
+        lantern = GetComponentInChildren<Light>();
+        lantern.enabled = hasLantern;
+        
         bool activeWeaponFilled = false;
         
         foreach (Transform t in GetComponentsInChildren<Transform>())
@@ -22,7 +35,7 @@ public class Inventory : MonoBehaviour
 
             if (!activeWeaponFilled && t.gameObject.layer == Layers.WEAPON_LAYER)
             {
-                activeWeapon = t.GetComponent<WeaponDamage>();
+                activeWeapon = t.GetComponent<Weapon>();
                 activeWeaponFilled = true;
             }
         }
@@ -40,7 +53,7 @@ public class Inventory : MonoBehaviour
             switch (item.layer)
             {
                 case Layers.WEAPON_LAYER:
-                    RotateLight(item, direction, gameIn3D);
+                    RotateWeapon(item, direction, gameIn3D);
                     break;
                 case Layers.LIGHT_LAYER:
                     RotateLight(item, direction, gameIn3D);
@@ -51,23 +64,37 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private void RotateLight(GameObject item, Vector3 direction, bool gameIn3D)
+    private void RotateItem(float xRotation, float yRotation, float zRotation, GameObject item, bool gameIn3D)
     {
         if (!gameIn3D)
         {
-            item.transform.DORotate(new Vector3(90, 0, CalculateLightRotationAngle(direction)), 0.5f);
+            item.transform.DORotate(new Vector3(xRotation, yRotation, zRotation), 0.5f);
         }
         else
         {
-            float mouseX;
+            Vector3 cameraRotation = Camera.main.transform.rotation.eulerAngles;
+            item.transform.DORotate(new Vector3(cameraRotation.x, cameraRotation.y, cameraRotation.z), 0.5f);
+            /*
+             float mouseX;
             float mouseY;
             
             Core.Input.Mouse.GetPositionDelta(out mouseX, out mouseY);
-            item.transform.eulerAngles += new Vector3(0, 0,-mouseX);
+            item.transform.eulerAngles += new Vector3(0, mouseX,0);
+            */
         }
     }
+    
+    private void RotateLight(GameObject item, Vector3 direction, bool gameIn3D)
+    {
+        RotateItem(0, -CalculateRotationAngle(direction), 0, item, gameIn3D);
+    }
 
-    private float CalculateLightRotationAngle(Vector3 direction)
+    private void RotateWeapon(GameObject item, Vector3 direction, bool gameIn3D)
+    {
+        RotateItem(90, 0, CalculateRotationAngle(direction), item, gameIn3D);
+    }
+
+    private float CalculateRotationAngle(Vector3 direction)
     {
         float angle = 0;
 
@@ -82,12 +109,7 @@ public class Inventory : MonoBehaviour
 
         return angle;
     }
-
-    private void RotateWeapon(GameObject item, Vector3 direction, bool gameIn3D)
-    {
-        
-    }
-
+    
     public void RestoreItemsRotation()
     {
         for (int i = 0; i < items.Count; i++)
@@ -96,8 +118,33 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public WeaponDamage GetActiveWeapon()
+    public Weapon GetActiveWeapon()
     {
         return activeWeapon;
+    }
+
+    public void AddItem(Item item)
+    {
+        switch (item.itemType)
+        {
+            case Item.ITEM_TYPE.WEAPON:
+                activeWeapon.UptadeWeaponStats(item);
+                break;
+            case Item.ITEM_TYPE.UTIL:
+                hasLantern = true;
+                lantern.enabled = true;
+                break;
+            case Item.ITEM_TYPE.KEY:
+                if (item.keyId == Item.KEY_IDS.BLACK_ORB)
+                {
+                    hasBlackOrb = true;
+                } else if (item.keyId == Item.KEY_IDS.WHITE_ORB)
+                {
+                    hasWhiteOrb = true;
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

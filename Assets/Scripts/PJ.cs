@@ -171,7 +171,7 @@ public class PJ : MonoBehaviour
             transform.eulerAngles += anglesIncrement;
         }
 
-        inventory.RotateItems(gameIn3D, direction);
+        inventory.RotateItems(gameIn3D, lastDirection);
     }
 
     private void DoPjMovement(Vector3 direction)
@@ -308,7 +308,7 @@ public class PJ : MonoBehaviour
         
         if (interactableInContact != null)
         {
-           interactableInContact.Interact();
+           interactableInContact.Interact(this);
            
            if (!interactableInContact.IsInteracting())
            {
@@ -328,7 +328,7 @@ public class PJ : MonoBehaviour
         pjAnim.Play("PJ_attack");
         float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_attack");
 
-        WeaponDamage activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
+        Weapon activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
         if (activeWeapon != null)
         {
             activeWeapon.Attack();
@@ -346,4 +346,9 @@ public class PJ : MonoBehaviour
     }
 
     #endregion
+
+    public void CollectItem(Item item)
+    {
+        inventory.AddItem(item);
+    }
 }

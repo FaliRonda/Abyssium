@@ -25,7 +25,7 @@ public class Door : Interactable
         doorBoxCollider = colliders[1];
     }
 
-    public override void Interact()
+    public override void Interact(PJ pj)
     {
         if (CanInteract())
         {

@@ -1,6 +1,6 @@
 public interface I_Interactable
 {
-    public void Interact();
+    public void Interact(PJ player);
 
     public bool IsInteracting();
     public void SetInteracting(bool isInteracting);
