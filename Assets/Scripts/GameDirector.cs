@@ -9,6 +9,9 @@ public class GameDirector : MonoBehaviour
     public bool debugMode;
     public float timeLoopDuration = 10f;
     public GameObject lightHouse;
+
+    public Canvas canvas;
+    
     public EnemyAI[] enemies;
 
     private PJ pj;
@@ -33,7 +36,9 @@ public class GameDirector : MonoBehaviour
         var lighthouseRotation = lightHouse.transform.rotation;
         currentLighthouseYRotation = lighthouseRotation.eulerAngles.y;
         initialLighthouseXRotation = lighthouseRotation.eulerAngles.x;
-        
+
+        Core.Dialogue.Initialize(canvas);
+
         DontDestroyOnLoad(this.gameObject);
         DontDestroyOnLoad(lightHouse.gameObject);
     }
@@ -155,6 +160,11 @@ public class GameDirector : MonoBehaviour
                     (Core.Input.Gamepads.ToArray().Length > 0 && gamepad != null && gamepad.IsButtonPressed(GamepadButton.A)))
                 {
                     pj.DoRoll(direction);
+                }
+                
+                if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.H))
+                {
+                    Core.Dialogue.StartConversation();
                 }
                 
                 // Enemies

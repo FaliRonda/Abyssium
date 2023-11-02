@@ -10,10 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
-  m_Name: NPCDialogue
+  m_Name: NPC1Dialogue2
   m_EditorClassIdentifier: 
-  diagogueLines:
-  - Hi adventurer! My name is NPC
-  - This is the second line of my conversation, just to test everything is working
-    fine.
-  - And this is my last sentence! Thanks for reading ^^
+  dialogueText: This is the second line of my dialogue, just to check everything
+    is working properly!
+  choices: []

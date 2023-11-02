@@ -1,21 +1,16 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class NPC : Interactable
 {
-    public DialogueSO dialogueData;
-    
+    public DialogueSO[] dialogues;
     private int dialogueIndex = 0;
-    private Canvas canvas;
-    private TMP_Text dialogueText;
-
-    private void Start()
-    {
-        canvas = GetComponentInChildren<Canvas>();
-        dialogueText = GetComponentInChildren<TMP_Text>();
-
-        canvas.worldCamera = Camera.main;
-    }
+    private List<ChoiceSO> currentChoices = new List<ChoiceSO>();
+    private bool isSelectingChoice = false;
+    private DialogueSO currentChoiceDialog;
 
     public override void Interact(PJ pj)
     {
@@ -32,22 +27,34 @@ public class NPC : Interactable
     public void StartDialogue()
     {
         SetInteracting(true);
-        canvas.enabled = true;
+        Core.Dialogue.StartConversation();
 
         ShowNextDialog();
     }
 
     public void ContinueDialog()
     {
-        ShowNextDialog();
+        if (!isSelectingChoice)
+        {
+            ShowNextDialog();
+        }
     }
 
     private void ShowNextDialog()
     {
-        if (dialogueIndex < dialogueData.DialogueLines.Length)
+        if (dialogueIndex < dialogues.Length)
         {
-            dialogueText.text = dialogueData.DialogueLines[dialogueIndex];
+            Core.Dialogue.ShowText(dialogues[dialogueIndex].dialogueText);
+            ShowChoices(dialogues[dialogueIndex]);
+
             dialogueIndex++;
+        }
+        else if (currentChoiceDialog != null)
+        {
+            Core.Dialogue.ShowText(currentChoiceDialog.dialogueText);
+            ShowChoices(currentChoiceDialog);
+
+            currentChoiceDialog = null;
         }
         else
         {
@@ -55,11 +62,50 @@ public class NPC : Interactable
         }
     }
 
+    private void ShowChoices(DialogueSO dialogue)
+    {
+        ChoiceSO[] choices = dialogue.choices;
+        int choicesCount = choices.Length;
+        bool haveChoices = choicesCount > 0;
+
+        if (haveChoices)
+        {
+            isSelectingChoice = true;
+            for (int i = 0; i < choicesCount; i++)
+            {
+                currentChoices.Add(choices[i]);
+                Core.Dialogue.ShowChoice(i, choices[i], this);
+            }
+        }
+    }
+
     private void EndDialogue()
     {
         SetInteracting(false);
-        canvas.enabled = false;
+        Core.Dialogue.HideCanvas();
 
         dialogueIndex = 0;
+    }
+
+    public void ChoiceSelected(int choiceIndex)
+    {
+        currentChoiceDialog = currentChoices[choiceIndex].nextDialogue;
+        if (currentChoices[choiceIndex].drop != null)
+        {
+            Drop(currentChoices[choiceIndex].drop);
+        }
+        currentChoices.Clear();
+        isSelectingChoice = false;
+        
+        ShowNextDialog();
+    }
+
+    private void Drop(GameObject drop)
+    {
+        var npcPosition = transform.position;
+        drop.transform.position = new Vector3(npcPosition.x, drop.transform.position.y, npcPosition.z - 1f);
+        drop.gameObject.SetActive(true);
+        var interactable = drop.GetComponent<Interactable>();
+        interactable.SetCanInteract(true);
     }
 }

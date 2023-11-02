@@ -76,7 +76,10 @@ public class PJ : MonoBehaviour
     {
         if (other.gameObject.layer == Layers.INTERACTABLE_LAYER)
         {
-            interactableInContact = other.GetComponent<Interactable>();
+            if (interactableInContact == null || !interactableInContact.IsInteracting())
+            {
+                interactableInContact = other.GetComponent<Interactable>();
+            }
         }
     }
     

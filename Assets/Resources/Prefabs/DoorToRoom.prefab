@@ -115,7 +115,7 @@ PrefabInstance:
     - target: {fileID: 8417361359673230750, guid: 0af880572ecf2864b9828b956d0a2025, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: dd280c978d269a34bbec976b5acc3fe0, type: 2}
+      objectReference: {fileID: 2100000, guid: 47aa2524245c31743aa1553531359175, type: 2}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: 0af880572ecf2864b9828b956d0a2025, type: 3}
     m_RemovedGameObjects:
@@ -176,6 +176,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   room: {fileID: 0}
   doorOpening: 0
+  isLocked: 1
+  orbsOutlineDoor: {fileID: 2100000, guid: f12f8a0f2daf54b4c844ca8b72fc7b15, type: 2}
+  blackOrbDoor: {fileID: 2100000, guid: da381010be5fe3a43835972bdca23a65, type: 2}
+  whiteOrbDoor: {fileID: 2100000, guid: e5a4f38eb925de644b59075218724941, type: 2}
+  twoOrbsDoor: {fileID: 2100000, guid: 0cb978c3471ba8c49a3f30bf1d5c263e, type: 2}
   doorOpenedCallback:
     m_PersistentCalls:
       m_Calls:

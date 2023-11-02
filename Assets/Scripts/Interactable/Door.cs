@@ -1,25 +1,29 @@
-﻿using System;
-using DG.Tweening;
-using Ju.Extensions;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 public class Door : Interactable
 {
     public RoomDissolve room;
     public bool doorOpening;
+    public bool isLocked = false;
+
+    public Material orbsOutlineDoor;
+    public Material blackOrbDoor;
+    public Material whiteOrbDoor;
+    public Material twoOrbsDoor;
     
     
     [System.Serializable]
     public class DoorOpenedCallbackEvent : UnityEvent<bool> {}
     public DoorOpenedCallbackEvent doorOpenedCallback;
-    
-    
+
+    private SkinnedMeshRenderer mesh;
     private Animator doorAnimator;
     private BoxCollider doorBoxCollider;
 
     private void Start()
     {
+        mesh = GetComponentInParent<SkinnedMeshRenderer>();
         doorAnimator = GetComponentInParent<Animator>();
         var colliders = GetComponentsInParent<BoxCollider>();
         doorBoxCollider = colliders[1];
@@ -29,11 +33,42 @@ public class Door : Interactable
     {
         if (CanInteract())
         {
-            OpenDoor();
+            TryOpenDoor(pj);
         }
     }
 
-    public void OpenDoor()
+    public void TryOpenDoor(PJ pj)
+    {
+        if (!isLocked)
+        {
+            OpenDoor();
+        }
+        else
+        {
+            Renderer doorRenderer = GetComponent<Renderer>();
+            Material[] newMaterials = doorRenderer.materials;
+            
+            if (pj.inventory.HasBlackOrb)
+            {
+                newMaterials[1] = blackOrbDoor;
+            }
+
+            if (pj.inventory.HasWhiteOrb)
+            {
+                newMaterials[1] = whiteOrbDoor;
+            }
+            
+            if (pj.inventory.HasBlackOrb && pj.inventory.HasWhiteOrb)
+            {
+                newMaterials[1] = twoOrbsDoor;
+                isLocked = false;
+            }
+
+            doorRenderer.materials = newMaterials;
+        }
+    }
+
+    private void OpenDoor()
     {
         if (!doorOpening)
         {

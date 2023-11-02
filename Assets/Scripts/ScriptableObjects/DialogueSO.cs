@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "New Dialogue Data", menuName = "Dialogue Data")]
 public class DialogueSO : ScriptableObject
 {
-    [SerializeField] private string[] diagogueLines;
+    [SerializeField] public string dialogueText;
+    [SerializeField] public ChoiceSO[] choices;
 
-    public string[] DialogueLines { get { return diagogueLines; } }
 }

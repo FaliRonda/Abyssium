@@ -22,6 +22,7 @@ public static class Core
     public static IInputService Input =>                         ServiceContainer.Get<IInputService>();
 
     public static IAnimatorHelperService AnimatorHelper =>       ServiceContainer.Get<IAnimatorHelperService>();
+    public static DialogueService Dialogue =>                    ServiceContainer.Get<DialogueService>();
     //public static IPrefabPoolService Pool =>                   ServiceContainer.Get<IPrefabPoolService>();
 
     // ... add more shorthands as you need

@@ -571,7 +571,7 @@ Transform:
   - {fileID: 2273854446663947621}
   - {fileID: 5513413349370503868}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1089570683005105596
 SphereCollider:
@@ -606,7 +606,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0ce6b0d9c73b0246a0ac61b6682d9fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueData: {fileID: 11400000, guid: d24d2c00d07d5d54a99a4f36ac444c95, type: 2}
+  dialogues:
+  - {fileID: 11400000, guid: d24d2c00d07d5d54a99a4f36ac444c95, type: 2}
+  - {fileID: 11400000, guid: 6f970ae2393b5e143a1a1b3c69af4c4b, type: 2}
+  - {fileID: 11400000, guid: 697ca8f7cd40b7e43a01c449a2154b7e, type: 2}
 --- !u!114 &8196626156926988086
 MonoBehaviour:
   m_ObjectHideFlags: 0

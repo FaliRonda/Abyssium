@@ -22,5 +22,6 @@ public static class Bootstrap
 
 		// Register your custom services here
 		ServiceContainer.RegisterService<IAnimatorHelperService, AnimatorHelperService>();
+		ServiceContainer.RegisterService<DialogueService, DialogueService>();
 	}
 }
