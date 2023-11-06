@@ -78,5 +78,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Custom ignore
-Assets/Plugins/Sirenix/Demos/*
+Assets/Plugins/Sirenix/Demos/
 
