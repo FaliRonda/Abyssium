@@ -9,10 +9,9 @@ public class GameDirector : MonoBehaviour
     public bool debugMode;
     public float timeLoopDuration = 10f;
     public GameObject lightHouse;
-
     public Canvas canvas;
-    
     public EnemyAI[] enemies;
+    public NarrativeDirector narrativeDirector;
 
     private PJ pj;
     private CameraDirector cameraDirector;
@@ -142,7 +141,7 @@ public class GameDirector : MonoBehaviour
             if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.C))
             {
                 SwitchGamePerspective();
-            } else if (pj != null)
+            } else if (pj != null && !narrativeDirector.IsShowingNarrative())
             {
                 // Player
                 Vector3 direction = GetMovementDirection();
@@ -162,10 +161,6 @@ public class GameDirector : MonoBehaviour
                     pj.DoRoll(direction);
                 }
                 
-                if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.H))
-                {
-                    Core.Dialogue.StartConversation();
-                }
                 
                 // Enemies
                 if (gameIn3D)
@@ -175,6 +170,11 @@ public class GameDirector : MonoBehaviour
                         enemy.LookAtCamera();
                     }
                 }
+            }
+            
+            if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.N))
+            {
+                narrativeDirector.ShowNarrative();
             }
         }
         

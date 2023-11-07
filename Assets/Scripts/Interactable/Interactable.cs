@@ -1,4 +1,3 @@
-using System;
 using Ju.Extensions;
 using UnityEngine;
 
@@ -10,6 +9,7 @@ public class Interactable : MonoBehaviour, I_Interactable
     protected SpriteRenderer interactableSprite;
     protected SkinnedMeshRenderer interactableMesh;
     protected Collider interactableCollider;
+    private bool gameIn3D = false;
 
     private void Awake()
     {
@@ -32,6 +32,7 @@ public class Interactable : MonoBehaviour, I_Interactable
 
     private void Switch2D3D(bool gameIn3D)
     {
+        this.gameIn3D = gameIn3D;
         SetCanInteract(gameIn3D);
     }
 
@@ -55,7 +56,7 @@ public class Interactable : MonoBehaviour, I_Interactable
         this.canInteract = canInteract;
         if (!this.canInteract)
         {
-            material.SetInt("_OutlineActive", 0);
+            SetOutlineVisibility(false);
         }
     }
     
@@ -66,8 +67,7 @@ public class Interactable : MonoBehaviour, I_Interactable
             SetOutlineVisibility(true);
         }
     }
-
-
+    
     private void OnTriggerExit(Collider other)
     {
         if (OtherIsPlayer(other) && CanInteract())

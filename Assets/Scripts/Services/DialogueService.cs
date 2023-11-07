@@ -1,9 +1,9 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Ju.Services;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 
 public class DialogueService : IService
@@ -13,6 +13,7 @@ public class DialogueService : IService
     public List<GameObject> dialogueChoicesGO = new List<GameObject>();
     public List<TMP_Text> dialogueChoicesText = new List<TMP_Text>();
     private NPC currentNPC;
+    private TypingConfig typingConfig;
 
     public void StartConversation()
     {
@@ -38,11 +39,26 @@ public class DialogueService : IService
             dialogueChoicesGO.Add(choiceTransform.gameObject);
             dialogueChoicesText.Add(choiceTransform.GetComponentInChildren<TMP_Text>());
         }
-    }
+        
+        typingConfig = Resources.Load<TypingConfig>("Conf/TypingConfig");
 
+        // Check if the ScriptableObject was loaded successfully.
+        if (typingConfig == null)
+        {
+            Debug.LogError("TypingConfig not found in Resources folder.");
+        }
+    }
+    
     public void ShowText(string text)
     {
-        this.dialogueText.text = text;
+        int charIndex = 0;
+        dialogueText.text = "";
+
+        // Use DoTween to animate each letter in the text.
+        DOTween.To(() => charIndex, x => charIndex = x, text.Length, text.Length * typingConfig.typingSpeed)
+            .OnUpdate(() => {
+                dialogueText.text = text.Substring(0, charIndex);
+            });
     }
 
     public void ShowChoice(int choiceIndex, ChoiceSO choice, NPC npc)

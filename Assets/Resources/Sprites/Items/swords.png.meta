@@ -396,10 +396,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swords_13
+      name: big_sword
       rect:
         serializedVersion: 2
-        x: 116
+        x: 119
         y: 0
         width: 37
         height: 37
@@ -637,12 +637,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      big_sword: -1545053526
       swords_0: -43137041
       swords_1: 1334931667
       swords_10: -1132566005
       swords_11: -1256491789
       swords_12: 1478858603
-      swords_13: -1545053526
       swords_14: -679022768
       swords_15: 1499827759
       swords_16: 1536745262

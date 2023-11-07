@@ -8,8 +8,38 @@ public class NarrativeDirector : MonoBehaviour
     
     public DialogueSO[] narrativeDialogues;
 
-    public void ShowNextNarrative()
+    private int narrativeDialogueIndex = 0;
+    private bool isShowingNarrative = false;
+
+    public void ShowNarrative()
     {
+        if (!isShowingNarrative)
+        {
+            isShowingNarrative = true;
+            narrativeCurtain.SetActive(true);
+        }
         
+        ShowNextNarrative();
+    }
+
+    private void ShowNextNarrative()
+    {
+        if (narrativeDialogueIndex < narrativeDialogues.Length)
+        {
+            narrativeText.text = narrativeDialogues[narrativeDialogueIndex].dialogueText;
+            narrativeDialogueIndex++;
+        }
+        else
+        {
+            narrativeDialogueIndex = 0;
+            isShowingNarrative = false;
+            narrativeCurtain.SetActive(false);
+        }
+
+    }
+
+    public bool IsShowingNarrative()
+    {
+        return isShowingNarrative;
     }
 }

@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   choiceText: Wisdom
   nextDialogue: {fileID: 11400000, guid: a647722097895c24f8525e99648d513b, type: 2}
-  drop: {fileID: 0}
+  drop: {fileID: 4374895005549639892, guid: 030d2d0f7f631e04197862dcbbcb5247, type: 3}

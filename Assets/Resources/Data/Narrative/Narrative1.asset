@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78a99969abf3e6c4586716bacbb5be31, type: 3}
-  m_Name: NPC1Choice1
+  m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
+  m_Name: Narrative1
   m_EditorClassIdentifier: 
-  choiceText: Strenght
-  nextDialogue: {fileID: 11400000, guid: a647722097895c24f8525e99648d513b, type: 2}
-  drop: {fileID: 1538108864428168070, guid: 75169d93b4a9e0b418188a27e89e980c, type: 3}
+  dialogueText: I'm the Space-Time God and this is my first narrative text!! Muajajaja!!!
+  choices: []

@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using TMPro;
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class NPC : Interactable
 {
@@ -94,6 +92,7 @@ public class NPC : Interactable
         {
             Drop(currentChoices[choiceIndex].drop);
         }
+        
         currentChoices.Clear();
         isSelectingChoice = false;
         
@@ -104,8 +103,8 @@ public class NPC : Interactable
     {
         var npcPosition = transform.position;
         drop.transform.position = new Vector3(npcPosition.x, drop.transform.position.y, npcPosition.z - 1f);
-        drop.gameObject.SetActive(true);
-        var interactable = drop.GetComponent<Interactable>();
+        GameObject dropInstantiated = Instantiate(drop);
+        var interactable = dropInstantiated.GetComponent<Interactable>();
         interactable.SetCanInteract(true);
     }
 }
