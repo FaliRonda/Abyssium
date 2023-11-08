@@ -46,6 +46,8 @@ public class PJ : MonoBehaviour
 
         initialPlayerRotation = transform.rotation;
         initialPlayerSpriteRotation = pjSprite.transform.rotation;
+        
+        this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
     }
 
     private void Start()

@@ -13,4 +13,6 @@ public static class GameEvents
     {
         [FormerlySerializedAs("isFloorAbove")] public bool isFloorBelow;
     }
+
+    public struct EnemyDied {}
 }

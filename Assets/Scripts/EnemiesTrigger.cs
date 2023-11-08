@@ -26,7 +26,6 @@ public class EnemiesTrigger : MonoBehaviour
         for (int i = 0; i < enemies.Length; i++)
         {
             Instantiate(enemies[i], spwanPoints[i]);
-            
         }
     }
 }

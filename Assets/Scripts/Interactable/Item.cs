@@ -7,7 +7,7 @@ public class Item : Interactable
     public KEY_IDS keyId;
     
     [Header("Weapon attributes")]
-    public float weaponDamage;
+    public int weaponDamage;
     public float weaponRange;
     public float weaponCd;
 

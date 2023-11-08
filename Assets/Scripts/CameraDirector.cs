@@ -1,5 +1,6 @@
 using System.Collections;
 using Cinemachine;
+using Ju.Extensions;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -18,6 +19,8 @@ public class CameraDirector : MonoBehaviour
     {
         cinemachineBrain = gameObject.GetComponent<CinemachineBrain>();
         _savedLayerMask = Camera.main.cullingMask;
+        
+        this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
     }
 
     public void Switch2D3D(bool gameIn3D)

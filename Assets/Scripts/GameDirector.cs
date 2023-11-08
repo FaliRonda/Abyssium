@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using Ju.Input;
+using Ju.Extensions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,7 +11,6 @@ public class GameDirector : MonoBehaviour
     public float timeLoopDuration = 10f;
     public GameObject lightHouse;
     public Canvas canvas;
-    public EnemyAI[] enemies;
     public NarrativeDirector narrativeDirector;
 
     private PJ pj;
@@ -37,16 +37,35 @@ public class GameDirector : MonoBehaviour
         initialLighthouseXRotation = lighthouseRotation.eulerAngles.x;
 
         Core.Dialogue.Initialize(canvas);
+        
+        this.EventSubscribe<GameEvents.EnemyDied>(e => CheckEnemiesInScene());
 
         DontDestroyOnLoad(this.gameObject);
         DontDestroyOnLoad(lightHouse.gameObject);
+
+        UpdateGameState();
     }
-    
+
+    private void UpdateGameState()
+    {
+        GameState.gameIn3D = this.gameIn3D;
+    }
+
+    private void CheckEnemiesInScene()
+    {
+        EnemyAI[] enemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
+
+        if (enemies.Length <= 1)
+        {
+            SwitchGamePerspective();
+        }
+    }
+
     private void Start()
     {
         if (Core.Input.Gamepads.Any())
         {
-            gamepad = (GamepadController)Core.Input.Gamepads.First();
+            //gamepad = (GamepadController)Core.Input.Gamepads.First();
         }
         else
         {
@@ -121,17 +140,11 @@ public class GameDirector : MonoBehaviour
     private void SwitchGamePerspective()
     {
         gameIn3D = !gameIn3D;
+        UpdateGameState();
                 
         Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() {gameIn3D = gameIn3D});
 
         lastDirection = new Vector3();
-                
-        pj.Switch2D3D(gameIn3D);
-        foreach  (EnemyAI enemy in enemies)
-        {
-            enemy.Switch2D3D(gameIn3D);
-        }
-        cameraDirector.Switch2D3D(gameIn3D);
     }
 
     void Update()
@@ -149,26 +162,16 @@ public class GameDirector : MonoBehaviour
                 
                 pj.DoUpdate(direction);
                 
-                if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.E) ||
-                    (Core.Input.Gamepads.ToArray().Length > 0 && gamepad != null && gamepad.IsButtonPressed(GamepadButton.B)))
+                if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.E) /*||
+                    (Core.Input.Gamepads.ToArray().Length > 0 && gamepad != null && gamepad.IsButtonPressed(GamepadButton.B))*/)
                 {
                     pj.DoMainAction();
                 }
                 
-                if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.RightShift) ||
-                    (Core.Input.Gamepads.ToArray().Length > 0 && gamepad != null && gamepad.IsButtonPressed(GamepadButton.A)))
+                if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.RightShift) /*||
+                    (Core.Input.Gamepads.ToArray().Length > 0 && gamepad != null && gamepad.IsButtonPressed(GamepadButton.A))*/)
                 {
                     pj.DoRoll(direction);
-                }
-                
-                
-                // Enemies
-                if (gameIn3D)
-                {
-                    foreach  (EnemyAI enemy in enemies)
-                    {
-                        enemy.LookAtCamera();
-                    }
                 }
             }
             
