@@ -90,21 +90,16 @@ public class NPC : Interactable
         currentChoiceDialog = currentChoices[choiceIndex].nextDialogue;
         if (currentChoices[choiceIndex].drop != null)
         {
-            Drop(currentChoices[choiceIndex].drop);
+            Dropper dropper = GetComponent<Dropper>();
+            if (dropper != null)
+            {
+                dropper.Drop(currentChoices[choiceIndex].drop);
+            }
         }
         
         currentChoices.Clear();
         isSelectingChoice = false;
         
         ShowNextDialog();
-    }
-
-    private void Drop(GameObject drop)
-    {
-        var npcPosition = transform.position;
-        drop.transform.position = new Vector3(npcPosition.x, drop.transform.position.y, npcPosition.z - 1f);
-        GameObject dropInstantiated = Instantiate(drop);
-        var interactable = dropInstantiated.GetComponent<Interactable>();
-        interactable.SetCanInteract(true);
     }
 }

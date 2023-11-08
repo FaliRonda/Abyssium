@@ -1,11 +1,10 @@
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Sequence = DG.Tweening.Sequence;
 
 public class Weapon : MonoBehaviour
 {
-    public float weaponDamage = 1f;
+    public int weaponDamage = 1;
     public float weaponRange = 1f;
     public float weaponCd = 0.5f;
 
@@ -42,7 +41,7 @@ public class Weapon : MonoBehaviour
     {
         if (other.gameObject.layer == Layers.ENEMY_LAYER)
         {
-            other.gameObject.GetComponent<EnemyAI>().GetDamage();
+            other.gameObject.GetComponent<EnemyAI>().GetDamage(weaponDamage);
         }
     }
 

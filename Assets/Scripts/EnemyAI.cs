@@ -1,18 +1,19 @@
-using System;
 using System.Collections;
 using DG.Tweening;
+using Ju.Extensions;
 using UnityEngine;
 using UnityEngine.Serialization;
-using System.Threading.Tasks;
-using Task = UnityEditor.VersionControl.Task;
 
 public class EnemyAI : MonoBehaviour
 {
     // Reference to the player
     [FormerlySerializedAs("player")] public Transform playerTransform;
 
+    public int lifeAmount = 3;
     public float patrolSpeed = 1f;
     public float chaseSpeed = 1f;
+    public GameObject itemToDrop;
+    
     // Visibility radius
     public float visibilityRadius = 10f;
 
@@ -39,6 +40,8 @@ public class EnemyAI : MonoBehaviour
     {
         PJ player = (PJ)FindObjectOfType(typeof(PJ));
         playerTransform = player.transform;
+        
+        this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
     }
 
     private void Start()
@@ -81,7 +84,32 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackDistance);
     }
 
-    public void GetDamage()
+    public void GetDamage(int damageAmount)
+    {
+        lifeAmount -= damageAmount;
+        if (lifeAmount <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            PlayDamageAnimation();
+        }
+    }
+
+    private void Die()
+    {
+        Dropper dropper = GetComponent<Dropper>();
+        if (dropper != null)
+        {
+            dropper.Drop(itemToDrop);
+        }
+        
+        Core.Event.Fire(new GameEvents.EnemyDied());
+        Destroy(gameObject);
+    }
+
+    private void PlayDamageAnimation()
     {
         Sequence sequence = DOTween.Sequence();
         sequence.AppendCallback(() => beingDamaged = true)
@@ -127,11 +155,5 @@ public class EnemyAI : MonoBehaviour
         {
             enemySpriteTransform.rotation = defaultEnemySpriteRotation;
         }
-    }
-
-    public void LookAtCamera()
-    {
-        Quaternion lookRotation = Camera.main.transform.rotation;
-        enemySprite.transform.rotation = lookRotation;
     }
 }
