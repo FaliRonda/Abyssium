@@ -16653,8 +16653,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialFloor: 0
   towerFloors:
-  - {fileID: 102900000, guid: 957d252bb478aea45b73a9330c774e18, type: 3}
-  - {fileID: 102900000, guid: f6e637d070607e8418a5f5a7fab1e321, type: 3}
+  - 
+  - 
 --- !u!4 &661892525
 Transform:
   m_ObjectHideFlags: 0
@@ -36650,7 +36650,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 3275fa4071dcac540864a78518c9cf5a, type: 3}
+  - {fileID: 2100000, guid: cd264bc32aee4a24aa53434f68042e4f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
