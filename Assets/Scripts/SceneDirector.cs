@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using Ju.Extensions;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneDirector : MonoBehaviour
 {
     public int initialFloor;
-    public List<SceneAsset> towerFloors;
+    public List<string> towerFloors;
     
     private int currentFloor;
 
@@ -25,7 +24,7 @@ public class SceneDirector : MonoBehaviour
 
     private void LoadCurrentFloorScene()
     {
-        SceneManager.LoadScene(towerFloors[currentFloor].name);
+        SceneManager.LoadScene(towerFloors[currentFloor]);
     }
 
     private void LoadNewFloorScene(bool isFloorBelow)

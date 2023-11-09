@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -43,12 +43,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -106,9 +106,400 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Zancudo Sprite Set_0
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 313
+        width: 35
+        height: 58
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ec0b5a1aea8eef41822ed4d8b38ac1a
+      internalID: 1755794098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Zancudo Sprite Set_1
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 313
+        width: 43
+        height: 41
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f048bcf4138f38c4b9c3f7f65707abc1
+      internalID: -1633170200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Zancudo Sprite Set_2
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 313
+        width: 49
+        height: 38
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c79c48b1e7d65674f89bb045bff0f115
+      internalID: -584770502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Zancudo Sprite Set_3
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 313
+        width: 55
+        height: 23
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 690f5bee8e0d55541b5d76ba869f49ef
+      internalID: -748195605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Zancudo Sprite Set_4
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 313
+        width: 55
+        height: 23
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1adde1cb3dbf39648b81f676f7f43a7b
+      internalID: 157808441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stilt_idle_0
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 233
+        width: 35
+        height: 58
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4c6e305bd8c4854fac7edafef294136
+      internalID: -1864224737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stilt_idle_1
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 233
+        width: 37
+        height: 57
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2df809c48ba63004484783ba27c33a5e
+      internalID: -2010108956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Zancudo Sprite Set_7
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 153
+        width: 46
+        height: 58
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b475d36bdd3c4b47ad424e341b4b5d4
+      internalID: -1910113375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stilt_walk_0
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 89
+        width: 40
+        height: 56
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d835539fa79a8f4eb5dc5659b6222aa
+      internalID: 2026653819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stilt_walk_1
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 89
+        width: 35
+        height: 58
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0ca2aa9fe9bd4d4a927a50fb6b2cc90
+      internalID: -233575550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stilt_walk_2
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 89
+        width: 31
+        height: 56
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de973e73d6d631e468a731dfdc55e7a9
+      internalID: 1547776551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stilt_walk_3
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 89
+        width: 35
+        height: 58
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52254783d28a28945b754766834ac392
+      internalID: 1526119917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Zancudo Sprite Set_12
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 16
+        width: 35
+        height: 58
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 713b6916ce7a49749aebf664f8fe0a9b
+      internalID: -1320388987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Zancudo Sprite Set_13
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 16
+        width: 37
+        height: 56
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25bd3f26d088cf44789f76490ab7e205
+      internalID: 586528364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Zancudo Sprite Set_14
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 16
+        width: 37
+        height: 55
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0cb2db66156c2e4496dfd3545be8b32
+      internalID: 689123017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Zancudo Sprite Set_15
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 26
+        width: 6
+        height: 13
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2f4f05ecce0a2943a23825a108c800d
+      internalID: -1906218431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Zancudo Sprite Set_16
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 16
+        width: 49
+        height: 55
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0776fe5b6c5dd314eabbcfd69e6a2ce3
+      internalID: 536725241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Zancudo Sprite Set_17
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 16
+        width: 48
+        height: 55
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4568483b8001e824dbe0811161d71a9e
+      internalID: 1826285691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -119,7 +510,25 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Zancudo Sprite Set_0: 1755794098
+      Zancudo Sprite Set_1: -1633170200
+      Zancudo Sprite Set_12: -1320388987
+      Zancudo Sprite Set_13: 586528364
+      Zancudo Sprite Set_14: 689123017
+      Zancudo Sprite Set_15: -1906218431
+      Zancudo Sprite Set_16: 536725241
+      Zancudo Sprite Set_17: 1826285691
+      Zancudo Sprite Set_2: -584770502
+      Zancudo Sprite Set_3: -748195605
+      Zancudo Sprite Set_4: 157808441
+      Zancudo Sprite Set_7: -1910113375
+      stilt_idle_0: -1864224737
+      stilt_idle_1: -2010108956
+      stilt_walk_0: 2026653819
+      stilt_walk_1: -233575550
+      stilt_walk_2: 1547776551
+      stilt_walk_3: 1526119917
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
