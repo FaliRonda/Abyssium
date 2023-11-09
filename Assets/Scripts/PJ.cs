@@ -11,6 +11,8 @@ public class PJ : MonoBehaviour
     public float playerSpeed = 1;
     public float playerRotationSpeed = 1f;
     public float playerRollFactor = 2f;
+    public float rollCooldown;
+    public float attackCooldown;
     public float playerRayMaxDistance = 0.5f;
     public float playerDustParticlesDelay = 0.5f;
     
@@ -26,6 +28,8 @@ public class PJ : MonoBehaviour
     private bool gameIn3D;
     private bool pjDoingAction;
     private bool pjIsRolling;
+    private bool rollReady = true;
+    private bool attackReady = true;
     
     private Ray ray;
     private RaycastHit hit;
@@ -95,7 +99,7 @@ public class PJ : MonoBehaviour
 
     public void DoRoll(Vector3 direction)
     {
-        if (!pjDoingAction)
+        if (!pjDoingAction && rollReady)
         {
             pjDoingAction = true;
             pjIsRolling = true;
@@ -111,7 +115,7 @@ public class PJ : MonoBehaviour
             if (!PjRaycastHit(Color.red) || !PjRayHitLayer(Layers.WALL_LAYER))
             {
                 rollingTween = transform.DOMove(endPosition, animLenght)
-                    .OnComplete(StopRolling)
+                    //.OnComplete(StopRolling)
                     .OnKill(StopRolling);
 
                 var emissionModule = pjStepDust.emission;
@@ -135,7 +139,8 @@ public class PJ : MonoBehaviour
     private void StopRolling()
     {
         pjIsRolling = false;
-        
+        rollReady = false;
+        startRollCoolown();
         var emissionModule = pjStepDust.emission;
         emissionModule.rateOverTime = 40;
         var mainModule = pjStepDust.main;
@@ -148,12 +153,19 @@ public class PJ : MonoBehaviour
     {
         Vector3 endDirection = lastDirection != Vector3.zero ? lastDirection.normalized : transform.right;
         endDirection *= playerRollFactor;
-
         var position = transform.position;
         Vector3 endPosition =
             new Vector3(position.x + endDirection.x, position.y + endDirection.y, position.z + endDirection.z);
         return endPosition;
     }
+
+    private void startRollCoolown()
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendInterval(rollCooldown).AppendCallback(() => rollReady = true);
+        Debug.Log("Ready to dash again!");
+    }
+    
 
     #endregion
 
@@ -296,7 +308,7 @@ public class PJ : MonoBehaviour
         }
         else
         {
-            if (!pjDoingAction)
+            if (!pjDoingAction && attackReady)
             {
                 Attack();
             }
@@ -328,7 +340,7 @@ public class PJ : MonoBehaviour
         
         pjAnim.Play("PJ_attack");
         
-        //He cambiado el nombre de referencia para atender al nuevo.
+        //He cambiado el nombre de referencia para atender a la nueva animacion.
         float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_attack1");
 
         Weapon activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
@@ -338,6 +350,16 @@ public class PJ : MonoBehaviour
         }
 
         PjActionFalseWhenAnimFinish(animLenght);
+        attackReady = false;
+        startAttackCooldown();
+        
+    }
+
+    private void startAttackCooldown()
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendInterval(attackCooldown).AppendCallback(() => attackReady = true);
+        Debug.Log("Ready to attack again!");
     }
 
     private void PjActionFalseWhenAnimFinish(float animLenght)
