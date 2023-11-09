@@ -16653,8 +16653,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialFloor: 0
   towerFloors:
-  - {fileID: 102900000, guid: 957d252bb478aea45b73a9330c774e18, type: 3}
-  - {fileID: 102900000, guid: f6e637d070607e8418a5f5a7fab1e321, type: 3}
+  - 
+  - 
 --- !u!4 &661892525
 Transform:
   m_ObjectHideFlags: 0
@@ -39152,6 +39152,10 @@ PrefabInstance:
     - target: {fileID: 1799084693320912194, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
       propertyPath: playerSpeed
       value: 4.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799084693320912194, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
+      propertyPath: rollCooldown
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1799084693320912194, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
       propertyPath: playerRollFactor

@@ -1,3 +1,4 @@
+using Cinemachine;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -11,6 +12,7 @@ public class PJ : MonoBehaviour
     public float playerSpeed = 1;
     public float playerRotationSpeed = 1f;
     public float playerRollFactor = 2f;
+    public float rollCooldown;
     public float playerRayMaxDistance = 0.5f;
     public float playerDustParticlesDelay = 0.5f;
     
@@ -26,6 +28,7 @@ public class PJ : MonoBehaviour
     private bool gameIn3D;
     private bool pjDoingAction;
     private bool pjIsRolling;
+    private bool rollReady = true;
     
     private Ray ray;
     private RaycastHit hit;
@@ -95,7 +98,7 @@ public class PJ : MonoBehaviour
 
     public void DoRoll(Vector3 direction)
     {
-        if (!pjDoingAction)
+        if (!pjDoingAction && rollReady)
         {
             pjDoingAction = true;
             pjIsRolling = true;
@@ -111,7 +114,6 @@ public class PJ : MonoBehaviour
             if (!PjRaycastHit(Color.red) || !PjRayHitLayer(Layers.WALL_LAYER))
             {
                 rollingTween = transform.DOMove(endPosition, animLenght)
-                    .OnComplete(StopRolling)
                     .OnKill(StopRolling);
 
                 var emissionModule = pjStepDust.emission;
@@ -135,13 +137,16 @@ public class PJ : MonoBehaviour
     private void StopRolling()
     {
         pjIsRolling = false;
-        
+        rollReady = false;
+        startRollCooldown();
         var emissionModule = pjStepDust.emission;
         emissionModule.rateOverTime = 40;
         var mainModule = pjStepDust.main;
         mainModule.loop = false;
         pjStepDust.Stop();
         dustParticlesPlaying = false;
+        
+        
     }
 
     private Vector3 GetRollEndPosition()
@@ -153,6 +158,14 @@ public class PJ : MonoBehaviour
         Vector3 endPosition =
             new Vector3(position.x + endDirection.x, position.y + endDirection.y, position.z + endDirection.z);
         return endPosition;
+    }
+
+    private void startRollCooldown()
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendInterval(rollCooldown).AppendCallback(() => rollReady = true);
+        Debug.Log("Ready to dash again!");
+
     }
 
     #endregion
