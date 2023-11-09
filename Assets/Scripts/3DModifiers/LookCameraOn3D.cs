@@ -5,6 +5,7 @@ public class LookCameraOn3D : MonoBehaviour
 {
     private bool gameIn3D;
     private Quaternion defaultSpriteRotation;
+    public bool rotateCameraOn3DActive = true;
     
     public void Start()
     {
@@ -14,14 +15,17 @@ public class LookCameraOn3D : MonoBehaviour
 
     private void Update()
     {
-        if (gameIn3D)
+        if (rotateCameraOn3DActive)
         {
-            Quaternion lookRotation = Camera.main.transform.rotation;
-            transform.rotation = lookRotation;
-        }
-        else
-        {
-            transform.rotation = defaultSpriteRotation;
+            if (gameIn3D)
+            {
+                Quaternion lookRotation = Camera.main.transform.rotation;
+                transform.rotation = lookRotation;
+            }
+            else
+            {
+                transform.rotation = defaultSpriteRotation;
+            }
         }
     }
 }

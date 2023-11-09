@@ -26,11 +26,12 @@ public class EnemyAI : MonoBehaviour
     public Transform[] waypoints;
 
     // Behavior tree root node
-    private BTNode rootNode;
+    private BTSelector rootNode;
     private AudioSource detectedAudio;
     
     private bool beingDamaged = false;
     private bool spriteBlinking = false;
+    private bool isDead = false;
     private SpriteRenderer enemySprite;
     private Animator enemyAnimator;
 
@@ -93,27 +94,38 @@ public class EnemyAI : MonoBehaviour
 
     public void GetDamage(int damageAmount)
     {
-        lifeAmount -= damageAmount;
-        if (lifeAmount <= 0)
+        if (!isDead)
         {
-            Die();
-        }
-        else
-        {
-            PlayDamageAnimation();
+            lifeAmount -= damageAmount;
+            if (lifeAmount <= 0)
+            {
+                Die();
+            }
+            else
+            {
+                PlayDamageAnimation();
+            }
         }
     }
 
     private void Die()
     {
+        isDead = true;
+        
         Dropper dropper = GetComponent<Dropper>();
         if (dropper != null)
         {
             dropper.Drop(itemToDrop);
         }
-        
-        Core.Event.Fire(new GameEvents.EnemyDied());
-        Destroy(gameObject);
+
+        rootNode.AIActive = false;
+        enemyAnimator.Play("Stilt_die");
+        float animLenght = Core.AnimatorHelper.GetAnimLenght(enemyAnimator, "Stilt_die_anim");
+        Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () =>
+        {
+            enemySprite.GetComponent<LookCameraOn3D>().rotateCameraOn3DActive = false;
+            Core.Event.Fire(new GameEvents.EnemyDied());
+        });
     }
 
     private void PlayDamageAnimation()
@@ -191,5 +203,4 @@ public class EnemyAI : MonoBehaviour
             attackCollider.enabled = false;
         }
     }
-
 }

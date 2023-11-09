@@ -27069,6 +27069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40fcf703daa52054ab254600f3368896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateCameraOn3DActive: 1
 --- !u!114 &1040322362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32601,6 +32602,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1914624926}
     m_Modifications:
+    - target: {fileID: 1293148432005575190, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: rotateCameraOn3DActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1900846550412069827, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: m_CastShadows
       value: 1
@@ -32664,6 +32669,10 @@ PrefabInstance:
     - target: {fileID: 6730866412310116729, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227540161120491787, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: vertical
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: attackColliderPivotGO
@@ -36745,9 +36754,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1353953791
+  m_SortingLayer: 3
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: bc760386809098e4fa6e0029673467a1, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0

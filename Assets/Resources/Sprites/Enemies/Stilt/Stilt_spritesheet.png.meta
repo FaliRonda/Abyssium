@@ -1,4 +1,4 @@
-﻿fileFormatVersion: 2
+fileFormatVersion: 2
 guid: 99eb0044c564e9a459e2f727bebffb94
 TextureImporter:
   internalIDToNameTable: []
@@ -123,7 +123,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Zancudo Sprite Set_0
+      name: stilt_die_0
       rect:
         serializedVersion: 2
         x: 15
@@ -144,7 +144,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Zancudo Sprite Set_1
+      name: stilt_die_1
       rect:
         serializedVersion: 2
         x: 78
@@ -165,7 +165,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Zancudo Sprite Set_2
+      name: stilt_die_2
       rect:
         serializedVersion: 2
         x: 140
@@ -186,7 +186,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Zancudo Sprite Set_3
+      name: stilt_die_3
       rect:
         serializedVersion: 2
         x: 198
@@ -207,7 +207,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Zancudo Sprite Set_4
+      name: stilt_die_4
       rect:
         serializedVersion: 2
         x: 262
@@ -490,18 +490,18 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Zancudo Sprite Set_0: 1755794098
-      Zancudo Sprite Set_1: -1633170200
       Zancudo Sprite Set_15: -1906218431
-      Zancudo Sprite Set_2: -584770502
-      Zancudo Sprite Set_3: -748195605
-      Zancudo Sprite Set_4: 157808441
       Zancudo Sprite Set_7: -1910113375
       stilt_attack_0: -1320388987
       stilt_attack_1: 586528364
       stilt_attack_2: 689123017
       stilt_attack_3: 536725241
       stilt_attack_4: 1826285691
+      stilt_die_0: 1755794098
+      stilt_die_1: -1633170200
+      stilt_die_2: -584770502
+      stilt_die_3: -748195605
+      stilt_die_4: 157808441
       stilt_idle_0: -1864224737
       stilt_idle_1: -2010108956
       stilt_walk_0: 2026653819

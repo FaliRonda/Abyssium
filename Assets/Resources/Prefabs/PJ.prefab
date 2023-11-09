@@ -5132,7 +5132,7 @@ Transform:
   - {fileID: 2888062125780753977}
   - {fileID: 5222517852068585327}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1799084693320912194
 MonoBehaviour:
@@ -5147,9 +5147,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 7688174995698549991}
-  playerSpeed: 3
+  playerSpeed: 4.75
   playerRotationSpeed: 1
-  playerRollFactor: 2.5
+  playerRollFactor: 4
+  rollCooldown: 0.2
+  attackCooldown: 0.35
   playerRayMaxDistance: 0.5
   playerDustParticlesDelay: 0.4
 --- !u!54 &8550691314693124260

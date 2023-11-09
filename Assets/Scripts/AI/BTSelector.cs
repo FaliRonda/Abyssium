@@ -2,6 +2,7 @@
 public class BTSelector : BTNode
 {
     private BTNode[] nodes;
+    public bool AIActive = true;
 
     public BTSelector(params BTNode[] nodes)
     {
@@ -10,14 +11,21 @@ public class BTSelector : BTNode
 
     public override BTNodeState Execute()
     {
-        foreach (BTNode node in nodes)
+        if (AIActive)
         {
-            BTNodeState state = node.Execute();
-            if (state == BTNodeState.Success || state == BTNodeState.Running)
+            foreach (BTNode node in nodes)
             {
-                return state;
+                BTNodeState state = node.Execute();
+                if (state == BTNodeState.Success || state == BTNodeState.Running)
+                {
+                    return state;
+                }
             }
+            return BTNodeState.Failure;
         }
-        return BTNodeState.Failure;
+        else
+        {
+            return BTNodeState.Success;
+        }
     }
 }

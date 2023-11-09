@@ -364,10 +364,7 @@ public class PJ : MonoBehaviour
 
     private void PjActionFalseWhenAnimFinish(float animLenght)
     {
-        Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () =>
-        {
-            pjDoingAction = false;
-        });
+        Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () => { pjDoingAction = false; });
     }
 
     #endregion
