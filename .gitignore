@@ -10,6 +10,7 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
+ProjectSettings/ShaderGraphSettings.asset
 ExternalTools/
 
 # MemoryCaptures can get excessive in size.
@@ -81,3 +82,4 @@ crashlytics-build.properties
 Assets/Plugins/Sirenix/Demos/
 Assets/Resources/_MrBin/*
 !Assets/Resources/_MrBin/.gitkeep
+test.doc
