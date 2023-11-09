@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using Ju.Extensions;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Sequence = DG.Tweening.Sequence;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -27,14 +30,16 @@ public class EnemyAI : MonoBehaviour
     private AudioSource detectedAudio;
     
     private bool beingDamaged = false;
-    private SpriteRenderer enemySprite;
     private bool spriteBlinking = false;
+    private SpriteRenderer enemySprite;
+    private Animator enemyAnimator;
 
     private BTAttackNode attackNode;
     private BTChaseNode chaseNode;
     private BTPatrolNode patrolNode;
 
     private Quaternion defaultEnemySpriteRotation;
+    private SphereCollider attackCollider;
 
     private void Awake()
     {
@@ -48,12 +53,14 @@ public class EnemyAI : MonoBehaviour
     {
         detectedAudio = GetComponentInChildren<AudioSource>();
         enemySprite = GetComponentInChildren<SpriteRenderer>();
+        enemyAnimator = GetComponentInChildren<Animator>();
+        attackCollider = gameObject.GetComponentsInChildren<SphereCollider>()[1];
 
         defaultEnemySpriteRotation = enemySprite.transform.rotation;
 
-        attackNode = new BTAttackNode(transform, playerTransform, attackDistance);
-        chaseNode = new BTChaseNode(transform, playerTransform, chaseSpeed, detectedAudio);
-        patrolNode = new BTPatrolNode(transform, waypoints, patrolSpeed);
+        attackNode = new BTAttackNode(transform, playerTransform, enemyAnimator, enemySprite, attackDistance);
+        chaseNode = new BTChaseNode(transform, playerTransform, enemyAnimator, enemySprite, chaseSpeed, detectedAudio);
+        patrolNode = new BTPatrolNode(transform, waypoints, enemyAnimator, enemySprite, patrolSpeed);
         
         // Create the behavior tree
         rootNode = new BTSelector(
@@ -156,4 +163,33 @@ public class EnemyAI : MonoBehaviour
             enemySpriteTransform.rotation = defaultEnemySpriteRotation;
         }
     }
+
+    public void ActiveAttackTrigger()
+    {
+        if (enemySprite.flipX)
+        {
+            attackCollider.center = new Vector3(0.75f, 0, 0.15f);
+        }
+        else
+        {
+            attackCollider.center = new Vector3(-0.75f, 0, 0.15f);
+        }
+        
+        attackCollider.enabled = true;
+    }
+
+    public void DeactiveAttackTrigger()
+    {
+        attackCollider.enabled = false;
+    }
+    
+    public void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.layer == Layers.PJ_LAYER)
+        {
+            Debug.Log("Attacking player");
+            attackCollider.enabled = false;
+        }
+    }
+
 }

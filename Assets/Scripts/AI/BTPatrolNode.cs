@@ -5,13 +5,18 @@ public class BTPatrolNode : BTNode
 {
     private Transform enemyTransform;
     private Transform[] waypoints;
+    private readonly Animator enemyAnimator;
+    private readonly SpriteRenderer enemySprite;
     private int currentWaypointIndex;
     private float patrolSpeed;
 
-    public BTPatrolNode( Transform enemyTransform, Transform[] waypoints, float patrolSpeed)
+    public BTPatrolNode(Transform enemyTransform, Transform[] waypoints, Animator enemyAnimator,
+        SpriteRenderer enemySprite, float patrolSpeed)
     {
         this.enemyTransform = enemyTransform;
         this.waypoints = waypoints;
+        this.enemyAnimator = enemyAnimator;
+        this.enemySprite = enemySprite;
         this.patrolSpeed = patrolSpeed;
         currentWaypointIndex = 0;
     }
@@ -32,6 +37,9 @@ public class BTPatrolNode : BTNode
 
         // Move towards the waypoint
         enemyTransform.Translate(direction.normalized * Time.deltaTime * patrolSpeed);
+        enemySprite.flipX = direction.x > 0;
+        enemyAnimator.Play("Stilt_walk");
+        
         return BTNodeState.Running;
     }
 }
