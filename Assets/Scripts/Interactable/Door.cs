@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 using UnityEngine.Events;
 
 public class Door : Interactable
@@ -62,6 +63,9 @@ public class Door : Interactable
             {
                 newMaterials[1] = twoOrbsDoor;
                 isLocked = false;
+                Sequence sequence = DOTween.Sequence();
+                sequence.AppendInterval(0.3f).
+                    AppendCallback(() => OpenDoor());
             }
 
             doorRenderer.materials = newMaterials;
