@@ -12,6 +12,7 @@ public class PJ : MonoBehaviour
     public float playerRotationSpeed = 1f;
     public float playerRollFactor = 2f;
     public float rollCooldown;
+    public float attackCooldown;
     public float playerRayMaxDistance = 0.5f;
     public float playerDustParticlesDelay = 0.5f;
     
@@ -28,6 +29,7 @@ public class PJ : MonoBehaviour
     private bool pjDoingAction;
     private bool pjIsRolling;
     private bool rollReady = true;
+    private bool attackReady = true;
     
     private Ray ray;
     private RaycastHit hit;
@@ -306,7 +308,7 @@ public class PJ : MonoBehaviour
         }
         else
         {
-            if (!pjDoingAction)
+            if (!pjDoingAction && attackReady)
             {
                 Attack();
             }
@@ -338,7 +340,7 @@ public class PJ : MonoBehaviour
         
         pjAnim.Play("PJ_attack");
         
-        //He cambiado el nombre de referencia para atender al nuevo.
+        //He cambiado el nombre de referencia para atender a la nueva animacion.
         float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_attack1");
 
         Weapon activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
@@ -348,6 +350,16 @@ public class PJ : MonoBehaviour
         }
 
         PjActionFalseWhenAnimFinish(animLenght);
+        attackReady = false;
+        startAttackCooldown();
+        
+    }
+
+    private void startAttackCooldown()
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendInterval(attackCooldown).AppendCallback(() => attackReady = true);
+        Debug.Log("Ready to attack again!");
     }
 
     private void PjActionFalseWhenAnimFinish(float animLenght)
