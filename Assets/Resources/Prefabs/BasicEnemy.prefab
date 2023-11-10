@@ -425,7 +425,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   lifeAmount: 3
   patrolSpeed: 3
-  chaseSpeed: 4.5
+  chaseSpeed: 5
   itemToDrop: {fileID: 1472249213624661288, guid: 083d74cf58bcc7548a2e0e4130eff11b, type: 3}
   visibilityRadius: 8
   attackDistance: 1

@@ -5147,11 +5147,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 7688174995698549991}
-  playerSpeed: 4.75
+  playerSpeed: 4
   playerRotationSpeed: 1
   playerRollFactor: 4
-  rollCooldown: 0.2
-  attackCooldown: 0.35
+  rollCooldown: 0.35
+  attackCooldown: 0.8
   playerRayMaxDistance: 0.5
   playerDustParticlesDelay: 0.4
 --- !u!54 &8550691314693124260
