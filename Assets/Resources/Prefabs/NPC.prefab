@@ -366,8 +366,8 @@ SpriteRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5896967342967005815}
   m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -623,6 +623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40fcf703daa52054ab254600f3368896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateCameraOn3DActive: 1
 --- !u!114 &6941200819088484179
 MonoBehaviour:
   m_ObjectHideFlags: 0
