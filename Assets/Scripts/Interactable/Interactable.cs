@@ -59,29 +59,13 @@ public class Interactable : MonoBehaviour, I_Interactable
             SetOutlineVisibility(false);
         }
     }
-    
-    private void OnTriggerStay(Collider other)
-    {
-        if (OtherIsPlayer(other) && CanInteract())
-        {
-            SetOutlineVisibility(true);
-        }
-    }
-    
-    private void OnTriggerExit(Collider other)
-    {
-        if (OtherIsPlayer(other) && CanInteract())
-        {
-            SetOutlineVisibility(false);
-        }
-    }
 
     private bool OtherIsPlayer(Collider other)
     {
         return other.gameObject.layer == Layers.PJ_LAYER;
     }
     
-    private void SetOutlineVisibility(bool isActive)
+    public void SetOutlineVisibility(bool isActive)
     {
         int activeIntValue = isActive ? 1 : 0;
         material.SetInt("_OutlineActive", activeIntValue);

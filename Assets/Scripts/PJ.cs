@@ -74,13 +74,17 @@ public class PJ : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.layer == Layers.INTERACTABLE_LAYER)
         {
             if (interactableInContact == null || !interactableInContact.IsInteracting())
             {
-                interactableInContact = other.GetComponent<Interactable>();
+                if (interactableInContact == null)
+                {
+                    interactableInContact = other.GetComponent<Interactable>();
+                    interactableInContact.SetOutlineVisibility(true);
+                }
             }
         }
     }
@@ -89,6 +93,10 @@ public class PJ : MonoBehaviour
     {
         if (other.gameObject.layer == Layers.INTERACTABLE_LAYER)
         {
+            if (interactableInContact != null && other.GetComponent<Interactable>() == interactableInContact)
+            {
+                interactableInContact.SetOutlineVisibility(false);
+            }
             interactableInContact = null;
         }
     }
