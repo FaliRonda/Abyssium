@@ -14,13 +14,15 @@ public class Inventory : MonoBehaviour
     private bool hasWhiteOrb = false;
     private bool hasBlackOrb = false;
     private bool hasLantern = false;
+    private bool hasNPCMemory = false;
     
     public bool HasWhiteOrb => hasWhiteOrb;
     public bool HasBlackOrb => hasBlackOrb;
     public bool HasLantern => hasLantern;
+    public bool HasNPCMemory => hasNPCMemory;
 
     private Light lantern;
-    
+
     private void Start()
     {
         lantern = GetComponentInChildren<Light>();
@@ -141,6 +143,9 @@ public class Inventory : MonoBehaviour
                 } else if (item.keyId == Item.KEY_IDS.WHITE_ORB)
                 {
                     hasWhiteOrb = true;
+                } else if (item.keyId == Item.KEY_IDS.MEMORY)
+                {
+                    hasNPCMemory = true;
                 }
                 break;
             default:

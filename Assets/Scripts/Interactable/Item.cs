@@ -22,7 +22,8 @@ public class Item : Interactable
     public enum KEY_IDS
     {
         WHITE_ORB,
-        BLACK_ORB
+        BLACK_ORB,
+        MEMORY
     }
 
     public override void Interact(PJ pj)

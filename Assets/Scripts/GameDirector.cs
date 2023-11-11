@@ -12,6 +12,7 @@ public class GameDirector : MonoBehaviour
     public GameObject lightHouse;
     public Canvas canvas;
     public NarrativeDirector narrativeDirector;
+    public GameObject directionalLights;
 
     private PJ pj;
     private CameraDirector cameraDirector;
@@ -39,11 +40,24 @@ public class GameDirector : MonoBehaviour
         Core.Dialogue.Initialize(canvas);
         
         this.EventSubscribe<GameEvents.EnemyDied>(e => CheckEnemiesInScene());
+        this.EventSubscribe<GameEvents.NPCVanished>(e => ShowGodNarrative());
+        this.EventSubscribe<GameEvents.DoorOpened>(e => DoorOpened());
 
         DontDestroyOnLoad(this.gameObject);
         DontDestroyOnLoad(lightHouse.gameObject);
 
         UpdateGameState();
+    }
+
+    private void DoorOpened()
+    {
+        directionalLights.SetActive(false);
+        SwitchGamePerspective();
+    }
+
+    private void ShowGodNarrative()
+    {
+        narrativeDirector.ShowNarrative();
     }
 
     private void UpdateGameState()
@@ -53,12 +67,14 @@ public class GameDirector : MonoBehaviour
 
     private void CheckEnemiesInScene()
     {
-        EnemyAI[] enemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
+        /*EnemyAI[] enemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
 
         if (enemies.Length <= 1)
         {
             SwitchGamePerspective();
-        }
+        }*/
+        
+        SwitchGamePerspective();
     }
 
     private void Start()
@@ -173,11 +189,6 @@ public class GameDirector : MonoBehaviour
                 {
                     pj.DoRoll(direction);
                 }
-            }
-            
-            if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.N))
-            {
-                narrativeDirector.ShowNarrative();
             }
         }
         

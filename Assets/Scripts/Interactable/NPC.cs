@@ -5,13 +5,33 @@ using UnityEngine;
 public class NPC : Interactable
 {
     public DialogueSO[] dialogues;
+    public DialogueSO[] finalDialogue;
+
+    private DialogueSO[] dialoguesToShow;
     private int dialogueIndex = 0;
     private List<ChoiceSO> currentChoices = new List<ChoiceSO>();
     private bool isSelectingChoice = false;
-    private DialogueSO currentChoiceDialog;
+    private bool choiceSelected = false;
+    private bool memoryFound = false;
+    private DialogueSO lastChoiceDialog;
+    private DialogueSO lastDialog;
 
     public override void Interact(PJ pj)
     {
+        if (pj.inventory.HasNPCMemory)
+        {
+            memoryFound = true;
+            dialoguesToShow = finalDialogue;
+        }
+        else if (choiceSelected)
+        {
+            dialoguesToShow = new DialogueSO[] {lastDialog};
+        }
+        else
+        {
+            dialoguesToShow = dialogues;
+        }
+
         if (!IsInteracting())
         {
             StartDialogue();
@@ -40,19 +60,21 @@ public class NPC : Interactable
 
     private void ShowNextDialog()
     {
-        if (dialogueIndex < dialogues.Length)
+        if (dialogueIndex < dialoguesToShow.Length)
         {
-            Core.Dialogue.ShowText(dialogues[dialogueIndex].dialogueText);
-            ShowChoices(dialogues[dialogueIndex]);
+            lastDialog = dialoguesToShow[dialogueIndex];
+            Core.Dialogue.ShowText(dialoguesToShow[dialogueIndex].dialogueText);
+            ShowChoices(dialoguesToShow[dialogueIndex]);
 
             dialogueIndex++;
         }
-        else if (currentChoiceDialog != null)
+        else if (lastChoiceDialog != null)
         {
-            Core.Dialogue.ShowText(currentChoiceDialog.dialogueText);
-            ShowChoices(currentChoiceDialog);
+            lastDialog = lastChoiceDialog;
+            Core.Dialogue.ShowText(lastChoiceDialog.dialogueText);
+            ShowChoices(lastChoiceDialog);
 
-            currentChoiceDialog = null;
+            lastChoiceDialog = null;
         }
         else
         {
@@ -83,11 +105,23 @@ public class NPC : Interactable
         Core.Dialogue.HideCanvas();
 
         dialogueIndex = 0;
+
+        if (memoryFound)
+        {
+            Vanish();
+        }
+    }
+
+    private void Vanish()
+    {
+        Core.Event.Fire(new GameEvents.NPCVanished());
+        Destroy(this.gameObject);
     }
 
     public void ChoiceSelected(int choiceIndex)
     {
-        currentChoiceDialog = currentChoices[choiceIndex].nextDialogue;
+        choiceSelected = true;
+        lastChoiceDialog = currentChoices[choiceIndex].nextDialogue;
         if (currentChoices[choiceIndex].drop != null)
         {
             Dropper dropper = GetComponent<Dropper>();

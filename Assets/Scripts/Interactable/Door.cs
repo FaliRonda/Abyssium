@@ -64,8 +64,9 @@ public class Door : Interactable
                 newMaterials[1] = twoOrbsDoor;
                 isLocked = false;
                 Sequence sequence = DOTween.Sequence();
-                sequence.AppendInterval(0.3f).
-                    AppendCallback(() => OpenDoor());
+                sequence.AppendInterval(0.3f)
+                    .AppendCallback(() => OpenDoor())
+                    .AppendCallback(() => Core.Event.Fire(new GameEvents.DoorOpened()));
             }
 
             doorRenderer.materials = newMaterials;
