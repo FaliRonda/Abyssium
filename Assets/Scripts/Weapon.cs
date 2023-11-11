@@ -45,7 +45,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public void Attack()
+    public void DoAttack()
     {
         currentlyAttacking = true;
         

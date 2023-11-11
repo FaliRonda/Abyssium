@@ -140,7 +140,7 @@ public class PJ : MonoBehaviour
     {
         pjIsRolling = false;
         rollReady = false;
-        startRollCoolown();
+        StartRollCoolown();
         var emissionModule = pjStepDust.emission;
         emissionModule.rateOverTime = 40;
         var mainModule = pjStepDust.main;
@@ -159,11 +159,10 @@ public class PJ : MonoBehaviour
         return endPosition;
     }
 
-    private void startRollCoolown()
+    private void StartRollCoolown()
     {
         Sequence sequence = DOTween.Sequence();
         sequence.AppendInterval(rollCooldown).AppendCallback(() => rollReady = true);
-        Debug.Log("Ready to dash again!");
     }
     
 
@@ -296,6 +295,11 @@ public class PJ : MonoBehaviour
         }
     }
     
+    private void PjActionFalseWhenAnimFinish(float animLenght)
+    {
+        Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () => { pjDoingAction = false; });
+    }
+
     #endregion
 
     #region Main Action
@@ -340,37 +344,30 @@ public class PJ : MonoBehaviour
         
         pjAnim.Play("PJ_attack");
         
-        //He cambiado el nombre de referencia para atender a la nueva animacion.
         float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_attack1");
 
         Weapon activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
         if (activeWeapon != null)
         {
-            activeWeapon.Attack();
+            activeWeapon.DoAttack();
         }
 
         PjActionFalseWhenAnimFinish(animLenght);
         attackReady = false;
-        startAttackCooldown();
+        StartAttackCooldown();
         
     }
 
-    private void startAttackCooldown()
+    private void StartAttackCooldown()
     {
         Sequence sequence = DOTween.Sequence();
         sequence.AppendInterval(attackCooldown).AppendCallback(() => attackReady = true);
-        Debug.Log("Ready to attack again!");
     }
-
-    private void PjActionFalseWhenAnimFinish(float animLenght)
-    {
-        Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () => { pjDoingAction = false; });
-    }
-
-    #endregion
 
     public void CollectItem(Item item)
     {
         inventory.AddItem(item);
     }
+    
+    #endregion
 }

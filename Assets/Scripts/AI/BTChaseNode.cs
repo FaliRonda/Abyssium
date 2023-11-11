@@ -8,18 +8,21 @@ public class BTChaseNode : BTNode
     private readonly Animator enemyAnimator;
     private readonly SpriteRenderer enemySprite;
     private float chaseSpeed;
+    private float chaseInLightSpeed;
+    private bool isShadow;
     private AudioSource detectedAudio;
     private bool currentlyChasing = false;
 
     public BTChaseNode(Transform enemyTransform, Transform playerTransform, Animator enemyAnimator,
-        SpriteRenderer enemySprite, float chaseSpeed,
-        AudioSource detectedAudio)
+        SpriteRenderer enemySprite, float chaseSpeed, float chaseInLightSpeed, bool isShadow, AudioSource detectedAudio)
     {
         this.enemyTransform = enemyTransform;
         this.playerTransform = playerTransform;
         this.enemyAnimator = enemyAnimator;
         this.enemySprite = enemySprite;
         this.chaseSpeed = chaseSpeed;
+        this.chaseInLightSpeed = chaseInLightSpeed;
+        this.isShadow = isShadow;
         this.detectedAudio = detectedAudio;
     }
 
@@ -36,7 +39,15 @@ public class BTChaseNode : BTNode
             currentlyChasing = true;
             // Move towards the player
             Vector3 direction = playerTransform.position - enemyTransform.position;
-            enemyTransform.Translate(direction.normalized * (Time.deltaTime * chaseSpeed));
+
+            float movementSpeed = chaseSpeed;
+            
+            if (isShadow && distance <= enemyTransform.GetComponent<EnemyAI>().lightRadius && playerTransform.GetComponent<PJ>().inventory.HasLantern)
+            {
+                movementSpeed = chaseInLightSpeed;
+            }
+            
+            enemyTransform.Translate(direction.normalized * (Time.deltaTime * movementSpeed));
             enemySprite.flipX = direction.x > 0;
             enemyAnimator.Play("Stilt_walk");
             

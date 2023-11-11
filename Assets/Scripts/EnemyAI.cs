@@ -10,22 +10,26 @@ using Sequence = DG.Tweening.Sequence;
 public class EnemyAI : MonoBehaviour
 {
     // Reference to the player
-    [FormerlySerializedAs("player")] public Transform playerTransform;
+    public Transform playerTransform;
 
     public int lifeAmount = 3;
     public float patrolSpeed = 1f;
     public float chaseSpeed = 1f;
+    public float chaseInLightSpeed = 0.5f;
     public GameObject itemToDrop;
     
     // Visibility radius
     public float visibilityRadius = 10f;
+    public float lightRadius = 10f;
 
     // Attack distance
     public float attackDistance = 2f;
     public float spriteBlinkingFrecuency = 0.15f;
     public Transform[] waypoints;
+    
 
     // Behavior tree root node
+    public bool isShadow = false;
     private BTSelector rootNode;
     private AudioSource detectedAudio;
     
@@ -60,7 +64,7 @@ public class EnemyAI : MonoBehaviour
         defaultEnemySpriteRotation = enemySprite.transform.rotation;
 
         attackNode = new BTAttackNode(transform, playerTransform, enemyAnimator, enemySprite, attackDistance);
-        chaseNode = new BTChaseNode(transform, playerTransform, enemyAnimator, enemySprite, chaseSpeed, detectedAudio);
+        chaseNode = new BTChaseNode(transform, playerTransform, enemyAnimator, enemySprite, chaseSpeed, chaseInLightSpeed, isShadow, detectedAudio);
         patrolNode = new BTPatrolNode(transform, waypoints, enemyAnimator, enemySprite, patrolSpeed);
         
         // Create the behavior tree
