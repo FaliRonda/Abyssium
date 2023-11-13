@@ -321,20 +321,25 @@ public class PJ : MonoBehaviour
         }
         else
         {
-            if (pjIsRolling) // Attack on dash Input Buffer
-            {
-                bufferedAttack = true;
-                float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_roll");
-                Sequence sequence = DOTween.Sequence();
-                sequence.AppendInterval(animLenght).AppendCallback((() => bufferedAttack = false));
-                
-                if(bufferedAttack&&!pjIsRolling)
-                    Attack();
-            }
-            
             if (!pjDoingAction && attackReady) // Basic attack
             {
                 Attack();
+            }
+            else if (pjIsRolling) // Attack on dash Input Buffer
+            {
+                Debug.Log("Ataque guardado");
+                bufferedAttack = true;
+                float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_roll");
+                Sequence sequence = DOTween.Sequence();
+                sequence.AppendInterval(animLenght).AppendCallback((() => 
+                {
+                    if (bufferedAttack && !pjIsRolling)
+                    {
+                        Debug.Log("Atacando tras guardar ataque!");
+                        Attack();
+                    }
+                    bufferedAttack = false;
+                }));
             }
         }
     }
