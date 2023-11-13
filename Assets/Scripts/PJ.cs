@@ -30,6 +30,7 @@ public class PJ : MonoBehaviour
     private bool pjIsRolling;
     private bool rollReady = true;
     private bool attackReady = true;
+    private bool bufferedAttack;
     
     private Ray ray;
     private RaycastHit hit;
@@ -320,7 +321,18 @@ public class PJ : MonoBehaviour
         }
         else
         {
-            if (!pjDoingAction && attackReady)
+            if (pjIsRolling) // Attack on dash Input Buffer
+            {
+                bufferedAttack = true;
+                float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_roll");
+                Sequence sequence = DOTween.Sequence();
+                sequence.AppendInterval(animLenght).AppendCallback((() => bufferedAttack = false));
+                
+                if(bufferedAttack&&!pjIsRolling)
+                    Attack();
+            }
+            
+            if (!pjDoingAction && attackReady) // Basic attack
             {
                 Attack();
             }
