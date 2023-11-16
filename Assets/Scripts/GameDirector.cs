@@ -184,7 +184,7 @@ public class GameDirector : MonoBehaviour
                     pj.DoMainAction();
                 }
                 
-                if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.RightShift) /*||
+                if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.LeftShift) /*||
                     (Core.Input.Gamepads.ToArray().Length > 0 && gamepad != null && gamepad.IsButtonPressed(GamepadButton.A))*/)
                 {
                     pj.DoRoll(direction);
