@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EnableOn3D : MonoBehaviour
 {
+    public bool disableOn3D = false;
     
     public void Start()
     {
@@ -19,7 +20,14 @@ public class EnableOn3D : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            child.gameObject.SetActive(active);
+            if (!disableOn3D)
+            {
+                child.gameObject.SetActive(active);
+            }
+            else
+            {
+                child.gameObject.SetActive(!active);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using Ju.Input;
 using Ju.Extensions;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 
 public class GameDirector : MonoBehaviour
@@ -11,6 +12,7 @@ public class GameDirector : MonoBehaviour
     public float timeLoopDuration = 10f;
     public GameObject lightHouse;
     public Canvas canvas;
+    public PostProcessVolume postprocessing;
     public NarrativeDirector narrativeDirector;
     public GameObject directionalLights;
 
@@ -25,6 +27,9 @@ public class GameDirector : MonoBehaviour
     private float currentLighthouseYRotation;
     private float initialLighthouseXRotation;
 
+    private Bloom bloom;
+    private ChromaticAberration chromaticAberration;
+    
     private void Awake()
     {
         initialTimeLoopDuration = timeLoopDuration;
@@ -42,11 +47,21 @@ public class GameDirector : MonoBehaviour
         this.EventSubscribe<GameEvents.EnemyDied>(e => CheckEnemiesInScene());
         this.EventSubscribe<GameEvents.NPCVanished>(e => ShowGodNarrative());
         this.EventSubscribe<GameEvents.DoorOpened>(e => DoorOpened());
+        this.EventSubscribe<GameEvents.PlayerDamaged>(e => PlayerDamaged());
 
         DontDestroyOnLoad(this.gameObject);
         DontDestroyOnLoad(lightHouse.gameObject);
 
         UpdateGameState();
+    }
+
+    private void PlayerDamaged()
+    {
+        timeLoopDuration -= 10;
+        
+        // TODO Should gamefeel: modificar el postprocesado cuando el jugador es atacado
+        postprocessing.profile.TryGetSettings(out bloom);
+        postprocessing.profile.TryGetSettings(out chromaticAberration);
     }
 
     private void DoorOpened()
@@ -210,15 +225,14 @@ public class GameDirector : MonoBehaviour
 
     private void UpdateLighthouseRotation()
     {
-        float rotationSpeed = 360.0f / initialTimeLoopDuration;
-        
-        currentLighthouseYRotation += rotationSpeed * Time.deltaTime;
+        float pendingTimeLoopDurationPorcentage = timeLoopDuration / initialTimeLoopDuration;
+        float nextLighthoyseYRotation = 360f * pendingTimeLoopDurationPorcentage * -1;
 
         // Make sure the rotation value stays within 0 to 360 degrees
-        currentLighthouseYRotation = currentLighthouseYRotation % 360.0f;
+        //currentLighthouseYRotation = currentLighthouseYRotation % 360.0f;
 
         // Apply the rotation to the GameObject
-        lightHouse.transform.rotation = Quaternion.Euler(initialLighthouseXRotation, currentLighthouseYRotation, 0);
+        lightHouse.transform.eulerAngles = new Vector3(lightHouse.transform.eulerAngles.x, nextLighthoyseYRotation, lightHouse.transform.eulerAngles.z);
     }
 
     private void RestartTimeLoop()

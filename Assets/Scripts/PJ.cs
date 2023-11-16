@@ -327,7 +327,6 @@ public class PJ : MonoBehaviour
             }
             else if (pjIsRolling) // Attack on dash Input Buffer
             {
-                Debug.Log("Ataque guardado");
                 bufferedAttack = true;
                 float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_roll");
                 Sequence sequence = DOTween.Sequence();
@@ -335,7 +334,6 @@ public class PJ : MonoBehaviour
                 {
                     if (bufferedAttack && !pjIsRolling)
                     {
-                        Debug.Log("Atacando tras guardar ataque!");
                         Attack();
                     }
                     bufferedAttack = false;
@@ -395,4 +393,10 @@ public class PJ : MonoBehaviour
     }
     
     #endregion
+
+    public void GetDamage()
+    {
+        // PLay damaged anim
+        Core.Event.Fire<GameEvents.PlayerDamaged>();
+    }
 }
