@@ -33,49 +33,19 @@ public class GameDirector : MonoBehaviour
     private Bloom bloom;
     private ChromaticAberration chromaticAberration;
 
-    public ControlScheme _control = null;
+    public ControlScheme control = null;
     private Vector2 inputDirection = Vector2.zero;
-    private float actionInput, rollInput, camChangeInput;
     
-    private void OnEnable()
-    {
-        _control.Enable();
-        
-        _control.Gameplay.Move.performed += HandleInput;
-        _control.Gameplay.Move.canceled += HandleInput;
-        
-        _control.Gameplay.Action.performed += HandleInput;
-        _control.Gameplay.Action.canceled += HandleInput;
-        
-        _control.Gameplay.Roll.performed += HandleInput;
-        _control.Gameplay.Roll.canceled += HandleInput;
-        
-        _control.Debug.CameraChange.performed += HandleInput;
-        _control.Debug.CameraChange.canceled += HandleInput;
-        
-    }
-
-    private void OnDisable()
-    {
-        _control.Disable();
-        
-        _control.Gameplay.Move.performed -= HandleInput;
-        _control.Gameplay.Move.canceled -= HandleInput;
-        
-        _control.Gameplay.Action.performed -= HandleInput;
-        _control.Gameplay.Action.canceled -= HandleInput;
-        
-        _control.Gameplay.Roll.performed -= HandleInput;
-        _control.Gameplay.Roll.canceled -= HandleInput;
-        
-        _control.Debug.CameraChange.performed -= HandleInput;
-        _control.Debug.CameraChange.canceled -= HandleInput;
-    }
+    public PlayerInput playerInput;
+    
+    //INPUT ACTIONS
+    private InputAction MoveAction;
+    private InputAction RollAction;
+    private InputAction InteractAction;
+    private InputAction CameraChangeAction;
     
     private void Awake()
     {
-        _control = new ControlScheme();
-        
         initialTimeLoopDuration = timeLoopDuration;
         
         if (!debugMode)
@@ -99,61 +69,7 @@ public class GameDirector : MonoBehaviour
 
         UpdateGameState();
     }
-
-    private void HandleInput(InputAction.CallbackContext value)
-    {
-        //Esta solucion daba un aviso de desborde de memoria, pero me parece mas optima
-        /*
-        switch (value.action.name)
-        {
-            case "Move":
-                var _move = value.ReadValue<Vector2>();
-                inputDirection.x = _move.x;
-                inputDirection.y = _move.y;
-                break;
-
-            case "Action":
-                var _action = value.ReadValue<float>();
-                actionInput = _action;
-                break;
-
-            case "Roll":
-                var _roll = value.ReadValue<float>();
-                rollInput = _roll;
-                break;
-
-            case "CameraChange":
-                var _cam = value.ReadValue<float>();
-                camChangeInput = _cam;
-                break;
-        }*/
-        
-        if (value.action.name == "Move")
-        {
-            var _move = value.ReadValue<Vector2>();
-            inputDirection.x = _move.x;
-            inputDirection.y = _move.y;
-        }
-
-        if (value.action.name == "Action")
-        {
-            var _action = value.ReadValue<float>();
-            actionInput = _action;
-        }
-
-        if (value.action.name == "Roll")
-        {
-            var _roll = value.ReadValue<float>();
-            rollInput = _roll;
-        }
-
-        if (value.action.name == "CameraChange")
-        {
-            var _cam = value.ReadValue<float>();
-            camChangeInput = _cam;
-        }
-    }
-
+    
     private void PlayerDamaged()
     {
         timeLoopDuration -= 10;
@@ -200,6 +116,14 @@ public class GameDirector : MonoBehaviour
         else
         {
             InitializeGameDirector();
+        }
+
+        if (playerInput)
+        {
+            MoveAction = playerInput.actions["Move"];
+            RollAction = playerInput.actions["Roll"];
+            InteractAction = playerInput.actions["Action"];
+            CameraChangeAction = playerInput.actions["CameraChange"];
         }
     }
     
@@ -272,7 +196,7 @@ public class GameDirector : MonoBehaviour
     {
         if (cameraDirector != null && !cameraDirector.CamerasTransitionBlending())
         {
-            if (debugMode && camChangeInput != 0)
+            if (debugMode && CameraChangeAction.triggered)
             {
                 SwitchGamePerspective();
             } else if (pj != null && !narrativeDirector.IsShowingNarrative())
@@ -282,12 +206,12 @@ public class GameDirector : MonoBehaviour
                 
                 pj.DoUpdate(direction);
                 
-                if (actionInput != 0)
+                if (InteractAction.triggered)
                 {
                     pj.DoMainAction();
                 }
                 
-                if (rollInput != 0)
+                if (RollAction.triggered)
                 {
                     pj.DoRoll(direction);
                 }
@@ -331,6 +255,7 @@ public class GameDirector : MonoBehaviour
     private Vector3 GetMovementDirection()
     {
         Vector3 direction = new Vector3();
+        inputDirection = MoveAction.ReadValue<Vector2>();
         
         if (inputDirection.x > 0)
         {
