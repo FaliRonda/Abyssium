@@ -15,6 +15,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "CameraChange",
+                    "type": "Button",
+                    "id": "7f5307ea-4e58-4576-848d-d76ade2ceb42",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Roll",
                     "type": "Button",
                     "id": "9c535840-bade-4191-8458-c3990fce2687",
@@ -187,6 +196,17 @@
                     "action": "Action",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "607789fd-dd66-4375-8caf-9def68ac1501",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraChange",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -202,6 +222,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CameraChange1",
+                    "type": "Button",
+                    "id": "9b7d8227-af15-46ae-ad06-5aff7ac2a4fb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -213,6 +242,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "CameraChange",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bd8cc667-38a5-4450-82f9-32362dd2016b",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraChange1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
