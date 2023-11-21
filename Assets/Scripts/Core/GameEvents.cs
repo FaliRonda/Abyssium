@@ -19,4 +19,6 @@ public static class GameEvents
     public struct NPCVanished {}
 
     public struct DoorOpened {}
+
+    public struct PlayerDamaged {}
 }

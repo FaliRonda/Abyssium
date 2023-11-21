@@ -8,4 +8,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Milestone1.unity
     guid: 5706e6de60b394246a8ee2ef0f362992
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 4b66d4bfc5345664c8b7b34ac35c3b63, type: 2}

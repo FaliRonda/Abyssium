@@ -2,7 +2,7 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Ju.Extensions;
-using Ju.Input;
+using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
 public class PJ : MonoBehaviour
@@ -58,17 +58,17 @@ public class PJ : MonoBehaviour
         PjRaycastHit(Color.cyan);
     }
 
-    public void DoUpdate(Vector3 direction)
+    public void DoUpdate(GameDirector.ControlInputData controlInputData)
     {
-        UpdateLastDirection(direction);
+        UpdateLastDirection(controlInputData.movementDirection);
         UpdatePjRay();
         
         if (!pjDoingAction)
         {
-            DoPjMovement(direction);
+            DoPjMovement(controlInputData);
             inventory.UpdatePosition(transform);
             
-            PjDoRotation(lastDirection);
+            PjDoRotation(controlInputData.cameraRotation);
         } else
         {
             StopRollingWhenHitWall();
@@ -179,15 +179,28 @@ public class PJ : MonoBehaviour
 
     #region Movement, rotation and orientation
 
-    private void PjDoRotation(Vector3 direction)
+    private void PjDoRotation(Vector2 cameraRotation)
     {
-        float mouseX;
-        float mouseY;
-        Core.Input.Mouse.GetPositionDelta(out mouseX, out mouseY);
-        mouseY = Mathf.Clamp(mouseY, -1f, 1f);
-        Vector3 anglesIncrement = playerRotationSpeed * new Vector3(0, mouseX, 0);
+        float mouseX = 0;
+        float mouseY = 0;
+        //Core.Input.Mouse.GetPositionDelta(out mouseX, out mouseY);
 
-        if (gameIn3D && (inventory.GetActiveWeapon() == null || !inventory.GetActiveWeapon().IsCurrentlyAttacking()))
+        if (cameraRotation.x != 0)
+        {
+            mouseX = cameraRotation.x;
+        }
+
+        if (cameraRotation.y != 0)
+        {
+            mouseY = cameraRotation.y;
+        }
+        
+        mouseY = Mathf.Clamp(mouseY, -1f, 1f);
+        
+        Vector3 anglesIncrement = playerRotationSpeed * new Vector3(0, mouseX, 0);
+        
+        bool playerIsNotAttacking = inventory.GetActiveWeapon() == null || !inventory.GetActiveWeapon().IsCurrentlyAttacking();
+        if (gameIn3D && playerIsNotAttacking)
         {
             transform.eulerAngles += anglesIncrement;
         }
@@ -195,12 +208,14 @@ public class PJ : MonoBehaviour
         inventory.RotateItems(gameIn3D, lastDirection);
     }
 
-    private void DoPjMovement(Vector3 direction)
+    private void DoPjMovement(GameDirector.ControlInputData controlInputData)
     {
+        Vector3 direction = controlInputData.movementDirection;
+        
         bool directionIsZero = direction.x == 0 && direction.z == 0;
         if (!directionIsZero)
         {
-            SetSpriteXOrientation();
+            SetSpriteXOrientation(controlInputData.inputDirection.x);
             pjAnim.Play("PJ_run");
             CreatePlayerDustParticles();
         }
@@ -238,17 +253,19 @@ public class PJ : MonoBehaviour
         lastDirection = !pjDoingAction ? (direction != Vector3.zero ? direction : lastDirection) : lastDirection;
     }
 
-    private void SetSpriteXOrientation()
+    private void SetSpriteXOrientation(float xInputDirection)
     {
-        if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.RightArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.D))
+        bool flipX = false; // xInputDirection > 0
+        
+        if (xInputDirection == 0)
         {
-            pjSprite.flipX = false;
-        }
-
-        if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.LeftArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.A))
+            flipX = pjSprite.flipX;
+        } else if (xInputDirection < 0)
         {
-            pjSprite.flipX = true;
+            flipX = true;
         }
+        
+        pjSprite.flipX = flipX;
     }
 
     #endregion
@@ -327,7 +344,6 @@ public class PJ : MonoBehaviour
             }
             else if (pjIsRolling) // Attack on dash Input Buffer
             {
-                Debug.Log("Ataque guardado");
                 bufferedAttack = true;
                 float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_roll");
                 Sequence sequence = DOTween.Sequence();
@@ -335,7 +351,6 @@ public class PJ : MonoBehaviour
                 {
                     if (bufferedAttack && !pjIsRolling)
                     {
-                        Debug.Log("Atacando tras guardar ataque!");
                         Attack();
                     }
                     bufferedAttack = false;
@@ -395,4 +410,10 @@ public class PJ : MonoBehaviour
     }
     
     #endregion
+
+    public void GetDamage()
+    {
+        // PLay damaged anim
+        Core.Event.Fire<GameEvents.PlayerDamaged>();
+    }
 }

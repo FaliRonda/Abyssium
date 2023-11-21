@@ -1,9 +1,15 @@
+using System;
 using System.Collections;
 using System.Linq;
 using Ju.Input;
 using Ju.Extensions;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.Serialization;
+using InputAction = UnityEngine.InputSystem.InputAction;
 
 public class GameDirector : MonoBehaviour
 {
@@ -11,6 +17,7 @@ public class GameDirector : MonoBehaviour
     public float timeLoopDuration = 10f;
     public GameObject lightHouse;
     public Canvas canvas;
+    public PostProcessVolume postprocessing;
     public NarrativeDirector narrativeDirector;
     public GameObject directionalLights;
 
@@ -18,16 +25,45 @@ public class GameDirector : MonoBehaviour
     private CameraDirector cameraDirector;
     private bool gameIn3D = false;
     private Vector3 lastDirection = new Vector3();
-    private GamepadController gamepad;
     private bool isInitialLoad = true;
     private bool isFirstFloorLoad = true;
     private float initialTimeLoopDuration;
     private float currentLighthouseYRotation;
     private float initialLighthouseXRotation;
 
+    private Bloom bloom;
+    private ChromaticAberration chromaticAberration;
+
+    public ControlScheme control = null;
+    private Vector2 inputDirection = Vector2.zero;
+    
+    public PlayerInput playerInput;
+    
+    //INPUT ACTIONS
+    private InputAction MoveAction;
+    private InputAction RollAction;
+    private InputAction InteractAction;
+    private InputAction CameraChangeAction;
+    private InputAction CameraRotationAction;
+    
+    public struct ControlInputData
+    {
+        public Vector3 movementDirection;
+        public Vector3 inputDirection;
+        public Vector2 cameraRotation;
+
+        public ControlInputData(Vector3 movementDirection, Vector3 inputDirection, Vector2 cameraRotation)
+        {
+            this.movementDirection = movementDirection;
+            this.inputDirection = inputDirection;
+            this.cameraRotation = cameraRotation;
+        }
+    }
+    
     private void Awake()
     {
         initialTimeLoopDuration = timeLoopDuration;
+        
         if (!debugMode)
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -42,11 +78,21 @@ public class GameDirector : MonoBehaviour
         this.EventSubscribe<GameEvents.EnemyDied>(e => CheckEnemiesInScene());
         this.EventSubscribe<GameEvents.NPCVanished>(e => ShowGodNarrative());
         this.EventSubscribe<GameEvents.DoorOpened>(e => DoorOpened());
+        this.EventSubscribe<GameEvents.PlayerDamaged>(e => PlayerDamaged());
 
         DontDestroyOnLoad(this.gameObject);
         DontDestroyOnLoad(lightHouse.gameObject);
 
         UpdateGameState();
+    }
+    
+    private void PlayerDamaged()
+    {
+        timeLoopDuration -= 10;
+        
+        // TODO Should gamefeel: modificar el postprocesado cuando el jugador es atacado
+        postprocessing.profile.TryGetSettings(out bloom);
+        postprocessing.profile.TryGetSettings(out chromaticAberration);
     }
 
     private void DoorOpened()
@@ -79,15 +125,6 @@ public class GameDirector : MonoBehaviour
 
     private void Start()
     {
-        if (Core.Input.Gamepads.Any())
-        {
-            //gamepad = (GamepadController)Core.Input.Gamepads.First();
-        }
-        else
-        {
-            gamepad = null;
-        }
-
         if (!debugMode)
         {
             Core.Event.Fire(new GameEvents.LoadInitialFloorSceneEvent());
@@ -95,6 +132,15 @@ public class GameDirector : MonoBehaviour
         else
         {
             InitializeGameDirector();
+        }
+
+        if (playerInput)
+        {
+            MoveAction = playerInput.actions["Move"];
+            RollAction = playerInput.actions["Roll"];
+            InteractAction = playerInput.actions["Action"];
+            CameraChangeAction = playerInput.actions["CameraChange"];
+            CameraRotationAction = playerInput.actions["CameraRotation"];
         }
     }
     
@@ -167,27 +213,24 @@ public class GameDirector : MonoBehaviour
     {
         if (cameraDirector != null && !cameraDirector.CamerasTransitionBlending())
         {
-            if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.C))
+            if (debugMode && CameraChangeAction.triggered)
             {
                 SwitchGamePerspective();
             } else if (pj != null && !narrativeDirector.IsShowingNarrative())
             {
                 // Player
-                Vector3 direction = GetMovementDirection();
-                lastDirection = direction;
+                ControlInputData controlInputData = GetControlInputDataValues();
                 
-                pj.DoUpdate(direction);
+                pj.DoUpdate(controlInputData);
                 
-                if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.E) /*||
-                    (Core.Input.Gamepads.ToArray().Length > 0 && gamepad != null && gamepad.IsButtonPressed(GamepadButton.B))*/)
+                if (InteractAction.triggered)
                 {
                     pj.DoMainAction();
                 }
                 
-                if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.RightShift) /*||
-                    (Core.Input.Gamepads.ToArray().Length > 0 && gamepad != null && gamepad.IsButtonPressed(GamepadButton.A))*/)
+                if (RollAction.triggered)
                 {
-                    pj.DoRoll(direction);
+                    pj.DoRoll(controlInputData.movementDirection);
                 }
             }
         }
@@ -210,15 +253,14 @@ public class GameDirector : MonoBehaviour
 
     private void UpdateLighthouseRotation()
     {
-        float rotationSpeed = 360.0f / initialTimeLoopDuration;
-        
-        currentLighthouseYRotation += rotationSpeed * Time.deltaTime;
+        float pendingTimeLoopDurationPorcentage = timeLoopDuration / initialTimeLoopDuration;
+        float nextLighthoyseYRotation = 360f * pendingTimeLoopDurationPorcentage * -1;
 
         // Make sure the rotation value stays within 0 to 360 degrees
-        currentLighthouseYRotation = currentLighthouseYRotation % 360.0f;
+        //currentLighthouseYRotation = currentLighthouseYRotation % 360.0f;
 
         // Apply the rotation to the GameObject
-        lightHouse.transform.rotation = Quaternion.Euler(initialLighthouseXRotation, currentLighthouseYRotation, 0);
+        lightHouse.transform.eulerAngles = new Vector3(lightHouse.transform.eulerAngles.x, nextLighthoyseYRotation, lightHouse.transform.eulerAngles.z);
     }
 
     private void RestartTimeLoop()
@@ -227,26 +269,27 @@ public class GameDirector : MonoBehaviour
         Core.Event.Fire<GameEvents.LoadInitialFloorSceneEvent>();
     }
 
-    private Vector3 GetMovementDirection()
+    private ControlInputData GetControlInputDataValues()
     {
+        inputDirection = MoveAction.ReadValue<Vector2>();
         Vector3 direction = new Vector3();
-
-        if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.RightArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.D))
+        
+        if (inputDirection.x > 0)
         {
-            direction = pj.transform.right;
-        } else if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.LeftArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.A))
+            direction += pj.transform.right;
+        } else if (inputDirection.x < 0)
         {
-            direction = -pj.transform.right;
+            direction += -pj.transform.right;
         }
             
-        if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.UpArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.W))
+        if (inputDirection.y > 0)
         {
             direction += pj.transform.forward;
-        } else if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.DownArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.S))
+        } else if (inputDirection.y < 0)
         {
             direction += -pj.transform.forward;
         }
-        
-        return direction;
+
+        return new ControlInputData(direction, inputDirection, CameraRotationAction.ReadValue<Vector2>());
     }
 }

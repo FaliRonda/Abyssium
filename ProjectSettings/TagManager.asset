@@ -19,8 +19,8 @@ TagManager:
   - Environment
   - Doors
   - Interactables
-  - 
-  - 
+  - Invisible
+  - NoLight
   - 
   - 
   - 

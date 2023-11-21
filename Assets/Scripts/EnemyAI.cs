@@ -203,7 +203,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (other.gameObject.layer == Layers.PJ_LAYER)
         {
-            Debug.Log("Attacking player");
+            other.GetComponent<PJ>().GetDamage();
             attackCollider.enabled = false;
         }
     }

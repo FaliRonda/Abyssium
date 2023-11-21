@@ -743,9 +743,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 1
-  timeLoopDuration: -1
+  timeLoopDuration: 300
   lightHouse: {fileID: 1814001062}
   canvas: {fileID: 873946188}
+  postprocessing: {fileID: 75601410}
   narrativeDirector: {fileID: 2001629242}
   directionalLights: {fileID: 127561121}
 --- !u!4 &72832420
