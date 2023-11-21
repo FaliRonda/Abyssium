@@ -200,7 +200,7 @@ public class PJ : MonoBehaviour
         bool directionIsZero = direction.x == 0 && direction.z == 0;
         if (!directionIsZero)
         {
-            SetSpriteXOrientation();
+            SetSpriteXOrientation(direction.x);
             pjAnim.Play("PJ_run");
             CreatePlayerDustParticles();
         }
@@ -238,14 +238,14 @@ public class PJ : MonoBehaviour
         lastDirection = !pjDoingAction ? (direction != Vector3.zero ? direction : lastDirection) : lastDirection;
     }
 
-    private void SetSpriteXOrientation()
+    private void SetSpriteXOrientation(float direction)
     {
-        if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.RightArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.D))
+        if (direction > 0)
         {
             pjSprite.flipX = false;
         }
 
-        if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.LeftArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.A))
+        else if (direction < 0)
         {
             pjSprite.flipX = true;
         }

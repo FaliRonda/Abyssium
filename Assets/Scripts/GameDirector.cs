@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using Ju.Input;
@@ -5,6 +6,9 @@ using Ju.Extensions;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using InputAction = UnityEngine.InputSystem.InputAction;
 
 public class GameDirector : MonoBehaviour
 {
@@ -20,7 +24,6 @@ public class GameDirector : MonoBehaviour
     private CameraDirector cameraDirector;
     private bool gameIn3D = false;
     private Vector3 lastDirection = new Vector3();
-    private GamepadController gamepad;
     private bool isInitialLoad = true;
     private bool isFirstFloorLoad = true;
     private float initialTimeLoopDuration;
@@ -29,10 +32,22 @@ public class GameDirector : MonoBehaviour
 
     private Bloom bloom;
     private ChromaticAberration chromaticAberration;
+
+    public ControlScheme control = null;
+    private Vector2 inputDirection = Vector2.zero;
+    
+    public PlayerInput playerInput;
+    
+    //INPUT ACTIONS
+    private InputAction MoveAction;
+    private InputAction RollAction;
+    private InputAction InteractAction;
+    private InputAction CameraChangeAction;
     
     private void Awake()
     {
         initialTimeLoopDuration = timeLoopDuration;
+        
         if (!debugMode)
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -54,7 +69,7 @@ public class GameDirector : MonoBehaviour
 
         UpdateGameState();
     }
-
+    
     private void PlayerDamaged()
     {
         timeLoopDuration -= 10;
@@ -94,15 +109,6 @@ public class GameDirector : MonoBehaviour
 
     private void Start()
     {
-        if (Core.Input.Gamepads.Any())
-        {
-            //gamepad = (GamepadController)Core.Input.Gamepads.First();
-        }
-        else
-        {
-            gamepad = null;
-        }
-
         if (!debugMode)
         {
             Core.Event.Fire(new GameEvents.LoadInitialFloorSceneEvent());
@@ -110,6 +116,14 @@ public class GameDirector : MonoBehaviour
         else
         {
             InitializeGameDirector();
+        }
+
+        if (playerInput)
+        {
+            MoveAction = playerInput.actions["Move"];
+            RollAction = playerInput.actions["Roll"];
+            InteractAction = playerInput.actions["Action"];
+            CameraChangeAction = playerInput.actions["CameraChange"];
         }
     }
     
@@ -182,25 +196,22 @@ public class GameDirector : MonoBehaviour
     {
         if (cameraDirector != null && !cameraDirector.CamerasTransitionBlending())
         {
-            if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.C))
+            if (debugMode && CameraChangeAction.triggered)
             {
                 SwitchGamePerspective();
             } else if (pj != null && !narrativeDirector.IsShowingNarrative())
             {
                 // Player
                 Vector3 direction = GetMovementDirection();
-                lastDirection = direction;
                 
                 pj.DoUpdate(direction);
                 
-                if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.E) /*||
-                    (Core.Input.Gamepads.ToArray().Length > 0 && gamepad != null && gamepad.IsButtonPressed(GamepadButton.B))*/)
+                if (InteractAction.triggered)
                 {
                     pj.DoMainAction();
                 }
                 
-                if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.LeftShift) /*||
-                    (Core.Input.Gamepads.ToArray().Length > 0 && gamepad != null && gamepad.IsButtonPressed(GamepadButton.A))*/)
+                if (RollAction.triggered)
                 {
                     pj.DoRoll(direction);
                 }
@@ -244,19 +255,20 @@ public class GameDirector : MonoBehaviour
     private Vector3 GetMovementDirection()
     {
         Vector3 direction = new Vector3();
-
-        if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.RightArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.D))
+        inputDirection = MoveAction.ReadValue<Vector2>();
+        
+        if (inputDirection.x > 0)
         {
-            direction = pj.transform.right;
-        } else if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.LeftArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.A))
+            direction += pj.transform.right;
+        } else if (inputDirection.x < 0)
         {
-            direction = -pj.transform.right;
+            direction += -pj.transform.right;
         }
             
-        if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.UpArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.W))
+        if (inputDirection.y > 0)
         {
             direction += pj.transform.forward;
-        } else if (Core.Input.Keyboard.IsKeyHeld(KeyboardKey.DownArrow) || Core.Input.Keyboard.IsKeyHeld(KeyboardKey.S))
+        } else if (inputDirection.y < 0)
         {
             direction += -pj.transform.forward;
         }
