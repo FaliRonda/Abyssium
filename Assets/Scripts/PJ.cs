@@ -2,7 +2,7 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Ju.Extensions;
-using Ju.Input;
+using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
 public class PJ : MonoBehaviour
@@ -185,9 +185,11 @@ public class PJ : MonoBehaviour
         float mouseY;
         Core.Input.Mouse.GetPositionDelta(out mouseX, out mouseY);
         mouseY = Mathf.Clamp(mouseY, -1f, 1f);
+        
         Vector3 anglesIncrement = playerRotationSpeed * new Vector3(0, mouseX, 0);
-
-        if (gameIn3D && (inventory.GetActiveWeapon() == null || !inventory.GetActiveWeapon().IsCurrentlyAttacking()))
+        
+        bool playerIsNotAttacking = inventory.GetActiveWeapon() == null || !inventory.GetActiveWeapon().IsCurrentlyAttacking();
+        if (gameIn3D && playerIsNotAttacking)
         {
             transform.eulerAngles += anglesIncrement;
         }
@@ -238,17 +240,43 @@ public class PJ : MonoBehaviour
         lastDirection = !pjDoingAction ? (direction != Vector3.zero ? direction : lastDirection) : lastDirection;
     }
 
-    private void SetSpriteXOrientation(float direction)
+    private void SetSpriteXOrientation(float xDirection)
     {
-        if (direction > 0)
+        bool flipX = false;
+        float yRotation = transform.eulerAngles.y;
+
+        Debug.Log(yRotation);
+
+        if (xDirection == 0)
         {
-            pjSprite.flipX = false;
+            flipX = pjSprite.flipX;
+        }
+        
+        if (yRotation > 270 || yRotation < 90)
+        {
+            Debug.Log("Arriba");
+            if (xDirection > 0)
+            {
+                flipX = false;
+            } else if (xDirection < 0)
+            {
+                flipX = true;
+            }
+        }
+        else
+        {
+            Debug.Log("Abajo");
+            if (xDirection > 0)
+            {
+                flipX = true;
+            } else if (xDirection < 0)
+            {
+                flipX = false;
+            }
         }
 
-        else if (direction < 0)
-        {
-            pjSprite.flipX = true;
-        }
+        Debug.Log(flipX);
+        pjSprite.flipX = flipX;
     }
 
     #endregion
