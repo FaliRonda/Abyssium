@@ -8,6 +8,7 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.Serialization;
 using InputAction = UnityEngine.InputSystem.InputAction;
 
 public class GameDirector : MonoBehaviour
@@ -43,6 +44,21 @@ public class GameDirector : MonoBehaviour
     private InputAction RollAction;
     private InputAction InteractAction;
     private InputAction CameraChangeAction;
+    private InputAction CameraRotationAction;
+    
+    public struct ControlInputData
+    {
+        public Vector3 movementDirection;
+        public Vector3 inputDirection;
+        public Vector2 cameraRotation;
+
+        public ControlInputData(Vector3 movementDirection, Vector3 inputDirection, Vector2 cameraRotation)
+        {
+            this.movementDirection = movementDirection;
+            this.inputDirection = inputDirection;
+            this.cameraRotation = cameraRotation;
+        }
+    }
     
     private void Awake()
     {
@@ -124,6 +140,7 @@ public class GameDirector : MonoBehaviour
             RollAction = playerInput.actions["Roll"];
             InteractAction = playerInput.actions["Action"];
             CameraChangeAction = playerInput.actions["CameraChange"];
+            CameraRotationAction = playerInput.actions["CameraRotation"];
         }
     }
     
@@ -202,9 +219,9 @@ public class GameDirector : MonoBehaviour
             } else if (pj != null && !narrativeDirector.IsShowingNarrative())
             {
                 // Player
-                Vector3 direction = GetMovementDirection();
+                ControlInputData controlInputData = GetControlInputDataValues();
                 
-                pj.DoUpdate(direction);
+                pj.DoUpdate(controlInputData);
                 
                 if (InteractAction.triggered)
                 {
@@ -213,7 +230,7 @@ public class GameDirector : MonoBehaviour
                 
                 if (RollAction.triggered)
                 {
-                    pj.DoRoll(direction);
+                    pj.DoRoll(controlInputData.movementDirection);
                 }
             }
         }
@@ -252,10 +269,10 @@ public class GameDirector : MonoBehaviour
         Core.Event.Fire<GameEvents.LoadInitialFloorSceneEvent>();
     }
 
-    private Vector3 GetMovementDirection()
+    private ControlInputData GetControlInputDataValues()
     {
-        Vector3 direction = new Vector3();
         inputDirection = MoveAction.ReadValue<Vector2>();
+        Vector3 direction = new Vector3();
         
         if (inputDirection.x > 0)
         {
@@ -272,7 +289,7 @@ public class GameDirector : MonoBehaviour
         {
             direction += -pj.transform.forward;
         }
-        
-        return direction;
+
+        return new ControlInputData(direction, inputDirection, CameraRotationAction.ReadValue<Vector2>());
     }
 }

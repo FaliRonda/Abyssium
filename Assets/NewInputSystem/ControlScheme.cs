@@ -62,6 +62,15 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CameraRotation"",
+                    ""type"": ""Value"",
+                    ""id"": ""f5252def-f7ea-4514-bd57-a69be9ef9585"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -229,6 +238,61 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                     ""action"": ""CameraChange"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""RightStick"",
+                    ""id"": ""c35847d5-d273-4c61-aed0-8b67958b2dea"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotation"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""a0e4cf81-04ea-419a-b851-fd74a1e530ff"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""1b0c82ef-7231-4df8-a029-67938c1d188f"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""a0940f7e-e311-47ff-a32d-80f17ccf5c94"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""f1e21daa-af21-4d98-bdee-703d252186db"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -269,6 +333,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
         m_Gameplay_Roll = m_Gameplay.FindAction("Roll", throwIfNotFound: true);
         m_Gameplay_Action = m_Gameplay.FindAction("Action", throwIfNotFound: true);
         m_Gameplay_CameraChange = m_Gameplay.FindAction("CameraChange", throwIfNotFound: true);
+        m_Gameplay_CameraRotation = m_Gameplay.FindAction("CameraRotation", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_CameraChange = m_Debug.FindAction("CameraChange", throwIfNotFound: true);
@@ -337,6 +402,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Roll;
     private readonly InputAction m_Gameplay_Action;
     private readonly InputAction m_Gameplay_CameraChange;
+    private readonly InputAction m_Gameplay_CameraRotation;
     public struct GameplayActions
     {
         private @ControlScheme m_Wrapper;
@@ -345,6 +411,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
         public InputAction @Roll => m_Wrapper.m_Gameplay_Roll;
         public InputAction @Action => m_Wrapper.m_Gameplay_Action;
         public InputAction @CameraChange => m_Wrapper.m_Gameplay_CameraChange;
+        public InputAction @CameraRotation => m_Wrapper.m_Gameplay_CameraRotation;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -366,6 +433,9 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
             @CameraChange.started += instance.OnCameraChange;
             @CameraChange.performed += instance.OnCameraChange;
             @CameraChange.canceled += instance.OnCameraChange;
+            @CameraRotation.started += instance.OnCameraRotation;
+            @CameraRotation.performed += instance.OnCameraRotation;
+            @CameraRotation.canceled += instance.OnCameraRotation;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -382,6 +452,9 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
             @CameraChange.started -= instance.OnCameraChange;
             @CameraChange.performed -= instance.OnCameraChange;
             @CameraChange.canceled -= instance.OnCameraChange;
+            @CameraRotation.started -= instance.OnCameraRotation;
+            @CameraRotation.performed -= instance.OnCameraRotation;
+            @CameraRotation.canceled -= instance.OnCameraRotation;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -451,6 +524,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
         void OnRoll(InputAction.CallbackContext context);
         void OnAction(InputAction.CallbackContext context);
         void OnCameraChange(InputAction.CallbackContext context);
+        void OnCameraRotation(InputAction.CallbackContext context);
     }
     public interface IDebugActions
     {

@@ -58,17 +58,17 @@ public class PJ : MonoBehaviour
         PjRaycastHit(Color.cyan);
     }
 
-    public void DoUpdate(Vector3 direction)
+    public void DoUpdate(GameDirector.ControlInputData controlInputData)
     {
-        UpdateLastDirection(direction);
+        UpdateLastDirection(controlInputData.movementDirection);
         UpdatePjRay();
         
         if (!pjDoingAction)
         {
-            DoPjMovement(direction);
+            DoPjMovement(controlInputData);
             inventory.UpdatePosition(transform);
             
-            PjDoRotation(lastDirection);
+            PjDoRotation(controlInputData.cameraRotation);
         } else
         {
             StopRollingWhenHitWall();
@@ -179,11 +179,22 @@ public class PJ : MonoBehaviour
 
     #region Movement, rotation and orientation
 
-    private void PjDoRotation(Vector3 direction)
+    private void PjDoRotation(Vector2 cameraRotation)
     {
-        float mouseX;
-        float mouseY;
-        Core.Input.Mouse.GetPositionDelta(out mouseX, out mouseY);
+        float mouseX = 0;
+        float mouseY = 0;
+        //Core.Input.Mouse.GetPositionDelta(out mouseX, out mouseY);
+
+        if (cameraRotation.x != 0)
+        {
+            mouseX = cameraRotation.x;
+        }
+
+        if (cameraRotation.y != 0)
+        {
+            mouseY = cameraRotation.y;
+        }
+        
         mouseY = Mathf.Clamp(mouseY, -1f, 1f);
         
         Vector3 anglesIncrement = playerRotationSpeed * new Vector3(0, mouseX, 0);
@@ -197,12 +208,14 @@ public class PJ : MonoBehaviour
         inventory.RotateItems(gameIn3D, lastDirection);
     }
 
-    private void DoPjMovement(Vector3 direction)
+    private void DoPjMovement(GameDirector.ControlInputData controlInputData)
     {
+        Vector3 direction = controlInputData.movementDirection;
+        
         bool directionIsZero = direction.x == 0 && direction.z == 0;
         if (!directionIsZero)
         {
-            SetSpriteXOrientation(direction.x);
+            SetSpriteXOrientation(controlInputData.inputDirection.x);
             pjAnim.Play("PJ_run");
             CreatePlayerDustParticles();
         }
@@ -240,42 +253,18 @@ public class PJ : MonoBehaviour
         lastDirection = !pjDoingAction ? (direction != Vector3.zero ? direction : lastDirection) : lastDirection;
     }
 
-    private void SetSpriteXOrientation(float xDirection)
+    private void SetSpriteXOrientation(float xInputDirection)
     {
-        bool flipX = false;
-        float yRotation = transform.eulerAngles.y;
-
-        Debug.Log(yRotation);
-
-        if (xDirection == 0)
+        bool flipX = false; // xInputDirection > 0
+        
+        if (xInputDirection == 0)
         {
             flipX = pjSprite.flipX;
+        } else if (xInputDirection < 0)
+        {
+            flipX = true;
         }
         
-        if (yRotation > 270 || yRotation < 90)
-        {
-            Debug.Log("Arriba");
-            if (xDirection > 0)
-            {
-                flipX = false;
-            } else if (xDirection < 0)
-            {
-                flipX = true;
-            }
-        }
-        else
-        {
-            Debug.Log("Abajo");
-            if (xDirection > 0)
-            {
-                flipX = true;
-            } else if (xDirection < 0)
-            {
-                flipX = false;
-            }
-        }
-
-        Debug.Log(flipX);
         pjSprite.flipX = flipX;
     }
 
