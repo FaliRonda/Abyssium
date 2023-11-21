@@ -192,7 +192,7 @@ Transform:
   - {fileID: 3934487933963042791}
   - {fileID: 1779781707427425096}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6596143782328173389
 GameObject:
@@ -426,13 +426,16 @@ MonoBehaviour:
   lifeAmount: 3
   patrolSpeed: 3
   chaseSpeed: 5
+  chaseInLightSpeed: 0.5
   itemToDrop: {fileID: 1472249213624661288, guid: 083d74cf58bcc7548a2e0e4130eff11b, type: 3}
   visibilityRadius: 8
+  lightRadius: 10
   attackDistance: 1
   spriteBlinkingFrecuency: 0.15
   waypoints:
   - {fileID: 7266895700364366196}
   - {fileID: 8423899225659954203}
+  isShadow: 1
 --- !u!114 &7984870695088626944
 MonoBehaviour:
   m_ObjectHideFlags: 0
