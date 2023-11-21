@@ -2,6 +2,7 @@ Shader "Custom/HideOnSpotlight"
 {
     Properties
     {
+        [PerRendererValue]
         _MainTex ("Sprite Texture", 2D) = "white" {}
         _LightPosition ("Light Position", Vector) = (0, 0, 0, 0)
         _LightDirection ("Light Direction", Vector) = (0, 0, -1, 0)
