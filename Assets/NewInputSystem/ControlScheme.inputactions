@@ -15,15 +15,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "CameraChange",
-                    "type": "Button",
-                    "id": "7f5307ea-4e58-4576-848d-d76ade2ceb42",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Roll",
                     "type": "Button",
                     "id": "9c535840-bade-4191-8458-c3990fce2687",
@@ -36,6 +27,15 @@
                     "name": "Action",
                     "type": "Button",
                     "id": "8a65d6dc-9c83-49e0-8911-2c474e1915fb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CameraChange",
+                    "type": "Button",
+                    "id": "da5ffef6-bfd6-43b5-939a-5af25dc890ab",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -199,7 +199,7 @@
                 },
                 {
                     "name": "",
-                    "id": "607789fd-dd66-4375-8caf-9def68ac1501",
+                    "id": "5760d71d-4c6d-493e-b316-ac9798f3339d",
                     "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
@@ -222,15 +222,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "CameraChange1",
-                    "type": "Button",
-                    "id": "9b7d8227-af15-46ae-ad06-5aff7ac2a4fb",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -242,17 +233,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "CameraChange",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "bd8cc667-38a5-4450-82f9-32362dd2016b",
-                    "path": "<Keyboard>/c",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "CameraChange1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

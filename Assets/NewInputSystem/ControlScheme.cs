@@ -37,15 +37,6 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""CameraChange"",
-                    ""type"": ""Button"",
-                    ""id"": ""7f5307ea-4e58-4576-848d-d76ade2ceb42"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Roll"",
                     ""type"": ""Button"",
                     ""id"": ""9c535840-bade-4191-8458-c3990fce2687"",
@@ -58,6 +49,15 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                     ""name"": ""Action"",
                     ""type"": ""Button"",
                     ""id"": ""8a65d6dc-9c83-49e0-8911-2c474e1915fb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CameraChange"",
+                    ""type"": ""Button"",
+                    ""id"": ""da5ffef6-bfd6-43b5-939a-5af25dc890ab"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -221,7 +221,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""607789fd-dd66-4375-8caf-9def68ac1501"",
+                    ""id"": ""5760d71d-4c6d-493e-b316-ac9798f3339d"",
                     ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -244,15 +244,6 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""CameraChange1"",
-                    ""type"": ""Button"",
-                    ""id"": ""9b7d8227-af15-46ae-ad06-5aff7ac2a4fb"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -266,17 +257,6 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                     ""action"": ""CameraChange"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""bd8cc667-38a5-4450-82f9-32362dd2016b"",
-                    ""path"": ""<Keyboard>/c"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CameraChange1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -286,13 +266,12 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
-        m_Gameplay_CameraChange = m_Gameplay.FindAction("CameraChange", throwIfNotFound: true);
         m_Gameplay_Roll = m_Gameplay.FindAction("Roll", throwIfNotFound: true);
         m_Gameplay_Action = m_Gameplay.FindAction("Action", throwIfNotFound: true);
+        m_Gameplay_CameraChange = m_Gameplay.FindAction("CameraChange", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_CameraChange = m_Debug.FindAction("CameraChange", throwIfNotFound: true);
-        m_Debug_CameraChange1 = m_Debug.FindAction("CameraChange1", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -355,17 +334,17 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_Move;
-    private readonly InputAction m_Gameplay_CameraChange;
     private readonly InputAction m_Gameplay_Roll;
     private readonly InputAction m_Gameplay_Action;
+    private readonly InputAction m_Gameplay_CameraChange;
     public struct GameplayActions
     {
         private @ControlScheme m_Wrapper;
         public GameplayActions(@ControlScheme wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
-        public InputAction @CameraChange => m_Wrapper.m_Gameplay_CameraChange;
         public InputAction @Roll => m_Wrapper.m_Gameplay_Roll;
         public InputAction @Action => m_Wrapper.m_Gameplay_Action;
+        public InputAction @CameraChange => m_Wrapper.m_Gameplay_CameraChange;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -378,15 +357,15 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @CameraChange.started += instance.OnCameraChange;
-            @CameraChange.performed += instance.OnCameraChange;
-            @CameraChange.canceled += instance.OnCameraChange;
             @Roll.started += instance.OnRoll;
             @Roll.performed += instance.OnRoll;
             @Roll.canceled += instance.OnRoll;
             @Action.started += instance.OnAction;
             @Action.performed += instance.OnAction;
             @Action.canceled += instance.OnAction;
+            @CameraChange.started += instance.OnCameraChange;
+            @CameraChange.performed += instance.OnCameraChange;
+            @CameraChange.canceled += instance.OnCameraChange;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -394,15 +373,15 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @CameraChange.started -= instance.OnCameraChange;
-            @CameraChange.performed -= instance.OnCameraChange;
-            @CameraChange.canceled -= instance.OnCameraChange;
             @Roll.started -= instance.OnRoll;
             @Roll.performed -= instance.OnRoll;
             @Roll.canceled -= instance.OnRoll;
             @Action.started -= instance.OnAction;
             @Action.performed -= instance.OnAction;
             @Action.canceled -= instance.OnAction;
+            @CameraChange.started -= instance.OnCameraChange;
+            @CameraChange.performed -= instance.OnCameraChange;
+            @CameraChange.canceled -= instance.OnCameraChange;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -425,13 +404,11 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Debug;
     private List<IDebugActions> m_DebugActionsCallbackInterfaces = new List<IDebugActions>();
     private readonly InputAction m_Debug_CameraChange;
-    private readonly InputAction m_Debug_CameraChange1;
     public struct DebugActions
     {
         private @ControlScheme m_Wrapper;
         public DebugActions(@ControlScheme wrapper) { m_Wrapper = wrapper; }
         public InputAction @CameraChange => m_Wrapper.m_Debug_CameraChange;
-        public InputAction @CameraChange1 => m_Wrapper.m_Debug_CameraChange1;
         public InputActionMap Get() { return m_Wrapper.m_Debug; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -444,9 +421,6 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
             @CameraChange.started += instance.OnCameraChange;
             @CameraChange.performed += instance.OnCameraChange;
             @CameraChange.canceled += instance.OnCameraChange;
-            @CameraChange1.started += instance.OnCameraChange1;
-            @CameraChange1.performed += instance.OnCameraChange1;
-            @CameraChange1.canceled += instance.OnCameraChange1;
         }
 
         private void UnregisterCallbacks(IDebugActions instance)
@@ -454,9 +428,6 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
             @CameraChange.started -= instance.OnCameraChange;
             @CameraChange.performed -= instance.OnCameraChange;
             @CameraChange.canceled -= instance.OnCameraChange;
-            @CameraChange1.started -= instance.OnCameraChange1;
-            @CameraChange1.performed -= instance.OnCameraChange1;
-            @CameraChange1.canceled -= instance.OnCameraChange1;
         }
 
         public void RemoveCallbacks(IDebugActions instance)
@@ -477,13 +448,12 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
     public interface IGameplayActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnCameraChange(InputAction.CallbackContext context);
         void OnRoll(InputAction.CallbackContext context);
         void OnAction(InputAction.CallbackContext context);
+        void OnCameraChange(InputAction.CallbackContext context);
     }
     public interface IDebugActions
     {
         void OnCameraChange(InputAction.CallbackContext context);
-        void OnCameraChange1(InputAction.CallbackContext context);
     }
 }
