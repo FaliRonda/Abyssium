@@ -13,7 +13,7 @@ public class DialogueService : IService
     public List<GameObject> dialogueChoicesGO = new List<GameObject>();
     public List<TMP_Text> dialogueChoicesText = new List<TMP_Text>();
     private NPC currentNPC;
-    private TypingConfig typingConfig;
+    private TypingConfigSO typingConfig;
 
     public void StartConversation()
     {
@@ -40,7 +40,7 @@ public class DialogueService : IService
             dialogueChoicesText.Add(choiceTransform.GetComponentInChildren<TMP_Text>());
         }
         
-        typingConfig = Resources.Load<TypingConfig>("Conf/TypingConfig");
+        typingConfig = Resources.Load<TypingConfigSO>("Conf/TypingConfig");
 
         // Check if the ScriptableObject was loaded successfully.
         if (typingConfig == null)

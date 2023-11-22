@@ -581,7 +581,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 1
-  timeLoopDuration: -1
+  timeLoopDuration: 10
   lightHouse: {fileID: 1362784579}
   canvas: {fileID: 789386045}
   postprocessing: {fileID: 0}

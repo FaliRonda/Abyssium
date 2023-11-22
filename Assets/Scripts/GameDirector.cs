@@ -125,6 +125,7 @@ public class GameDirector : MonoBehaviour
 
     private void Start()
     {
+
         if (!debugMode)
         {
             Core.Event.Fire(new GameEvents.LoadInitialFloorSceneEvent());
@@ -134,6 +135,12 @@ public class GameDirector : MonoBehaviour
             InitializeGameDirector();
         }
 
+        if (SceneManager.GetActiveScene().name == "T1C0F0")
+        {
+            Debug.Log("Recording started");
+            Core.PositionRecorder.StartRecording(pj.transform);
+        }
+        
         if (playerInput)
         {
             MoveAction = playerInput.actions["Move"];
@@ -265,8 +272,16 @@ public class GameDirector : MonoBehaviour
 
     private void RestartTimeLoop()
     {
-        isFirstFloorLoad = true;
-        Core.Event.Fire<GameEvents.LoadInitialFloorSceneEvent>();
+        if (SceneManager.GetActiveScene().name != "T1C0F0")
+        {
+            isFirstFloorLoad = true;
+            Core.Event.Fire<GameEvents.LoadInitialFloorSceneEvent>();
+        }
+        else
+        {
+            Core.PositionRecorder.StopRecording();
+            Core.PositionRecorder.DoRewind(pj.transform);
+        }
     }
 
     private ControlInputData GetControlInputDataValues()
