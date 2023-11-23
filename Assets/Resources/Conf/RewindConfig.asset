@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: RewindConfig
   m_EditorClassIdentifier: 
   initialPorcentage: 0.25
-  finalPorcentage: 0.25
+  finalPorcentage: 0.1
   accelerationFactor: 0.8
   decelerationFactor: 1.15
