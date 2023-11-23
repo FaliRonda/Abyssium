@@ -192,7 +192,7 @@ Transform:
   - {fileID: 3934487933963042791}
   - {fileID: 1779781707427425096}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6596143782328173389
 GameObject:
@@ -386,6 +386,7 @@ GameObject:
   - component: {fileID: 7984870695088626944}
   - component: {fileID: 4710716284538430482}
   - component: {fileID: 7534994692394902429}
+  - component: {fileID: 7975449011001157019}
   m_Layer: 9
   m_Name: EnemyAI
   m_TagString: Untagged
@@ -423,9 +424,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 0}
-  lifeAmount: 3
+  lifeAmount: 2
   patrolSpeed: 3
-  chaseSpeed: 5
+  chaseSpeed: 1.5
   chaseInLightSpeed: 0.5
   itemToDrop: {fileID: 1472249213624661288, guid: 083d74cf58bcc7548a2e0e4130eff11b, type: 3}
   visibilityRadius: 8
@@ -435,7 +436,7 @@ MonoBehaviour:
   waypoints:
   - {fileID: 7266895700364366196}
   - {fileID: 8423899225659954203}
-  isShadow: 1
+  isShadow: 0
 --- !u!114 &7984870695088626944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,6 +491,33 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: -0.75, y: 0, z: 0.15}
+--- !u!54 &7975449011001157019
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7443270777618597963}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!1 &8108397216681488857
 GameObject:
   m_ObjectHideFlags: 0
