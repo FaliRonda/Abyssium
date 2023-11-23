@@ -7,16 +7,26 @@ using Sequence = DG.Tweening.Sequence;
 
 public class PositionRecorderService : IService
 {
-    private List<Vector3> positionsList = new List<Vector3>();
-    private Sequence positionSequence;
+    private List<Vector3> pjPositionsList = new List<Vector3>();
+    private List<Quaternion> moonRotationsList = new List<Quaternion>();
+    
+    private Sequence pjPositionSequence;
+    private Sequence moonPositionSequence;
+    
     private RewindConfigSO rewindConfig;
 
-    public void StartRecording(Transform transformToRecord)
+    public void StartRecording(Transform pjTransform, Transform moonTransform)
     {
         rewindConfig = Resources.Load<RewindConfigSO>("Conf/RewindConfig");
         
-        positionSequence = DOTween.Sequence()
-            .AppendCallback(() => { positionsList.Add(transformToRecord.position); })
+        pjPositionSequence = DOTween.Sequence()
+            .AppendCallback(() => { pjPositionsList.Add(pjTransform.position); })
+            .AppendInterval(0.1f)
+            .SetLoops(-1)
+            .OnKill(() => { });
+        
+        moonPositionSequence = DOTween.Sequence()
+            .AppendCallback(() => { moonRotationsList.Add(moonTransform.rotation); })
             .AppendInterval(0.1f)
             .SetLoops(-1)
             .OnKill(() => { });
@@ -24,22 +34,27 @@ public class PositionRecorderService : IService
     
     public void StopRecording()
     {
-        positionSequence.Kill();
+        pjPositionSequence.Kill();
+        moonPositionSequence.Kill();
     }
 
-    public void DoRewind(Transform transformToRewind)
+    public void DoRewind(Transform pjTransform, Transform moonTransform)
     {
         Sequence rewindSequence = DOTween.Sequence();
 
-        int numberOfRecordedPositions = positionsList.Count;
+        int numberOfRecordedPositions = pjPositionsList.Count;
         float initialDuration = 0.3f;
         float minDuration = 0.025f;
         float duration = initialDuration;
         
         for (int i = numberOfRecordedPositions - 1; i >= 0; i--)
         {
-            Vector3 position = positionsList[i];
-            rewindSequence.Append(transformToRewind.DOMove(position, duration));
+            Vector3 pjPosition = pjPositionsList[i];
+            rewindSequence.Append(pjTransform.DOMove(pjPosition, duration));
+            Quaternion moonRotation = moonRotationsList[i];
+            rewindSequence.Append(moonTransform.DORotateQuaternion(moonRotation, duration));
+
+           
 
             float rewindFactor = 1;
             

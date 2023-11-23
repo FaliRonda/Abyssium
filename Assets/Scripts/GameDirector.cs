@@ -1,21 +1,16 @@
-using System;
 using System.Collections;
-using System.Linq;
-using Ju.Input;
 using Ju.Extensions;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
-using UnityEngine.Serialization;
 using InputAction = UnityEngine.InputSystem.InputAction;
 
 public class GameDirector : MonoBehaviour
 {
     public bool debugMode;
     public float timeLoopDuration = 10f;
-    public GameObject lightHouse;
+    public GameObject moon;
     public Canvas canvas;
     public PostProcessVolume postprocessing;
     public NarrativeDirector narrativeDirector;
@@ -23,10 +18,10 @@ public class GameDirector : MonoBehaviour
 
     private PJ pj;
     private CameraDirector cameraDirector;
-    private bool gameIn3D = false;
-    private Vector3 lastDirection = new Vector3();
+    private bool gameIn3D;
     private bool isInitialLoad = true;
     private bool isFirstFloorLoad = true;
+    private bool timeLoopEnded;
     private float initialTimeLoopDuration;
     private float currentLighthouseYRotation;
     private float initialLighthouseXRotation;
@@ -69,9 +64,9 @@ public class GameDirector : MonoBehaviour
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        var lighthouseRotation = lightHouse.transform.rotation;
-        currentLighthouseYRotation = lighthouseRotation.eulerAngles.y;
-        initialLighthouseXRotation = lighthouseRotation.eulerAngles.x;
+        var moonRotation = moon.transform.rotation;
+        currentLighthouseYRotation = moonRotation.eulerAngles.y;
+        initialLighthouseXRotation = moonRotation.eulerAngles.x;
 
         Core.Dialogue.Initialize(canvas);
         
@@ -81,7 +76,7 @@ public class GameDirector : MonoBehaviour
         this.EventSubscribe<GameEvents.PlayerDamaged>(e => PlayerDamaged());
 
         DontDestroyOnLoad(this.gameObject);
-        DontDestroyOnLoad(lightHouse.gameObject);
+        DontDestroyOnLoad(moon.gameObject);
 
         UpdateGameState();
     }
@@ -137,8 +132,7 @@ public class GameDirector : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "T1C0F0")
         {
-            Debug.Log("Recording started");
-            Core.PositionRecorder.StartRecording(pj.transform);
+            Core.PositionRecorder.StartRecording(pj.transform, moon.transform);
         }
         
         if (playerInput)
@@ -212,8 +206,6 @@ public class GameDirector : MonoBehaviour
         UpdateGameState();
                 
         Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() {gameIn3D = gameIn3D});
-
-        lastDirection = new Vector3();
     }
 
     void Update()
@@ -245,14 +237,13 @@ public class GameDirector : MonoBehaviour
         // If time loop is not disabled
         if (timeLoopDuration != -1)
         {
-            if (timeLoopDuration > 0)
+            if (timeLoopDuration > 0 && !timeLoopEnded)
             {
                 timeLoopDuration -= Time.deltaTime;
                 UpdateLighthouseRotation();
             }
-            else
+            else if (!timeLoopEnded)
             {
-                timeLoopDuration = initialTimeLoopDuration;
                 RestartTimeLoop();
             }
         }
@@ -267,11 +258,14 @@ public class GameDirector : MonoBehaviour
         //currentLighthouseYRotation = currentLighthouseYRotation % 360.0f;
 
         // Apply the rotation to the GameObject
-        lightHouse.transform.eulerAngles = new Vector3(lightHouse.transform.eulerAngles.x, nextLighthoyseYRotation, lightHouse.transform.eulerAngles.z);
+        moon.transform.eulerAngles = new Vector3(moon.transform.eulerAngles.x, nextLighthoyseYRotation, moon.transform.eulerAngles.z);
     }
 
     private void RestartTimeLoop()
     {
+        timeLoopEnded = true;
+        timeLoopDuration = initialTimeLoopDuration;
+        
         if (SceneManager.GetActiveScene().name != "T1C0F0")
         {
             isFirstFloorLoad = true;
@@ -280,7 +274,7 @@ public class GameDirector : MonoBehaviour
         else
         {
             Core.PositionRecorder.StopRecording();
-            Core.PositionRecorder.DoRewind(pj.transform);
+            Core.PositionRecorder.DoRewind(pj.transform, moon.transform);
         }
     }
 
