@@ -281,7 +281,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c10383d215707c041996a7626a3653b4, type: 2}
+  - {fileID: 2100000, guid: 21d60c45591bfe9468d29d8ef1dcdeb9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -302,7 +302,7 @@ SpriteRenderer:
   m_SortingLayerID: -1353953791
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 2026653819, guid: 99eb0044c564e9a459e2f727bebffb94, type: 3}
+  m_Sprite: {fileID: -2088553330, guid: 4302bcff7abfc4644b8a45bffc1f5ff1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -426,9 +426,9 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   lifeAmount: 2
   patrolSpeed: 3
-  chaseSpeed: 1.5
+  chaseSpeed: 6
   chaseInLightSpeed: 0.5
-  itemToDrop: {fileID: 1472249213624661288, guid: 083d74cf58bcc7548a2e0e4130eff11b, type: 3}
+  itemToDrop: {fileID: 0}
   visibilityRadius: 8
   lightRadius: 10
   attackDistance: 1
