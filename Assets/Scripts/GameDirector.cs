@@ -23,6 +23,7 @@ public class GameDirector : MonoBehaviour
     private bool isFirstFloorLoad = true;
     private bool timeLoopEnded;
     private float initialTimeLoopDuration;
+    private float secondsCounter = 0;
     private float currentLighthouseYRotation;
     private float initialLighthouseXRotation;
 
@@ -75,10 +76,11 @@ public class GameDirector : MonoBehaviour
         this.EventSubscribe<GameEvents.DoorOpened>(e => DoorOpened());
         this.EventSubscribe<GameEvents.PlayerDamaged>(e => PlayerDamaged());
 
-        DontDestroyOnLoad(this.gameObject);
-        DontDestroyOnLoad(moon.gameObject);
+        DontDestroyOnLoad(transform.parent.gameObject);
 
         UpdateGameState();
+        
+        Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1f, 0.2f);
     }
     
     private void PlayerDamaged()
@@ -241,6 +243,13 @@ public class GameDirector : MonoBehaviour
             {
                 timeLoopDuration -= Time.deltaTime;
                 UpdateLighthouseRotation();
+
+                secondsCounter += Time.deltaTime;
+                if (secondsCounter >= 1)
+                {
+                    secondsCounter = 0;
+                    Core.Audio.Play(SOUND_TYPE.ClockTikTak, 2, 0.05f);
+                }
             }
             else if (!timeLoopEnded)
             {

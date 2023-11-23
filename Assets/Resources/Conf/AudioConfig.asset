@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 830d222be4cfd1542b7a9e2f2535622c, type: 3}
-  m_Name: RewindConfig
+  m_Script: {fileID: 11500000, guid: be1155f5661ecff4d817b7082fe97613, type: 3}
+  m_Name: AudioConfig
   m_EditorClassIdentifier: 
-  initialPorcentage: 0.25
-  finalPorcentage: 0.1
-  accelerationFactor: 0.8
-  decelerationFactor: 1.3
+  backgroundMusic: {fileID: 8300000, guid: addb454e9ae63ec409c83c002d3c635c, type: 3}
+  clockTikTak: {fileID: 8300000, guid: e693d6450204cd84ba954dd67fb23754, type: 3}

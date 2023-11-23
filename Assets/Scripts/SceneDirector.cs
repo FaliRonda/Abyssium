@@ -12,7 +12,6 @@ public class SceneDirector : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
         currentFloor = initialFloor;
         this.EventSubscribe<GameEvents.LoadFloorSceneEvent>(e => LoadNewFloorScene(e.isFloorBelow));
         this.EventSubscribe<GameEvents.LoadInitialFloorSceneEvent>(e =>
