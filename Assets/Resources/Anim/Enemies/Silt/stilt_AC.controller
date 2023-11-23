@@ -20,7 +20,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 7e82c64c3190edb48a18745ee4ce7f6e, type: 2}
+  m_Motion: {fileID: 7400000, guid: 19e0b1eba3ac0eb46a49596cdeaa234b, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -99,7 +99,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: ce1350a2a8524744195c62ee518539f9, type: 2}
+  m_Motion: {fileID: 7400000, guid: 36efb6dfb97697446a7b7871c4b8daad, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -113,7 +113,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Stilt_attack
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -125,7 +125,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 6a7caba598fce2f4eabe5bfaac0c1bff, type: 2}
+  m_Motion: {fileID: 7400000, guid: 1012a8f77da848a4b8e8af3a6e7d6b81, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -151,7 +151,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 0fa5ebe3288f80f45853b55e7d7f9b88, type: 2}
+  m_Motion: {fileID: 7400000, guid: 8c02d29f3834e1a4b89f18b6b04b170e, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
