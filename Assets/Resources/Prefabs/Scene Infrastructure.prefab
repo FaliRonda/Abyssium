@@ -2098,7 +2098,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugMode: 1
   timeLoopDuration: -1
-  lightHouse: {fileID: 6706644522015070761}
+  moon: {fileID: 6706644522015070761}
   canvas: {fileID: 5989185473858205096}
   postprocessing: {fileID: 0}
   narrativeDirector: {fileID: 3737344189665620795}

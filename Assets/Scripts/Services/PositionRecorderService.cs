@@ -44,18 +44,27 @@ public class PositionRecorderService : IService
 
         int numberOfRecordedPositions = pjPositionsList.Count;
         float initialDuration = 0.3f;
-        float minDuration = 0.025f;
+        float minDuration = 0.01f;
         float duration = initialDuration;
+        float accumulatedDuration = 0;
         
         for (int i = numberOfRecordedPositions - 1; i >= 0; i--)
         {
             Vector3 pjPosition = pjPositionsList[i];
             rewindSequence.Append(pjTransform.DOMove(pjPosition, duration));
+            
             Quaternion moonRotation = moonRotationsList[i];
             rewindSequence.Append(moonTransform.DORotateQuaternion(moonRotation, duration));
 
-           
-
+            accumulatedDuration += duration;
+            if (accumulatedDuration >= 0.05)
+            {
+                accumulatedDuration = 0;
+                float pitch = 1.5f + (1f - duration * 3);
+                rewindSequence.AppendCallback(() => Core.Audio.Play(SOUND_TYPE.ClockTikTak, pitch, 0.05f));
+            }
+            
+            
             float rewindFactor = 1;
             
             if (i >= numberOfRecordedPositions - (numberOfRecordedPositions * rewindConfig.initialPorcentage))

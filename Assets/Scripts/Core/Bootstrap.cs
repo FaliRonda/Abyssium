@@ -24,5 +24,6 @@ public static class Bootstrap
 		ServiceContainer.RegisterService<IAnimatorHelperService, AnimatorHelperService>();
 		ServiceContainer.RegisterService<DialogueService, DialogueService>();
 		ServiceContainer.RegisterService<PositionRecorderService, PositionRecorderService>();
+		ServiceContainer.RegisterService<AudioService, AudioService>();
 	}
 }
