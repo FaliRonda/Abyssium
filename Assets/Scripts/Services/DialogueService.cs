@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DG.Tweening;
 using Ju.Services;
 using TMPro;
@@ -8,27 +7,32 @@ using UnityEngine.UI;
 
 public class DialogueService : IService
 {
-    private GameObject dialogueGO;
-    public TMP_Text dialogueText;
-    public List<GameObject> dialogueChoicesGO = new List<GameObject>();
-    public List<TMP_Text> dialogueChoicesText = new List<TMP_Text>();
+    private GameObject gameUIGO;
+    
+    private TMP_Text conversationDialogueText;
+    private List<GameObject> conversationDialogueChoicesGO = new List<GameObject>();
+    private List<TMP_Text> conversationDialogueChoicesText = new List<TMP_Text>();
     private NPC currentNPC;
+
+    private Transform lateralDialogsTransform;
+    private GameObject lateralDialogPrefab;
+    
     private TypingConfigSO typingConfig;
 
     public void StartConversation()
     {
-        dialogueGO.SetActive(true);
+        gameUIGO.SetActive(true);
     }
 
     public void HideCanvas()
     {
-        dialogueGO.SetActive(false);
+        gameUIGO.SetActive(false);
     }
 
     public void Initialize(Canvas canvas)
     {
-        dialogueGO = canvas.transform.GetChild(0).gameObject;
-        dialogueText = dialogueGO.GetComponentInChildren<TMP_Text>();
+        gameUIGO = canvas.transform.GetChild(0).gameObject;
+        conversationDialogueText = gameUIGO.GetComponentInChildren<TMP_Text>();
 
         var choicesTransform = canvas.transform.GetChild(1).GetComponentInChildren<Transform>();
 
@@ -36,9 +40,12 @@ public class DialogueService : IService
         {
             var choiceTransform = choicesTransform.GetChild(childIndex);
             
-            dialogueChoicesGO.Add(choiceTransform.gameObject);
-            dialogueChoicesText.Add(choiceTransform.GetComponentInChildren<TMP_Text>());
+            conversationDialogueChoicesGO.Add(choiceTransform.gameObject);
+            conversationDialogueChoicesText.Add(choiceTransform.GetComponentInChildren<TMP_Text>());
         }
+        
+        lateralDialogsTransform = canvas.transform.GetChild(3).GetComponentInChildren<Transform>();
+        lateralDialogPrefab = Resources.Load<GameObject>("Prefabs/LateralDialog");
         
         typingConfig = Resources.Load<TypingConfigSO>("Conf/TypingConfig");
 
@@ -52,21 +59,21 @@ public class DialogueService : IService
     public void ShowText(string text)
     {
         int charIndex = 0;
-        dialogueText.text = "";
+        conversationDialogueText.text = "";
 
         // Use DoTween to animate each letter in the text.
         DOTween.To(() => charIndex, x => charIndex = x, text.Length, text.Length * typingConfig.typingSpeed)
             .OnUpdate(() => {
-                dialogueText.text = text.Substring(0, charIndex);
+                conversationDialogueText.text = text.Substring(0, charIndex);
             });
     }
 
     public void ShowChoice(int choiceIndex, ChoiceSO choice, NPC npc)
     {
-        var currentChoice = dialogueChoicesGO[choiceIndex];
+        var currentChoice = conversationDialogueChoicesGO[choiceIndex];
         currentNPC = npc;
-        dialogueChoicesGO[choiceIndex].SetActive(true);
-        dialogueChoicesText[choiceIndex].text = choice.choiceText;
+        conversationDialogueChoicesGO[choiceIndex].SetActive(true);
+        conversationDialogueChoicesText[choiceIndex].text = choice.choiceText;
         
         var choiceButton = currentChoice.GetComponent<Button>();
         choiceButton.onClick.AddListener(delegate() { ChoiceSelected(choiceIndex); });
@@ -80,10 +87,36 @@ public class DialogueService : IService
 
     private void ResetChoices()
     {
-        for (int choiceIndex = 0; choiceIndex < dialogueChoicesGO.Count; choiceIndex++)
+        for (int choiceIndex = 0; choiceIndex < conversationDialogueChoicesGO.Count; choiceIndex++)
         {
-            dialogueChoicesText[choiceIndex].text = "";
-            dialogueChoicesGO[choiceIndex].SetActive(false);
+            conversationDialogueChoicesText[choiceIndex].text = "";
+            conversationDialogueChoicesGO[choiceIndex].SetActive(false);
+        }
+    }
+
+    public void ShowLateralDialogs(GameDirector.DialogueDictionary lateralDialogs)
+    {
+        Sequence lateralDialogsSequence = DOTween.Sequence();
+
+        foreach (var lateralDialog in lateralDialogs)
+        {
+            lateralDialogsSequence.AppendInterval(lateralDialog.Value)
+                .AppendCallback(() => { CreateLateralDialog(lateralDialog.Key); });
+        }
+
+        lateralDialogsSequence.Play();
+    }
+
+    private void CreateLateralDialog(DialogueSO lateralDialog)
+    {
+        GameObject lateralDialogInstance = Object.Instantiate(lateralDialogPrefab, lateralDialogsTransform);
+        TMP_Text lateralDialogTMP = lateralDialogInstance.GetComponentInChildren<TMP_Text>();
+        lateralDialogTMP.text = lateralDialog.dialogueText;
+        Image lateralDialogPortraitImage = lateralDialogInstance.GetComponentsInChildren<Image>()[1];
+        if (lateralDialog.characterPortrait != null)
+        {
+            lateralDialogPortraitImage.sprite = lateralDialog.characterPortrait;
+            lateralDialogPortraitImage.enabled = true;
         }
     }
 }

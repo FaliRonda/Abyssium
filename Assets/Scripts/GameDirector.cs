@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using Ju.Extensions;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
@@ -8,6 +10,8 @@ using InputAction = UnityEngine.InputSystem.InputAction;
 
 public class GameDirector : MonoBehaviour
 {
+    #region Public variables
+    
     public bool debugMode;
     public float timeLoopDuration = 10f;
     public GameObject moon;
@@ -15,32 +19,7 @@ public class GameDirector : MonoBehaviour
     public PostProcessVolume postprocessing;
     public NarrativeDirector narrativeDirector;
     public GameObject directionalLights;
-
-    private PJ pj;
-    private CameraDirector cameraDirector;
-    private bool gameIn3D;
-    private bool isInitialLoad = true;
-    private bool isFirstFloorLoad = true;
-    private bool timeLoopEnded;
-    private float initialTimeLoopDuration;
-    private float secondsCounter = 0;
-    private float currentLighthouseYRotation;
-    private float initialLighthouseXRotation;
-
-    private Bloom bloom;
-    private ChromaticAberration chromaticAberration;
-
     public ControlScheme control = null;
-    private Vector2 inputDirection = Vector2.zero;
-    
-    public PlayerInput playerInput;
-    
-    //INPUT ACTIONS
-    private InputAction MoveAction;
-    private InputAction RollAction;
-    private InputAction InteractAction;
-    private InputAction CameraChangeAction;
-    private InputAction CameraRotationAction;
     
     public struct ControlInputData
     {
@@ -55,11 +34,53 @@ public class GameDirector : MonoBehaviour
             this.cameraRotation = cameraRotation;
         }
     }
+
+    [System.Serializable]
+    public class DialogueDictionary : SerializableDictionary<DialogueSO, int> { }
     
+    [ShowInInspector, DictionaryDrawerSettings(KeyLabel = "Diálogo", ValueLabel = "Valor")]
+    public DialogueDictionary lateralDialogs = new DialogueDictionary();
+    
+    //[ShowInInspector, DictionaryDrawerSettings(KeyLabel = "Diálogo", ValueLabel = "Segundo de aparición")]
+    //public Dictionary<DialogueSO, float> lateralDialogs = new Dictionary<DialogueSO, float>();
+    
+    #endregion
+    
+    #region Private variables
+
+    private PJ pj;
+    private CameraDirector cameraDirector;
+    private bool gameIn3D;
+    private bool isInitialLoad = true;
+    private bool isFirstFloorLoad = true;
+    private bool timeLoopEnded;
+    private float initialTimeLoopDuration;
+    private float secondsCounter = 0;
+    private float currentLighthouseYRotation;
+    private float initialLighthouseXRotation;
+
+    private Bloom bloom;
+    private ChromaticAberration chromaticAberration;
+    
+    private Vector2 inputDirection = Vector2.zero;
+    
+    public PlayerInput playerInput;
+    
+    //INPUT ACTIONS
+    private InputAction MoveAction;
+    private InputAction RollAction;
+    private InputAction InteractAction;
+    private InputAction CameraChangeAction;
+    private InputAction CameraRotationAction;
+
+    #endregion
+
+    #region Unity Events
+
     private void Awake()
     {
         initialTimeLoopDuration = timeLoopDuration;
-        
+
         if (!debugMode)
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -70,7 +91,7 @@ public class GameDirector : MonoBehaviour
         initialLighthouseXRotation = moonRotation.eulerAngles.x;
 
         Core.Dialogue.Initialize(canvas);
-        
+
         this.EventSubscribe<GameEvents.EnemyDied>(e => CheckEnemiesInScene());
         this.EventSubscribe<GameEvents.NPCVanished>(e => ShowGodNarrative());
         this.EventSubscribe<GameEvents.DoorOpened>(e => DoorOpened());
@@ -79,47 +100,10 @@ public class GameDirector : MonoBehaviour
         DontDestroyOnLoad(transform.parent.gameObject);
 
         UpdateGameState();
-        
+
         Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1f, 0.2f);
     }
     
-    private void PlayerDamaged()
-    {
-        timeLoopDuration -= 10;
-        
-        // TODO Should gamefeel: modificar el postprocesado cuando el jugador es atacado
-        postprocessing.profile.TryGetSettings(out bloom);
-        postprocessing.profile.TryGetSettings(out chromaticAberration);
-    }
-
-    private void DoorOpened()
-    {
-        directionalLights.SetActive(false);
-        SwitchGamePerspective();
-    }
-
-    private void ShowGodNarrative()
-    {
-        narrativeDirector.ShowNarrative();
-    }
-
-    private void UpdateGameState()
-    {
-        GameState.gameIn3D = this.gameIn3D;
-    }
-
-    private void CheckEnemiesInScene()
-    {
-        /*EnemyAI[] enemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
-
-        if (enemies.Length <= 1)
-        {
-            SwitchGamePerspective();
-        }*/
-        
-        SwitchGamePerspective();
-    }
-
     private void Start()
     {
 
@@ -134,7 +118,7 @@ public class GameDirector : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "T1C0F0")
         {
-            Core.PositionRecorder.StartRecording(pj.transform, moon.transform);
+            StartT1C0F0GameFlow();
         }
         
         if (playerInput)
@@ -146,7 +130,7 @@ public class GameDirector : MonoBehaviour
             CameraRotationAction = playerInput.actions["CameraRotation"];
         }
     }
-    
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
         if (isInitialLoad)
@@ -162,54 +146,7 @@ public class GameDirector : MonoBehaviour
             StartCoroutine(WaitToInitializeGameDirector());
         }
     }
-
-    private IEnumerator WaitToInitializeGameDirectorAndSwitchPerspective()
-    {
-        yield return null;
-
-        InitializeGameDirector();
-        SwitchGamePerspective();
-    }
-
-    private IEnumerator WaitToInitializeGameDirector()
-    {
-        yield return null;
-
-        InitializeGameDirector();
-    }
-
-    private void InitializeGameDirector()
-    {
-        if (Camera.main != null)
-        {
-            cameraDirector = Camera.main.GetComponent<CameraDirector>();
-        }
-        else
-        {
-            cameraDirector = null;
-        }
-
-        var player = FindObjectOfType<PJ>();
-        if (player != null)
-        {
-            pj = player;
-        }
-        else
-        {
-            pj = null;
-        }
-
-        cameraDirector.Initialize(pj.transform);
-    }
-
-    private void SwitchGamePerspective()
-    {
-        gameIn3D = !gameIn3D;
-        UpdateGameState();
-                
-        Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() {gameIn3D = gameIn3D});
-    }
-
+    
     void Update()
     {
         if (cameraDirector != null && !cameraDirector.CamerasTransitionBlending())
@@ -258,6 +195,21 @@ public class GameDirector : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Gameflow methods
+
+    private void StartT1C0F0GameFlow()
+    {
+        Core.PositionRecorder.StartRecording(pj.transform, moon.transform);
+        Core.Dialogue.ShowLateralDialogs(lateralDialogs);
+    }
+    
+    private void UpdateGameState()
+    {
+        GameState.gameIn3D = this.gameIn3D;
+    }
+    
     private void UpdateLighthouseRotation()
     {
         float pendingTimeLoopDurationPorcentage = timeLoopDuration / initialTimeLoopDuration;
@@ -309,5 +261,119 @@ public class GameDirector : MonoBehaviour
         }
 
         return new ControlInputData(direction, inputDirection, CameraRotationAction.ReadValue<Vector2>());
+    }
+
+    #endregion
+
+    #region Event callbacks
+    
+    private void PlayerDamaged()
+    {
+        timeLoopDuration -= 10;
+        
+        // TODO Should gamefeel: modificar el postprocesado cuando el jugador es atacado
+        postprocessing.profile.TryGetSettings(out bloom);
+        postprocessing.profile.TryGetSettings(out chromaticAberration);
+    }
+
+    private void DoorOpened()
+    {
+        directionalLights.SetActive(false);
+        SwitchGamePerspective();
+    }
+
+    private void ShowGodNarrative()
+    {
+        narrativeDirector.ShowNarrative();
+    }
+    
+    private void CheckEnemiesInScene()
+    {
+        SwitchGamePerspective();
+    }
+    
+    #endregion
+    
+    #region Utils
+    
+    private IEnumerator WaitToInitializeGameDirectorAndSwitchPerspective()
+    {
+        yield return null;
+
+        InitializeGameDirector();
+        SwitchGamePerspective();
+    }
+
+    private IEnumerator WaitToInitializeGameDirector()
+    {
+        yield return null;
+
+        InitializeGameDirector();
+    }
+
+    private void InitializeGameDirector()
+    {
+        if (Camera.main != null)
+        {
+            cameraDirector = Camera.main.GetComponent<CameraDirector>();
+        }
+        else
+        {
+            cameraDirector = null;
+        }
+
+        var player = FindObjectOfType<PJ>();
+        if (player != null)
+        {
+            pj = player;
+        }
+        else
+        {
+            pj = null;
+        }
+
+        cameraDirector.Initialize(pj.transform);
+    }
+
+    private void SwitchGamePerspective()
+    {
+        gameIn3D = !gameIn3D;
+        UpdateGameState();
+                
+        Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() {gameIn3D = gameIn3D});
+    }
+
+    #endregion
+}
+
+[System.Serializable]
+public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
+{
+    [SerializeField, HideInInspector]
+    private List<TKey> keys = new List<TKey>();
+
+    [SerializeField, HideInInspector]
+    private List<TValue> values = new List<TValue>();
+
+    public void OnBeforeSerialize()
+    {
+        keys.Clear();
+        values.Clear();
+
+        foreach (KeyValuePair<TKey, TValue> pair in this)
+        {
+            keys.Add(pair.Key);
+            values.Add(pair.Value);
+        }
+    }
+
+    public void OnAfterDeserialize()
+    {
+        this.Clear();
+
+        for (int i = 0; i < keys.Count; i++)
+        {
+            this[keys[i]] = values[i];
+        }
     }
 }

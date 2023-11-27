@@ -45,6 +45,7 @@ public class NPC : Interactable
     public void StartDialogue()
     {
         SetInteracting(true);
+        
         Core.Dialogue.StartConversation();
 
         ShowNextDialog();
