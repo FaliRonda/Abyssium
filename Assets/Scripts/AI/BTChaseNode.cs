@@ -1,30 +1,9 @@
-// Chase node
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "New BT Chase Node", menuName = "AI/BT Nodes/Chase Node")]
 public class BTChaseNode : BTNode
 {
-    private Transform enemyTransform;
-    private Transform playerTransform;
-    private readonly Animator enemyAnimator;
-    private readonly SpriteRenderer enemySprite;
-    private float chaseSpeed;
-    private float chaseInLightSpeed;
-    private bool isShadow;
-    private AudioSource detectedAudio;
     private bool currentlyChasing = false;
-
-    public BTChaseNode(Transform enemyTransform, Transform playerTransform, Animator enemyAnimator,
-        SpriteRenderer enemySprite, float chaseSpeed, float chaseInLightSpeed, bool isShadow, AudioSource detectedAudio)
-    {
-        this.enemyTransform = enemyTransform;
-        this.playerTransform = playerTransform;
-        this.enemyAnimator = enemyAnimator;
-        this.enemySprite = enemySprite;
-        this.chaseSpeed = chaseSpeed;
-        this.chaseInLightSpeed = chaseInLightSpeed;
-        this.isShadow = isShadow;
-        this.detectedAudio = detectedAudio;
-    }
 
     public override BTNodeState Execute()
     {
@@ -34,7 +13,7 @@ public class BTChaseNode : BTNode
         {
             if (!currentlyChasing)
             {
-                detectedAudio.Play();
+                detectedAudioSource.Play();
             }
             currentlyChasing = true;
             // Move towards the player

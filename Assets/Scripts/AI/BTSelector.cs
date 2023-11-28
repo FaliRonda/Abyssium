@@ -1,4 +1,7 @@
 // Selector node
+
+using System.Collections.Generic;
+
 public class BTSelector : BTNode
 {
     private BTNode[] nodes;
@@ -26,6 +29,14 @@ public class BTSelector : BTNode
         else
         {
             return BTNodeState.Success;
+        }
+    }
+
+    public override void InitializeNode(Dictionary<string, object> parameters)
+    {
+        foreach (BTNode node in nodes)
+        {
+            node.InitializeNode(parameters);
         }
     }
 }

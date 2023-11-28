@@ -1,30 +1,15 @@
-// Attack node
-
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using Sequence = DG.Tweening.Sequence;
 
+[CreateAssetMenu(fileName = "New BT Attack Node", menuName = "AI/BT Nodes/Attack Node")]
 public class BTAttackNode : BTNode
 {
     public float attackCD = 1f;
-    
-    private Transform enemyTransform;
-    private Transform playerTransform;
-    private float attackDistance;
     private bool waitForNextAttack = false;
-    private readonly Animator enemyAnimator;
-    private readonly SpriteRenderer enemySprite;
     private bool attackPlaying = false;
-
-    public BTAttackNode(Transform enemyTransform, Transform playerTransform, Animator enemyAnimator,
-        SpriteRenderer enemySprite,
-        float attackDistance)
-    {
-        this.enemyTransform = enemyTransform;
-        this.playerTransform = playerTransform;
-        this.enemyAnimator = enemyAnimator;
-        this.enemySprite = enemySprite;
-        this.attackDistance = attackDistance;
-    }
+    private bool isInitialized;
 
     public override BTNodeState Execute()
     {

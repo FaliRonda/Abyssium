@@ -1,10 +1,8 @@
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using Ju.Extensions;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Sequence = DG.Tweening.Sequence;
 
 public class EnemyAI : MonoBehaviour
@@ -27,21 +25,22 @@ public class EnemyAI : MonoBehaviour
     public float spriteBlinkingFrecuency = 0.15f;
     public Transform[] waypoints;
     
-
     // Behavior tree root node
+    public EnemyBTNodesSO behaviorNodeContainer;
     public bool isShadow = false;
     private BTSelector rootNode;
-    private AudioSource detectedAudio;
+    private BTAttackNode attackNode;
+    private BTChaseNode chaseNode;
+    private BTPatrolNode patrolNode;
+    private Dictionary<string, object> parameters;
     
     private bool beingDamaged = false;
     private bool spriteBlinking = false;
     private bool isDead = false;
+    
     private SpriteRenderer enemySprite;
     private Animator enemyAnimator;
-
-    private BTAttackNode attackNode;
-    private BTChaseNode chaseNode;
-    private BTPatrolNode patrolNode;
+    private AudioSource detectedAudioSource;
 
     private Quaternion defaultEnemySpriteRotation;
     private SphereCollider attackCollider;
@@ -56,23 +55,33 @@ public class EnemyAI : MonoBehaviour
 
     private void Start()
     {
-        detectedAudio = GetComponentInChildren<AudioSource>();
+        detectedAudioSource = GetComponentInChildren<AudioSource>();
         enemySprite = GetComponentInChildren<SpriteRenderer>();
         enemyAnimator = GetComponentInChildren<Animator>();
         attackCollider = gameObject.GetComponentsInChildren<SphereCollider>()[1];
 
         defaultEnemySpriteRotation = enemySprite.transform.rotation;
 
-        attackNode = new BTAttackNode(transform, playerTransform, enemyAnimator, enemySprite, attackDistance);
-        chaseNode = new BTChaseNode(transform, playerTransform, enemyAnimator, enemySprite, chaseSpeed, chaseInLightSpeed, isShadow, detectedAudio);
-        patrolNode = new BTPatrolNode(transform, waypoints, enemyAnimator, enemySprite, patrolSpeed);
-        
         // Create the behavior tree
-        rootNode = new BTSelector(
-            attackNode,
-            chaseNode,
-            patrolNode
-        );
+        rootNode = new BTSelector(behaviorNodeContainer.behaviorNodes.ToArray());
+        
+        parameters = new Dictionary<string, object>
+        {
+            { "EnemyTransform", transform },
+            { "PlayerTransform", playerTransform },
+            { "Waypoints", waypoints },
+            { "EnemyAnimator", enemyAnimator },
+            { "EnemySprite", enemySprite },
+            { "AttackDistance", attackDistance },
+            { "PatrolSpeed", patrolSpeed },
+            { "ChaseSpeed", chaseSpeed },
+            { "ChaseInLightSpeed", chaseInLightSpeed },
+            { "IsShadow", isShadow },
+            { "DetectedAudioSource", detectedAudioSource },
+            // Agrega otros parámetros según sea necesario
+        };
+
+        rootNode.InitializeNode(parameters);
     }
 
     private void Update()

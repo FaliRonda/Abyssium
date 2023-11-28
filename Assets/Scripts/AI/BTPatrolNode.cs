@@ -1,25 +1,10 @@
-// Patrol node
+using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "New BT Patrol Node", menuName = "AI/BT Nodes/Patrol Node")]
 public class BTPatrolNode : BTNode
 {
-    private Transform enemyTransform;
-    private Transform[] waypoints;
-    private readonly Animator enemyAnimator;
-    private readonly SpriteRenderer enemySprite;
-    private int currentWaypointIndex;
-    private float patrolSpeed;
-
-    public BTPatrolNode(Transform enemyTransform, Transform[] waypoints, Animator enemyAnimator,
-        SpriteRenderer enemySprite, float patrolSpeed)
-    {
-        this.enemyTransform = enemyTransform;
-        this.waypoints = waypoints;
-        this.enemyAnimator = enemyAnimator;
-        this.enemySprite = enemySprite;
-        this.patrolSpeed = patrolSpeed;
-        currentWaypointIndex = 0;
-    }
+    private int currentWaypointIndex = 0;
 
     public override BTNodeState Execute()
     {
