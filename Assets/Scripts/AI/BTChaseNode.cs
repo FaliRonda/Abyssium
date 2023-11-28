@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New BT Chase Node", menuName = "AI/BT Nodes/Chase Node")]
 public class BTChaseNode : BTNode
 {
-    private bool currentlyChasing = false;
+    private bool currentlyChasing;
 
     public override BTNodeState Execute()
     {
@@ -40,5 +40,10 @@ public class BTChaseNode : BTNode
     public void ResetChasing()
     {
         currentlyChasing = false;
+    }
+
+    public override void ResetNode()
+    {
+        ResetChasing();
     }
 }

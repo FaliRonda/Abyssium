@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New BT Patrol Node", menuName = "AI/BT Nodes/Patrol Node")]
@@ -26,5 +25,10 @@ public class BTPatrolNode : BTNode
         enemyAnimator.Play("Stilt_walk");
         
         return BTNodeState.Running;
+    }
+
+    public override void ResetNode()
+    {
+        currentWaypointIndex = 0;
     }
 }

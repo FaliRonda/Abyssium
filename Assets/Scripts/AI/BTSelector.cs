@@ -37,6 +37,7 @@ public class BTSelector : BTNode
         foreach (BTNode node in nodes)
         {
             node.InitializeNode(parameters);
+            node.ResetNode();
         }
     }
 }

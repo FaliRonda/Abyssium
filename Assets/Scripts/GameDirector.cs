@@ -272,8 +272,8 @@ public class GameDirector : MonoBehaviour
         timeLoopDuration -= 10;
         
         // TODO Should gamefeel: modificar el postprocesado cuando el jugador es atacado
-        postprocessing.profile.TryGetSettings(out bloom);
-        postprocessing.profile.TryGetSettings(out chromaticAberration);
+        //postprocessing.profile.TryGetSettings(out bloom);
+        //postprocessing.profile.TryGetSettings(out chromaticAberration);
     }
 
     private void DoorOpened()

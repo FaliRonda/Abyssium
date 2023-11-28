@@ -18,6 +18,7 @@ public abstract class BTNode : ScriptableObject
     public bool isShadow;
     
     public abstract BTNodeState Execute();
+    public virtual void ResetNode(){}
     
     public virtual void InitializeNode(Dictionary<string, object> parameters)
     {

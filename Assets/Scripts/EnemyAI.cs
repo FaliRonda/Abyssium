@@ -116,7 +116,7 @@ public class EnemyAI : MonoBehaviour
             }
             else
             {
-                PlayDamageAnimation();
+                PlayDamagedAnimation();
             }
         }
     }
@@ -141,7 +141,7 @@ public class EnemyAI : MonoBehaviour
         });
     }
 
-    private void PlayDamageAnimation()
+    private void PlayDamagedAnimation()
     {
         Sequence sequence = DOTween.Sequence();
         sequence.AppendCallback(() => beingDamaged = true)
@@ -208,7 +208,7 @@ public class EnemyAI : MonoBehaviour
         attackCollider.enabled = false;
     }
     
-    public void OnTriggerStay(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == Layers.PJ_LAYER)
         {

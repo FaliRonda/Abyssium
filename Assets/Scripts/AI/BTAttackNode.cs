@@ -7,9 +7,8 @@ using Sequence = DG.Tweening.Sequence;
 public class BTAttackNode : BTNode
 {
     public float attackCD = 1f;
-    private bool waitForNextAttack = false;
-    private bool attackPlaying = false;
-    private bool isInitialized;
+    public bool waitForNextAttack;
+    private bool attackPlaying;
 
     public override BTNodeState Execute()
     {
@@ -33,7 +32,10 @@ public class BTAttackNode : BTNode
                 
                 Sequence sequence = DOTween.Sequence();
                 sequence.AppendInterval(attackCD).
-                    AppendCallback(() => waitForNextAttack = false);
+                    AppendCallback(() =>
+                    {
+                        waitForNextAttack = false;
+                    });
                 
             }
             else
@@ -52,5 +54,11 @@ public class BTAttackNode : BTNode
         }
 
         return BTNodeState.Failure;
+    }
+
+    public override void ResetNode()
+    {
+        waitForNextAttack = false;
+        attackPlaying = false;
     }
 }
