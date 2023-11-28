@@ -186,7 +186,7 @@ Transform:
   m_GameObject: {fileID: 3368591435065734892}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2828, y: 1.2828, z: 1.2828}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3934487933963042791}
@@ -426,7 +426,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   lifeAmount: 2
   patrolSpeed: 3
-  chaseSpeed: 6
+  chaseSpeed: 3
   chaseInLightSpeed: 0.5
   itemToDrop: {fileID: 0}
   visibilityRadius: 8
