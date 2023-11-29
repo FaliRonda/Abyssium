@@ -126,7 +126,7 @@ public class EnemyAI : MonoBehaviour
         isDead = true;
         
         Dropper dropper = GetComponent<Dropper>();
-        if (dropper != null)
+        if (dropper != null && itemToDrop != null)
         {
             dropper.Drop(itemToDrop);
         }
