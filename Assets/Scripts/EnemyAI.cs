@@ -16,6 +16,7 @@ public class EnemyAI : MonoBehaviour
 
     // Attack distance
     public float spriteBlinkingFrecuency = 0.15f;
+    public float damageBlinkingDuration = 1f;
     public Transform[] waypoints;
     
     // Behavior tree root node
@@ -26,8 +27,8 @@ public class EnemyAI : MonoBehaviour
     private BTPatrolNode patrolNode;
     private Dictionary<string, object> parameters;
     
-    private bool beingDamaged = false;
     private bool spriteBlinking = false;
+    private float damagedBlinkingCounter;
     private bool isDead = false;
     
     private SpriteRenderer enemySprite;
@@ -73,13 +74,8 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-        if (!beingDamaged)
-        {
-            // Update the behavior tree
-            rootNode.Execute();
-        }
-        
-        
+        // Update the behavior tree
+        rootNode.Execute();
     }
     
     private void OnDrawGizmosSelected()
@@ -129,18 +125,13 @@ public class EnemyAI : MonoBehaviour
 
     private void PlayDamagedAnimation()
     {
-        Sequence sequence = DOTween.Sequence();
-        sequence.AppendCallback(() => beingDamaged = true)
-            .AppendCallback(() => StartCoroutine(SpriteBlinking()))
-            .AppendInterval(2f)
-            .AppendCallback(() => beingDamaged = false);
+        damagedBlinkingCounter = damageBlinkingDuration;
+        StartCoroutine(SpriteBlinking());
     }
 
     IEnumerator SpriteBlinking()
     {
-        enemySprite.color = Color.red;
-        
-        while (beingDamaged)
+        while (damagedBlinkingCounter > 0)
         {
             if (!spriteBlinking)
             {
@@ -152,6 +143,8 @@ public class EnemyAI : MonoBehaviour
                     .AppendInterval(spriteBlinkingFrecuency)
                     .AppendCallback(() => spriteBlinking = false);
             }
+
+            damagedBlinkingCounter -= Time.deltaTime;
             
             yield return null;
         }
