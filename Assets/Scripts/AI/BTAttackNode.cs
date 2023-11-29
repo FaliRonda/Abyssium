@@ -25,7 +25,7 @@ public class BTAttackNode : BTNode
                 enemyAnimator.Play("Stilt_attack");
                 attackPlaying = true;
                 
-                float animLenght = Core.AnimatorHelper.GetAnimLenght(enemyAnimator, "Enemigo1_Attack");
+                float animLenght = Core.AnimatorHelper.GetAnimLenght(enemyAnimator, "Stalker_Attack");
                 Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () => { attackPlaying = false; });
                 
                 waitForNextAttack = true;

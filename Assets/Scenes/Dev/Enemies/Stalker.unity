@@ -17419,6 +17419,10 @@ PrefabInstance:
       value: Stalker
       objectReference: {fileID: 0}
     - target: {fileID: 4710716284538430482, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: m_Radius
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710716284538430482, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -17473,6 +17477,18 @@ PrefabInstance:
     - target: {fileID: 7266895700364366196, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7534994692394902429, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: m_Radius
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7534994692394902429, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7534994692394902429, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: m_Center.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8423899225659954203, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: m_LocalPosition.x
