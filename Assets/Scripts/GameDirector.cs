@@ -56,8 +56,6 @@ public class GameDirector : MonoBehaviour
     private bool timeLoopEnded;
     private float initialTimeLoopDuration;
     private float secondsCounter = 0;
-    private float currentLighthouseYRotation;
-    private float initialLighthouseXRotation;
 
     private Bloom bloom;
     private ChromaticAberration chromaticAberration;
@@ -87,8 +85,6 @@ public class GameDirector : MonoBehaviour
         }
 
         var moonRotation = moon.transform.rotation;
-        currentLighthouseYRotation = moonRotation.eulerAngles.y;
-        initialLighthouseXRotation = moonRotation.eulerAngles.x;
 
         Core.Dialogue.Initialize(canvas);
 
@@ -96,8 +92,6 @@ public class GameDirector : MonoBehaviour
         this.EventSubscribe<GameEvents.NPCVanished>(e => ShowGodNarrative());
         this.EventSubscribe<GameEvents.DoorOpened>(e => DoorOpened());
         this.EventSubscribe<GameEvents.PlayerDamaged>(e => PlayerDamaged());
-
-        DontDestroyOnLoad(transform.parent.gameObject);
 
         UpdateGameState();
 
@@ -138,7 +132,7 @@ public class GameDirector : MonoBehaviour
             isInitialLoad = false;
         } else if (!isInitialLoad && isFirstFloorLoad)
         {
-            StartCoroutine(WaitToInitializeGameDirectorAndSwitchPerspective());
+            StartCoroutine(WaitToInitializeGameDirectorAndSet3D());
             isFirstFloorLoad = false;
         }
         else
@@ -296,12 +290,13 @@ public class GameDirector : MonoBehaviour
     
     #region Utils
     
-    private IEnumerator WaitToInitializeGameDirectorAndSwitchPerspective()
+    private IEnumerator WaitToInitializeGameDirectorAndSet3D()
     {
         yield return null;
 
         InitializeGameDirector();
-        SwitchGamePerspective();
+        bool gameIn3D = true;
+        SetGameState(gameIn3D);
     }
 
     private IEnumerator WaitToInitializeGameDirector()
@@ -337,10 +332,15 @@ public class GameDirector : MonoBehaviour
 
     private void SwitchGamePerspective()
     {
-        gameIn3D = !gameIn3D;
+        SetGameState(!gameIn3D);
+    }
+
+    private void SetGameState(bool gameIn3D)
+    {
+        this.gameIn3D = gameIn3D;
         UpdateGameState();
-                
-        Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() {gameIn3D = gameIn3D});
+
+        Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = this.gameIn3D });
     }
 
     #endregion

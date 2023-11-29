@@ -1049,6 +1049,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5022014154150157608}
+  - component: {fileID: 9186691229013835505}
   m_Layer: 0
   m_Name: Scene Infrastructure
   m_TagString: Untagged
@@ -1076,8 +1077,20 @@ Transform:
   - {fileID: 5912020269045212659}
   - {fileID: 4044460938596329161}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9186691229013835505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4723417635908149436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21f2832c95106bf46b9558996c6e44d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5487745249006055781
 GameObject:
   m_ObjectHideFlags: 0
@@ -2103,6 +2116,9 @@ MonoBehaviour:
   postprocessing: {fileID: 0}
   narrativeDirector: {fileID: 3737344189665620795}
   directionalLights: {fileID: 0}
+  lateralDialogs:
+    keys: []
+    values: 
   playerInput: {fileID: 930666903094989707}
 --- !u!114 &930666903094989707
 MonoBehaviour:
