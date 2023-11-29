@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyTransform: {fileID: 0}
   playerTransform: {fileID: 0}
-  waypoints: []
+  waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
   enemyAnimator: {fileID: 0}
   enemySprite: {fileID: 0}
   detectedAudioSource: {fileID: 0}
-  attackDistance: 1
-  attackCD: 1
-  waitForNextAttack: 0
+  attackVisibilityDistance: 1
+  attackCD: 1.5
+  anticipationDistance: 1
+  anticipacionDuration: 0.2
+  attackMovementDistance: 1.5
+  attackMovementDuration: 0.1
