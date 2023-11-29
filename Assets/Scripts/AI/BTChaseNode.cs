@@ -35,7 +35,7 @@ public class BTChaseNode : BTNode
             
             enemyTransform.Translate(direction.normalized * (Time.deltaTime * movementSpeed));
             enemySprite.flipX = direction.x > 0;
-            enemyAnimator.Play("Stilt_walk");
+            enemyAnimator.Play("Enemy_walk");
             
             return BTNodeState.Running;
         }

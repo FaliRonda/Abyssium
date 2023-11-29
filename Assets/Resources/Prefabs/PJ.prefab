@@ -5149,7 +5149,7 @@ MonoBehaviour:
   inventory: {fileID: 7688174995698549991}
   playerSpeed: 4
   playerRotationSpeed: 1
-  playerRollFactor: 4
+  playerRollFactor: 2.5
   rollCooldown: 0.35
   attackCooldown: 0.8
   playerRayMaxDistance: 0.5

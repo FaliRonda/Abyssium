@@ -32,7 +32,7 @@ public class BTAttackNode : BTNode
             {
                 if (!attackPlaying)
                 {
-                    enemyAnimator.Play("Stilt_idle");
+                    return BTNodeState.Failure;
                 }
             } 
             return BTNodeState.Success;
@@ -50,10 +50,10 @@ public class BTAttackNode : BTNode
     {
         enemySprite.flipX = direction.x > 0;
 
-        enemyAnimator.Play("Stilt_attack");
+        enemyAnimator.Play("Enemy_attack");
         attackPlaying = true;
 
-        float animLenght = Core.AnimatorHelper.GetAnimLenght(enemyAnimator, "Stalker_attack");
+        float animLenght = Core.AnimatorHelper.GetAnimLenght(enemyAnimator, "Enemy_attack");
         Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () => { attackPlaying = false; });
 
         waitForNextAttack = true;

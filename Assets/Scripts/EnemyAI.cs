@@ -114,8 +114,8 @@ public class EnemyAI : MonoBehaviour
         }
 
         rootNode.AIActive = false;
-        enemyAnimator.Play("Stilt_die");
-        float animLenght = Core.AnimatorHelper.GetAnimLenght(enemyAnimator, "Stilt_die_anim");
+        enemyAnimator.Play("Enemy_die");
+        float animLenght = Core.AnimatorHelper.GetAnimLenght(enemyAnimator, "Enemy_die");
         Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () =>
         {
             enemySprite.GetComponent<LookCameraOn3D>().rotateCameraOn3DActive = false;
@@ -149,6 +149,7 @@ public class EnemyAI : MonoBehaviour
             yield return null;
         }
 
+        //TODO debería hacerse esto en otro lugar?
         chaseNode.ResetChasing();
         enemySprite.color = Color.white;
         yield return null;

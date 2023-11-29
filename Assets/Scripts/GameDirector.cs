@@ -221,12 +221,12 @@ public class GameDirector : MonoBehaviour
         timeLoopEnded = true;
         timeLoopDuration = initialTimeLoopDuration;
         
-        if (SceneManager.GetActiveScene().name != "T1C0F0")
+        if (SceneManager.GetActiveScene().name != "T1C0F0" && !debugMode)
         {
             isFirstFloorLoad = true;
             Core.Event.Fire<GameEvents.LoadInitialFloorSceneEvent>();
         }
-        else
+        else if (SceneManager.GetActiveScene().name == "T1C0F0")
         {
             Core.PositionRecorder.StopRecording();
             Core.PositionRecorder.DoRewind(pj.transform, moon.transform);

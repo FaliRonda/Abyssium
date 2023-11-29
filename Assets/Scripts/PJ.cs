@@ -2,6 +2,7 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Ju.Extensions;
+using UnityEditor.Animations;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ public class PJ : MonoBehaviour
     public float playerDustParticlesDelay = 0.5f;
     
     private ParticleSystem pjStepDust;
-    private Animator pjAnim;
+    private Animator pjAnimator;
     private SpriteRenderer pjSprite;
     
     private Quaternion initialPlayerSpriteRotation;
@@ -43,7 +44,7 @@ public class PJ : MonoBehaviour
     {
         pjStepDust = GetComponentInChildren<ParticleSystem>();
         pjSprite = GetComponentInChildren<SpriteRenderer>();
-        pjAnim = GetComponentInChildren<Animator>();
+        pjAnimator = GetComponentInChildren<Animator>();
 
         initialPlayerRotation = transform.rotation;
         initialPlayerSpriteRotation = pjSprite.transform.rotation;
@@ -113,8 +114,8 @@ public class PJ : MonoBehaviour
             pjDoingAction = true;
             pjIsRolling = true;
 
-            pjAnim.Play("PJ_roll");
-            float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_roll");
+            pjAnimator.Play("PJ_roll");
+            float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnimator, "PJ_roll");
             
             PjActionFalseWhenAnimFinish(animLenght);
 
@@ -216,12 +217,12 @@ public class PJ : MonoBehaviour
         if (!directionIsZero)
         {
             SetSpriteXOrientation(controlInputData.inputDirection.x);
-            pjAnim.Play("PJ_walk");
+            pjAnimator.Play("PJ_walk");
             CreatePlayerDustParticles();
         }
         else
         {
-            pjAnim.Play("PJ_idle");
+            pjAnimator.Play("PJ_idle");
         }
 
         direction = FixDiagonalSpeedMovement(direction);
@@ -345,7 +346,7 @@ public class PJ : MonoBehaviour
             else if (pjIsRolling) // Attack on dash Input Buffer
             {
                 bufferedAttack = true;
-                float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_roll");
+                float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnimator, "PJ_roll");
                 Sequence sequence = DOTween.Sequence();
                 sequence.AppendInterval(animLenght).AppendCallback((() => 
                 {
@@ -382,9 +383,9 @@ public class PJ : MonoBehaviour
     {
         pjDoingAction = true;
         
-        pjAnim.Play("PJ_attack");
+        pjAnimator.Play("PJ_attack");
         
-        float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_attack");
+        float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnimator, "PJ_attack");
 
         Weapon activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
         if (activeWeapon != null)
