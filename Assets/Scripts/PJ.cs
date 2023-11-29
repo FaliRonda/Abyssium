@@ -113,8 +113,8 @@ public class PJ : MonoBehaviour
             pjDoingAction = true;
             pjIsRolling = true;
 
-            pjAnim.Play("Warrior_roll");
-            float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "Warrior_roll");
+            pjAnim.Play("PJ_roll");
+            float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_roll");
             
             PjActionFalseWhenAnimFinish(animLenght);
 
@@ -216,12 +216,12 @@ public class PJ : MonoBehaviour
         if (!directionIsZero)
         {
             SetSpriteXOrientation(controlInputData.inputDirection.x);
-            pjAnim.Play("Warrior_run");
+            pjAnim.Play("PJ_walk");
             CreatePlayerDustParticles();
         }
         else
         {
-            pjAnim.Play("Warrior_idle");
+            pjAnim.Play("PJ_idle");
         }
 
         direction = FixDiagonalSpeedMovement(direction);
@@ -345,7 +345,7 @@ public class PJ : MonoBehaviour
             else if (pjIsRolling) // Attack on dash Input Buffer
             {
                 bufferedAttack = true;
-                float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "Warrior_roll");
+                float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_roll");
                 Sequence sequence = DOTween.Sequence();
                 sequence.AppendInterval(animLenght).AppendCallback((() => 
                 {
@@ -382,7 +382,7 @@ public class PJ : MonoBehaviour
     {
         pjDoingAction = true;
         
-        pjAnim.Play("Warrior_attack");
+        pjAnim.Play("PJ_attack");
         
         float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "Warrior_attack1");
 
