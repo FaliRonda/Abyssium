@@ -384,7 +384,7 @@ public class PJ : MonoBehaviour
         
         pjAnim.Play("PJ_attack");
         
-        float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "Warrior_attack1");
+        float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnim, "PJ_attack");
 
         Weapon activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
         if (activeWeapon != null)
