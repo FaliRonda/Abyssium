@@ -5,20 +5,22 @@ using UnityEngine;
 
 public abstract class BTNode : ScriptableObject
 {
+    [HideInInspector]
     public Transform enemyTransform;
+    [HideInInspector]
     public Transform playerTransform;
+    [HideInInspector]
     public Transform[] waypoints;
+    [HideInInspector]
     public Animator enemyAnimator;
+    [HideInInspector]
     public SpriteRenderer enemySprite;
+    [HideInInspector]
     public AudioSource detectedAudioSource;
-    public float attackDistance;
-    public float patrolSpeed;
-    public float chaseSpeed;
-    public float chaseInLightSpeed;
-    public bool isShadow;
     
     public abstract BTNodeState Execute();
     public virtual void ResetNode(){}
+    public virtual void DrawGizmos(){}
     
     public virtual void InitializeNode(Dictionary<string, object> parameters)
     {
@@ -35,16 +37,6 @@ public abstract class BTNode : ScriptableObject
         enemySprite = parameterObj as SpriteRenderer;
         parameters.TryGetValue("DetectedAudioSource", out parameterObj);
         detectedAudioSource = parameterObj as AudioSource;
-        parameters.TryGetValue("AttackDistance", out parameterObj);
-        attackDistance = (float) parameterObj;
-        parameters.TryGetValue("PatrolSpeed", out parameterObj);
-        patrolSpeed = (float) parameterObj;
-        parameters.TryGetValue("ChaseSpeed", out parameterObj);
-        chaseSpeed = (float) parameterObj;
-        parameters.TryGetValue("ChaseInLightSpeed", out parameterObj);
-        chaseInLightSpeed = (float) parameterObj;
-        parameters.TryGetValue("IsShadow", out parameterObj);
-        isShadow = (bool) parameterObj;
     }
 }
 

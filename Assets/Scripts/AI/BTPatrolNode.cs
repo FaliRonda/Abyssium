@@ -3,6 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New BT Patrol Node", menuName = "AI/BT Nodes/Patrol Node")]
 public class BTPatrolNode : BTNode
 {
+    public float patrolSpeed;
+    
     private int currentWaypointIndex = 0;
 
     public override BTNodeState Execute()

@@ -9,18 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca92339c6336f644d8f3f9bba501fda4, type: 3}
-  m_Name: AttackBTNode
+  m_Script: {fileID: 11500000, guid: 409cd9477bdfd024a857fedae875778c, type: 3}
+  m_Name: StalkerChaseBTNode
   m_EditorClassIdentifier: 
   enemyTransform: {fileID: 0}
   playerTransform: {fileID: 0}
-  waypoints: []
+  waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
   enemyAnimator: {fileID: 0}
   enemySprite: {fileID: 0}
   detectedAudioSource: {fileID: 0}
-  attackDistance: 0
-  patrolSpeed: 0
-  chaseSpeed: 0
-  chaseInLightSpeed: 0
+  visibilityRadius: 3
+  lightRadius: 2
+  chaseSpeed: 3
+  chaseInLightSpeed: 0.5
   isShadow: 0
-  attackCD: 1

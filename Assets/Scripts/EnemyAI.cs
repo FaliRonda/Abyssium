@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Ju.Extensions;
+using UnityEditor;
 using UnityEngine;
 using Sequence = DG.Tweening.Sequence;
 
@@ -11,23 +12,14 @@ public class EnemyAI : MonoBehaviour
     public Transform playerTransform;
 
     public int lifeAmount = 3;
-    public float patrolSpeed = 1f;
-    public float chaseSpeed = 1f;
-    public float chaseInLightSpeed = 0.5f;
     public GameObject itemToDrop;
-    
-    // Visibility radius
-    public float visibilityRadius = 10f;
-    public float lightRadius = 10f;
 
     // Attack distance
-    public float attackDistance = 2f;
     public float spriteBlinkingFrecuency = 0.15f;
     public Transform[] waypoints;
     
     // Behavior tree root node
     public EnemyBTNodesSO behaviorNodeContainer;
-    public bool isShadow = false;
     private BTSelector rootNode;
     private BTAttackNode attackNode;
     private BTChaseNode chaseNode;
@@ -72,11 +64,6 @@ public class EnemyAI : MonoBehaviour
             { "Waypoints", waypoints },
             { "EnemyAnimator", enemyAnimator },
             { "EnemySprite", enemySprite },
-            { "AttackDistance", attackDistance },
-            { "PatrolSpeed", patrolSpeed },
-            { "ChaseSpeed", chaseSpeed },
-            { "ChaseInLightSpeed", chaseInLightSpeed },
-            { "IsShadow", isShadow },
             { "DetectedAudioSource", detectedAudioSource },
             // Agrega otros parámetros según sea necesario
         };
@@ -97,12 +84,10 @@ public class EnemyAI : MonoBehaviour
     
     private void OnDrawGizmosSelected()
     {
-        // Draw the visibility radius gizmo
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, visibilityRadius);
-        
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackDistance);
+        if (EditorApplication.isPlaying)
+        {
+            rootNode.DrawGizmos();
+        }
     }
 
     public void GetDamage(int damageAmount)
@@ -126,6 +111,7 @@ public class EnemyAI : MonoBehaviour
         isDead = true;
         
         Dropper dropper = GetComponent<Dropper>();
+        if (dropper != null && itemToDrop != null)
         if (dropper != null && itemToDrop != null)
         {
             dropper.Drop(itemToDrop);
@@ -191,15 +177,6 @@ public class EnemyAI : MonoBehaviour
 
     public void ActiveAttackTrigger()
     {
-        if (enemySprite.flipX)
-        {
-            attackCollider.center = new Vector3(0.75f, 0, 0.15f);
-        }
-        else
-        {
-            attackCollider.center = new Vector3(-0.75f, 0, 0.15f);
-        }
-        
         attackCollider.enabled = true;
     }
 
