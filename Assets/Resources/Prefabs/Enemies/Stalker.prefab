@@ -424,7 +424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 0}
-  lifeAmount: 2
+  lifeAmount: 10
   itemToDrop: {fileID: 0}
   spriteBlinkingFrecuency: 0.15
   damageBlinkingDuration: 1

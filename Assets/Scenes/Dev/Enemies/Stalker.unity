@@ -17463,6 +17463,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: lifeAmount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 208057940}
@@ -24614,6 +24618,14 @@ PrefabInstance:
     - target: {fileID: 1420401184455798622, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799084693320912194, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
+      propertyPath: attackCooldown
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799084693320912194, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
+      propertyPath: playerRollFactor
+      value: 2.9
       objectReference: {fileID: 0}
     - target: {fileID: 7771127239736067787, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
       propertyPath: m_Name
