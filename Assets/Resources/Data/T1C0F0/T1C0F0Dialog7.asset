@@ -9,13 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 830d222be4cfd1542b7a9e2f2535622c, type: 3}
-  m_Name: RewindConfig
+  m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
+  m_Name: T1C0F0Dialog7
   m_EditorClassIdentifier: 
-  initialPorcentage: 0.25
-  finalPorcentage: 0.1
-  accelerationFactor: 0.8
-  decelerationFactor: 1.05
-  minimumSoundPeriod: 0.075
-  initialDuration: 0.3
-  minimumRewindStepDuration: 0.005
+  dialogueText: Is strange... is like I see myself from the... sky...
+  choices: []
+  isLateral: 1
+  characterPortrait: {fileID: 21300000, guid: de2ae1b772d07c645aa77b8c9aa22fca, type: 3}

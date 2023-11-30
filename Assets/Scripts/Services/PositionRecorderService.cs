@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Ju.Services;
-using UnityEditor.Searcher;
 using UnityEngine;
 using Sequence = DG.Tweening.Sequence;
 
@@ -38,14 +38,12 @@ public class PositionRecorderService : IService
         moonPositionSequence.Kill();
     }
 
-    public void DoRewind(Transform pjTransform, Transform moonTransform)
+    public void DoRewind(Transform pjTransform, Transform moonTransform, Action callback)
     {
         Sequence rewindSequence = DOTween.Sequence();
 
         int numberOfRecordedPositions = pjPositionsList.Count;
-        float initialDuration = 0.3f;
-        float minDuration = 0.01f;
-        float duration = initialDuration;
+        float duration = rewindConfig.initialDuration;
         float accumulatedDuration = 0;
         
         for (int i = numberOfRecordedPositions - 1; i >= 0; i--)
@@ -57,28 +55,27 @@ public class PositionRecorderService : IService
             rewindSequence.Append(moonTransform.DORotateQuaternion(moonRotation, duration));
 
             accumulatedDuration += duration;
-            if (accumulatedDuration >= 0.05)
+            if (accumulatedDuration >= rewindConfig.minimumSoundPeriod)
             {
                 accumulatedDuration = 0;
-                float pitch = 1.5f + (1f - duration * 3);
+                float pitch = 1.5f + (1f - duration * 4);
                 rewindSequence.AppendCallback(() => Core.Audio.Play(SOUND_TYPE.ClockTikTak, pitch, 0.05f));
             }
-            
-            
+
             float rewindFactor = 1;
             
             if (i >= numberOfRecordedPositions - (numberOfRecordedPositions * rewindConfig.initialPorcentage))
             {
-                rewindFactor = duration >= minDuration ? rewindConfig.accelerationFactor : 1;
+                rewindFactor = duration >= rewindConfig.minimumRewindStepDuration ? rewindConfig.accelerationFactor : 1;
             } else if (i <= numberOfRecordedPositions * rewindConfig.finalPorcentage)
             {
-                rewindFactor = duration <= initialDuration ? rewindConfig.decelerationFactor : 1;
+                rewindFactor = duration <= rewindConfig.initialDuration ? rewindConfig.decelerationFactor : 1;
             }
-            
+
             duration *= rewindFactor;
         }
 
-        rewindSequence.OnComplete(() => {});
+        rewindSequence.OnComplete(callback.Invoke);
         
         rewindSequence.Play();
     }

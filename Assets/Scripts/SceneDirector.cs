@@ -10,7 +10,7 @@ public class SceneDirector : MonoBehaviour
     
     private int currentFloor;
 
-    private void Awake()
+    public void DoStart()
     {
         currentFloor = initialFloor;
         this.EventSubscribe<GameEvents.LoadFloorSceneEvent>(e => LoadNewFloorScene(e.isFloorBelow));
@@ -21,7 +21,7 @@ public class SceneDirector : MonoBehaviour
         });
     }
 
-    private void LoadCurrentFloorScene()
+    public void LoadCurrentFloorScene()
     {
         SceneManager.LoadScene(towerFloors[currentFloor]);
     }
@@ -30,5 +30,11 @@ public class SceneDirector : MonoBehaviour
     {
         currentFloor = isFloorBelow ? currentFloor + 1 : currentFloor - 1;
         LoadCurrentFloorScene();
+    }
+
+    public void setTowerFloorScenes(List<string> cicle1Floors, int newInitialFloor)
+    {
+        towerFloors = cicle1Floors;
+        initialFloor = newInitialFloor;
     }
 }

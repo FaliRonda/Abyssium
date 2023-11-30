@@ -137,7 +137,71 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: timeLoopDuration
-      value: 300
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.keys.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.values.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.keys.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2abe1754d1a4fc94a834fc134c82f238, type: 2}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.keys.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 90f7d8c93146cf74eb8fc2910ab3f993, type: 2}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.keys.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2a800ff301eb8884a839559fc6bfb9ca, type: 2}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.keys.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: e5163cc1dcd97f6439334288e4fe2bdb, type: 2}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.keys.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 444fedcee8d4566488025966c39ee35f, type: 2}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.keys.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 68a1c84d5f5572340b442204b8ba396e, type: 2}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.keys.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: ef19d6ccb4df1c441a5ee04ae1c77303, type: 2}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.values.Array.data[0]
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.values.Array.data[1]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.values.Array.data[2]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.values.Array.data[3]
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.values.Array.data[4]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.values.Array.data[5]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: lateralDialogs.values.Array.data[6]
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4723417635908149436, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: m_Name

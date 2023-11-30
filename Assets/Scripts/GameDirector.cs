@@ -59,7 +59,7 @@ public class GameDirector : MonoBehaviour
 
     private Bloom bloom;
     private ChromaticAberration chromaticAberration;
-    
+    private SceneDirector sceneDirector;
     private Vector2 inputDirection = Vector2.zero;
     
     public PlayerInput playerInput;
@@ -70,49 +70,41 @@ public class GameDirector : MonoBehaviour
     private InputAction InteractAction;
     private InputAction CameraChangeAction;
     private InputAction CameraRotationAction;
+    
+    private static bool IsSceneT1C0F0 => SceneManager.GetActiveScene().name == "T1C0F0";
 
     #endregion
 
     #region Unity Events
-
-    private void Awake()
-    {
-        initialTimeLoopDuration = timeLoopDuration;
-
-        if (!debugMode)
-        {
-            SceneManager.sceneLoaded += OnSceneLoaded;
-        }
-
-        var moonRotation = moon.transform.rotation;
-
-        Core.Dialogue.Initialize(canvas);
-
-        this.EventSubscribe<GameEvents.EnemyDied>(e => CheckEnemiesInScene());
-        this.EventSubscribe<GameEvents.NPCVanished>(e => ShowGodNarrative());
-        this.EventSubscribe<GameEvents.DoorOpened>(e => DoorOpened());
-        this.EventSubscribe<GameEvents.PlayerDamaged>(e => PlayerDamaged());
-
-        UpdateGameState();
-
-        Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1f, 0.2f);
-    }
     
     private void Start()
     {
+        initialTimeLoopDuration = timeLoopDuration;
 
-        if (!debugMode)
+        if (isInitialLoad)
         {
-            Core.Event.Fire(new GameEvents.LoadInitialFloorSceneEvent());
-        }
-        else
-        {
-            InitializeGameDirector();
-        }
+            if (!debugMode)
+            {
+                SceneManager.sceneLoaded += OnSceneLoaded;
+            }
 
-        if (SceneManager.GetActiveScene().name == "T1C0F0")
-        {
-            StartT1C0F0GameFlow();
+            var moonRotation = moon.transform.rotation;
+
+            sceneDirector = transform.parent.GetComponentInChildren<SceneDirector>();
+            sceneDirector.DoStart();
+
+            Core.Dialogue.Initialize(canvas);
+
+            this.EventSubscribe<GameEvents.EnemyDied>(e => CheckEnemiesInScene());
+            this.EventSubscribe<GameEvents.NPCVanished>(e => ShowGodNarrative());
+            this.EventSubscribe<GameEvents.DoorOpened>(e => DoorOpened());
+            this.EventSubscribe<GameEvents.PlayerDamaged>(e => PlayerDamaged());
+
+            UpdateGameState();
+
+            Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1f, 0.2f);
+            
+            isInitialLoad = false;
         }
         
         if (playerInput)
@@ -123,27 +115,25 @@ public class GameDirector : MonoBehaviour
             CameraChangeAction = playerInput.actions["CameraChange"];
             CameraRotationAction = playerInput.actions["CameraRotation"];
         }
+
+        if (!debugMode)
+        {
+            Core.Event.Fire(new GameEvents.LoadInitialFloorSceneEvent());
+        }
+        else
+        {
+            InitializeGameDirector();
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
-        if (isInitialLoad)
-        {
-            isInitialLoad = false;
-        } else if (!isInitialLoad && isFirstFloorLoad)
-        {
-            StartCoroutine(WaitToInitializeGameDirectorAndSet3D());
-            isFirstFloorLoad = false;
-        }
-        else
-        {
-            StartCoroutine(WaitToInitializeGameDirector());
-        }
+        StartCoroutine(WaitAndInitializeGameDirector());
     }
     
     void Update()
     {
-        if (cameraDirector != null && !cameraDirector.CamerasTransitionBlending())
+        if (cameraDirector != null && !cameraDirector.CamerasTransitionBlending() && !timeLoopEnded)
         {
             if (debugMode && CameraChangeAction.triggered)
             {
@@ -221,16 +211,24 @@ public class GameDirector : MonoBehaviour
         timeLoopEnded = true;
         timeLoopDuration = initialTimeLoopDuration;
         
-        if (SceneManager.GetActiveScene().name != "T1C0F0" && !debugMode)
+        if (!IsSceneT1C0F0 && !debugMode)
         {
             isFirstFloorLoad = true;
             Core.Event.Fire<GameEvents.LoadInitialFloorSceneEvent>();
         }
-        else if (SceneManager.GetActiveScene().name == "T1C0F0")
+        else if (IsSceneT1C0F0)
         {
             Core.PositionRecorder.StopRecording();
-            Core.PositionRecorder.DoRewind(pj.transform, moon.transform);
+            Core.PositionRecorder.DoRewind(pj.transform, moon.transform, () => { StartCicle1(); });
         }
+    }
+
+    private void StartCicle1()
+    {
+        List<string> cicle1Floors = new List<string>(){"T1C1F0", "T1C1F-1"};
+        int cicle1InitialFloor = 0;
+        sceneDirector.setTowerFloorScenes(cicle1Floors, cicle1InitialFloor);
+        sceneDirector.LoadCurrentFloorScene();
     }
 
     private ControlInputData GetControlInputDataValues()
@@ -289,21 +287,17 @@ public class GameDirector : MonoBehaviour
     #endregion
     
     #region Utils
-    
-    private IEnumerator WaitToInitializeGameDirectorAndSet3D()
+
+    private IEnumerator WaitAndInitializeGameDirector()
     {
         yield return null;
 
         InitializeGameDirector();
-        bool gameIn3D = true;
-        SetGameState(gameIn3D);
-    }
-
-    private IEnumerator WaitToInitializeGameDirector()
-    {
-        yield return null;
-
-        InitializeGameDirector();
+        
+        if (IsSceneT1C0F0)
+        {
+            StartT1C0F0GameFlow();
+        }
     }
 
     private void InitializeGameDirector()

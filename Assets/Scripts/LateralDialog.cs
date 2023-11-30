@@ -28,9 +28,9 @@ public class LateralDialog : MonoBehaviour
                 () =>
                 {
                     rectTransform.DOAnchorPos(new Vector2(initialAnchorPositionX, rectTransform.anchoredPosition.y),
-                        animationDuration);
+                        animationDuration / 2f);
                 })
-            .AppendInterval(animationDuration)
+            .AppendInterval(animationDuration / 2f)
             .AppendCallback(() => { Destroy(this.gameObject); });
     }
 }
