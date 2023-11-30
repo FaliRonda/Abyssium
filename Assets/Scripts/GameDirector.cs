@@ -209,7 +209,6 @@ public class GameDirector : MonoBehaviour
     private void RestartTimeLoop()
     {
         timeLoopEnded = true;
-        timeLoopDuration = initialTimeLoopDuration;
         
         if (!IsSceneT1C0F0 && !debugMode)
         {
@@ -322,6 +321,9 @@ public class GameDirector : MonoBehaviour
         }
 
         cameraDirector.Initialize(pj.transform);
+        
+        timeLoopDuration = initialTimeLoopDuration;
+        timeLoopEnded = false;
     }
 
     private void SwitchGamePerspective()
