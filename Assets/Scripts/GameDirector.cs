@@ -21,6 +21,9 @@ public class GameDirector : MonoBehaviour
     public GameObject directionalLights;
     public ControlScheme control = null;
     
+    public float cicle1LoopDuration = 120f;
+    public float cicle2LoopDuration = 300f;
+    
     public struct ControlInputData
     {
         public Vector3 movementDirection;
@@ -70,8 +73,9 @@ public class GameDirector : MonoBehaviour
     private InputAction InteractAction;
     private InputAction CameraChangeAction;
     private InputAction CameraRotationAction;
-    
+
     private static bool IsSceneT1C0F0 => SceneManager.GetActiveScene().name == "T1C0F0";
+    private static bool IsSceneT1C1Fm1 => SceneManager.GetActiveScene().name == "T1C1F-1";
 
     #endregion
 
@@ -95,7 +99,7 @@ public class GameDirector : MonoBehaviour
 
             Core.Dialogue.Initialize(canvas);
 
-            this.EventSubscribe<GameEvents.EnemyDied>(e => CheckEnemiesInScene());
+            this.EventSubscribe<GameEvents.EnemyDied>(e => CheckEnemiesInScene(true));
             this.EventSubscribe<GameEvents.NPCVanished>(e => ShowGodNarrative());
             this.EventSubscribe<GameEvents.DoorOpened>(e => DoorOpened());
             this.EventSubscribe<GameEvents.PlayerDamaged>(e => PlayerDamaged());
@@ -226,7 +230,18 @@ public class GameDirector : MonoBehaviour
     {
         List<string> cicle1Floors = new List<string>(){"T1C1F0", "T1C1F-1"};
         int cicle1InitialFloor = 0;
+        initialTimeLoopDuration = cicle1LoopDuration;
         sceneDirector.setTowerFloorScenes(cicle1Floors, cicle1InitialFloor);
+        sceneDirector.LoadCurrentFloorScene();
+    }
+    
+    private void StartCicle2()
+    {
+        List<string> cicle2Floors = new List<string>(){"T1C2F1", "T1C2F0", "T1C2F-1", "T1C2F-2"};
+        int cicle2InitialFloor = 1;
+        timeLoopEnded = true;
+        initialTimeLoopDuration = cicle2LoopDuration;
+        sceneDirector.setTowerFloorScenes(cicle2Floors, cicle2InitialFloor);
         sceneDirector.LoadCurrentFloorScene();
     }
 
@@ -278,9 +293,25 @@ public class GameDirector : MonoBehaviour
         narrativeDirector.ShowNarrative();
     }
     
-    private void CheckEnemiesInScene()
+    private void CheckEnemiesInScene(bool enemyDied)
     {
-        SwitchGamePerspective();
+        EnemyAI[] enemies = FindObjectsOfType<EnemyAI>();
+
+        int enemyCount = enemyDied ? enemies.Length - 1 : enemies.Length;
+        if (enemyCount <= 0)
+        {
+            if (IsSceneT1C1Fm1)
+            {
+                StartCicle2();
+            }
+            else
+            {
+                SetGameState(true);
+            }
+        } else if (gameIn3D)
+        {
+            SetGameState(false);
+        }
     }
     
     #endregion
@@ -296,6 +327,10 @@ public class GameDirector : MonoBehaviour
         if (IsSceneT1C0F0)
         {
             StartT1C0F0GameFlow();
+        }
+        else
+        {
+            CheckEnemiesInScene(false);
         }
     }
 
@@ -321,9 +356,12 @@ public class GameDirector : MonoBehaviour
         }
 
         cameraDirector.Initialize(pj.transform);
-        
-        timeLoopDuration = initialTimeLoopDuration;
-        timeLoopEnded = false;
+
+        if (timeLoopEnded)
+        {
+            timeLoopDuration = initialTimeLoopDuration;
+            timeLoopEnded = false;
+        }
     }
 
     private void SwitchGamePerspective()

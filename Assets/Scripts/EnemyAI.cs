@@ -150,7 +150,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         //TODO debería hacerse esto en otro lugar?
-        chaseNode.ResetChasing();
+        //chaseNode.ResetChasing();
         enemySprite.color = Color.white;
         yield return null;
     }
