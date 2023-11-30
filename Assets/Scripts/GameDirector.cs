@@ -133,7 +133,7 @@ public class GameDirector : MonoBehaviour
     
     void Update()
     {
-        if (cameraDirector != null && !cameraDirector.CamerasTransitionBlending() && !timeLoopEnded)
+        if (cameraDirector != null && !cameraDirector.CamerasTransitionBlending() && (!timeLoopEnded || debugMode))
         {
             if (debugMode && CameraChangeAction.triggered)
             {
