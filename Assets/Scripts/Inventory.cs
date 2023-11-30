@@ -45,7 +45,8 @@ public class Inventory : MonoBehaviour
 
     public void UpdatePosition(Transform playerTransform)
     {
-        transform.position = playerTransform.position;
+        Vector3 position = playerTransform.position;
+        transform.position = new Vector3(position.x, transform.position.y, position.z);
     }
 
     public void RotateItems(bool gameIn3D, Vector3 direction)
@@ -70,12 +71,12 @@ public class Inventory : MonoBehaviour
     {
         if (!gameIn3D)
         {
-            item.transform.DORotate(new Vector3(xRotation, yRotation, zRotation), 0.5f);
+            item.transform.DORotate(new Vector3(xRotation, yRotation, zRotation), 0.3f);
         }
         else
         {
             Vector3 cameraRotation = Camera.main.transform.rotation.eulerAngles;
-            item.transform.DORotate(new Vector3(cameraRotation.x, cameraRotation.y, cameraRotation.z), 0.5f);
+            item.transform.DORotate(new Vector3(cameraRotation.x, cameraRotation.y, cameraRotation.z), 0.3f);
             /*
              float mouseX;
             float mouseY;
@@ -93,7 +94,7 @@ public class Inventory : MonoBehaviour
 
     private void RotateWeapon(GameObject item, Vector3 direction, bool gameIn3D)
     {
-        RotateItem(90, 0, CalculateRotationAngle(direction), item, gameIn3D);
+        RotateItem(0, -CalculateRotationAngle(direction), 0, item, gameIn3D);
     }
 
     private float CalculateRotationAngle(Vector3 direction)
