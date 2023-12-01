@@ -2,8 +2,6 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Ju.Extensions;
-using UnityEditor.Animations;
-using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
 public class PJ : MonoBehaviour

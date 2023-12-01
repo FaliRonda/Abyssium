@@ -38,7 +38,10 @@ public class Inventory : MonoBehaviour
             if (!activeWeaponFilled && t.gameObject.layer == Layers.WEAPON_LAYER)
             {
                 activeWeapon = t.GetComponent<Weapon>();
-                activeWeaponFilled = true;
+                if (activeWeapon != null)
+                {
+                    activeWeaponFilled = true;
+                }
             }
         }
     }
@@ -69,21 +72,24 @@ public class Inventory : MonoBehaviour
 
     private void RotateItem(float xRotation, float yRotation, float zRotation, GameObject item, bool gameIn3D)
     {
-        if (!gameIn3D)
+        if (item.gameObject.name.Contains("pivot"))
         {
-            item.transform.DORotate(new Vector3(xRotation, yRotation, zRotation), 0.3f);
-        }
-        else
-        {
-            Vector3 cameraRotation = Camera.main.transform.rotation.eulerAngles;
-            item.transform.DORotate(new Vector3(cameraRotation.x, cameraRotation.y, cameraRotation.z), 0.3f);
-            /*
-             float mouseX;
-            float mouseY;
-            
-            Core.Input.Mouse.GetPositionDelta(out mouseX, out mouseY);
-            item.transform.eulerAngles += new Vector3(0, mouseX,0);
-            */
+            if (!gameIn3D)
+            {
+                item.transform.DORotate(new Vector3(xRotation, yRotation, zRotation), 0.2f);
+            }
+            else
+            {
+                Vector3 cameraRotation = Camera.main.transform.rotation.eulerAngles;
+                item.transform.DORotate(new Vector3(cameraRotation.x, cameraRotation.y, cameraRotation.z), 0.2f);
+                /*
+                 float mouseX;
+                float mouseY;
+                
+                Core.Input.Mouse.GetPositionDelta(out mouseX, out mouseY);
+                item.transform.eulerAngles += new Vector3(0, mouseX,0);
+                */
+            }
         }
     }
     
