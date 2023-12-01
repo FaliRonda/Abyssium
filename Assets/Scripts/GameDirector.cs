@@ -293,8 +293,6 @@ public class GameDirector : MonoBehaviour
             enemies.Remove(removedEnemy);
         }
         
-        //TODO CHECK
-        
         NPC[] npcs = FindObjectsOfType<NPC>();
 
         foreach (NPC npc in npcs)
