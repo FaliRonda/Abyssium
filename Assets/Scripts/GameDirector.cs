@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Ju.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using InputAction = UnityEngine.InputSystem.InputAction;
 
 public class GameDirector : MonoBehaviour
@@ -19,10 +21,13 @@ public class GameDirector : MonoBehaviour
     public PostProcessVolume postprocessing;
     public NarrativeDirector narrativeDirector;
     public GameObject directionalLights;
+    public GameObject audioGO;
     public ControlScheme control = null;
     
-    public float cicle1LoopDuration = 120f;
-    public float cicle2LoopDuration = 300f;
+    public float cycle1LoopDuration = 120f;
+    public float cycle2LoopDuration = 300f;
+    
+    public PlayerInput playerInput;
     
     public struct ControlInputData
     {
@@ -52,6 +57,8 @@ public class GameDirector : MonoBehaviour
     #region Private variables
 
     private PJ pj;
+    private GameObject pjGO;
+    private List<EnemyAI> enemies;
     private CameraDirector cameraDirector;
     private bool gameIn3D;
     private bool isInitialLoad = true;
@@ -59,14 +66,14 @@ public class GameDirector : MonoBehaviour
     private bool timeLoopEnded;
     private float initialTimeLoopDuration;
     private float secondsCounter = 0;
+    private bool pjCameFromAbove;
+    private bool isNewCycleOrLoop = true;
 
     private Bloom bloom;
     private ChromaticAberration chromaticAberration;
     private SceneDirector sceneDirector;
     private Vector2 inputDirection = Vector2.zero;
-    
-    public PlayerInput playerInput;
-    
+
     //INPUT ACTIONS
     private InputAction MoveAction;
     private InputAction RollAction;
@@ -76,6 +83,14 @@ public class GameDirector : MonoBehaviour
 
     private static bool IsSceneT1C0F0 => SceneManager.GetActiveScene().name == "T1C0F0";
     private static bool IsSceneT1C1Fm1 => SceneManager.GetActiveScene().name == "T1C1F-1";
+    
+    private Dictionary<string,FloorData> loopPersistentData;
+    
+    private struct FloorData
+    {
+        public bool enemiesDefeated;
+        public Dictionary<string,DialogueSO> NPCsDialogues;
+    }
 
     #endregion
 
@@ -103,9 +118,19 @@ public class GameDirector : MonoBehaviour
             this.EventSubscribe<GameEvents.NPCVanished>(e => ShowGodNarrative());
             this.EventSubscribe<GameEvents.DoorOpened>(e => DoorOpened());
             this.EventSubscribe<GameEvents.PlayerDamaged>(e => PlayerDamaged());
-
+            
+            this.EventSubscribe<GameEvents.LoadFloorSceneEvent>(e =>
+            {
+                pjCameFromAbove = e.toFloorBelow;
+                sceneDirector.LoadNewFloorScene(e.toFloorBelow);
+            });
+            this.EventSubscribe<GameEvents.LoadInitialFloorSceneEvent>(e => sceneDirector.LoadInitialFloor());
+            
+            this.EventSubscribe<GameEvents.NPCDialogueEnded>(e => UpdateCurrentFloorEndedNPCDialogue(e.npc, e.lastDialogue));
+            
             UpdateGameState();
 
+            Core.Audio.Initialize(audioGO);
             Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1f, 0.2f);
             
             isInitialLoad = false;
@@ -130,6 +155,16 @@ public class GameDirector : MonoBehaviour
         }
     }
 
+    private void UpdateCurrentFloorEndedNPCDialogue(NPC npc, DialogueSO lastDialogue)
+    {
+        FloorData currentFloorData = loopPersistentData[SceneManager.GetActiveScene().name];
+        if (!currentFloorData.NPCsDialogues.ContainsKey(npc.name))
+        {
+            currentFloorData.NPCsDialogues.Add(npc.name, lastDialogue);
+            loopPersistentData[SceneManager.GetActiveScene().name] = currentFloorData;
+        }
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
         StartCoroutine(WaitAndInitializeGameDirector());
@@ -142,12 +177,21 @@ public class GameDirector : MonoBehaviour
             if (debugMode && CameraChangeAction.triggered)
             {
                 SwitchGamePerspective();
-            } else if (pj != null && !narrativeDirector.IsShowingNarrative())
+            }
+            else if (pj != null && !narrativeDirector.IsShowingNarrative())
             {
                 // Player
                 ControlInputData controlInputData = GetControlInputDataValues();
                 
                 pj.DoUpdate(controlInputData);
+
+                if (enemies != null)
+                {
+                    foreach (EnemyAI enemy in enemies)
+                    {
+                        enemy.DoUpdate();
+                    }
+                }
                 
                 if (InteractAction.triggered)
                 {
@@ -178,11 +222,169 @@ public class GameDirector : MonoBehaviour
             }
             else if (!timeLoopEnded)
             {
-                RestartTimeLoop();
+                EndTimeLoop();
             }
         }
     }
 
+    #endregion
+    
+    #region Initializacion
+
+    private IEnumerator WaitAndInitializeGameDirector()
+    {
+        yield return null;
+
+        InitializeGameDirector();
+        
+        if (IsSceneT1C0F0)
+        {
+            StartT1C0F0GameFlow();
+        }
+        else
+        {
+            CheckEnemiesInScene(false);
+        }
+    }
+
+    private void InitializeGameDirector()
+    {
+        InitializePlayer();
+        InitializeCameraDirector();
+        SetPlayerSpawnPoint();
+
+        string currentSceneName = SceneManager.GetActiveScene().name;
+
+        if (isNewCycleOrLoop)
+        {
+            loopPersistentData = new Dictionary<string, FloorData>();
+        }
+
+        if (!loopPersistentData.ContainsKey(currentSceneName))
+        {
+            FloorData newFloorData = new FloorData();
+            newFloorData.enemiesDefeated = false;
+            newFloorData.NPCsDialogues = new Dictionary<string, DialogueSO>();
+
+            loopPersistentData.Add(currentSceneName, newFloorData);
+        }
+        
+        enemies = FindObjectsOfType<EnemyAI>().ToList();
+        
+        FloorData currentFloorData;
+        loopPersistentData.TryGetValue(currentSceneName, out currentFloorData);
+
+        List<EnemyAI> removedEnemies = new List<EnemyAI>();
+        foreach (EnemyAI enemy in enemies)
+        {
+            if (!currentFloorData.enemiesDefeated)
+            {
+                enemy.Initialize(pjGO.transform);
+            }
+            else
+            {
+                removedEnemies.Add(enemy);
+                Destroy(enemy.transform.parent.gameObject);
+            }
+        }
+
+        foreach (EnemyAI removedEnemy in removedEnemies)
+        {
+            enemies.Remove(removedEnemy);
+        }
+        
+        //TODO CHECK
+        
+        NPC[] npcs = FindObjectsOfType<NPC>();
+
+        foreach (NPC npc in npcs)
+        {
+            if (currentFloorData.NPCsDialogues.ContainsKey(npc.name))
+            {
+                DialogueSO lastNPCDialogue = currentFloorData.NPCsDialogues[npc.name];
+                npc.dialogueEnded = true;
+                npc.lastDialog = lastNPCDialogue;
+            }
+        }
+        
+        if (timeLoopEnded)
+        {
+            // Restart time loop
+            timeLoopDuration = initialTimeLoopDuration;
+            timeLoopEnded = false;
+        }
+        
+        // When a new scene has been loaded, the new cycle or loop processing has been done
+        isNewCycleOrLoop = false;
+    }
+
+    private void SetPlayerSpawnPoint()
+    {
+        GameObject[] pjSpawnPoints = GameObject.FindObjectsOfType<GameObject>()
+            .Where(objeto => objeto.layer == Layers.PJ_SPAWN_LAYER).ToArray();
+        if (isNewCycleOrLoop)
+        {
+            pj.transform.position = new Vector3(0, 0, 0);
+        }
+        else if (pjSpawnPoints != null && pjSpawnPoints.Length > 0)
+        {
+            Vector3 aboveSpawnPosition = new Vector3();
+            Vector3 belowSpawnPosition = new Vector3();
+
+            foreach (GameObject pjSpawnPoint in pjSpawnPoints)
+            {
+                if (pjSpawnPoint.name.Contains("Above"))
+                {
+                    aboveSpawnPosition = pjSpawnPoint.transform.position;
+                }
+                else if (pjSpawnPoint.name.Contains("Below"))
+                {
+                    belowSpawnPosition = pjSpawnPoint.transform.position;
+                }
+            }
+
+            if (pjCameFromAbove)
+            {
+                pj.transform.position = aboveSpawnPosition;
+            }
+            else
+            {
+                pj.transform.position = belowSpawnPosition;
+            }
+        }
+    }
+
+    private void InitializePlayer()
+    {
+        PJ player = FindObjectOfType<PJ>();
+        if (player != null)
+        {
+            if (pj == null)
+            {
+                pj = player;
+                pjGO = pj.gameObject;
+                pj.gameObject.transform.parent = transform.parent;
+            }
+            else if (player != pj)
+            {
+                Destroy(player.gameObject);
+            }
+        }
+    }
+
+    private void InitializeCameraDirector()
+    {
+        if (Camera.main != null)
+        {
+            cameraDirector = Camera.main.GetComponent<CameraDirector>();
+            cameraDirector.Initialize(pj.transform);
+        }
+        else
+        {
+            cameraDirector = null;
+        }
+    }
+    
     #endregion
 
     #region Gameflow methods
@@ -210,38 +412,42 @@ public class GameDirector : MonoBehaviour
         moon.transform.eulerAngles = new Vector3(moon.transform.eulerAngles.x, nextLighthoyseYRotation, moon.transform.eulerAngles.z);
     }
 
-    private void RestartTimeLoop()
+    private void EndTimeLoop()
     {
         timeLoopEnded = true;
         
         if (!IsSceneT1C0F0 && !debugMode)
         {
             isFirstFloorLoad = true;
+            isNewCycleOrLoop = true;
+            pj.ResetItems();
             Core.Event.Fire<GameEvents.LoadInitialFloorSceneEvent>();
         }
         else if (IsSceneT1C0F0)
         {
             Core.PositionRecorder.StopRecording();
-            Core.PositionRecorder.DoRewind(pj.transform, moon.transform, () => { StartCicle1(); });
+            Core.PositionRecorder.DoRewind(pj.transform, moon.transform, () => { StartCycle1(); });
         }
     }
 
-    private void StartCicle1()
+    private void StartCycle1()
     {
-        List<string> cicle1Floors = new List<string>(){"T1C1F0", "T1C1F-1"};
-        int cicle1InitialFloor = 0;
-        initialTimeLoopDuration = cicle1LoopDuration;
-        sceneDirector.setTowerFloorScenes(cicle1Floors, cicle1InitialFloor);
+        List<string> cycle1Floors = new List<string>(){"T1C1F0", "T1C1F-1"};
+        int cycle1InitialFloor = 0;
+        initialTimeLoopDuration = cycle1LoopDuration;
+        isNewCycleOrLoop = true;
+        sceneDirector.setTowerFloorScenes(cycle1Floors, cycle1InitialFloor);
         sceneDirector.LoadCurrentFloorScene();
     }
     
-    private void StartCicle2()
+    private void StartCycle2()
     {
-        List<string> cicle2Floors = new List<string>(){"T1C2F1", "T1C2F0", "T1C2F-1", "T1C2F-2"};
-        int cicle2InitialFloor = 1;
+        List<string> cycle2Floors = new List<string>(){"T1C2F1", "T1C2F0", "T1C2F-1", "T1C2F-2"};
+        int cycle2InitialFloor = 1;
         timeLoopEnded = true;
-        initialTimeLoopDuration = cicle2LoopDuration;
-        sceneDirector.setTowerFloorScenes(cicle2Floors, cicle2InitialFloor);
+        isNewCycleOrLoop = true;
+        initialTimeLoopDuration = cycle2LoopDuration;
+        sceneDirector.setTowerFloorScenes(cycle2Floors, cycle2InitialFloor);
         sceneDirector.LoadCurrentFloorScene();
     }
 
@@ -295,17 +501,19 @@ public class GameDirector : MonoBehaviour
     
     private void CheckEnemiesInScene(bool enemyDied)
     {
-        EnemyAI[] enemies = FindObjectsOfType<EnemyAI>();
-
-        int enemyCount = enemyDied ? enemies.Length - 1 : enemies.Length;
+        int enemyCount = enemyDied ? enemies.Count - 1 : enemies.Count;
         if (enemyCount <= 0)
         {
             if (IsSceneT1C1Fm1)
             {
-                StartCicle2();
+                StartCycle2();
             }
             else
             {
+                FloorData currentScenePersistentData = loopPersistentData[SceneManager.GetActiveScene().name];
+                currentScenePersistentData.enemiesDefeated = true;
+                loopPersistentData[SceneManager.GetActiveScene().name] = currentScenePersistentData;
+                
                 SetGameState(true);
             }
         } else if (gameIn3D)
@@ -315,54 +523,8 @@ public class GameDirector : MonoBehaviour
     }
     
     #endregion
-    
+
     #region Utils
-
-    private IEnumerator WaitAndInitializeGameDirector()
-    {
-        yield return null;
-
-        InitializeGameDirector();
-        
-        if (IsSceneT1C0F0)
-        {
-            StartT1C0F0GameFlow();
-        }
-        else
-        {
-            CheckEnemiesInScene(false);
-        }
-    }
-
-    private void InitializeGameDirector()
-    {
-        if (Camera.main != null)
-        {
-            cameraDirector = Camera.main.GetComponent<CameraDirector>();
-        }
-        else
-        {
-            cameraDirector = null;
-        }
-
-        var player = FindObjectOfType<PJ>();
-        if (player != null)
-        {
-            pj = player;
-        }
-        else
-        {
-            pj = null;
-        }
-
-        cameraDirector.Initialize(pj.transform);
-
-        if (timeLoopEnded)
-        {
-            timeLoopDuration = initialTimeLoopDuration;
-            timeLoopEnded = false;
-        }
-    }
 
     private void SwitchGamePerspective()
     {

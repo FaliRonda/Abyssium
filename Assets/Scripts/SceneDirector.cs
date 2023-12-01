@@ -13,12 +13,12 @@ public class SceneDirector : MonoBehaviour
     public void DoStart()
     {
         currentFloor = initialFloor;
-        this.EventSubscribe<GameEvents.LoadFloorSceneEvent>(e => LoadNewFloorScene(e.isFloorBelow));
-        this.EventSubscribe<GameEvents.LoadInitialFloorSceneEvent>(e =>
-        {
-            currentFloor = initialFloor;
-            LoadCurrentFloorScene();
-        });
+    }
+
+    public void LoadInitialFloor()
+    {
+        currentFloor = initialFloor;
+        LoadCurrentFloorScene();
     }
 
     public void LoadCurrentFloorScene()
@@ -26,7 +26,7 @@ public class SceneDirector : MonoBehaviour
         SceneManager.LoadScene(towerFloors[currentFloor]);
     }
 
-    private void LoadNewFloorScene(bool isFloorBelow)
+    public void LoadNewFloorScene(bool isFloorBelow)
     {
         currentFloor = isFloorBelow ? currentFloor + 1 : currentFloor - 1;
         LoadCurrentFloorScene();

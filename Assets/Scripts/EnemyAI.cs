@@ -38,16 +38,12 @@ public class EnemyAI : MonoBehaviour
     private Quaternion defaultEnemySpriteRotation;
     private SphereCollider attackCollider;
 
-    private void Awake()
+    public void Initialize(Transform pjTransform)
     {
-        PJ player = (PJ)FindObjectOfType(typeof(PJ));
-        playerTransform = player.transform;
+        playerTransform = pjTransform;
         
         this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
-    }
-
-    private void Start()
-    {
+        
         detectedAudioSource = GetComponentInChildren<AudioSource>();
         enemySprite = GetComponentInChildren<SpriteRenderer>();
         enemyAnimator = GetComponentInChildren<Animator>();
@@ -72,7 +68,7 @@ public class EnemyAI : MonoBehaviour
         rootNode.InitializeNode(parameters);
     }
 
-    private void Update()
+    public void DoUpdate()
     {
         // Update the behavior tree
         rootNode.Execute();
@@ -107,7 +103,6 @@ public class EnemyAI : MonoBehaviour
         isDead = true;
         
         Dropper dropper = GetComponent<Dropper>();
-        if (dropper != null && itemToDrop != null)
         if (dropper != null && itemToDrop != null)
         {
             dropper.Drop(itemToDrop);

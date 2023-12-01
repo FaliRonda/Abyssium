@@ -130,6 +130,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &732534687688995611
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6896690540292514907}
+  m_Layer: 0
+  m_Name: Audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6896690540292514907
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732534687688995611}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5022014154150157608}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1000749869587194067
 GameObject:
   m_ObjectHideFlags: 0
@@ -1076,8 +1107,9 @@ Transform:
   - {fileID: 7831101800969326877}
   - {fileID: 5912020269045212659}
   - {fileID: 4044460938596329161}
+  - {fileID: 6896690540292514907}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9186691229013835505
 MonoBehaviour:
@@ -2109,17 +2141,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a7471a13e27434f85124eff075e273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 1
-  timeLoopDuration: -1
+  debugMode: 0
+  timeLoopDuration: 45
   moon: {fileID: 6706644522015070761}
   canvas: {fileID: 5989185473858205096}
   postprocessing: {fileID: 0}
   narrativeDirector: {fileID: 3737344189665620795}
   directionalLights: {fileID: 0}
-  lateralDialogs:
-    keys: []
-    values: 
+  audioGO: {fileID: 732534687688995611}
+  cicle1LoopDuration: 120
+  cicle2LoopDuration: 300
   playerInput: {fileID: 930666903094989707}
+  lateralDialogs:
+    keys:
+    - {fileID: 11400000, guid: 2abe1754d1a4fc94a834fc134c82f238, type: 2}
+    - {fileID: 11400000, guid: 90f7d8c93146cf74eb8fc2910ab3f993, type: 2}
+    - {fileID: 11400000, guid: 2a800ff301eb8884a839559fc6bfb9ca, type: 2}
+    - {fileID: 11400000, guid: e5163cc1dcd97f6439334288e4fe2bdb, type: 2}
+    - {fileID: 11400000, guid: 444fedcee8d4566488025966c39ee35f, type: 2}
+    - {fileID: 11400000, guid: 68a1c84d5f5572340b442204b8ba396e, type: 2}
+    - {fileID: 11400000, guid: ef19d6ccb4df1c441a5ee04ae1c77303, type: 2}
+    values: 08000000040000000400000008000000040000000400000004000000
 --- !u!114 &930666903094989707
 MonoBehaviour:
   m_ObjectHideFlags: 0

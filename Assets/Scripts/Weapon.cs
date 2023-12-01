@@ -16,6 +16,10 @@ public class Weapon : MonoBehaviour
     
     private bool currentlyAttacking = false;
 
+    private int initialWeaponDamage;
+    private float initialWeaponRangeValue;
+    private float initialWeaponCd;
+
     private void Start()
     {
         weaponSprite = GetComponent<SpriteRenderer>();
@@ -28,6 +32,10 @@ public class Weapon : MonoBehaviour
         
         weaponSprite.enabled = false;
         weaponCollider.enabled = false;
+
+        initialWeaponDamage = weaponDamage;
+        initialWeaponRangeValue = weaponRange;
+        initialWeaponCd = weaponCd;
     }
 
     private void UpdateWeaponRange()
@@ -76,5 +84,12 @@ public class Weapon : MonoBehaviour
         weaponCd = item.weaponCd;
 
         UpdateWeaponRange();
+    }
+
+    public void ResetValues()
+    {
+        weaponDamage = initialWeaponDamage;
+        weaponRange = initialWeaponRangeValue;
+        weaponCd = initialWeaponCd;
     }
 }

@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6301871475984871426}
   - component: {fileID: 837764638628969216}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Attack indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5216,7 +5216,7 @@ Transform:
   - {fileID: 2888062125780753977}
   - {fileID: 5222517852068585327}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1799084693320912194
 MonoBehaviour:
@@ -5452,7 +5452,7 @@ GameObject:
   - component: {fileID: 7855795505115975710}
   - component: {fileID: 2803312628783158039}
   - component: {fileID: 7105326444436832605}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Sword
   m_TagString: Untagged
   m_Icon: {fileID: 0}

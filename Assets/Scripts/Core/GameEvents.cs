@@ -11,7 +11,7 @@ public static class GameEvents
     
     public struct LoadFloorSceneEvent
     {
-        [FormerlySerializedAs("isFloorAbove")] public bool isFloorBelow;
+        public bool toFloorBelow;
     }
 
     public struct EnemyDied {}
@@ -21,4 +21,10 @@ public static class GameEvents
     public struct DoorOpened {}
 
     public struct PlayerDamaged {}
+
+    public struct NPCDialogueEnded
+    {
+        public NPC npc;
+        public DialogueSO lastDialogue;
+    }
 }

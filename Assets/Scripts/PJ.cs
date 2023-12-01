@@ -2,6 +2,7 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Ju.Extensions;
+using Ju.Extensions;
 using UnityEngine;
 
 public class PJ : MonoBehaviour
@@ -19,7 +20,6 @@ public class PJ : MonoBehaviour
     private Animator pjAnimator;
     private SpriteRenderer pjSprite;
     
-    private Quaternion initialPlayerSpriteRotation;
     private Quaternion initialPlayerRotation;
     private Vector3 lastDirection;
 
@@ -45,8 +45,7 @@ public class PJ : MonoBehaviour
         pjAnimator = GetComponentInChildren<Animator>();
 
         initialPlayerRotation = transform.rotation;
-        initialPlayerSpriteRotation = pjSprite.transform.rotation;
-        
+
         this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
     }
 
@@ -308,15 +307,18 @@ public class PJ : MonoBehaviour
         this.gameIn3D = gameIn3D;
         
         inventory.RestoreItemsRotation();
+
+        Vector3 currentSpriteEulerAngles = pjSprite.transform.eulerAngles;
         
         if (gameIn3D)
         {
-            pjSprite.transform.Rotate(new Vector3(-45, 0, 0));
+            pjSprite.transform.eulerAngles = new Vector3(0, currentSpriteEulerAngles.y, currentSpriteEulerAngles.z);
         }
         else
         {
+            // Since in 3D the player rotates, it sets the initial rotation of the player
             transform.rotation = initialPlayerRotation;
-            pjSprite.transform.rotation = initialPlayerSpriteRotation;
+            pjSprite.transform.eulerAngles = new Vector3(45, 0, 0);
         }
     }
     
@@ -414,5 +416,10 @@ public class PJ : MonoBehaviour
     {
         // PLay damaged anim
         Core.Event.Fire<GameEvents.PlayerDamaged>();
+    }
+
+    public void ResetItems()
+    {
+        inventory.ResetItems();
     }
 }

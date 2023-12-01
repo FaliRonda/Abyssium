@@ -7,14 +7,16 @@ public class NPC : Interactable
     public DialogueSO[] dialogues;
     public DialogueSO[] finalDialogue;
 
-    private DialogueSO[] dialoguesToShow;
+    public DialogueSO[] dialoguesToShow;
+    public DialogueSO lastDialog;
+    public bool dialogueEnded;
+    
     private int dialogueIndex = 0;
     private List<ChoiceSO> currentChoices = new List<ChoiceSO>();
-    private bool isSelectingChoice = false;
-    private bool choiceSelected = false;
-    private bool memoryFound = false;
+    private bool isSelectingChoice;
+    private bool choiceSelected;
+    private bool memoryFound;
     private DialogueSO lastChoiceDialog;
-    private DialogueSO lastDialog;
 
     public override void Interact(PJ pj)
     {
@@ -23,14 +25,16 @@ public class NPC : Interactable
             memoryFound = true;
             dialoguesToShow = finalDialogue;
         }
-        else if (choiceSelected)
+        else if (choiceSelected || dialogueEnded) // Dialogue ended
         {
             dialoguesToShow = new DialogueSO[] {lastDialog};
+            Core.Event.Fire(new GameEvents.NPCDialogueEnded() {npc = this, lastDialogue = lastDialog});
         }
         else
         {
             dialoguesToShow = dialogues;
         }
+        
 
         if (!IsInteracting())
         {
@@ -111,6 +115,8 @@ public class NPC : Interactable
         {
             Vanish();
         }
+
+        dialogueEnded = true;
     }
 
     private void Vanish()

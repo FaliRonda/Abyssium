@@ -159,4 +159,15 @@ public class Inventory : MonoBehaviour
                 break;
         }
     }
+
+    public void ResetItems()
+    {
+        hasWhiteOrb = false;
+        hasBlackOrb = false;
+        hasLantern = false;
+        hasNPCMemory = false;
+
+        activeWeapon.ResetValues();
+        lantern.enabled = false;
+    }
 }

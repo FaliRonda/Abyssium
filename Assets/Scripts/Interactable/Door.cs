@@ -101,7 +101,7 @@ public class Door : Interactable
 
     public void LoadNewFloor(bool isFloorBelow)
     {
-        Core.Event.Fire(new GameEvents.LoadFloorSceneEvent() {isFloorBelow = isFloorBelow});
+        Core.Event.Fire(new GameEvents.LoadFloorSceneEvent() {toFloorBelow = isFloorBelow});
     }
 
     public void CloseDoor()

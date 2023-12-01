@@ -13,9 +13,15 @@ public class AudioService : IService
     
     private AudioConfigSO audioConfig;
     private Dictionary<SOUND_TYPE, AudioClip> soundDictionary;
-    private bool dictionaryInitialized;
+    private GameObject audioGO;
 
-    public void InitializeSoundDictionary()
+    public void Initialize(GameObject audioGO)
+    {
+        InitializeSoundDictionary();
+        this.audioGO = audioGO;
+    }
+    
+    private void InitializeSoundDictionary()
     {
         audioConfig = Resources.Load<AudioConfigSO>("Conf/AudioConfig");
         
@@ -28,14 +34,10 @@ public class AudioService : IService
 
     public void Play(SOUND_TYPE soundType, float pitch, float volume)
     {
-        if (!dictionaryInitialized)
-        {
-            InitializeSoundDictionary();
-            dictionaryInitialized = true;
-        }
         if (soundDictionary.TryGetValue(soundType, out AudioClip audioClip))
         {
             AudioSource audioSource = new GameObject("AudioSource").AddComponent<AudioSource>();
+            audioSource.transform.parent = audioGO.transform; 
             audioSource.clip = audioClip;
             audioSource.volume = volume;
             audioSource.pitch = pitch;
