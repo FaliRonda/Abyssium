@@ -4,6 +4,7 @@ using UnityEngine;
 public class BTChaseNode : BTNode
 {
     public float visibilityRadius = 10f;
+    public float minimumDistanceToPlayer;
     public float lightRadius = 10f;
     
     public float chaseSpeed;
@@ -18,24 +19,31 @@ public class BTChaseNode : BTNode
         float distance = Vector3.Distance(enemyTransform.position, playerTransform.position);
         if (distance <= visibilityRadius)
         {
-            if (!currentlyChasing)
+            if (minimumDistanceToPlayer <= distance)
             {
-                detectedAudioSource.Play();
-            }
-            currentlyChasing = true;
-            // Move towards the player
-            Vector3 direction = playerTransform.position - enemyTransform.position;
+                if (!currentlyChasing)
+                {
+                    detectedAudioSource.Play();
+                }
+                currentlyChasing = true;
+                // Move towards the player
+                Vector3 direction = playerTransform.position - enemyTransform.position;
 
-            float movementSpeed = chaseSpeed;
-            
-            if (isShadow && distance <= lightRadius && playerTransform.GetComponent<PJ>().inventory.HasLantern)
-            {
-                movementSpeed = chaseInLightSpeed;
+                float movementSpeed = chaseSpeed;
+                
+                if (isShadow && distance <= lightRadius && playerTransform.GetComponent<PJ>().inventory.HasLantern)
+                {
+                    movementSpeed = chaseInLightSpeed;
+                }
+                
+                enemyTransform.Translate(direction.normalized * (Time.deltaTime * movementSpeed));
+                enemySprite.flipX = direction.x > 0;
+                enemyAnimator.Play("Enemy_walk");
             }
-            
-            enemyTransform.Translate(direction.normalized * (Time.deltaTime * movementSpeed));
-            enemySprite.flipX = direction.x > 0;
-            enemyAnimator.Play("Enemy_walk");
+            else
+            {
+                enemyAnimator.Play("Enemy_idle");
+            }
             
             return BTNodeState.Running;
         }
