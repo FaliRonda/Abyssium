@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3706c88d3775eee4aafa75b76e4190c5, type: 3}
-  m_Name: Stalker
+  m_Name: Stalker2
   m_EditorClassIdentifier: 
   behaviorNodes:
-  - {fileID: 11400000, guid: 8cedf9734ebb3bb4593d8302ab814d66, type: 2}
-  - {fileID: 11400000, guid: 12748b03a70513443bff80980761185c, type: 2}
-  - {fileID: 11400000, guid: 737e215879a7b944c8aa0d15c15d4b46, type: 2}
+  - {fileID: 11400000, guid: a7aef755f3d599f41b05e731d128e332, type: 2}
+  - {fileID: 11400000, guid: 939a6fbc7de52fb47ba8d0105a8c8139, type: 2}
+  - {fileID: 11400000, guid: 8f06cfd45ba1dcd4d94693a86ac92ccc, type: 2}

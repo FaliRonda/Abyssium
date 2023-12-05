@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 409cd9477bdfd024a857fedae875778c, type: 3}
-  m_Name: StalkerChaseBTNode
+  m_Name: Stalker2ChaseBTNode
   m_EditorClassIdentifier: 
   enemyTransform: {fileID: 0}
   playerTransform: {fileID: 0}

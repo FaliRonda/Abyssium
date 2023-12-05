@@ -143,6 +143,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: dark_hunter
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 8
+        width: 63
+        height: 134
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e1fed9e14781a8429e374d9c120dae7
+      internalID: 615919574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -154,6 +175,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      dark_hunter: 615919574
       shooter: 926297811
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
