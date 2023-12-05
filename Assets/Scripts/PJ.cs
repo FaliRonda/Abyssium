@@ -313,12 +313,14 @@ public class PJ : MonoBehaviour
         if (gameIn3D)
         {
             pjSprite.transform.eulerAngles = new Vector3(0, currentSpriteEulerAngles.y, currentSpriteEulerAngles.z);
+            playerRayMaxDistance -= 0.25f;
         }
         else
         {
             // Since in 3D the player rotates, it sets the initial rotation of the player
             transform.rotation = initialPlayerRotation;
             pjSprite.transform.eulerAngles = new Vector3(45, 0, 0);
+            playerRayMaxDistance += 0.25f;
         }
     }
     
