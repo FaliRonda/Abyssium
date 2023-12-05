@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Ju.Extensions;
 using Ju.Services;
@@ -21,39 +22,12 @@ public class AnimatorHelperService : IAnimatorHelperService, IService
             {
                 AnimatorOverrideController animatorOverrideController = animator.runtimeAnimatorController as AnimatorOverrideController;
                 animatorController = animatorOverrideController.runtimeAnimatorController as AnimatorController;
+                animName = GetAnimNameFromAnimator(animState, animatorController, animName);
+                animName = GetAnimNameFromOverrideAnimator(animatorOverrideController, animName);
             }
-
-            if (animatorController != null)
+            else
             {
-                // Itera a través de todas las capas del AnimatorController
-                for (int i = 0; i < animatorController.layers.Length; i++)
-                {
-                    // Obtén la capa actual
-                    AnimatorControllerLayer layer = animatorController.layers[i];
-
-                    // Obtén el estado del AnimatorStateMachine asociado a la capa
-                    ChildAnimatorState[] states = layer.stateMachine.states;
-
-                    foreach (ChildAnimatorState state in states)
-                    {
-                        // Verifica si el nombre del estado coincide
-                        if (state.state.name == animState)
-                        {
-                            // Obtén el AnimationClip asociado al estado
-                            AnimationClip animationClip = state.state.motion as AnimationClip;
-
-                            // Imprime el nombre del AnimationClip
-                            if (animationClip != null)
-                            {
-                                animName = animationClip.name;
-                            }
-                            else
-                            {
-                                Debug.LogError("No se encontró un AnimationClip asociado al estado " + animState);
-                            }
-                        }
-                    }
-                }
+                animName = GetAnimNameFromAnimator(animState, animatorController, animName);
             }
         }
         else
@@ -63,7 +37,60 @@ public class AnimatorHelperService : IAnimatorHelperService, IService
         
         return animator.runtimeAnimatorController.animationClips.Find(element => element.name == animName).length;
     }
-    
+
+    private string GetAnimNameFromOverrideAnimator(AnimatorOverrideController animatorOverrideController, string animName)
+    {
+        string overrideAnimName = "";
+        
+        List<KeyValuePair<AnimationClip, AnimationClip>> overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+        animatorOverrideController.GetOverrides(overrides);
+        
+        foreach (KeyValuePair<AnimationClip,AnimationClip> keyValuePair in overrides)
+        {
+            if (keyValuePair.Key.name == animName)
+            {
+                overrideAnimName = keyValuePair.Value.name;
+            }
+        }
+
+        return overrideAnimName;
+    }
+
+    private static string GetAnimNameFromAnimator(string animState, AnimatorController animatorController, string animName)
+    {
+        // Itera a través de todas las capas del AnimatorController
+        for (int i = 0; i < animatorController.layers.Length; i++)
+        {
+            // Obtén la capa actual
+            AnimatorControllerLayer layer = animatorController.layers[i];
+
+            // Obtén el estado del AnimatorStateMachine asociado a la capa
+            ChildAnimatorState[] states = layer.stateMachine.states;
+
+            foreach (ChildAnimatorState state in states)
+            {
+                // Verifica si el nombre del estado coincide
+                if (state.state.name == animState)
+                {
+                    // Obtén el AnimationClip asociado al estado
+                    AnimationClip animationClip = state.state.motion as AnimationClip;
+
+                    // Imprime el nombre del AnimationClip
+                    if (animationClip != null)
+                    {
+                        animName = animationClip.name;
+                    }
+                    else
+                    {
+                        Debug.LogError("No se encontró un AnimationClip asociado al estado " + animState);
+                    }
+                }
+            }
+        }
+
+        return animName;
+    }
+
     public void DoOnAnimationFinish(float animLenght, Action callback)
     {
         Sequence sequence = DOTween.Sequence();
