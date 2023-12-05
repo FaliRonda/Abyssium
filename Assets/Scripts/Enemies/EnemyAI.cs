@@ -22,9 +22,6 @@ public class EnemyAI : MonoBehaviour
     // Behavior tree root node
     public EnemyBTNodesSO behaviorNodeContainer;
     private BTSelector rootNode;
-    private BTAttackNode attackNode;
-    private BTChaseNode chaseNode;
-    private BTPatrolNode patrolNode;
     private Dictionary<string, object> parameters;
     
     private bool spriteBlinking = false;
@@ -32,6 +29,7 @@ public class EnemyAI : MonoBehaviour
     private bool isDead = false;
     
     private SpriteRenderer enemySprite;
+    private SpriteRenderer shadowSprite;
     private Animator enemyAnimator;
     private AudioSource detectedAudioSource;
 
@@ -45,7 +43,9 @@ public class EnemyAI : MonoBehaviour
         this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
         
         detectedAudioSource = GetComponentInChildren<AudioSource>();
-        enemySprite = GetComponentInChildren<SpriteRenderer>();
+        SpriteRenderer[] enemySprites = GetComponentsInChildren<SpriteRenderer>();
+        enemySprite = enemySprites[0];
+        shadowSprite = enemySprites[1];
         enemyAnimator = GetComponentInChildren<Animator>();
         attackCollider = gameObject.GetComponentsInChildren<SphereCollider>()[1];
 
@@ -110,6 +110,7 @@ public class EnemyAI : MonoBehaviour
 
         rootNode.AIActive = false;
         enemyAnimator.Play("Enemy_die");
+        shadowSprite.enabled = false;
         float animLenght = Core.AnimatorHelper.GetAnimLenght(enemyAnimator, "Enemy_die");
         Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () =>
         {

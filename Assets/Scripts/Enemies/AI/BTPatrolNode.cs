@@ -22,7 +22,7 @@ public class BTPatrolNode : BTNode
         }
 
         // Move towards the waypoint
-        enemyTransform.Translate(direction.normalized * Time.deltaTime * patrolSpeed);
+        enemyTransform.Translate(direction.normalized * (Time.deltaTime * patrolSpeed));
         enemySprite.flipX = direction.x > 0;
         enemyAnimator.Play("Enemy_walk");
         

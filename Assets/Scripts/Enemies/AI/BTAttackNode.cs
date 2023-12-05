@@ -50,21 +50,20 @@ public class BTAttackNode : BTNode
     {
         enemySprite.flipX = direction.x > 0;
 
+        // Animation
         enemyAnimator.Play("Enemy_attack");
         attackPlaying = true;
-
         float animLenght = Core.AnimatorHelper.GetAnimLenght(enemyAnimator, "Enemy_attack");
         Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () => { attackPlaying = false; });
 
+        // CD
         waitForNextAttack = true;
-
         Sequence attackCDSequence = DOTween.Sequence();
         attackCDSequence.AppendInterval(attackCD).AppendCallback(() => { waitForNextAttack = false; });
         
+        // Attack
         Sequence attackSequence = DOTween.Sequence();
-
-        float duration = 1f;
-
+        
         Vector3 targetPosition = playerTransform.position;
         Vector3 enemyPosition = enemyTransform.position;
 
@@ -76,8 +75,6 @@ public class BTAttackNode : BTNode
         Vector3 attackDirection = (targetPosition - startPosition).normalized * attackMovementDistance;
         
         attackSequence.Append(enemyTransform.DOMove(enemyPosition + attackDirection, attackMovementDuration));
-
-        // Reproducir la secuencia
         attackSequence.Play();
     }
 

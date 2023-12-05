@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 public class BTSelector : BTNode
 {
-    private BTNode[] nodes;
+    public BTNode[] nodes;
     public bool AIActive = true;
 
-    public BTSelector(params BTNode[] nodes)
+    public BTSelector(BTNode[] nodes)
     {
         this.nodes = nodes;
     }

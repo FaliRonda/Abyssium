@@ -320,11 +320,11 @@ public class GameDirector : MonoBehaviour
     {
         GameObject[] pjSpawnPoints = GameObject.FindObjectsOfType<GameObject>()
             .Where(objeto => objeto.layer == Layers.PJ_SPAWN_LAYER).ToArray();
-        if (isNewCycleOrLoop)
+        if (!debugMode && isNewCycleOrLoop)
         {
             pj.transform.position = new Vector3(0, 0, 0);
         }
-        else if (pjSpawnPoints != null && pjSpawnPoints.Length > 0)
+        else if (!debugMode && pjSpawnPoints != null && pjSpawnPoints.Length > 0)
         {
             Vector3 aboveSpawnPosition = new Vector3();
             Vector3 belowSpawnPosition = new Vector3();
