@@ -232,7 +232,7 @@ public class PJ : MonoBehaviour
             }
         }
         
-        transform.Translate(direction * (Time.deltaTime * playerSpeed));
+        transform.position += direction * (Time.deltaTime * playerSpeed);
     }
     
     private static Vector3 FixDiagonalSpeedMovement(Vector3 direction)
