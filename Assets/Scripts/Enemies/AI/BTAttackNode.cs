@@ -12,20 +12,29 @@ public class BTAttackNode : BTNode
     public float anticipacionDuration = 0.3f;
     public float attackMovementDistance = 2f;
     public float attackMovementDuration = 0.3f;
+    public float enemyRayMaxDistance = .75f;
     
     private bool waitForNextAttack;
     private bool attackPlaying;
+    private Ray ray;
+    private RaycastHit hit;
+    private Sequence attackSequence;
+    private Vector3 lastDirectionBeforeAttack;
 
     public override BTNodeState Execute()
     {
         // Check if the player is within attack distance
         Vector3 direction = playerTransform.position - enemyTransform.position;
         float distance = direction.magnitude;
+        
+        ray = new Ray(enemyTransform.position, lastDirectionBeforeAttack);
+        EnemyRaycastHit(Color.green);
 
         if (distance <= attackVisibilityDistance)
         {
             if (!waitForNextAttack)
             {
+                lastDirectionBeforeAttack = direction;
                 Attack(direction);
             }
             else
@@ -33,6 +42,14 @@ public class BTAttackNode : BTNode
                 if (!attackPlaying)
                 {
                     return BTNodeState.Failure;
+                }
+                else
+                {
+                    if (EnemyRayHitLayer(Layers.WALL_LAYER) || EnemyRayHitLayer(Layers.DOOR_LAYER))
+                    {
+                        attackPlaying = false;
+                        attackSequence.Kill();
+                    }
                 }
             } 
             return BTNodeState.Success;
@@ -62,7 +79,7 @@ public class BTAttackNode : BTNode
         attackCDSequence.AppendInterval(attackCD).AppendCallback(() => { waitForNextAttack = false; });
         
         // Attack
-        Sequence attackSequence = DOTween.Sequence();
+        attackSequence = DOTween.Sequence();
         
         Vector3 targetPosition = playerTransform.position;
         Vector3 enemyPosition = enemyTransform.position;
@@ -78,6 +95,25 @@ public class BTAttackNode : BTNode
         attackSequence.Play();
     }
 
+    private bool EnemyRaycastHit(Color color)
+    {
+        Debug.DrawRay(ray.origin, ray.direction, color);
+        return Physics.Raycast(ray, out hit, enemyRayMaxDistance);
+    }
+    
+    private bool EnemyRayHitLayer(int layer)
+    {
+        bool hitLayer = false;
+        
+        if (hit.transform != null)
+        {
+            hitLayer = hit.transform.gameObject.layer == layer;
+        }
+
+        return hitLayer;
+    }
+    
+    
     public override void ResetNode()
     {
         waitForNextAttack = false;
