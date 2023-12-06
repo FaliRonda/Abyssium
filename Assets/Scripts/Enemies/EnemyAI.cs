@@ -73,6 +73,8 @@ public class EnemyAI : MonoBehaviour
         // Update the behavior tree
         rootNode.Execute();
     }
+
+#if UNITY_EDITOR
     
     private void OnDrawGizmosSelected()
     {
@@ -81,6 +83,8 @@ public class EnemyAI : MonoBehaviour
             rootNode.DrawGizmos();
         }
     }
+    
+#endif
 
     public void GetDamage(int damageAmount)
     {
@@ -111,7 +115,7 @@ public class EnemyAI : MonoBehaviour
         rootNode.AIActive = false;
         enemyAnimator.Play("Enemy_die");
         shadowSprite.enabled = false;
-        float animLenght = Core.AnimatorHelper.GetAnimLenght(enemyAnimator, "Enemy_die");
+        float animLenght = Core.AnimatorHelper.GetAnimLength(enemyAnimator, "Enemy_die");
         Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () =>
         {
             enemySprite.GetComponent<LookCameraOn3D>().rotateCameraOn3DActive = false;

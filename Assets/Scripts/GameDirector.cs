@@ -354,8 +354,9 @@ public class GameDirector : MonoBehaviour
 
     private void InitializePlayer()
     {
-        PJ player = FindObjectOfType<PJ>();
-        if (player != null)
+        PJ[] players = FindObjectsOfType<PJ>();
+
+        foreach (PJ player in players)
         {
             if (pj == null)
             {
@@ -363,11 +364,16 @@ public class GameDirector : MonoBehaviour
                 pjGO = pj.gameObject;
                 pj.gameObject.transform.parent = transform.parent;
             }
-            else if (player != pj)
+            else if (!IsPersistentPlayer(player))
             {
                 Destroy(player.gameObject);
             }
         }
+    }
+    
+    private bool IsPersistentPlayer(PJ player)
+    {
+        return player.gameObject.transform.parent == transform.parent;
     }
 
     private void InitializeCameraDirector()

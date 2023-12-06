@@ -79,7 +79,7 @@ public class Door : Interactable
         {
             doorOpening = true;
             doorAnimator.Play("Door_open");
-            float animLenght = Core.AnimatorHelper.GetAnimLenght(doorAnimator, "Door_open");
+            float animLenght = Core.AnimatorHelper.GetAnimLength(doorAnimator, "Door_open");
             Core.AnimatorHelper.DoOnAnimationFinish(animLenght, CallbackOnDoorOpened);
         }
     }

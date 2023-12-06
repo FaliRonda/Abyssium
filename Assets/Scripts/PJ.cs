@@ -112,7 +112,7 @@ public class PJ : MonoBehaviour
             pjIsRolling = true;
 
             pjAnimator.Play("PJ_roll");
-            float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnimator, "PJ_roll");
+            float animLenght = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
             
             PjActionFalseWhenAnimFinish(animLenght);
 
@@ -348,7 +348,7 @@ public class PJ : MonoBehaviour
             else if (pjIsRolling) // Attack on dash Input Buffer
             {
                 bufferedAttack = true;
-                float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnimator, "PJ_roll");
+                float animLenght = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
                 Sequence sequence = DOTween.Sequence();
                 sequence.AppendInterval(animLenght).AppendCallback((() => 
                 {
@@ -387,7 +387,7 @@ public class PJ : MonoBehaviour
         
         pjAnimator.Play("PJ_attack");
         
-        float animLenght = Core.AnimatorHelper.GetAnimLenght(pjAnimator, "PJ_attack");
+        float animLenght = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_attack");
 
         Weapon activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
         if (activeWeapon != null)

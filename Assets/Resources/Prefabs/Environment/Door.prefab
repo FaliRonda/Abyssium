@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e9688deaec8d4be46a1d99ae3f8a3d8f, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e9688deaec8d4be46a1d99ae3f8a3d8f, type: 3}
       propertyPath: m_LocalScale.x
@@ -82,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e9688deaec8d4be46a1d99ae3f8a3d8f, type: 3}
       propertyPath: m_Name
-      value: DoorUVFixed Variant
+      value: Door
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e9688deaec8d4be46a1d99ae3f8a3d8f, type: 3}
       propertyPath: m_Layer
@@ -229,7 +229,7 @@ Animator:
   m_GameObject: {fileID: 2099287541807560011}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0af880572ecf2864b9828b956d0a2025, type: 3}
-  m_Controller: {fileID: 9100000, guid: f606c2442ddd4494986f0e04280c93c0, type: 2}
+  m_Controller: {fileID: 22100000, guid: 62255ef02d7bcc04cade41c676a45e58, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
