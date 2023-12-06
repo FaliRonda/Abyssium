@@ -68,7 +68,7 @@ public class NPC : Interactable
         if (dialogueIndex < dialoguesToShow.Length)
         {
             lastDialog = dialoguesToShow[dialogueIndex];
-            Core.Dialogue.ShowText(dialoguesToShow[dialogueIndex].dialogueText);
+            Core.Dialogue.ShowText(dialoguesToShow[dialogueIndex]);
             ShowChoices(dialoguesToShow[dialogueIndex]);
 
             dialogueIndex++;
@@ -76,7 +76,7 @@ public class NPC : Interactable
         else if (lastChoiceDialog != null)
         {
             lastDialog = lastChoiceDialog;
-            Core.Dialogue.ShowText(lastChoiceDialog.dialogueText);
+            Core.Dialogue.ShowText(lastChoiceDialog);
             ShowChoices(lastChoiceDialog);
 
             lastChoiceDialog = null;

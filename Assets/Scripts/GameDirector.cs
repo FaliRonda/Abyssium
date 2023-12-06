@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using InputAction = UnityEngine.InputSystem.InputAction;
 
 public class GameDirector : MonoBehaviour
@@ -46,12 +45,13 @@ public class GameDirector : MonoBehaviour
     [System.Serializable]
     public class DialogueDictionary : SerializableDictionary<DialogueSO, int> { }
     
-    [ShowInInspector, DictionaryDrawerSettings(KeyLabel = "Diálogo", ValueLabel = "Valor")]
-    public DialogueDictionary lateralDialogs = new DialogueDictionary();
+    [System.Serializable]
+    public class SceneDialogueDictionary : SerializableDictionary<string, DialogueDictionary> { }
     
-    //[ShowInInspector, DictionaryDrawerSettings(KeyLabel = "Diálogo", ValueLabel = "Segundo de aparición")]
-    //public Dictionary<DialogueSO, float> lateralDialogs = new Dictionary<DialogueSO, float>();
+    [ShowInInspector, DictionaryDrawerSettings(KeyLabel = "Escena", ValueLabel = "Lateral Dialogs")]
+    public SceneDialogueDictionary sceneLateralDialogs = new SceneDialogueDictionary();
     
+
     #endregion
     
     #region Private variables
@@ -402,7 +402,7 @@ public class GameDirector : MonoBehaviour
     private void StartT1C0F0GameFlow()
     {
         Core.PositionRecorder.StartRecording(pj.transform, moon.transform);
-        Core.Dialogue.ShowLateralDialogs(lateralDialogs);
+        Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["T1C0F0"]);
     }
     
     private void UpdateGameState()
@@ -446,6 +446,7 @@ public class GameDirector : MonoBehaviour
         int cycle1InitialFloor = 0;
         initialTimeLoopDuration = cycle1LoopDuration;
         isNewCycleOrLoop = true;
+        Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["T1C1F0"]);
         sceneDirector.setTowerFloorScenes(cycle1Floors, cycle1InitialFloor);
         sceneDirector.LoadCurrentFloorScene();
     }

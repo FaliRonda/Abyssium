@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C0F0Dialog6
   m_EditorClassIdentifier: 
-  dialogueText: I'm here, between the candle and the window. Can't you see me?
+  dialogueText: My name's Greenlig, and I'm between the candle and the window. Can't
+    you see me?
   choices: []
   isLateral: 1
   characterPortrait: {fileID: 675175770, guid: e85bd518ce49df544af45bdc5be66ee3, type: 3}

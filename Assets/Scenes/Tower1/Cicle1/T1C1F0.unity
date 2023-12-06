@@ -5789,6 +5789,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5752601824265303498, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7158898870885404308, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: towerFloors.Array.size
       value: 2
