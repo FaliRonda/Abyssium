@@ -10,6 +10,7 @@ public class LookCameraOn3D : MonoBehaviour
     public void Start()
     {
         this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>((e) =>  this.gameIn3D = e.gameIn3D);
+        gameIn3D = GameState.gameIn3D;
         defaultSpriteRotation = transform.rotation;
     }
 
