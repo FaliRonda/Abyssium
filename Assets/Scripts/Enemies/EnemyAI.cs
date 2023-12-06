@@ -10,6 +10,7 @@ public class EnemyAI : MonoBehaviour
 {
     // Reference to the player
     public Transform playerTransform;
+    public Transform chasePivotTransform;
 
     public int lifeAmount = 3;
     public GameObject itemToDrop;
@@ -58,6 +59,7 @@ public class EnemyAI : MonoBehaviour
         {
             { "EnemyTransform", transform },
             { "PlayerTransform", playerTransform },
+            { "ChasePivotTransform", chasePivotTransform },
             { "Waypoints", waypoints },
             { "EnemyAnimator", enemyAnimator },
             { "EnemySprite", enemySprite },
@@ -119,7 +121,7 @@ public class EnemyAI : MonoBehaviour
         Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () =>
         {
             enemySprite.GetComponent<LookCameraOn3D>().rotateCameraOn3DActive = false;
-            Core.Event.Fire(new GameEvents.EnemyDied());
+            Core.Event.Fire(new GameEvents.EnemyDied(){ enemy = this});
         });
     }
 

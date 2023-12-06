@@ -10,6 +10,8 @@ public abstract class BTNode : ScriptableObject
     [HideInInspector]
     public Transform playerTransform;
     [HideInInspector]
+    public Transform chasePivotTransform;
+    [HideInInspector]
     public Transform[] waypoints;
     [HideInInspector]
     public Animator enemyAnimator;
@@ -29,6 +31,8 @@ public abstract class BTNode : ScriptableObject
         enemyTransform = parameterObj as Transform;
         parameters.TryGetValue("PlayerTransform", out parameterObj);
         playerTransform = parameterObj as Transform;
+        parameters.TryGetValue("ChasePivotTransform", out parameterObj);
+        chasePivotTransform = parameterObj as Transform;
         parameters.TryGetValue("Waypoints", out parameterObj);
         waypoints = parameterObj as Transform[];
         parameters.TryGetValue("EnemyAnimator", out parameterObj);

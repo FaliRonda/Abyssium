@@ -14,15 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyTransform: {fileID: 0}
   playerTransform: {fileID: 0}
+  chasePivotTransform: {fileID: 0}
   waypoints:
   - {fileID: 0}
   - {fileID: 0}
   enemyAnimator: {fileID: 0}
   enemySprite: {fileID: 0}
   detectedAudioSource: {fileID: 0}
-  visibilityRadius: 10
+  visibilityRadius: 7
   minimumDistanceToPlayer: 0.8
-  lightRadius: 4
-  chaseSpeed: 3.5
-  chaseInLightSpeed: 1
+  lightRadius: 2
+  chaseSpeed: 6
+  chaseInLightSpeed: 2
   isShadow: 1

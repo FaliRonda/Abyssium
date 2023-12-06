@@ -31,4 +31,13 @@ public class Bullet : MonoBehaviour
         // Puedes agregar aquí cualquier lógica adicional antes de destruir el objeto
         Destroy(gameObject);
     }
+    
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == Layers.PJ_LAYER)
+        {
+            other.GetComponent<PJ>().GetDamage();
+            Destroy(gameObject);
+        }
+    }
 }

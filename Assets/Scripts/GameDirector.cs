@@ -114,7 +114,7 @@ public class GameDirector : MonoBehaviour
 
             Core.Dialogue.Initialize(canvas);
 
-            this.EventSubscribe<GameEvents.EnemyDied>(e => CheckEnemiesInScene(true));
+            this.EventSubscribe<GameEvents.EnemyDied>(e => EnemyDied(e.enemy));
             this.EventSubscribe<GameEvents.NPCVanished>(e => ShowGodNarrative());
             this.EventSubscribe<GameEvents.DoorOpened>(e => DoorOpened());
             this.EventSubscribe<GameEvents.PlayerDamaged>(e => PlayerDamaged());
@@ -153,6 +153,12 @@ public class GameDirector : MonoBehaviour
         {
             InitializeGameDirector();
         }
+    }
+
+    private void EnemyDied(EnemyAI defeatedEnemy)
+    {
+        enemies.Remove(defeatedEnemy);
+        CheckEnemiesInScene();
     }
 
     private void UpdateCurrentFloorEndedNPCDialogue(NPC npc, DialogueSO lastDialogue)
@@ -243,7 +249,7 @@ public class GameDirector : MonoBehaviour
         }
         else
         {
-            CheckEnemiesInScene(false);
+            CheckEnemiesInScene();
         }
     }
 
@@ -503,10 +509,9 @@ public class GameDirector : MonoBehaviour
         narrativeDirector.ShowNarrative();
     }
     
-    private void CheckEnemiesInScene(bool enemyDied)
+    private void CheckEnemiesInScene()
     {
-        int enemyCount = enemyDied ? enemies.Count - 1 : enemies.Count;
-        if (enemyCount <= 0)
+        if (enemies.Count <= 0)
         {
             if (IsSceneT1C1Fm1)
             {

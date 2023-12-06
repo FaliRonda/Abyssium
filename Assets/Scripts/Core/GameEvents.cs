@@ -14,7 +14,10 @@ public static class GameEvents
         public bool toFloorBelow;
     }
 
-    public struct EnemyDied {}
+    public struct EnemyDied
+    {
+        public EnemyAI enemy;
+    }
 
     public struct NPCVanished {}
 

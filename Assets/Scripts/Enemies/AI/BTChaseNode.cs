@@ -16,10 +16,13 @@ public class BTChaseNode : BTNode
     public override BTNodeState Execute()
     {
         // Check if the player is within the visibility radius
-        float distance = Vector3.Distance(enemyTransform.position, playerTransform.position);
-        if (distance <= visibilityRadius)
+        Vector3 distanceRootPosition =
+            chasePivotTransform != null ? chasePivotTransform.position : enemyTransform.position;
+        float distanceFromPivot = Vector3.Distance(distanceRootPosition, playerTransform.position);
+        float distanceFromEnemy = Vector3.Distance(enemyTransform.position, playerTransform.position);
+        if (distanceFromPivot <= visibilityRadius)
         {
-            if (minimumDistanceToPlayer <= distance)
+            if (minimumDistanceToPlayer <= distanceFromEnemy)
             {
                 if (!currentlyChasing)
                 {
@@ -31,7 +34,7 @@ public class BTChaseNode : BTNode
 
                 float movementSpeed = chaseSpeed;
                 
-                if (isShadow && distance <= lightRadius && playerTransform.GetComponent<PJ>().inventory.HasLantern)
+                if (isShadow && distanceFromPivot <= lightRadius && playerTransform.GetComponent<PJ>().inventory.HasLantern)
                 {
                     movementSpeed = chaseInLightSpeed;
                 }
