@@ -32,7 +32,7 @@ public class SceneDirector : MonoBehaviour
         LoadCurrentFloorScene();
     }
 
-    public void setTowerFloorScenes(List<string> cicle1Floors, int newInitialFloor)
+    public void SetTowerFloorScenes(List<string> cicle1Floors, int newInitialFloor)
     {
         towerFloors = cicle1Floors;
         initialFloor = newInitialFloor;

@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C0F0Dialog4
   m_EditorClassIdentifier: 
-  dialogueText: Hey guy, are you ok? Don't be scare, you are not alone.
+  dialogueText: "Hey guy, are you ok? \nDon't be scared, you are not alone."
   choices: []
   isLateral: 1
-  characterPortrait: {fileID: 675175770, guid: e85bd518ce49df544af45bdc5be66ee3, type: 3}
+  isSpeakingNPC: 0
+  conversationCharacterPortrait: {fileID: 0}
+  lateralCharacterPortrait: {fileID: 675175770, guid: e85bd518ce49df544af45bdc5be66ee3, type: 3}
+  lateralDialogLifeTime: 10

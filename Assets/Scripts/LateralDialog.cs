@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
 
 public class LateralDialog : MonoBehaviour
 {
     public float animationDuration = 0.5f;
-    public float dialogLifeTime = 5f;
+    public float dialogLifeTime = 10f;
     
     private RectTransform rectTransform;
     private float initialAnchorPositionX;

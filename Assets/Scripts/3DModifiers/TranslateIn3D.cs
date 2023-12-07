@@ -21,7 +21,7 @@ public class TranslateIn3D : MonoBehaviour
     {
         if (gameIn3D)
         {
-            transform.position += translation;
+            transform.localPosition += translation;
         }
         else
         {

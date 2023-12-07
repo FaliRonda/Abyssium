@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using Ju.Services;
 using TMPro;
@@ -126,9 +127,10 @@ public class DialogueService : IService
 
     public void ShowLateralDialogs(GameDirector.DialogueDictionary lateralDialogs)
     {
+        var orderedLateralDialogs = lateralDialogs.OrderBy(x => x.Key.name).ToDictionary(x => x.Key, x => x.Value);
         Sequence lateralDialogsSequence = DOTween.Sequence();
 
-        foreach (var lateralDialog in lateralDialogs)
+        foreach (var lateralDialog in orderedLateralDialogs)
         {
             lateralDialogsSequence.AppendInterval(lateralDialog.Value)
                 .AppendCallback(() => { CreateLateralDialog(lateralDialog.Key); });
@@ -137,10 +139,13 @@ public class DialogueService : IService
         lateralDialogsSequence.Play();
     }
 
-    private void CreateLateralDialog(DialogueSO lateralDialog)
+    private void CreateLateralDialog(DialogueSO lateralDialogSO)
     {
         GameObject lateralDialogInstance = Object.Instantiate(lateralDialogPrefab, lateralDialogsTransform);
         TMP_Text lateralDialogTMP = lateralDialogInstance.GetComponentInChildren<TMP_Text>();
+        LateralDialog lateralDialog = lateralDialogInstance.GetComponent<LateralDialog>();
+
+        lateralDialog.dialogLifeTime = lateralDialogSO.lateralDialogLifeTime;
         
         int charIndex = 0;
 
@@ -149,18 +154,18 @@ public class DialogueService : IService
         lateralDialogTextSequence.AppendInterval(.2f)
             .AppendCallback(() =>
             {
-                DOTween.To(() => charIndex, x => charIndex = x, lateralDialog.dialogueText.Length,
-                        lateralDialog.dialogueText.Length * typingConfig.typingSpeed)
+                DOTween.To(() => charIndex, x => charIndex = x, lateralDialogSO.dialogueText.Length,
+                        lateralDialogSO.dialogueText.Length * typingConfig.typingSpeed)
                     .OnUpdate(() =>
                     {
-                        lateralDialogTMP.text = lateralDialog.dialogueText.Substring(0, charIndex);
+                        lateralDialogTMP.text = lateralDialogSO.dialogueText.Substring(0, charIndex);
                     });
             });
         
         Image lateralDialogPortraitImage = lateralDialogInstance.GetComponentsInChildren<Image>()[1];
-        if (lateralDialog.lateralCharacterPortrait != null)
+        if (lateralDialogSO.lateralCharacterPortrait != null)
         {
-            lateralDialogPortraitImage.sprite = lateralDialog.lateralCharacterPortrait;
+            lateralDialogPortraitImage.sprite = lateralDialogSO.lateralCharacterPortrait;
             lateralDialogPortraitImage.enabled = true;
         }
     }

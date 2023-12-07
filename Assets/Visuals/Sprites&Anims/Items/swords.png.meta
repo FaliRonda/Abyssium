@@ -212,7 +212,7 @@ TextureImporter:
         serializedVersion: 2
         x: 81
         y: 70
-        width: 43
+        width: 35
         height: 43
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -249,36 +249,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swords_6
+      name: great_sword
       rect:
         serializedVersion: 2
-        x: 128
-        y: 55
-        width: 39
-        height: 40
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 961471aad011ade42880f24475a5cf40
-      internalID: 1782911845
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: swords_7
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 75
-        width: 39
-        height: 40
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 123
+        y: 72
+        width: 43
+        height: 43
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -412,27 +391,6 @@ TextureImporter:
       bones: []
       spriteID: 0154ceed9e263f54c9a1fb69f81f9041
       internalID: -1545053526
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: swords_14
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 35
-        width: 39
-        height: 40
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c4facf1c24bf35347af3f697dff433fd
-      internalID: -679022768
       vertices: []
       indices: 
       edges: []
@@ -638,6 +596,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       big_sword: -1545053526
+      great_sword: -1108413247
       swords_0: -43137041
       swords_1: 1334931667
       swords_10: -1132566005
@@ -658,7 +617,6 @@ TextureImporter:
       swords_4: 911299526
       swords_5: 286164994
       swords_6: 1782911845
-      swords_7: -1108413247
       swords_8: 839769189
       swords_9: -1368662459
   mipmapLimitGroupName: 

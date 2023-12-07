@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using InputAction = UnityEngine.InputSystem.InputAction;
 
 public class GameDirector : MonoBehaviour
@@ -64,6 +65,7 @@ public class GameDirector : MonoBehaviour
     private bool isInitialLoad = true;
     private bool isFirstFloorLoad = true;
     private bool timeLoopEnded;
+    private bool timeLoopPaused;
     private float initialTimeLoopDuration;
     private float secondsCounter = 0;
     private bool pjCameFromAbove;
@@ -74,6 +76,7 @@ public class GameDirector : MonoBehaviour
     private SceneDirector sceneDirector;
     private Vector2 inputDirection = Vector2.zero;
 
+
     //INPUT ACTIONS
     private InputAction MoveAction;
     private InputAction RollAction;
@@ -83,9 +86,15 @@ public class GameDirector : MonoBehaviour
 
     private static bool IsSceneT1C0F0 => SceneManager.GetActiveScene().name == "T1C0F0";
     private static bool IsSceneT1C1Fm1 => SceneManager.GetActiveScene().name == "T1C1F-1";
+    private static bool IsSceneT1C1IT2F0 => SceneManager.GetActiveScene().name == "T1C1IT2F0";
+    private static bool IsSceneT1C1IT2Fm1 => SceneManager.GetActiveScene().name == "T1C1IT2F-1";
+    private static bool IsSceneT1C2Fm2 => SceneManager.GetActiveScene().name == "T1C2F-2";
+    private bool demoEnded;
     
+    private bool orbLateralDialogShown;
+
     private Dictionary<string,FloorData> loopPersistentData;
-    
+
     private struct FloorData
     {
         public bool enemiesDefeated;
@@ -115,7 +124,17 @@ public class GameDirector : MonoBehaviour
             Core.Dialogue.Initialize(canvas);
 
             this.EventSubscribe<GameEvents.EnemyDied>(e => EnemyDied(e.enemy));
-            this.EventSubscribe<GameEvents.NPCVanished>(e => ShowGodNarrative());
+            this.EventSubscribe<GameEvents.NPCVanished>(e => EndDemo());
+            this.EventSubscribe<GameEvents.NPCDialogue>(e => HandleConversation(e.started));
+            this.EventSubscribe<GameEvents.NPCMemoryGot>(e => Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["MemoryGot"]));
+            this.EventSubscribe<GameEvents.OrbGot>(e =>
+            {
+                if (!orbLateralDialogShown)
+                {
+                    Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["OrbGot"]);
+                    orbLateralDialogShown = true;
+                }
+            });
             this.EventSubscribe<GameEvents.DoorOpened>(e => DoorOpened());
             this.EventSubscribe<GameEvents.PlayerDamaged>(e => PlayerDamaged());
             
@@ -131,7 +150,7 @@ public class GameDirector : MonoBehaviour
             UpdateGameState();
 
             Core.Audio.Initialize(audioGO);
-            Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1f, 0.2f);
+            Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1f, 0.03f);
             
             isInitialLoad = false;
         }
@@ -152,6 +171,18 @@ public class GameDirector : MonoBehaviour
         else
         {
             InitializeGameDirector();
+        }
+    }
+
+    private void HandleConversation(bool conversationStarted)
+    {
+        if (conversationStarted)
+        {
+            timeLoopPaused = true;
+        }
+        else
+        {
+            timeLoopPaused = false;
         }
     }
 
@@ -178,13 +209,13 @@ public class GameDirector : MonoBehaviour
     
     void Update()
     {
-        if (cameraDirector != null && !cameraDirector.CamerasTransitionBlending() && (!timeLoopEnded || debugMode))
+        if (!demoEnded && cameraDirector != null && !cameraDirector.CamerasTransitionBlending() && (!timeLoopEnded || debugMode))
         {
             if (debugMode && CameraChangeAction.triggered)
             {
                 SwitchGamePerspective();
             }
-            else if (pj != null && !narrativeDirector.IsShowingNarrative())
+            else if (pj != null && !narrativeDirector.IsShowingNarrative)
             {
                 // Player
                 ControlInputData controlInputData = GetControlInputDataValues();
@@ -208,25 +239,33 @@ public class GameDirector : MonoBehaviour
                 {
                     pj.DoRoll(controlInputData.movementDirection);
                 }
+            } else if (narrativeDirector.IsShowingNarrative && !narrativeDirector.IsTypingText && InteractAction.triggered)
+            {
+                narrativeDirector.EndNarrative();
+                if (IsSceneT1C1IT2Fm1)
+                {
+                    timeLoopPaused = false;
+                    StartCycle2();
+                }
             }
         }
         
         // If time loop is not disabled
         if (timeLoopDuration != -1)
         {
-            if (timeLoopDuration > 0 && !timeLoopEnded)
+            if (timeLoopDuration > 0 && !timeLoopEnded && !timeLoopPaused)
             {
                 timeLoopDuration -= Time.deltaTime;
-                UpdateLighthouseRotation();
+                UpdateMoonRotation();
 
                 secondsCounter += Time.deltaTime;
                 if (secondsCounter >= 1)
                 {
                     secondsCounter = 0;
-                    Core.Audio.Play(SOUND_TYPE.ClockTikTak, 2, 0.05f);
+                    Core.Audio.Play(SOUND_TYPE.ClockTikTak, 2, 0.03f);
                 }
             }
-            else if (!timeLoopEnded)
+            else if (!timeLoopEnded && !timeLoopPaused)
             {
                 EndTimeLoop();
             }
@@ -251,10 +290,16 @@ public class GameDirector : MonoBehaviour
         {
             CheckEnemiesInScene();
         }
+
+        if (IsSceneT1C1Fm1)
+        {
+            Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["T1C1F-1"]);
+        }
     }
 
     private void InitializeGameDirector()
     {
+        
         InitializePlayer();
         InitializeCameraDirector();
         SetPlayerSpawnPoint();
@@ -317,7 +362,7 @@ public class GameDirector : MonoBehaviour
             timeLoopDuration = initialTimeLoopDuration;
             timeLoopEnded = false;
         }
-        
+
         // When a new scene has been loaded, the new cycle or loop processing has been done
         isNewCycleOrLoop = false;
     }
@@ -375,6 +420,11 @@ public class GameDirector : MonoBehaviour
                 Destroy(player.gameObject);
             }
         }
+
+        if (IsSceneT1C1IT2F0)
+        {
+            pj.canRoll = true;
+        }
     }
     
     private bool IsPersistentPlayer(PJ player)
@@ -410,7 +460,7 @@ public class GameDirector : MonoBehaviour
         GameState.gameIn3D = this.gameIn3D;
     }
     
-    private void UpdateLighthouseRotation()
+    private void UpdateMoonRotation()
     {
         float pendingTimeLoopDurationPorcentage = timeLoopDuration / initialTimeLoopDuration;
         float nextLighthoyseYRotation = 360f * pendingTimeLoopDurationPorcentage * -1;
@@ -426,18 +476,23 @@ public class GameDirector : MonoBehaviour
     {
         timeLoopEnded = true;
         
-        if (!IsSceneT1C0F0 && !debugMode)
+        if (IsSceneT1C0F0)
+        {
+            Core.PositionRecorder.StopRecording();
+            Core.PositionRecorder.DoRewind(pj.transform, moon.transform, () => { StartCycle1(); });
+        }
+        else if (IsSceneT1C1Fm1)
+        {
+            StartCycle1Iteration2();
+        }
+        else if (!debugMode)
         {
             isFirstFloorLoad = true;
             isNewCycleOrLoop = true;
             pj.ResetItems();
             Core.Event.Fire<GameEvents.LoadInitialFloorSceneEvent>();
         }
-        else if (IsSceneT1C0F0)
-        {
-            Core.PositionRecorder.StopRecording();
-            Core.PositionRecorder.DoRewind(pj.transform, moon.transform, () => { StartCycle1(); });
-        }
+        
     }
 
     private void StartCycle1()
@@ -447,8 +502,19 @@ public class GameDirector : MonoBehaviour
         initialTimeLoopDuration = cycle1LoopDuration;
         isNewCycleOrLoop = true;
         Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["T1C1F0"]);
-        sceneDirector.setTowerFloorScenes(cycle1Floors, cycle1InitialFloor);
-        sceneDirector.LoadCurrentFloorScene();
+        sceneDirector.SetTowerFloorScenes(cycle1Floors, cycle1InitialFloor);
+        sceneDirector.LoadInitialFloor();
+    }
+    
+    private void StartCycle1Iteration2()
+    {
+        List<string> cycle1IT2Floors = new List<string>(){"T1C1IT2F0", "T1C1IT2F-1"};
+        int cycleInitialFloor = 0;
+        initialTimeLoopDuration = cycle1LoopDuration;
+        isNewCycleOrLoop = true;
+        Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["T1C1IT2F0"]);
+        sceneDirector.SetTowerFloorScenes(cycle1IT2Floors, cycleInitialFloor);
+        sceneDirector.LoadInitialFloor();
     }
     
     private void StartCycle2()
@@ -458,8 +524,9 @@ public class GameDirector : MonoBehaviour
         timeLoopEnded = true;
         isNewCycleOrLoop = true;
         initialTimeLoopDuration = cycle2LoopDuration;
-        sceneDirector.setTowerFloorScenes(cycle2Floors, cycle2InitialFloor);
-        sceneDirector.LoadCurrentFloorScene();
+        Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["T1C2F0"]);
+        sceneDirector.SetTowerFloorScenes(cycle2Floors, cycle2InitialFloor);
+        sceneDirector.LoadInitialFloor();
     }
 
     private ControlInputData GetControlInputDataValues()
@@ -501,12 +568,12 @@ public class GameDirector : MonoBehaviour
 
     private void DoorOpened()
     {
-        directionalLights.SetActive(false);
         SwitchGamePerspective();
     }
 
-    private void ShowGodNarrative()
+    private void EndDemo()
     {
+        demoEnded = true;
         narrativeDirector.ShowNarrative();
     }
     
@@ -514,9 +581,14 @@ public class GameDirector : MonoBehaviour
     {
         if (enemies.Count <= 0)
         {
-            if (IsSceneT1C1Fm1)
+            if (IsSceneT1C1IT2Fm1)
             {
-                StartCycle2();
+                timeLoopPaused = true;
+                narrativeDirector.ShowNarrative();
+            }
+            else if (IsSceneT1C2Fm2)
+            {
+                timeLoopPaused = true;
             }
             else
             {
@@ -531,7 +603,7 @@ public class GameDirector : MonoBehaviour
             SetGameState(false);
         }
     }
-    
+
     #endregion
 
     #region Utils

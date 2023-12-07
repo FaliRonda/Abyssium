@@ -1975,8 +1975,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51c4960edb7d9194ea6f9c9dafcbcebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  narrativeCurtain: {fileID: 0}
-  narrativeText: {fileID: 0}
+  narrativeCurtain: {fileID: 6005206428841161141}
+  narrativeText: {fileID: 9182475316119719589}
   narrativeDialogues:
   - {fileID: 11400000, guid: c1b4064248c88cd42b630d5011503f2e, type: 2}
 --- !u!1 &8643175743150620122

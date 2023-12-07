@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyTransform: {fileID: 0}
   playerTransform: {fileID: 0}
+  chasePivotTransform: {fileID: 0}
   waypoints:
   - {fileID: 0}
   - {fileID: 0}
@@ -21,9 +22,9 @@ MonoBehaviour:
   enemySprite: {fileID: 0}
   detectedAudioSource: {fileID: 0}
   attackVisibilityDistance: 1
-  attackCD: 3
-  anticipationDistance: 0.5
-  anticipacionDuration: 0.35
-  attackMovementDistance: 3
+  attackCD: 1.75
+  anticipationDistance: 0.3
+  anticipacionDuration: 0.3
+  attackMovementDistance: 2.5
   attackMovementDuration: 0.3
   enemyRayMaxDistance: 0.75

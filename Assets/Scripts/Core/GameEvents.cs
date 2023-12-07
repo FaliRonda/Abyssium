@@ -21,6 +21,11 @@ public static class GameEvents
 
     public struct NPCVanished {}
 
+    public struct NPCDialogue
+    {
+        public bool started;
+    }
+
     public struct DoorOpened {}
 
     public struct PlayerDamaged {}
@@ -30,4 +35,8 @@ public static class GameEvents
         public NPC npc;
         public DialogueSO lastDialogue;
     }
+
+    public class NPCMemoryGot {}
+
+    public class OrbGot {}
 }

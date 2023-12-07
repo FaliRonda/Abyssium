@@ -6130,6 +6130,10 @@ PrefabInstance:
       value: DoorToF-2
       objectReference: {fileID: 0}
     - target: {fileID: 5223120915362778678, guid: 829afa9d2b9a684488a955d872adefdd, type: 3}
+      propertyPath: isLocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5223120915362778678, guid: 829afa9d2b9a684488a955d872adefdd, type: 3}
       propertyPath: doorOpenedCallback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 6
       objectReference: {fileID: 0}
@@ -6141,6 +6145,10 @@ PrefabInstance:
       propertyPath: doorOpenedCallback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7292236797746515332, guid: 829afa9d2b9a684488a955d872adefdd, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 47aa2524245c31743aa1553531359175, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26145,6 +26153,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7148334662330990302, guid: 952e7d341d873314a82ed32d672e9e82, type: 3}
+      propertyPath: itemToDrop
+      value: 
+      objectReference: {fileID: 1472249213624661288, guid: 083d74cf58bcc7548a2e0e4130eff11b, type: 3}
     - target: {fileID: 7148334662330990302, guid: 952e7d341d873314a82ed32d672e9e82, type: 3}
       propertyPath: behaviorNodeContainer
       value: 

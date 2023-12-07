@@ -6,6 +6,10 @@ public class Dropper : MonoBehaviour
     
     public void Drop(GameObject drop)
     {
+        if (dropSpawn == null)
+        {
+            dropSpawn = transform;
+        }
         drop.transform.position = dropSpawn.position;
         
         GameObject dropInstantiated = Instantiate(drop);

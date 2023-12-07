@@ -2,8 +2,8 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Ju.Extensions;
-using Ju.Extensions;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PJ : MonoBehaviour
 {
@@ -12,6 +12,7 @@ public class PJ : MonoBehaviour
     public float playerRotationSpeed = 1f;
     public float playerRollFactor = 2f;
     public float rollCooldown;
+    public bool canRoll;
     public float attackCooldown;
     public float playerRayMaxDistance = 0.5f;
     public float playerDustParticlesDelay = 0.5f;
@@ -106,7 +107,7 @@ public class PJ : MonoBehaviour
 
     public void DoRoll(Vector3 direction)
     {
-        if (!pjDoingAction && rollReady)
+        if (!pjDoingAction && rollReady && canRoll)
         {
             pjDoingAction = true;
             pjIsRolling = true;
@@ -341,7 +342,7 @@ public class PJ : MonoBehaviour
         }
         else
         {
-            if (!pjDoingAction && attackReady) // Basic attack
+            if (!pjDoingAction && attackReady && inventory.HasWeapon) // Basic attack
             {
                 Attack();
             }
@@ -352,7 +353,7 @@ public class PJ : MonoBehaviour
                 Sequence sequence = DOTween.Sequence();
                 sequence.AppendInterval(animLenght).AppendCallback((() => 
                 {
-                    if (bufferedAttack && !pjIsRolling)
+                    if (bufferedAttack && !pjIsRolling && inventory.HasWeapon)
                     {
                         Attack();
                     }

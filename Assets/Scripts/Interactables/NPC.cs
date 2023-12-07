@@ -5,7 +5,7 @@ using UnityEngine;
 public class NPC : Interactable
 {
     public DialogueSO[] dialogues;
-    public DialogueSO[] finalDialogue;
+    public DialogueSO[] finalDialogues;
 
     public DialogueSO[] dialoguesToShow;
     public DialogueSO lastDialog;
@@ -23,7 +23,7 @@ public class NPC : Interactable
         if (pj.inventory.HasNPCMemory)
         {
             memoryFound = true;
-            dialoguesToShow = finalDialogue;
+            dialoguesToShow = finalDialogues;
         }
         else if (choiceSelected || dialogueEnded) // Dialogue ended
         {
@@ -50,6 +50,7 @@ public class NPC : Interactable
     {
         SetInteracting(true);
         
+        Core.Event.Fire(new GameEvents.NPCDialogue(){ started = true });
         Core.Dialogue.StartConversation();
 
         ShowNextDialog();
@@ -65,14 +66,25 @@ public class NPC : Interactable
 
     private void ShowNextDialog()
     {
+        // Hay más diálogos que mostrar
         if (dialogueIndex < dialoguesToShow.Length)
         {
             lastDialog = dialoguesToShow[dialogueIndex];
             Core.Dialogue.ShowText(dialoguesToShow[dialogueIndex]);
             ShowChoices(dialoguesToShow[dialogueIndex]);
 
+            if (lastDialog.drop != null)
+            {
+                Dropper dropper = GetComponent<Dropper>();
+                if (dropper != null)
+                {
+                    dropper.Drop(lastDialog.drop);
+                }
+            }
+
             dialogueIndex++;
         }
+        // Se muestra el último diálogo a raíz de una respuesta
         else if (lastChoiceDialog != null)
         {
             lastDialog = lastChoiceDialog;
@@ -81,6 +93,7 @@ public class NPC : Interactable
 
             lastChoiceDialog = null;
         }
+        // Termina la conversación
         else
         {
             EndDialogue();
@@ -108,6 +121,8 @@ public class NPC : Interactable
     {
         SetInteracting(false);
         Core.Dialogue.HideCanvas();
+        
+        Core.Event.Fire(new GameEvents.NPCDialogue(){ started = false });
 
         dialogueIndex = 0;
 

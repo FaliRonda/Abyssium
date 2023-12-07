@@ -440,7 +440,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.35
   m_Center: {x: -0.1, y: 0.35, z: 0}
 --- !u!114 &4353611689915058615
 MonoBehaviour:
@@ -458,8 +458,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d24d2c00d07d5d54a99a4f36ac444c95, type: 2}
   - {fileID: 11400000, guid: 6f970ae2393b5e143a1a1b3c69af4c4b, type: 2}
   - {fileID: 11400000, guid: 697ca8f7cd40b7e43a01c449a2154b7e, type: 2}
-  finalDialogue:
-  - {fileID: 11400000, guid: 41af8079c0020844d98034226daa5df2, type: 2}
+  finalDialogues: []
   dialoguesToShow: []
   lastDialog: {fileID: 0}
   dialogueEnded: 0

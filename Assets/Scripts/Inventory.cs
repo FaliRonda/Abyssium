@@ -14,11 +14,13 @@ public class Inventory : MonoBehaviour
     private bool hasWhiteOrb = false;
     private bool hasBlackOrb = false;
     private bool hasLantern = false;
+    private bool hasWeapon;
     private bool hasNPCMemory = false;
     
     public bool HasWhiteOrb => hasWhiteOrb;
     public bool HasBlackOrb => hasBlackOrb;
     public bool HasLantern => hasLantern;
+    public bool HasWeapon => hasWeapon;
     public bool HasNPCMemory => hasNPCMemory;
 
     private Light lantern;
@@ -137,6 +139,7 @@ public class Inventory : MonoBehaviour
         switch (item.itemType)
         {
             case Item.ITEM_TYPE.WEAPON:
+                hasWeapon = true;
                 activeWeapon.UptadeWeaponStats(item);
                 break;
             case Item.ITEM_TYPE.UTIL:
@@ -146,12 +149,15 @@ public class Inventory : MonoBehaviour
             case Item.ITEM_TYPE.KEY:
                 if (item.keyId == Item.KEY_IDS.BLACK_ORB)
                 {
+                    Core.Event.Fire(new GameEvents.OrbGot(){});
                     hasBlackOrb = true;
                 } else if (item.keyId == Item.KEY_IDS.WHITE_ORB)
                 {
+                    Core.Event.Fire(new GameEvents.OrbGot(){});
                     hasWhiteOrb = true;
                 } else if (item.keyId == Item.KEY_IDS.MEMORY)
                 {
+                    Core.Event.Fire(new GameEvents.NPCMemoryGot(){});
                     hasNPCMemory = true;
                 }
                 break;
@@ -165,9 +171,10 @@ public class Inventory : MonoBehaviour
         hasWhiteOrb = false;
         hasBlackOrb = false;
         hasLantern = false;
+        hasWeapon = false;
         hasNPCMemory = false;
+        lantern.enabled = false;
 
         activeWeapon.ResetValues();
-        lantern.enabled = false;
     }
 }

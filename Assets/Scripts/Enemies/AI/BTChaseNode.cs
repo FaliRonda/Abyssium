@@ -34,7 +34,7 @@ public class BTChaseNode : BTNode
 
                 float movementSpeed = chaseSpeed;
                 
-                if (isShadow && distanceFromPivot <= lightRadius && playerTransform.GetComponent<PJ>().inventory.HasLantern)
+                if (isShadow && distanceFromEnemy <= lightRadius && playerTransform.GetComponent<PJ>().inventory.HasLantern)
                 {
                     movementSpeed = chaseInLightSpeed;
                 }

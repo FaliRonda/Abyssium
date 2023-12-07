@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
+  m_Name: T1C2F0LateralDialog2
+  m_EditorClassIdentifier: 
+  dialogueText: Hey guy, are you ok? Don't be scared, you are not alone.
+  choices: []
+  drop: {fileID: 0}
+  isLateral: 1
+  isSpeakingNPC: 1
+  conversationCharacterPortrait: {fileID: 675175770, guid: e85bd518ce49df544af45bdc5be66ee3, type: 3}
+  lateralCharacterPortrait: {fileID: 675175770, guid: e85bd518ce49df544af45bdc5be66ee3, type: 3}
+  lateralDialogLifeTime: 10
