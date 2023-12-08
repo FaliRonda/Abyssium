@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.016209919, g: 0.0102037415, b: 0.01515386, a: 1}
+  m_IndirectSpecularColor: {r: 0.0091268355, g: 0.007208602, b: 0.013051796, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5234,7 +5234,7 @@ SpriteRenderer:
   m_SortingLayerID: -1353953791
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8eff82f347362dd488cf7e236cb1bc02, type: 3}
+  m_Sprite: {fileID: 1694914633, guid: 3f5ed32ad86d3c847b7ddf0a471470a0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.09803922}
   m_FlipX: 0
   m_FlipY: 0
@@ -5903,7 +5903,7 @@ SpriteRenderer:
   m_SortingLayerID: -1353953791
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e43074c3c40baf54db00144228bf8605, type: 3}
+  m_Sprite: {fileID: -1173147665, guid: 3f5ed32ad86d3c847b7ddf0a471470a0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
