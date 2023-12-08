@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Ju.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using Bloom = UnityEngine.Rendering.Universal.Bloom;
+using ChromaticAberration = UnityEngine.Rendering.Universal.ChromaticAberration;
 using InputAction = UnityEngine.InputSystem.InputAction;
+using Vignette = UnityEngine.Rendering.Universal.Vignette;
 
 public class GameDirector : MonoBehaviour
 {
@@ -18,7 +21,7 @@ public class GameDirector : MonoBehaviour
     public float timeLoopDuration = 10f;
     public GameObject moon;
     public Canvas canvas;
-    public PostProcessVolume postprocessing;
+    public Volume postprocessing;
     public NarrativeDirector narrativeDirector;
     public GameObject directionalLights;
     public GameObject audioGO;
@@ -73,6 +76,7 @@ public class GameDirector : MonoBehaviour
 
     private Bloom bloom;
     private ChromaticAberration chromaticAberration;
+    private Vignette vignette;
     private SceneDirector sceneDirector;
     private Vector2 inputDirection = Vector2.zero;
 
@@ -84,11 +88,15 @@ public class GameDirector : MonoBehaviour
     private InputAction CameraChangeAction;
     private InputAction CameraRotationAction;
 
+    private static bool IsSceneGameLoader => SceneManager.GetActiveScene().name == "GameLoader";
     private static bool IsSceneT1C0F0 => SceneManager.GetActiveScene().name == "T1C0F0";
+    private static bool IsSceneT1C1F0 => SceneManager.GetActiveScene().name == "T1C1F0";
     private static bool IsSceneT1C1Fm1 => SceneManager.GetActiveScene().name == "T1C1F-1";
     private static bool IsSceneT1C1IT2F0 => SceneManager.GetActiveScene().name == "T1C1IT2F0";
     private static bool IsSceneT1C1IT2Fm1 => SceneManager.GetActiveScene().name == "T1C1IT2F-1";
     private static bool IsSceneT1C2Fm2 => SceneManager.GetActiveScene().name == "T1C2F-2";
+    private bool doorLockedAttemptOpen;
+    private bool controlBlocked;
     private bool demoEnded;
     
     private bool orbLateralDialogShown;
@@ -135,8 +143,15 @@ public class GameDirector : MonoBehaviour
                     orbLateralDialogShown = true;
                 }
             });
-            this.EventSubscribe<GameEvents.DoorOpened>(e => DoorOpened());
-            this.EventSubscribe<GameEvents.PlayerDamaged>(e => PlayerDamaged());
+            this.EventSubscribe<GameEvents.TryOpenLockedDoor>(e =>
+            {
+                if (!doorLockedAttemptOpen)
+                {
+                    Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["LockedDoorAttemptOpen"]);
+                    doorLockedAttemptOpen = true;
+                }
+            });
+            this.EventSubscribe<GameEvents.PlayerDamaged>(e => PlayerDamaged(e.deathFrameDuration));
             
             this.EventSubscribe<GameEvents.LoadFloorSceneEvent>(e =>
             {
@@ -148,9 +163,20 @@ public class GameDirector : MonoBehaviour
             this.EventSubscribe<GameEvents.NPCDialogueEnded>(e => UpdateCurrentFloorEndedNPCDialogue(e.npc, e.lastDialogue));
             
             UpdateGameState();
+            
+            postprocessing.profile.TryGet(out vignette);
+            postprocessing.profile.TryGet(out bloom);
+            postprocessing.profile.TryGet(out chromaticAberration);
+
+            if (IsSceneGameLoader)
+            {
+                vignette.intensity.value = 1;
+                vignette.smoothness.value = 1;
+                moon.GetComponentInChildren<Light>().enabled = false;
+            }
 
             Core.Audio.Initialize(audioGO);
-            Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1f, 0.03f);
+            Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1, 0, 0.03f);
             
             isInitialLoad = false;
         }
@@ -189,7 +215,7 @@ public class GameDirector : MonoBehaviour
     private void EnemyDied(EnemyAI defeatedEnemy)
     {
         enemies.Remove(defeatedEnemy);
-        CheckEnemiesInScene();
+        CheckEnemiesInScene(true);
     }
 
     private void UpdateCurrentFloorEndedNPCDialogue(NPC npc, DialogueSO lastDialogue)
@@ -213,9 +239,9 @@ public class GameDirector : MonoBehaviour
         {
             if (debugMode && CameraChangeAction.triggered)
             {
-                SwitchGamePerspective();
+                ForceSwitchGamePerspective();
             }
-            else if (pj != null && !narrativeDirector.IsShowingNarrative)
+            else if (pj != null && !narrativeDirector.IsShowingNarrative && !controlBlocked)
             {
                 // Player
                 ControlInputData controlInputData = GetControlInputDataValues();
@@ -230,6 +256,15 @@ public class GameDirector : MonoBehaviour
                     }
                 }
                 
+                if (Core.Dialogue.ChoicesInScreen)
+                {
+                    Core.Dialogue.SelectChoicesWithControl(controlInputData.inputDirection);
+                    if (InteractAction.triggered)
+                    {
+                        Core.Dialogue.ChoiceSelected(-1);
+                    }
+                }
+                
                 if (InteractAction.triggered)
                 {
                     pj.DoMainAction();
@@ -239,13 +274,29 @@ public class GameDirector : MonoBehaviour
                 {
                     pj.DoRoll(controlInputData.movementDirection);
                 }
+
             } else if (narrativeDirector.IsShowingNarrative && !narrativeDirector.IsTypingText && InteractAction.triggered)
             {
                 narrativeDirector.EndNarrative();
                 if (IsSceneT1C1IT2Fm1)
                 {
-                    timeLoopPaused = false;
-                    StartCycle2();
+                    Sequence godNarrativeEnded = DOTween.Sequence();
+                    godNarrativeEnded.
+                        AppendCallback(() => { Core.Audio.Play(SOUND_TYPE.Bell, 1,0, 0.01f); })
+                        .AppendInterval(2f)
+                        .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1f, 1f)
+                            .SetEase(Ease.OutQuad))
+                        .Join(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 1f, 1f)
+                            .SetEase(Ease.OutQuad))
+                        .AppendCallback(() =>
+                        {
+                            timeLoopPaused = false;
+                            StartCycle2();
+                        })
+                        .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.5f, 1f)
+                            .SetEase(Ease.OutQuad))
+                        .Join(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 0.5f, 1f)
+                            .SetEase(Ease.OutQuad));
                 }
             }
         }
@@ -262,7 +313,14 @@ public class GameDirector : MonoBehaviour
                 if (secondsCounter >= 1)
                 {
                     secondsCounter = 0;
-                    Core.Audio.Play(SOUND_TYPE.ClockTikTak, 2, 0.03f);
+                    float volume = 0.01f;
+
+                    if (IsSceneT1C0F0)
+                    {
+                        volume = 0.03f;
+                    }
+                    
+                    Core.Audio.Play(SOUND_TYPE.ClockTikTak, 2, 0, volume);
                 }
             }
             else if (!timeLoopEnded && !timeLoopPaused)
@@ -286,9 +344,13 @@ public class GameDirector : MonoBehaviour
         {
             StartT1C0F0GameFlow();
         }
+        else if (IsSceneT1C1F0)
+        {
+            CheckEnemiesInScene(true);
+        }
         else
         {
-            CheckEnemiesInScene();
+            CheckEnemiesInScene(false);
         }
 
         if (IsSceneT1C1Fm1)
@@ -296,6 +358,7 @@ public class GameDirector : MonoBehaviour
             Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["T1C1F-1"]);
         }
     }
+
 
     private void InitializeGameDirector()
     {
@@ -438,6 +501,7 @@ public class GameDirector : MonoBehaviour
         {
             cameraDirector = Camera.main.GetComponent<CameraDirector>();
             cameraDirector.Initialize(pj.transform);
+            Core.CameraEffects.Initialize(cameraDirector.cameraTD);
         }
         else
         {
@@ -451,8 +515,53 @@ public class GameDirector : MonoBehaviour
 
     private void StartT1C0F0GameFlow()
     {
-        Core.PositionRecorder.StartRecording(pj.transform, moon.transform);
-        Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["T1C0F0"]);
+
+        Sequence vignetteSequence = DOTween.Sequence();
+        Sequence smoothnessSequence = DOTween.Sequence();
+
+        timeLoopPaused = true;
+        controlBlocked = true;
+
+        vignetteSequence.AppendInterval(2f)
+            .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.75f, 0.3f)
+                .SetEase(Ease.OutQuad))
+            .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1f, 0.3f)
+                .SetEase(Ease.OutQuad))
+            .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.75f, 0.3f)
+                .SetEase(Ease.OutQuad))
+            .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1f, 0.3f)
+                .SetEase(Ease.OutQuad))
+            .AppendInterval(1f)
+            .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.55f, 1f)
+                .SetEase(Ease.OutQuad));
+        
+        smoothnessSequence.AppendInterval(2f)
+            .Append(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 0.75f, 0.3f)
+                .SetEase(Ease.OutQuad))
+            .Append(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 1f, 0.3f)
+                .SetEase(Ease.OutQuad))
+            .Append(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 0.75f, 0.3f)
+                .SetEase(Ease.OutQuad))
+            .Append(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 1f, 0.3f)
+                .SetEase(Ease.OutQuad))
+            .AppendInterval(1f)
+            .Append(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 0.55f, 1f)
+                .SetEase(Ease.OutQuad))
+            .AppendInterval(2f)
+            .AppendCallback(() =>
+            {
+                moon.GetComponentInChildren<Light>().enabled = true;
+                Core.Audio.Play(SOUND_TYPE.Spotlight, 1, 0, 0.03f);
+            })
+            .AppendInterval(2f)
+            .AppendCallback(() =>
+            {
+                timeLoopPaused = false;
+                controlBlocked = false;
+                Core.PositionRecorder.StartRecording(pj.transform, moon.transform);
+                Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["T1C0F0"]);
+                Core.Audio.Play(SOUND_TYPE.Bell, 1, 0, 0.01f);
+            });
     }
     
     private void UpdateGameState()
@@ -475,7 +584,31 @@ public class GameDirector : MonoBehaviour
     private void EndTimeLoop()
     {
         timeLoopEnded = true;
-        
+        Core.Audio.Play(SOUND_TYPE.Bell, 1, 0, 0.01f);
+
+        if (!IsSceneT1C0F0)
+        {
+            Sequence endTimeLoopSequence = DOTween.Sequence();
+            endTimeLoopSequence
+                .AppendInterval(2f)
+                .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1f, 1f)
+                    .SetEase(Ease.OutQuad))
+                .Join(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 1f, 1f)
+                    .SetEase(Ease.OutQuad))
+                .AppendCallback(() => { EndLoopLogic(); })
+                .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.5f, 1f)
+                    .SetEase(Ease.OutQuad))
+                .Join(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 0.5f, 1f)
+                    .SetEase(Ease.OutQuad));
+        }
+        else
+        {
+            EndLoopLogic();
+        }
+    }
+
+    private void EndLoopLogic()
+    {
         if (IsSceneT1C0F0)
         {
             Core.PositionRecorder.StopRecording();
@@ -484,15 +617,15 @@ public class GameDirector : MonoBehaviour
         else if (IsSceneT1C1Fm1)
         {
             StartCycle1Iteration2();
+            pj.ResetItems();
         }
         else if (!debugMode)
         {
             isFirstFloorLoad = true;
             isNewCycleOrLoop = true;
             pj.ResetItems();
-            Core.Event.Fire<GameEvents.LoadInitialFloorSceneEvent>();
+            Core.Event.Fire(new GameEvents.LoadInitialFloorSceneEvent());
         }
-        
     }
 
     private void StartCycle1()
@@ -523,6 +656,7 @@ public class GameDirector : MonoBehaviour
         int cycle2InitialFloor = 1;
         timeLoopEnded = true;
         isNewCycleOrLoop = true;
+        controlBlocked = false;
         initialTimeLoopDuration = cycle2LoopDuration;
         Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["T1C2F0"]);
         sceneDirector.SetTowerFloorScenes(cycle2Floors, cycle2InitialFloor);
@@ -557,34 +691,49 @@ public class GameDirector : MonoBehaviour
 
     #region Event callbacks
     
-    private void PlayerDamaged()
+    private void PlayerDamaged(float deathFrameDuration)
     {
         timeLoopDuration -= 10;
         
-        // TODO Should gamefeel: modificar el postprocesado cuando el jugador es atacado
-        //postprocessing.profile.TryGetSettings(out bloom);
-        //postprocessing.profile.TryGetSettings(out chromaticAberration);
-    }
+        //Death frame - sin pulido no queda bien
+        /*controlBlocked = true;
+        timeLoopPaused = true;
 
-    private void DoorOpened()
-    {
-        SwitchGamePerspective();
+        Sequence deathFrameSequence = DOTween.Sequence();
+        deathFrameSequence
+            .AppendInterval(deathFrameDuration).AppendCallback(() =>
+            {
+                controlBlocked = false;
+                timeLoopPaused = false;
+                timeLoopDuration -= 10;
+                //postprocessing.profile.TryGet(out bloom);
+                //postprocessing.profile.TryGetSettings(out chromaticAberration);
+            });
+        */
     }
 
     private void EndDemo()
     {
         demoEnded = true;
+        timeLoopPaused = true;
         narrativeDirector.ShowNarrative();
     }
     
-    private void CheckEnemiesInScene()
+    private void CheckEnemiesInScene(bool enemyDied)
     {
         if (enemies.Count <= 0)
         {
             if (IsSceneT1C1IT2Fm1)
             {
                 timeLoopPaused = true;
-                narrativeDirector.ShowNarrative();
+                controlBlocked = true;
+                Sequence angryGodSequence = DOTween.Sequence();
+
+                angryGodSequence
+                    .AppendCallback(() => { Core.Audio.Play(SOUND_TYPE.AngryGod, 1, 0, 0.1f); })
+                    .AppendCallback(() => { Core.CameraEffects.ShakeCamera(2f, 2f); })
+                    .AppendInterval(3f)
+                    .AppendCallback(() => { narrativeDirector.ShowNarrative(); });
             }
             else if (IsSceneT1C2Fm2)
             {
@@ -596,11 +745,11 @@ public class GameDirector : MonoBehaviour
                 currentScenePersistentData.enemiesDefeated = true;
                 loopPersistentData[SceneManager.GetActiveScene().name] = currentScenePersistentData;
                 
-                SetGameState(true);
+                SetGameState(true, enemyDied);
             }
         } else if (gameIn3D)
         {
-            SetGameState(false);
+            SetGameState(false, enemyDied);
         }
     }
 
@@ -608,17 +757,54 @@ public class GameDirector : MonoBehaviour
 
     #region Utils
 
-    private void SwitchGamePerspective()
+    private void ForceSwitchGamePerspective()
     {
-        SetGameState(!gameIn3D);
+        SetGameState(!gameIn3D, false);
     }
 
-    private void SetGameState(bool gameIn3D)
+    private void UpdateCameraPerspective(bool enemyDied)
+    {
+        if (!gameIn3D)
+        {
+            vignette.intensity.value = 0.55f;
+            vignette.smoothness.value = 0.55f;
+            Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = this.gameIn3D });
+        }
+        else
+        {
+            if (enemyDied)
+            {
+                controlBlocked = true;
+                
+                Sequence vignetteSequence = DOTween.Sequence();
+
+                vignetteSequence
+                    .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1f, 0.1f)
+                        .SetEase(Ease.OutQuad))
+                    .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.75f, 1f)
+                        .SetEase(Ease.OutQuad))
+                    .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1f, 0.1f)
+                        .SetEase(Ease.OutQuad))
+                    .AppendCallback(() =>
+                    {
+                        Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = this.gameIn3D });
+                    })
+                    .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.5f, 0.3f)
+                        .SetEase(Ease.OutQuad))
+                    .AppendCallback(() => { controlBlocked = false; });
+            }
+            else
+            {
+                Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = this.gameIn3D });
+            }
+        }
+    }
+
+    private void SetGameState(bool gameIn3D, bool enemyDied)
     {
         this.gameIn3D = gameIn3D;
         UpdateGameState();
-
-        Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = this.gameIn3D });
+        UpdateCameraPerspective(enemyDied);
     }
 
     #endregion

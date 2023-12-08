@@ -23,12 +23,15 @@ public class Inventory : MonoBehaviour
     public bool HasWeapon => hasWeapon;
     public bool HasNPCMemory => hasNPCMemory;
 
-    private Light lantern;
+    private Light lanternEnv;
+    private Light lanternPj;
 
     private void Start()
     {
-        lantern = GetComponentInChildren<Light>();
-        lantern.enabled = hasLantern;
+        lanternEnv = GetComponentsInChildren<Light>()[0];
+        lanternEnv.enabled = hasLantern;
+        lanternPj = GetComponentsInChildren<Light>()[1];
+        lanternPj.enabled = hasLantern;
         
         bool activeWeaponFilled = false;
         
@@ -144,7 +147,8 @@ public class Inventory : MonoBehaviour
                 break;
             case Item.ITEM_TYPE.UTIL:
                 hasLantern = true;
-                lantern.enabled = true;
+                lanternEnv.enabled = true;
+                lanternPj.enabled = true;
                 break;
             case Item.ITEM_TYPE.KEY:
                 if (item.keyId == Item.KEY_IDS.BLACK_ORB)
@@ -173,7 +177,7 @@ public class Inventory : MonoBehaviour
         hasLantern = false;
         hasWeapon = false;
         hasNPCMemory = false;
-        lantern.enabled = false;
+        lanternEnv.enabled = false;
 
         activeWeapon.ResetValues();
     }

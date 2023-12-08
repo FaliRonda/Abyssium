@@ -3,7 +3,6 @@ using System.Linq;
 using DG.Tweening;
 using Ju.Services;
 using TMPro;
-using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +22,9 @@ public class DialogueService : IService
     private GameObject lateralDialogPrefab;
     
     private TypingConfigSO typingConfig;
+    private bool choicesInScreen;
+    private int preselectedChoiceIndex;
+    public bool ChoicesInScreen => choicesInScreen;
 
     public void StartConversation()
     {
@@ -101,17 +103,49 @@ public class DialogueService : IService
 
     public void ShowChoice(int choiceIndex, ChoiceSO choice, NPC npc)
     {
+        choicesInScreen = true;
         var currentChoice = conversationDialogueChoicesGO[choiceIndex];
         currentNPC = npc;
         conversationDialogueChoicesGO[choiceIndex].SetActive(true);
         conversationDialogueChoicesText[choiceIndex].text = choice.choiceText;
+
+        if (choiceIndex == 0)
+        {
+            Color color = Color.white;
+            ColorUtility.TryParseHtmlString("#D19B50", out color);
+            conversationDialogueChoicesGO[choiceIndex].GetComponent<Image>().color = color;
+        }
         
         var choiceButton = currentChoice.GetComponent<Button>();
         choiceButton.onClick.AddListener(delegate() { ChoiceSelected(choiceIndex); });
     }
-
-    private void ChoiceSelected(int choiceIndex)
+    
+    public void SelectChoicesWithControl(Vector3 inputDirection)
     {
+        Color color = Color.white;
+        ColorUtility.TryParseHtmlString("#D19B50", out color);
+
+        if (inputDirection.y == 1)
+        {
+            preselectedChoiceIndex = 0;
+            conversationDialogueChoicesGO[0].GetComponent<Image>().color = color;
+            conversationDialogueChoicesGO[1].GetComponent<Image>().color = Color.white;
+        }
+        else if (inputDirection.y == -1)
+        {
+            preselectedChoiceIndex = 1;
+            conversationDialogueChoicesGO[0].GetComponent<Image>().color = Color.white;
+            conversationDialogueChoicesGO[1].GetComponent<Image>().color = color;
+        }
+    }
+
+    public void ChoiceSelected(int choiceIndex)
+    {
+        if (choiceIndex == -1)
+        {
+            choiceIndex = preselectedChoiceIndex;
+        }
+        
         ResetChoices();
         currentNPC.ChoiceSelected(choiceIndex);
     }
@@ -123,6 +157,8 @@ public class DialogueService : IService
             conversationDialogueChoicesText[choiceIndex].text = "";
             conversationDialogueChoicesGO[choiceIndex].SetActive(false);
         }
+        
+        choicesInScreen = false;
     }
 
     public void ShowLateralDialogs(GameDirector.DialogueDictionary lateralDialogs)

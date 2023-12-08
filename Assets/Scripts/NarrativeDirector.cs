@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NarrativeDirector : MonoBehaviour
 {
@@ -43,10 +44,21 @@ public class NarrativeDirector : MonoBehaviour
         if (!isShowingNarrative)
         {
             isShowingNarrative = true;
+            Image curtainImage = narrativeCurtain.GetComponent<Image>();
+            Color originalColor = curtainImage.color;
+            Color initialColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+
+            curtainImage.color = initialColor;
             narrativeCurtain.SetActive(true);
+
+            Sequence showCurtainSequence = DOTween.Sequence();
+
+            showCurtainSequence
+                .Append(DOTween.To(() => curtainImage.color, x => curtainImage.color = x, originalColor, 1f)
+                    .SetEase(Ease.OutQuad))
+                .AppendCallback(() => { ShowNextNarrative(); });
         }
         
-        ShowNextNarrative();
     }
 
     public void EndNarrative()
@@ -66,16 +78,17 @@ public class NarrativeDirector : MonoBehaviour
 
             var narrativeDialog = narrativeDialogues[narrativeDialogueIndex];
 
-            narrativeSequence.AppendInterval(.2f)
-                .AppendCallback(() =>
-                {
-                    DOTween.To(() => charIndex, x => charIndex = x, narrativeDialog.dialogueText.Length,
-                            narrativeDialog.dialogueText.Length * typingConfig.typingSpeed * 1.5f)
-                        .OnUpdate(() =>
-                        {
-                            narrativeText.text = narrativeDialog.dialogueText.Substring(0, charIndex);
-                        }).OnComplete(() => { isTypingText = false; });
-                });
+
+            Color originalColor = narrativeText.color;
+            Color initialColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+            narrativeText.color = initialColor;
+            narrativeText.text = narrativeDialog.dialogueText;
+            
+            Sequence showTextSequence = DOTween.Sequence();
+            
+            showTextSequence
+                .Append(DOTween.To(() => narrativeText.color, x => narrativeText.color = x, originalColor, 3f))
+                .OnComplete(() => { isTypingText = false; });
             
             narrativeDialogueIndex++;
         }

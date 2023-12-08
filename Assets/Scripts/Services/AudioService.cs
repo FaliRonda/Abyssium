@@ -5,7 +5,14 @@ using UnityEngine;
 public enum SOUND_TYPE
 {
     BackgroundMusic,
-    ClockTikTak
+    ClockTikTak,
+    Bell,
+    Spotlight,
+    AngryGod,
+    PjDamaged,
+    PjImpact,
+    SwordAttack,
+    PjDash
 }
 
 public class AudioService : IService
@@ -28,14 +35,23 @@ public class AudioService : IService
         soundDictionary = new Dictionary<SOUND_TYPE, AudioClip>
         {
             { SOUND_TYPE.BackgroundMusic, audioConfig.backgroundMusic },
-            { SOUND_TYPE.ClockTikTak, audioConfig.clockTikTak }
+            { SOUND_TYPE.ClockTikTak, audioConfig.clockTikTak },
+            { SOUND_TYPE.Bell, audioConfig.bell },
+            { SOUND_TYPE.Spotlight, audioConfig.spotlight },
+            { SOUND_TYPE.AngryGod, audioConfig.angryGod },
+            { SOUND_TYPE.PjDamaged, audioConfig.pjDamaged },
+            { SOUND_TYPE.PjImpact, audioConfig.pjImpact },
+            { SOUND_TYPE.SwordAttack, audioConfig.swordAttack },
+            { SOUND_TYPE.PjDash, audioConfig.pjdash },
         };
     }
 
-    public void Play(SOUND_TYPE soundType, float pitch, float volume)
+    public void Play(SOUND_TYPE soundType, float pitch, float randomRange, float volume)
     {
         if (soundDictionary.TryGetValue(soundType, out AudioClip audioClip))
         {
+            pitch += Random.Range(-randomRange, randomRange);
+            
             AudioSource audioSource = new GameObject("AudioSource").AddComponent<AudioSource>();
             audioSource.transform.parent = audioGO.transform; 
             audioSource.clip = audioClip;

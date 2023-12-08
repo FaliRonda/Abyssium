@@ -8,11 +8,11 @@ public class Weapon : MonoBehaviour
     public float weaponRange = 1f;
     public float weaponCd = 0.5f;
 
-    private Vector3 initialWeaponRange;
+    private float initialWeaponRange;
     private Vector3 initialWeaponPivot;
     
     private SpriteRenderer weaponSprite;
-    private BoxCollider weaponCollider;
+    private CapsuleCollider weaponCollider;
     
     private bool currentlyAttacking = false;
 
@@ -23,9 +23,9 @@ public class Weapon : MonoBehaviour
     private void Start()
     {
         weaponSprite = GetComponent<SpriteRenderer>();
-        weaponCollider = GetComponent<BoxCollider>();
+        weaponCollider = GetComponent<CapsuleCollider>();
 
-        initialWeaponRange = weaponCollider.size;
+        initialWeaponRange = weaponCollider.height;
         initialWeaponPivot = weaponCollider.center;
         
         UpdateWeaponRange();
@@ -40,7 +40,7 @@ public class Weapon : MonoBehaviour
 
     private void UpdateWeaponRange()
     {
-        weaponCollider.size = new Vector3(initialWeaponRange.x, weaponRange, initialWeaponRange.z);
+        weaponCollider.height = weaponRange;
         weaponCollider.center = new Vector3(initialWeaponPivot.x, weaponRange / 2, initialWeaponPivot.z);
     }
 

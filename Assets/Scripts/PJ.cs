@@ -1,9 +1,9 @@
+using System.Collections;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Ju.Extensions;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PJ : MonoBehaviour
 {
@@ -12,10 +12,16 @@ public class PJ : MonoBehaviour
     public float playerRotationSpeed = 1f;
     public float playerRollFactor = 2f;
     public float rollCooldown;
+    public bool debugAttack;
     public bool canRoll;
     public float attackCooldown;
     public float playerRayMaxDistance = 0.5f;
     public float playerDustParticlesDelay = 0.5f;
+    public float damageBlinkingDuration = 1f;
+    public float spriteBlinkingFrecuency = 0.15f;
+    
+    private float damagedBlinkingCounter;
+    private bool spriteBlinking;
     
     private ParticleSystem pjStepDust;
     private Animator pjAnimator;
@@ -31,11 +37,13 @@ public class PJ : MonoBehaviour
     private bool rollReady = true;
     private bool attackReady = true;
     private bool bufferedAttack;
+    private float initialPlayerRayMaxDistance;
     
     private Ray ray;
     private RaycastHit hit;
     private TweenerCore<Vector3, Vector3, VectorOptions> rollingTween;
     private Interactable interactableInContact;
+    private bool pjInvulnerable;
 
     #region Unity events
     
@@ -46,6 +54,7 @@ public class PJ : MonoBehaviour
         pjAnimator = GetComponentInChildren<Animator>();
 
         initialPlayerRotation = transform.rotation;
+        initialPlayerRayMaxDistance = playerRayMaxDistance;
 
         this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
     }
@@ -113,6 +122,7 @@ public class PJ : MonoBehaviour
             pjIsRolling = true;
 
             pjAnimator.Play("PJ_roll");
+            Core.Audio.Play(SOUND_TYPE.PjDash, 1f, 0.1f, 0.005f);
             float animLenght = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
             
             PjActionFalseWhenAnimFinish(animLenght);
@@ -283,7 +293,7 @@ public class PJ : MonoBehaviour
 
     private bool PjRaycastHit(Color color)
     {
-        Debug.DrawRay(ray.origin, ray.direction, color);
+        Debug.DrawRay(ray.origin, ray.direction);
         return Physics.Raycast(ray, out hit, playerRayMaxDistance);
     }
 
@@ -314,14 +324,14 @@ public class PJ : MonoBehaviour
         if (gameIn3D)
         {
             pjSprite.transform.eulerAngles = new Vector3(0, currentSpriteEulerAngles.y, currentSpriteEulerAngles.z);
-            playerRayMaxDistance -= 0.25f;
+            playerRayMaxDistance = initialPlayerRayMaxDistance - 0.25f;
         }
         else
         {
             // Since in 3D the player rotates, it sets the initial rotation of the player
             transform.rotation = initialPlayerRotation;
             pjSprite.transform.eulerAngles = new Vector3(45, 0, 0);
-            playerRayMaxDistance += 0.25f;
+            playerRayMaxDistance = initialPlayerRayMaxDistance + 0.25f;
         }
     }
     
@@ -342,7 +352,7 @@ public class PJ : MonoBehaviour
         }
         else
         {
-            if (!pjDoingAction && attackReady && inventory.HasWeapon) // Basic attack
+            if (!pjDoingAction && attackReady && (inventory.HasWeapon || debugAttack)) // Basic attack
             {
                 Attack();
             }
@@ -387,6 +397,7 @@ public class PJ : MonoBehaviour
         pjDoingAction = true;
         
         pjAnimator.Play("PJ_attack");
+        Core.Audio.Play(SOUND_TYPE.SwordAttack, 1, 0.2f, 0.01f);
         
         float animLenght = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_attack");
 
@@ -415,10 +426,72 @@ public class PJ : MonoBehaviour
     
     #endregion
 
-    public void GetDamage()
+    public void GetDamage(Transform damager)
     {
-        // PLay damaged anim
-        Core.Event.Fire<GameEvents.PlayerDamaged>();
+        if (!pjInvulnerable)
+        {
+            float deathFrameDuration = 1f;
+            
+            Core.Event.Fire(new GameEvents.PlayerDamaged(){deathFrameDuration = deathFrameDuration});
+            PlayDamagedAnimation(damager);
+            Core.CameraEffects.ShakeCamera(2, 0.3f);
+            
+            Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.2f, 0.03f);
+
+            //Death frame - sin pulido no queda bien
+            /*
+             Core.Audio.Play(SOUND_TYPE.PjImpact, 1f, 0.01f);
+            Sequence impactSequence = DOTween.Sequence();
+            impactSequence
+                .AppendInterval(deathFrameDuration)
+                .AppendCallback(() =>
+                {
+                    Core.CameraEffects.ShakeCamera(2, 0.3f);  
+                    Core.Audio.Play(SOUND_TYPE.PjDamaged, 1f, 0.01f);
+                });
+            */
+        }
+    }
+
+    private void PlayDamagedAnimation(Transform damager)
+    {
+        Sequence damagedSequence = DOTween.Sequence();
+        
+        Vector3 position = transform.position;
+        Vector3 enemyPosition = damager.position;
+        Vector3 damagedDirection = (position - enemyPosition).normalized * 2.5f;
+        
+        damagedSequence.Append(transform.DOMove(position + new Vector3(damagedDirection.x, position.y, damagedDirection.z), 0.2f));
+        damagedSequence.Play();
+        
+        damagedBlinkingCounter = damageBlinkingDuration;
+        StartCoroutine(SpriteBlinking());
+    }
+
+    IEnumerator SpriteBlinking()
+    {
+        pjInvulnerable = true;
+        while (damagedBlinkingCounter > 0)
+        {
+            if (!spriteBlinking)
+            {
+                Sequence sequence = DOTween.Sequence();
+                sequence.AppendCallback(() => spriteBlinking = true)
+                    .AppendCallback(() => pjSprite.enabled = false)
+                    .AppendInterval(spriteBlinkingFrecuency)
+                    .AppendCallback(() => pjSprite.enabled = true)
+                    .AppendInterval(spriteBlinkingFrecuency)
+                    .AppendCallback(() => spriteBlinking = false);
+            }
+
+            damagedBlinkingCounter -= Time.deltaTime;
+            
+            yield return null;
+        }
+
+        pjInvulnerable = false;
+        pjSprite.color = Color.white;
+        yield return null;
     }
 
     public void ResetItems()

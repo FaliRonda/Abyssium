@@ -14,3 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgroundMusic: {fileID: 8300000, guid: addb454e9ae63ec409c83c002d3c635c, type: 3}
   clockTikTak: {fileID: 8300000, guid: e693d6450204cd84ba954dd67fb23754, type: 3}
+  bell: {fileID: 8300000, guid: 7d4bf555ddc89664a841e5904b912e97, type: 3}
+  spotlight: {fileID: 8300000, guid: 7a8f40a1271cce241b1d1f6e253215e5, type: 3}
+  angryGod: {fileID: 8300000, guid: 2c1edb062ae1dc54e930776a83baf4d3, type: 3}
+  pjDamaged: {fileID: 8300000, guid: cb88e6cb9edfe3f4c8a688f41b66296e, type: 3}
+  pjImpact: {fileID: 8300000, guid: 00abe3a2abcecf44d80467a98d4f5bf6, type: 3}
+  swordAttack: {fileID: 8300000, guid: 21ec716161b4fb64788843350d9c99ca, type: 3}
+  pjdash: {fileID: 8300000, guid: db2d972221476304ea4991cfff5130f9, type: 3}

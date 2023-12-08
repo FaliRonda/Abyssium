@@ -26,9 +26,12 @@ public static class GameEvents
         public bool started;
     }
 
-    public struct DoorOpened {}
+    public struct TryOpenLockedDoor {}
 
-    public struct PlayerDamaged {}
+    public struct PlayerDamaged
+    {
+        public float deathFrameDuration;
+    }
 
     public struct NPCDialogueEnded
     {

@@ -90,16 +90,15 @@ public class EnemyAI : MonoBehaviour
 
     public void GetDamage(int damageAmount)
     {
+        Core.Audio.Play(SOUND_TYPE.PjImpact, 1, 0.2f, 0.03f);
+        PlayDamagedAnimation();
+        
         if (!isDead)
         {
             lifeAmount -= damageAmount;
             if (lifeAmount <= 0)
             {
                 Die();
-            }
-            else
-            {
-                PlayDamagedAnimation();
             }
         }
     }
@@ -185,7 +184,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (other.gameObject.layer == Layers.PJ_LAYER)
         {
-            other.GetComponent<PJ>().GetDamage();
+            other.GetComponent<PJ>().GetDamage(transform);
             attackCollider.enabled = false;
         }
     }

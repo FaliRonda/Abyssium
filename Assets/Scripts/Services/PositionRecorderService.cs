@@ -59,7 +59,7 @@ public class PositionRecorderService : IService
             {
                 accumulatedDuration = 0;
                 float pitch = 1.5f + (1f - duration * 4);
-                rewindSequence.AppendCallback(() => Core.Audio.Play(SOUND_TYPE.ClockTikTak, pitch, 0.05f));
+                rewindSequence.AppendCallback(() => Core.Audio.Play(SOUND_TYPE.ClockTikTak, 0, 0.05f, pitch));
             }
 
             float rewindFactor = 1;

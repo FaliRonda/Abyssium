@@ -1,5 +1,6 @@
 using System.Collections;
 using Cinemachine;
+using DG.Tweening;
 using Ju.Extensions;
 using UnityEngine;
 using UnityEngine.Serialization;
