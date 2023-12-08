@@ -1,11 +1,10 @@
 {
   "dependencies": {
     "com.judelco.core": {
-      "version": "https://github.com/JuDelCo/Core.git#v1.43.0",
+      "version": "file:JuCore",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "6e7446df8bf02df66adcd3e993e6c07d1c30fc3f"
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.unity.2d.animation": {
       "version": "9.0.3",
