@@ -85,8 +85,9 @@ MonoBehaviour:
   itemType: 0
   keyId: 0
   weaponDamage: 2
-  weaponRange: 1.5
-  weaponCd: 0.75
+  weaponHeight: 2
+  weaponCenter: 0.35
+  weaponCd: 1
 --- !u!114 &2890119393727898843
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,7 +8,6 @@ public class Door : Interactable
     public bool doorOpening;
     public bool isLocked = false;
 
-    public Material orbsOutlineDoor;
     public Material blackOrbDoor;
     public Material whiteOrbDoor;
     public Material twoOrbsDoor;
@@ -49,18 +48,6 @@ public class Door : Interactable
             Renderer doorRenderer = GetComponent<Renderer>();
             Material[] newMaterials = doorRenderer.materials;
             
-            if (pj.inventory.HasBlackOrb)
-            {
-                newMaterials[1] = blackOrbDoor;
-                Core.Event.Fire(new GameEvents.TryOpenLockedDoor());
-            }
-
-            if (pj.inventory.HasWhiteOrb)
-            {
-                newMaterials[1] = whiteOrbDoor;
-                Core.Event.Fire(new GameEvents.TryOpenLockedDoor());
-            }
-            
             if (pj.inventory.HasBlackOrb && pj.inventory.HasWhiteOrb)
             {
                 newMaterials[1] = twoOrbsDoor;
@@ -68,6 +55,20 @@ public class Door : Interactable
                 Sequence sequence = DOTween.Sequence();
                 sequence.AppendInterval(0.5f) // Tiempo para que se vean los orbes puestos
                     .AppendCallback(() => OpenDoor());
+            }
+            else
+            {
+                if (pj.inventory.HasBlackOrb)
+                {
+                    newMaterials[1] = blackOrbDoor;
+                }
+
+                if (pj.inventory.HasWhiteOrb)
+                {
+                    newMaterials[1] = whiteOrbDoor;
+                }
+                
+                Core.Event.Fire(new GameEvents.TryOpenLockedDoor());
             }
 
             doorRenderer.materials = newMaterials;

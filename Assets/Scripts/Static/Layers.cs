@@ -1,5 +1,6 @@
 ﻿public static class Layers
 {
+    public const int BOSS_COMBAT_LAYER = 18;
     public const int PJ_SPAWN_LAYER = 16;
     public const int PJ_LAYER = 6;
     public const int ENEMY_LAYER = 9;

@@ -87,6 +87,7 @@ public class GameDirector : MonoBehaviour
     private InputAction InteractAction;
     private InputAction CameraChangeAction;
     private InputAction CameraRotationAction;
+    private InputAction CloseAction;
 
     private static bool IsSceneGameLoader => SceneManager.GetActiveScene().name == "GameLoader";
     private static bool IsSceneT1C0F0 => SceneManager.GetActiveScene().name == "T1C0F0";
@@ -135,6 +136,7 @@ public class GameDirector : MonoBehaviour
             this.EventSubscribe<GameEvents.NPCVanished>(e => EndDemo());
             this.EventSubscribe<GameEvents.NPCDialogue>(e => HandleConversation(e.started));
             this.EventSubscribe<GameEvents.NPCMemoryGot>(e => Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["MemoryGot"]));
+            this.EventSubscribe<GameEvents.BossCombatReached>(e => StartBossCombat());
             this.EventSubscribe<GameEvents.OrbGot>(e =>
             {
                 if (!orbLateralDialogShown)
@@ -155,6 +157,7 @@ public class GameDirector : MonoBehaviour
             
             this.EventSubscribe<GameEvents.LoadFloorSceneEvent>(e =>
             {
+                pj.PlayIdle();
                 pjCameFromAbove = e.toFloorBelow;
                 sceneDirector.LoadNewFloorScene(e.toFloorBelow);
             });
@@ -188,6 +191,7 @@ public class GameDirector : MonoBehaviour
             InteractAction = playerInput.actions["Action"];
             CameraChangeAction = playerInput.actions["CameraChange"];
             CameraRotationAction = playerInput.actions["CameraRotation"];
+            CloseAction = playerInput.actions["Close"];
         }
 
         if (!debugMode)
@@ -235,7 +239,7 @@ public class GameDirector : MonoBehaviour
     
     void Update()
     {
-        if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.Escape))
+        if (CloseAction.triggered)
         {
             Application.Quit();
         }
@@ -295,6 +299,7 @@ public class GameDirector : MonoBehaviour
                         .AppendCallback(() =>
                         {
                             timeLoopPaused = false;
+                            pj.ResetItems();
                             StartCycle2();
                         })
                         .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.5f, 1f)
@@ -354,6 +359,10 @@ public class GameDirector : MonoBehaviour
         }
         else
         {
+            if (IsSceneT1C2Fm2)
+            {
+                Core.Audio.StopAll();
+            }
             CheckEnemiesInScene(false);
         }
 
@@ -505,7 +514,7 @@ public class GameDirector : MonoBehaviour
         {
             cameraDirector = Camera.main.GetComponent<CameraDirector>();
             cameraDirector.Initialize(pj.transform);
-            Core.CameraEffects.Initialize(cameraDirector.cameraTD);
+            Core.CameraEffects.Initialize(cameraDirector.cameraTD, cameraDirector.camera3D);
         }
         else
         {
@@ -594,10 +603,10 @@ public class GameDirector : MonoBehaviour
         {
             Sequence endTimeLoopSequence = DOTween.Sequence();
             endTimeLoopSequence
-                .AppendInterval(2f)
-                .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1f, 1f)
+                .AppendInterval(3f)
+                .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1f, 2f)
                     .SetEase(Ease.OutQuad))
-                .Join(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 1f, 1f)
+                .Join(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 1f, 2f)
                     .SetEase(Ease.OutQuad))
                 .AppendCallback(() => { EndLoopLogic(); })
                 .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.5f, 1f)
@@ -698,6 +707,12 @@ public class GameDirector : MonoBehaviour
     private void PlayerDamaged(float deathFrameDuration)
     {
         timeLoopDuration -= 10;
+
+        if (IsSceneT1C2Fm2 && timeLoopDuration <= 0)
+        {
+            Core.Audio.StopAll();
+            Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1, 0, 0.03f);
+        }
         
         //Death frame - sin pulido no queda bien
         /*controlBlocked = true;
@@ -720,7 +735,51 @@ public class GameDirector : MonoBehaviour
     {
         demoEnded = true;
         timeLoopPaused = true;
-        narrativeDirector.ShowNarrative();
+        
+        Sequence angryGodSequence = DOTween.Sequence();
+
+        angryGodSequence
+            .AppendCallback(() => { Core.Audio.Play(SOUND_TYPE.AngryGod, 1, 0, 0.1f); })
+            .AppendCallback(() => { Core.CameraEffects.ShakeCamera(2f, 2f); })
+            .AppendInterval(3f)
+            .AppendCallback(() =>
+            {
+                pj.PlayIdle();
+                narrativeDirector.ShowNarrative();
+            });
+    }
+    
+    private void StartBossCombat()
+    {
+
+        controlBlocked = true;
+        timeLoopPaused = true;
+
+        pj.PlayIdle();
+
+        Sequence bossSequence = DOTween.Sequence();
+
+        bossSequence
+            .AppendInterval(2f)
+            .AppendCallback(() =>
+            {
+                Core.Audio.Play(SOUND_TYPE.BossDoorClosed, 1, 0, 0.05f);
+                FindObjectOfType<BossDoor>().Appear();
+            })
+            .AppendInterval(2)
+            .AppendCallback(() =>
+            {
+                Core.CameraEffects.ShakeCamera(3, 1);
+                Core.Audio.Play(SOUND_TYPE.AngryGod, 3, 0, 0.05f);
+            })
+            .AppendInterval(2)
+            .AppendCallback(() =>
+            {
+                Core.Audio.Play(SOUND_TYPE.BossMusic, 1, 0, 0.01f);
+                controlBlocked = false;
+                timeLoopPaused = false;
+                enemies[0].aIActive = true;
+            });
     }
     
     private void CheckEnemiesInScene(bool enemyDied)
@@ -737,19 +796,45 @@ public class GameDirector : MonoBehaviour
                     .AppendCallback(() => { Core.Audio.Play(SOUND_TYPE.AngryGod, 1, 0, 0.1f); })
                     .AppendCallback(() => { Core.CameraEffects.ShakeCamera(2f, 2f); })
                     .AppendInterval(3f)
-                    .AppendCallback(() => { narrativeDirector.ShowNarrative(); });
-            }
-            else if (IsSceneT1C2Fm2)
-            {
-                timeLoopPaused = true;
+                    .AppendCallback(() =>
+                    {
+                        pj.PlayIdle();
+                        narrativeDirector.ShowNarrative();
+                    });
             }
             else
             {
                 FloorData currentScenePersistentData = loopPersistentData[SceneManager.GetActiveScene().name];
                 currentScenePersistentData.enemiesDefeated = true;
                 loopPersistentData[SceneManager.GetActiveScene().name] = currentScenePersistentData;
+
+                if (IsSceneT1C2Fm2)
+                {
+                    timeLoopPaused = true;
+                    controlBlocked = true;
+                    
+                    pj.PlayIdle();
+                    Core.Audio.StopAll();
+                    
+                    Sequence bossdefeated = DOTween.Sequence();
+
+                    bossdefeated
+                        .AppendCallback(() => { Core.Audio.Play(SOUND_TYPE.AngryGod, 2.5f, 0, 0.1f); })
+                        .AppendCallback(() => { Core.CameraEffects.ShakeCamera(1.75f, 2.5f); })
+                        .AppendInterval(4)
+                        .AppendCallback(() =>
+                        {
+                            Core.Audio.Play(SOUND_TYPE.BossDoorClosed, 1, 0, 0.05f);
+                            FindObjectOfType<BossDoor>().Disappear();
+                        })
+                        .AppendInterval(2)
+                        .AppendCallback(() => { SetGameState(true, enemyDied); });
+                }
+                else
+                {
+                    SetGameState(true, enemyDied);
+                }
                 
-                SetGameState(true, enemyDied);
             }
         } else if (gameIn3D)
         {
@@ -780,6 +865,7 @@ public class GameDirector : MonoBehaviour
             if (enemyDied)
             {
                 controlBlocked = true;
+                pj.PlayIdle();
                 
                 Sequence vignetteSequence = DOTween.Sequence();
 

@@ -28,7 +28,10 @@ MonoBehaviour:
 
 
     End of the Demo, thank
-    you for playing!'
+    you for playing!
+
+
+    [Press Escape to close the game]'
   choices: []
   drop: {fileID: 0}
   isLateral: 0

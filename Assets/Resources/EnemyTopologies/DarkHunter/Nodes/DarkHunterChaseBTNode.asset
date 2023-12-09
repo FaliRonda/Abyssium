@@ -20,10 +20,9 @@ MonoBehaviour:
   - {fileID: 0}
   enemyAnimator: {fileID: 0}
   enemySprite: {fileID: 0}
-  detectedAudioSource: {fileID: 0}
-  visibilityRadius: 7
+  visibilityRadius: 10
   minimumDistanceToPlayer: 0.8
-  lightRadius: 2
+  lightRadius: 2.5
   chaseSpeed: 6
   chaseInLightSpeed: 2
   isShadow: 1

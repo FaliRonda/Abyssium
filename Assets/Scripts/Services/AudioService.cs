@@ -16,7 +16,11 @@ public enum SOUND_TYPE
     ItemGot,
     EnemyDied,
     CameraChange,
-    EnemyChasing
+    EnemyChasing,
+    BossDoorClosed,
+    BossMusic,
+    PjStep,
+    EndMusic
 }
 
 public class AudioService : IService
@@ -51,6 +55,10 @@ public class AudioService : IService
             { SOUND_TYPE.EnemyDied, audioConfig.enemyDied },
             { SOUND_TYPE.CameraChange, audioConfig.cameraChange },
             { SOUND_TYPE.EnemyChasing, audioConfig.enemyChasing },
+            { SOUND_TYPE.BossDoorClosed, audioConfig.bossDoorClosed },
+            { SOUND_TYPE.BossMusic, audioConfig.bossMusic },
+            { SOUND_TYPE.PjStep, audioConfig.pjStep },
+            { SOUND_TYPE.EndMusic, audioConfig.endMusic },
         };
     }
 
@@ -65,12 +73,29 @@ public class AudioService : IService
             audioSource.clip = audioClip;
             audioSource.volume = volume;
             audioSource.pitch = pitch;
+
+            if (soundType == SOUND_TYPE.BackgroundMusic || soundType == SOUND_TYPE.EndMusic)
+            {
+                audioSource.loop = true;
+            }
+            
             audioSource.Play();
             GameObject.Destroy(audioSource.gameObject, audioClip.length);
         }
         else
         {
             Debug.LogWarning("SoundType no encontrado en el diccionario.");
+        }
+    }
+
+    public void StopAll()
+    {
+        AudioSource[] audios = audioGO.GetComponentsInChildren<AudioSource>();
+
+        foreach (AudioSource audio in audios)
+        {
+            audio.Stop();
+            GameObject.Destroy(audio.gameObject);
         }
     }
 }

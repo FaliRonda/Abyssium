@@ -8,6 +8,7 @@ using Sequence = DG.Tweening.Sequence;
 
 public class EnemyAI : MonoBehaviour
 {
+    public bool aIActive;
     // Reference to the player
     public Transform playerTransform;
     public Transform chasePivotTransform;
@@ -110,7 +111,7 @@ public class EnemyAI : MonoBehaviour
             dropper.Drop(itemToDrop);
         }
 
-        rootNode.AIActive = false;
+        aIActive = false;
         enemyAnimator.Play("Enemy_die");
         Core.Audio.Play(SOUND_TYPE.EnemyDied, 1, 0.05f, 0.01f);
         shadowSprite.enabled = false;

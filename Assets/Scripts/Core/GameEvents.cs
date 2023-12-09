@@ -39,7 +39,9 @@ public static class GameEvents
         public DialogueSO lastDialogue;
     }
 
-    public class NPCMemoryGot {}
+    public struct NPCMemoryGot {}
 
-    public class OrbGot {}
+    public struct OrbGot {}
+
+    public struct BossCombatReached {}
 }

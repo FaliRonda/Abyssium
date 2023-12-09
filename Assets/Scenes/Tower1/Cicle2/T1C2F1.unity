@@ -3278,7 +3278,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3368591435065734892, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5741983929386749315, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: m_RootOrder
@@ -51552,7 +51552,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3368591435065734892, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5741983929386749315, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: m_RootOrder
@@ -59416,7 +59416,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 21d60c45591bfe9468d29d8ef1dcdeb9, type: 2}
+  - {fileID: 2100000, guid: 19a3cebba30c7a9478e50122378cd9a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

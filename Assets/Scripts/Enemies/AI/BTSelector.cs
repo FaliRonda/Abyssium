@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class BTSelector : BTNode
 {
     public BTNode[] nodes;
-    public bool AIActive = true;
 
     public BTSelector(BTNode[] nodes)
     {
@@ -14,7 +13,7 @@ public class BTSelector : BTNode
 
     public override BTNodeState Execute()
     {
-        if (AIActive)
+        if (enemyTransform.GetComponent<EnemyAI>().aIActive)
         {
             foreach (BTNode node in nodes)
             {
@@ -39,6 +38,8 @@ public class BTSelector : BTNode
             node.InitializeNode(parameters);
             node.ResetNode();
         }
+        
+        base.InitializeNode(parameters);
     }
 
     public override void DrawGizmos()

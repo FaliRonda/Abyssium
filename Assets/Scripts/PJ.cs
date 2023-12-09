@@ -46,6 +46,7 @@ public class PJ : MonoBehaviour
     private Interactable interactableInContact;
     private bool pjInvulnerable;
     private bool beingDamaged;
+    private bool stepReady = true;
     private Sequence damagedSequence;
 
     #region Unity events
@@ -91,6 +92,11 @@ public class PJ : MonoBehaviour
         if (beingDamaged && (other.gameObject.layer == Layers.WALL_LAYER || other.gameObject.layer == Layers.DOOR_LAYER))
         {
             damagedSequence.Kill();
+        }
+
+        if (other.gameObject.layer == Layers.BOSS_COMBAT_LAYER)
+        {
+            Core.Event.Fire(new GameEvents.BossCombatReached(){});
         }
     }
 
@@ -258,6 +264,15 @@ public class PJ : MonoBehaviour
                 direction = Vector3.zero;
             }
         }
+
+        if (stepReady && controlInputData.inputDirection != Vector3.zero)
+        {
+            Core.Audio.Play(SOUND_TYPE.PjStep, 1, 0.1f, 0.03f);
+
+            stepReady = false;
+            Sequence sequence = DOTween.Sequence();
+            sequence.AppendInterval(0.3f).AppendCallback(() => stepReady = true);
+        }
         
         transform.position += direction * (Time.deltaTime * playerSpeed);
     }
@@ -394,13 +409,14 @@ public class PJ : MonoBehaviour
         pjDoingAction = true;
         
         if (interactableInContact != null)
-        {
-           interactableInContact.Interact(this);
+        { 
+            PlayIdle();
+            interactableInContact.Interact(this);
            
-           if (!interactableInContact.IsInteracting())
-           {
-               pjDoingAction = false;
-           }
+            if (!interactableInContact.IsInteracting())
+            {
+                pjDoingAction = false;
+            }
         }
         else
         {
@@ -516,5 +532,10 @@ public class PJ : MonoBehaviour
     public void ResetItems()
     {
         inventory.ResetItems();
+    }
+
+    public void PlayIdle()
+    {
+        pjAnimator.Play("PJ_idle");
     }
 }

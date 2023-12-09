@@ -8,10 +8,12 @@ public class Item : Interactable
     
     [Header("Weapon attributes")]
     public int weaponDamage;
-    public float weaponRange;
+    [FormerlySerializedAs("weaponRange")] public float weaponHeight;
+    public float weaponCenter;
     public float weaponCd;
 
     private Collider itemCollider;
+
     public enum ITEM_TYPE
     {
         WEAPON,

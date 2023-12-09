@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
-  m_Name: T1C1F0LateralDialog4
+  m_Name: MemoryLateralDialog2
   m_EditorClassIdentifier: 
-  dialogueText: (... why he repeated that? I'll talk to him)
+  dialogueText: Also the moon... has stopped... the whole time has stopped.
   choices: []
   drop: {fileID: 0}
   isLateral: 1

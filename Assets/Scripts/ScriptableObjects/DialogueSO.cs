@@ -12,4 +12,5 @@ public class DialogueSO : ScriptableObject
     [SerializeField] public Sprite conversationCharacterPortrait;
     [FormerlySerializedAs("characterPortrait")] [SerializeField] public Sprite lateralCharacterPortrait;
     [SerializeField] public float lateralDialogLifeTime = 6f;
+    [SerializeField] public bool playSuspenseMusic;
 }

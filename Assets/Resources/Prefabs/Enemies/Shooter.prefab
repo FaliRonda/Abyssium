@@ -263,7 +263,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b992fe784a48bd44f906e88d88798b1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aIActive: 1
   playerTransform: {fileID: 0}
+  chasePivotTransform: {fileID: 0}
   lifeAmount: 3
   itemToDrop: {fileID: 0}
   spriteBlinkingFrecuency: 0.15
@@ -284,6 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a48d7924de07504181c442df4e35750, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropSpawn: {fileID: 0}
 --- !u!135 &6857392549999237266
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -384,7 +387,7 @@ Transform:
   - {fileID: 6510557944706984636}
   - {fileID: 3198961869111018859}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7976565575325747428
 GameObject:

@@ -1,15 +1,17 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Sequence = DG.Tweening.Sequence;
 
 public class Weapon : MonoBehaviour
 {
     public int weaponDamage = 1;
-    public float weaponRange = 1f;
+    public float weaponHeight = 1.5f;
+    public float weaponCenter = 0.25f;
     public float weaponCd = 0.5f;
 
-    private float initialWeaponRange;
-    private Vector3 initialWeaponPivot;
+    private float initialWeaponHeight;
+    private float initialWeaponCenter;
     
     private SpriteRenderer weaponSprite;
     private CapsuleCollider weaponCollider;
@@ -25,23 +27,23 @@ public class Weapon : MonoBehaviour
         weaponSprite = GetComponent<SpriteRenderer>();
         weaponCollider = GetComponent<CapsuleCollider>();
 
-        initialWeaponRange = weaponCollider.height;
-        initialWeaponPivot = weaponCollider.center;
-        
+        initialWeaponHeight = weaponHeight;
+        initialWeaponCenter = weaponCenter;
+
         UpdateWeaponRange();
         
         weaponSprite.enabled = false;
         weaponCollider.enabled = false;
 
         initialWeaponDamage = weaponDamage;
-        initialWeaponRangeValue = weaponRange;
+        initialWeaponRangeValue = weaponHeight;
         initialWeaponCd = weaponCd;
     }
 
     private void UpdateWeaponRange()
     {
-        weaponCollider.height = weaponRange;
-        weaponCollider.center = new Vector3(initialWeaponPivot.x, weaponRange / 2, initialWeaponPivot.z);
+        weaponCollider.height = weaponHeight;
+        weaponCollider.center = new Vector3(0, weaponCenter, 0);
     }
 
 
@@ -80,7 +82,8 @@ public class Weapon : MonoBehaviour
     public void UptadeWeaponStats(Item item)
     {
         weaponDamage = item.weaponDamage;
-        weaponRange = item.weaponRange;
+        weaponHeight = item.weaponHeight;
+        weaponCenter = item.weaponCenter;
         weaponCd = item.weaponCd;
 
         UpdateWeaponRange();
@@ -89,7 +92,7 @@ public class Weapon : MonoBehaviour
     public void ResetValues()
     {
         weaponDamage = initialWeaponDamage;
-        weaponRange = initialWeaponRangeValue;
+        weaponHeight = initialWeaponRangeValue;
         weaponCd = initialWeaponCd;
     }
 }

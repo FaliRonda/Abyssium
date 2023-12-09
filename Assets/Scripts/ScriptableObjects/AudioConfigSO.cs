@@ -16,4 +16,8 @@ public class AudioConfigSO : ScriptableObject
     public AudioClip enemyDied;
     public AudioClip cameraChange;
     public AudioClip enemyChasing;
+    public AudioClip bossDoorClosed;
+    public AudioClip bossMusic;
+    public AudioClip pjStep;
+    public AudioClip endMusic;
 }

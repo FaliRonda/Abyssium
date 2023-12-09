@@ -410,6 +410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b992fe784a48bd44f906e88d88798b1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aIActive: 1
   playerTransform: {fileID: 0}
   chasePivotTransform: {fileID: 0}
   lifeAmount: 3

@@ -71,6 +71,15 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Close"",
+                    ""type"": ""Button"",
+                    ""id"": ""3c43f890-f1b9-4250-a275-258c19c4f016"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -326,6 +335,17 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                     ""action"": ""CameraRotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ce8835f8-4f98-4adb-b3e9-f05bec1448bc"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Close"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -367,6 +387,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
         m_Gameplay_Action = m_Gameplay.FindAction("Action", throwIfNotFound: true);
         m_Gameplay_CameraChange = m_Gameplay.FindAction("CameraChange", throwIfNotFound: true);
         m_Gameplay_CameraRotation = m_Gameplay.FindAction("CameraRotation", throwIfNotFound: true);
+        m_Gameplay_Close = m_Gameplay.FindAction("Close", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_CameraChange = m_Debug.FindAction("CameraChange", throwIfNotFound: true);
@@ -436,6 +457,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Action;
     private readonly InputAction m_Gameplay_CameraChange;
     private readonly InputAction m_Gameplay_CameraRotation;
+    private readonly InputAction m_Gameplay_Close;
     public struct GameplayActions
     {
         private @ControlScheme m_Wrapper;
@@ -445,6 +467,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
         public InputAction @Action => m_Wrapper.m_Gameplay_Action;
         public InputAction @CameraChange => m_Wrapper.m_Gameplay_CameraChange;
         public InputAction @CameraRotation => m_Wrapper.m_Gameplay_CameraRotation;
+        public InputAction @Close => m_Wrapper.m_Gameplay_Close;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -469,6 +492,9 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
             @CameraRotation.started += instance.OnCameraRotation;
             @CameraRotation.performed += instance.OnCameraRotation;
             @CameraRotation.canceled += instance.OnCameraRotation;
+            @Close.started += instance.OnClose;
+            @Close.performed += instance.OnClose;
+            @Close.canceled += instance.OnClose;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -488,6 +514,9 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
             @CameraRotation.started -= instance.OnCameraRotation;
             @CameraRotation.performed -= instance.OnCameraRotation;
             @CameraRotation.canceled -= instance.OnCameraRotation;
+            @Close.started -= instance.OnClose;
+            @Close.performed -= instance.OnClose;
+            @Close.canceled -= instance.OnClose;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -558,6 +587,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
         void OnAction(InputAction.CallbackContext context);
         void OnCameraChange(InputAction.CallbackContext context);
         void OnCameraRotation(InputAction.CallbackContext context);
+        void OnClose(InputAction.CallbackContext context);
     }
     public interface IDebugActions
     {
