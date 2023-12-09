@@ -18614,6 +18614,10 @@ PrefabInstance:
       propertyPath: doorOpenedCallback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: LoadNewFloor
       objectReference: {fileID: 0}
+    - target: {fileID: 5223120915362778678, guid: 829afa9d2b9a684488a955d872adefdd, type: 3}
+      propertyPath: doorOpenedCallback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
