@@ -20,6 +20,7 @@ MonoBehaviour:
   drop: {fileID: 0}
   isLateral: 0
   isSpeakingNPC: 1
-  conversationCharacterPortrait: {fileID: 675175770, guid: ecf03c30230e7ab4da741cbdc6a64363, type: 3}
+  conversationCharacterPortrait: {fileID: 21300000, guid: 9f3726cb2d107b94898f349149d28188, type: 3}
   lateralCharacterPortrait: {fileID: 675175770, guid: e85bd518ce49df544af45bdc5be66ee3, type: 3}
   lateralDialogLifeTime: 10
+  playSuspenseMusic: 0

@@ -26,7 +26,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _OutlineActive: 0
-    m_Colors: []
+    m_Colors:
+    - _Thickness: {r: 0.007, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &7372205446637306228
 MonoBehaviour:

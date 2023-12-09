@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: NPC_Light
+  m_Name: NPC1_Light
   m_Shader: {fileID: -6465566751694194690, guid: f9fde5dc7d1cdd54bbbcf2057979aab0, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -28,7 +28,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal_Map:
-        m_Texture: {fileID: 2800000, guid: 88c6e11e612749a429f449f213715dd4, type: 3}
+        m_Texture: {fileID: 2800000, guid: a4a2d230d9ad46b4fa84d0bece9875e8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
