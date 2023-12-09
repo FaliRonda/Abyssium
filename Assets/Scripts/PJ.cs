@@ -142,6 +142,7 @@ public class PJ : MonoBehaviour
         {
             pjDoingAction = true;
             pjIsRolling = true;
+            pjInvulnerable = true;
 
             pjAnimator.Play("PJ_roll");
             Core.Audio.Play(SOUND_TYPE.PjDash, 1f, 0.1f, 0.01f);
@@ -180,6 +181,7 @@ public class PJ : MonoBehaviour
     {
         pjIsRolling = false;
         rollReady = false;
+        pjInvulnerable = false;
         StartRollCoolown();
         var emissionModule = pjStepDust.emission;
         emissionModule.rateOverTime = 40;
