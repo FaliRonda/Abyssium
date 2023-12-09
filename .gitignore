@@ -84,3 +84,4 @@ Assets/Resources/_MrBin/*
 !Assets/Resources/_MrBin/.gitkeep
 test.doc
 .vscode/settings.json
+Packages/JuCore/Core.csproj.meta
