@@ -756,6 +756,7 @@ public class GameDirector : MonoBehaviour
         timeLoopPaused = true;
 
         pj.PlayIdle();
+        Core.Audio.StopAll();
 
         Sequence bossSequence = DOTween.Sequence();
 
@@ -775,7 +776,7 @@ public class GameDirector : MonoBehaviour
             .AppendInterval(2)
             .AppendCallback(() =>
             {
-                Core.Audio.Play(SOUND_TYPE.BossMusic, 1, 0, 0.01f);
+                Core.Audio.Play(SOUND_TYPE.BossMusic, 1, 0, 0.03f);
                 controlBlocked = false;
                 timeLoopPaused = false;
                 enemies[0].aIActive = true;
