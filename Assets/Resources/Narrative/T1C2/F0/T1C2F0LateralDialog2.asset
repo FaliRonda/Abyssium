@@ -19,4 +19,4 @@ MonoBehaviour:
   isSpeakingNPC: 1
   conversationCharacterPortrait: {fileID: 675175770, guid: e85bd518ce49df544af45bdc5be66ee3, type: 3}
   lateralCharacterPortrait: {fileID: 675175770, guid: e85bd518ce49df544af45bdc5be66ee3, type: 3}
-  lateralDialogLifeTime: 10
+  lateralDialogLifeTime: 12

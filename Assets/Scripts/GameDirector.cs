@@ -23,7 +23,6 @@ public class GameDirector : MonoBehaviour
     public Canvas canvas;
     public Volume postprocessing;
     public NarrativeDirector narrativeDirector;
-    public GameObject directionalLights;
     public GameObject audioGO;
     public ControlScheme control = null;
     

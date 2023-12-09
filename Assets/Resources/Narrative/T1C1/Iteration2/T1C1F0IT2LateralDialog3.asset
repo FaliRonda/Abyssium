@@ -15,8 +15,9 @@ MonoBehaviour:
   dialogueText: (this guy really doesn't remember me... I'd better not tell him any
     more about this strange loop)
   choices: []
+  drop: {fileID: 0}
   isLateral: 1
   isSpeakingNPC: 0
   conversationCharacterPortrait: {fileID: 0}
   lateralCharacterPortrait: {fileID: 21300000, guid: de2ae1b772d07c645aa77b8c9aa22fca, type: 3}
-  lateralDialogLifeTime: 10
+  lateralDialogLifeTime: 12

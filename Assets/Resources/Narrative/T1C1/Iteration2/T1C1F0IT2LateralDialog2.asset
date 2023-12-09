@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueText: Hey guy, are you ok? Don't be scared, you are not alone.
   choices: []
+  drop: {fileID: 0}
   isLateral: 1
   isSpeakingNPC: 0
   conversationCharacterPortrait: {fileID: 0}
   lateralCharacterPortrait: {fileID: 675175770, guid: e85bd518ce49df544af45bdc5be66ee3, type: 3}
-  lateralDialogLifeTime: 10
+  lateralDialogLifeTime: 12
