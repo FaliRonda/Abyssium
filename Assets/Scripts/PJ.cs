@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -44,6 +45,8 @@ public class PJ : MonoBehaviour
     private TweenerCore<Vector3, Vector3, VectorOptions> rollingTween;
     private Interactable interactableInContact;
     private bool pjInvulnerable;
+    private bool beingDamaged;
+    private Sequence damagedSequence;
 
     #region Unity events
     
@@ -83,6 +86,14 @@ public class PJ : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (beingDamaged && (other.gameObject.layer == Layers.WALL_LAYER || other.gameObject.layer == Layers.DOOR_LAYER))
+        {
+            damagedSequence.Kill();
+        }
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.layer == Layers.INTERACTABLE_LAYER)
@@ -95,6 +106,11 @@ public class PJ : MonoBehaviour
                     interactableInContact.SetOutlineVisibility(true);
                 }
             }
+        }
+        
+        if (beingDamaged && (other.gameObject.layer == Layers.WALL_LAYER || other.gameObject.layer == Layers.DOOR_LAYER))
+        {
+            damagedSequence.Kill();
         }
     }
     
@@ -122,7 +138,7 @@ public class PJ : MonoBehaviour
             pjIsRolling = true;
 
             pjAnimator.Play("PJ_roll");
-            Core.Audio.Play(SOUND_TYPE.PjDash, 1f, 0.1f, 0.005f);
+            Core.Audio.Play(SOUND_TYPE.PjDash, 1f, 0.1f, 0.01f);
             float animLenght = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
             
             PjActionFalseWhenAnimFinish(animLenght);
@@ -397,7 +413,7 @@ public class PJ : MonoBehaviour
         pjDoingAction = true;
         
         pjAnimator.Play("PJ_attack");
-        Core.Audio.Play(SOUND_TYPE.SwordAttack, 1, 0.2f, 0.01f);
+        Core.Audio.Play(SOUND_TYPE.SwordAttack, 1, 0.1f, 0.01f);
         
         float animLenght = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_attack");
 
@@ -436,7 +452,7 @@ public class PJ : MonoBehaviour
             PlayDamagedAnimation(damager);
             Core.CameraEffects.ShakeCamera(2, 0.3f);
             
-            Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.2f, 0.03f);
+            Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.03f);
 
             //Death frame - sin pulido no queda bien
             /*
@@ -455,13 +471,16 @@ public class PJ : MonoBehaviour
 
     private void PlayDamagedAnimation(Transform damager)
     {
-        Sequence damagedSequence = DOTween.Sequence();
+        beingDamaged = true;
+        damagedSequence = DOTween.Sequence();
         
         Vector3 position = transform.position;
         Vector3 enemyPosition = damager.position;
-        Vector3 damagedDirection = (position - enemyPosition).normalized * 2.5f;
+        Vector3 damagedDirection = (position - enemyPosition).normalized * 2f;
         
-        damagedSequence.Append(transform.DOMove(position + new Vector3(damagedDirection.x, position.y, damagedDirection.z), 0.2f));
+        damagedSequence
+            .Append(transform.DOMove(position + new Vector3(damagedDirection.x, position.y, damagedDirection.z), 0.2f))
+            .OnComplete(() => { beingDamaged = false; });
         damagedSequence.Play();
         
         damagedBlinkingCounter = damageBlinkingDuration;
