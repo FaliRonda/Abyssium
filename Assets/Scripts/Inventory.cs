@@ -178,6 +178,7 @@ public class Inventory : MonoBehaviour
         hasWeapon = false;
         hasNPCMemory = false;
         lanternEnv.enabled = false;
+        lanternPj.enabled = false;
 
         activeWeapon.ResetValues();
     }

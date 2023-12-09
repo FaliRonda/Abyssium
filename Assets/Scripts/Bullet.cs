@@ -36,8 +36,10 @@ public class Bullet : MonoBehaviour
     {
         if (other.gameObject.layer == Layers.PJ_LAYER)
         {
-            other.GetComponent<PJ>().GetDamage(transform);
-            Destroy(gameObject);
+            if (other.GetComponent<PJ>().GetDamage(transform))
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

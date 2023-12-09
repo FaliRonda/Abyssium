@@ -460,10 +460,13 @@ public class PJ : MonoBehaviour
     
     #endregion
 
-    public void GetDamage(Transform damager)
+    public bool GetDamage(Transform damager)
     {
+        bool damaged = false;
+        
         if (!pjInvulnerable)
         {
+            damaged = true;
             float deathFrameDuration = 1f;
             
             Core.Event.Fire(new GameEvents.PlayerDamaged(){deathFrameDuration = deathFrameDuration});
@@ -471,20 +474,9 @@ public class PJ : MonoBehaviour
             Core.CameraEffects.ShakeCamera(2, 0.3f);
             
             Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.03f);
-
-            //Death frame - sin pulido no queda bien
-            /*
-             Core.Audio.Play(SOUND_TYPE.PjImpact, 1f, 0.01f);
-            Sequence impactSequence = DOTween.Sequence();
-            impactSequence
-                .AppendInterval(deathFrameDuration)
-                .AppendCallback(() =>
-                {
-                    Core.CameraEffects.ShakeCamera(2, 0.3f);  
-                    Core.Audio.Play(SOUND_TYPE.PjDamaged, 1f, 0.01f);
-                });
-            */
         }
+
+        return damaged;
     }
 
     private void PlayDamagedAnimation(Transform damager)
@@ -539,5 +531,10 @@ public class PJ : MonoBehaviour
     public void PlayIdle()
     {
         pjAnimator.Play("PJ_idle");
+    }
+
+    public void Rotate180()
+    {
+        transform.eulerAngles += new Vector3(0, 180, 0);
     }
 }

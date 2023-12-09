@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C2F1NPCDialog7
   m_EditorClassIdentifier: 
-  dialogueText: I see, in that case, take this, I hope you find it helpful. Now I
-    have to continue my lecture, good luck young.
+  dialogueText: In that case, take this. Strength is valuable if you are skilful,
+    but my experience has shown me that knowledge is useful against those with evil
+    eyes... Now I have to continue my lecture, good luck young.
   choices: []
   drop: {fileID: 0}
   isLateral: 0

@@ -72,6 +72,7 @@ public class GameDirector : MonoBehaviour
     private float initialTimeLoopDuration;
     private float secondsCounter = 0;
     private bool pjCameFromAbove;
+    private bool pjCameFromDoor;
     private bool isNewCycleOrLoop = true;
 
     private Bloom bloom;
@@ -98,6 +99,7 @@ public class GameDirector : MonoBehaviour
     private static bool IsSceneT1C2Fm2 => SceneManager.GetActiveScene().name == "T1C2F-2";
     private bool doorLockedAttemptOpen;
     private bool controlBlocked;
+    private bool bossDefeated;
     private bool demoEnded;
     
     private bool orbLateralDialogShown;
@@ -158,6 +160,8 @@ public class GameDirector : MonoBehaviour
             this.EventSubscribe<GameEvents.LoadFloorSceneEvent>(e =>
             {
                 pj.PlayIdle();
+                pjCameFromDoor = true;
+                controlBlocked = true;
                 pjCameFromAbove = e.toFloorBelow;
                 sceneDirector.LoadNewFloorScene(e.toFloorBelow);
             });
@@ -334,6 +338,12 @@ public class GameDirector : MonoBehaviour
             }
             else if (!timeLoopEnded && !timeLoopPaused)
             {
+                if (IsSceneT1C2Fm2)
+                {
+                    Core.Audio.StopAll();
+                    Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1, 0, 0.03f);
+                }
+                
                 EndTimeLoop();
             }
         }
@@ -500,6 +510,14 @@ public class GameDirector : MonoBehaviour
         if (IsSceneT1C1IT2F0)
         {
             pj.canRoll = true;
+        }
+
+        if (pjCameFromDoor)
+        {
+            controlBlocked = false;
+            pjCameFromDoor = false;
+
+            pj.Rotate180();
         }
     }
     
@@ -707,28 +725,6 @@ public class GameDirector : MonoBehaviour
     private void PlayerDamaged(float deathFrameDuration)
     {
         timeLoopDuration -= 10;
-
-        if (IsSceneT1C2Fm2 && timeLoopDuration <= 0)
-        {
-            Core.Audio.StopAll();
-            Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1, 0, 0.03f);
-        }
-        
-        //Death frame - sin pulido no queda bien
-        /*controlBlocked = true;
-        timeLoopPaused = true;
-
-        Sequence deathFrameSequence = DOTween.Sequence();
-        deathFrameSequence
-            .AppendInterval(deathFrameDuration).AppendCallback(() =>
-            {
-                controlBlocked = false;
-                timeLoopPaused = false;
-                timeLoopDuration -= 10;
-                //postprocessing.profile.TryGet(out bloom);
-                //postprocessing.profile.TryGetSettings(out chromaticAberration);
-            });
-        */
     }
 
     private void EndDemo()
@@ -751,36 +747,39 @@ public class GameDirector : MonoBehaviour
     
     private void StartBossCombat()
     {
+        if (!bossDefeated)
+        {
+            controlBlocked = true;
+            timeLoopPaused = true;
 
-        controlBlocked = true;
-        timeLoopPaused = true;
+            pj.PlayIdle();
+            Core.Audio.StopAll();
 
-        pj.PlayIdle();
-        Core.Audio.StopAll();
+            Sequence bossSequence = DOTween.Sequence();
 
-        Sequence bossSequence = DOTween.Sequence();
-
-        bossSequence
-            .AppendInterval(2f)
-            .AppendCallback(() =>
-            {
-                Core.Audio.Play(SOUND_TYPE.BossDoorClosed, 1, 0, 0.05f);
-                FindObjectOfType<BossDoor>().Appear();
-            })
-            .AppendInterval(2)
-            .AppendCallback(() =>
-            {
-                Core.CameraEffects.ShakeCamera(3, 1);
-                Core.Audio.Play(SOUND_TYPE.AngryGod, 3, 0, 0.05f);
-            })
-            .AppendInterval(2)
-            .AppendCallback(() =>
-            {
-                Core.Audio.Play(SOUND_TYPE.BossMusic, 1, 0, 0.03f);
-                controlBlocked = false;
-                timeLoopPaused = false;
-                enemies[0].aIActive = true;
-            });
+            bossSequence
+                .AppendInterval(2f)
+                .AppendCallback(() =>
+                {
+                    Core.Audio.Play(SOUND_TYPE.BossDoorClosed, 1, 0, 0.05f);
+                    Core.CameraEffects.ShakeCamera(3, 1);
+                    FindObjectOfType<BossDoor>().Appear();
+                })
+                .AppendInterval(2)
+                .AppendCallback(() =>
+                {
+                    Core.CameraEffects.ShakeCamera(3, 1);
+                    Core.Audio.Play(SOUND_TYPE.AngryGod, 3, 0, 0.05f);
+                })
+                .AppendInterval(2)
+                .AppendCallback(() =>
+                {
+                    Core.Audio.Play(SOUND_TYPE.BossMusic, 1, 0, 0.03f);
+                    controlBlocked = false;
+                    timeLoopPaused = false;
+                    enemies[0].aIActive = true;
+                });
+        }
     }
     
     private void CheckEnemiesInScene(bool enemyDied)
@@ -795,8 +794,8 @@ public class GameDirector : MonoBehaviour
 
                 angryGodSequence
                     .AppendCallback(() => { Core.Audio.Play(SOUND_TYPE.AngryGod, 1, 0, 0.1f); })
-                    .AppendCallback(() => { Core.CameraEffects.ShakeCamera(2f, 2f); })
-                    .AppendInterval(3f)
+                    .AppendCallback(() => { Core.CameraEffects.ShakeCamera(2f, 1f); })
+                    .AppendInterval(2f)
                     .AppendCallback(() =>
                     {
                         pj.PlayIdle();
@@ -809,8 +808,9 @@ public class GameDirector : MonoBehaviour
                 currentScenePersistentData.enemiesDefeated = true;
                 loopPersistentData[SceneManager.GetActiveScene().name] = currentScenePersistentData;
 
-                if (IsSceneT1C2Fm2)
+                if (IsSceneT1C2Fm2 && !bossDefeated)
                 {
+                    bossDefeated = true;
                     timeLoopPaused = true;
                     controlBlocked = true;
                     
@@ -826,6 +826,7 @@ public class GameDirector : MonoBehaviour
                         .AppendCallback(() =>
                         {
                             Core.Audio.Play(SOUND_TYPE.BossDoorClosed, 1, 0, 0.05f);
+                            Core.CameraEffects.ShakeCamera(3, 1);
                             FindObjectOfType<BossDoor>().Disappear();
                         })
                         .AppendInterval(2)

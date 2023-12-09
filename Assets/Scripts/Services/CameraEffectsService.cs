@@ -35,7 +35,7 @@ public class CameraEffectsService : IService
     {
         if (shakingActive)
         {
-            DOVirtual.DelayedCall(0.05f, () =>
+            DOVirtual.DelayedCall(0.02f, () =>
             {
                 Vector3 randomOffset = Random.insideUnitSphere * shakeIntensity;
                 cameraToShake.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset = originalTrackedObjectOffset + randomOffset;
