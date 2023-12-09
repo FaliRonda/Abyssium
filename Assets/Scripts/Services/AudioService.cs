@@ -12,7 +12,11 @@ public enum SOUND_TYPE
     PjDamaged,
     PjImpact,
     SwordAttack,
-    PjDash
+    PjDash,
+    ItemGot,
+    EnemyDied,
+    CameraChange,
+    EnemyChasing
 }
 
 public class AudioService : IService
@@ -43,6 +47,10 @@ public class AudioService : IService
             { SOUND_TYPE.PjImpact, audioConfig.pjImpact },
             { SOUND_TYPE.SwordAttack, audioConfig.swordAttack },
             { SOUND_TYPE.PjDash, audioConfig.pjdash },
+            { SOUND_TYPE.ItemGot, audioConfig.itemGot },
+            { SOUND_TYPE.EnemyDied, audioConfig.enemyDied },
+            { SOUND_TYPE.CameraChange, audioConfig.cameraChange },
+            { SOUND_TYPE.EnemyChasing, audioConfig.enemyChasing },
         };
     }
 

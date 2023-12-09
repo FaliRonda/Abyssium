@@ -28,6 +28,7 @@ public class Item : Interactable
 
     public override void Interact(PJ pj)
     {
+        Core.Audio.Play(SOUND_TYPE.ItemGot, 1, 0, 0.05f);
         pj.CollectItem(this);
         Destroy(gameObject);
     }

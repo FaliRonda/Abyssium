@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Ju.Extensions;
+using Ju.Input;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -234,6 +235,10 @@ public class GameDirector : MonoBehaviour
     
     void Update()
     {
+        if (Core.Input.Keyboard.IsKeyPressed(KeyboardKey.Escape))
+        {
+            Application.Quit();
+        }
         if (!demoEnded && cameraDirector != null && !cameraDirector.CamerasTransitionBlending() && (!timeLoopEnded || debugMode))
         {
             if (debugMode && CameraChangeAction.triggered)
@@ -768,6 +773,7 @@ public class GameDirector : MonoBehaviour
             vignette.intensity.value = 0.55f;
             vignette.smoothness.value = 0.55f;
             Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = this.gameIn3D });
+            Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
         }
         else
         {
@@ -787,6 +793,7 @@ public class GameDirector : MonoBehaviour
                     .AppendCallback(() =>
                     {
                         Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = this.gameIn3D });
+                        Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
                     })
                     .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.5f, 0.3f)
                         .SetEase(Ease.OutQuad))
@@ -795,6 +802,7 @@ public class GameDirector : MonoBehaviour
             else
             {
                 Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = this.gameIn3D });
+                Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
             }
         }
     }

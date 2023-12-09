@@ -21,3 +21,7 @@ MonoBehaviour:
   pjImpact: {fileID: 8300000, guid: 00abe3a2abcecf44d80467a98d4f5bf6, type: 3}
   swordAttack: {fileID: 8300000, guid: 21ec716161b4fb64788843350d9c99ca, type: 3}
   pjdash: {fileID: 8300000, guid: db2d972221476304ea4991cfff5130f9, type: 3}
+  itemGot: {fileID: 8300000, guid: 43d4e2406e13a084eb5b70058fc9accc, type: 3}
+  enemyDied: {fileID: 8300000, guid: fd1018bb7c72a2b4abe2ba8442316c6d, type: 3}
+  cameraChange: {fileID: 8300000, guid: 2b9c14fddcf728548b3e14a81aff276f, type: 3}
+  enemyChasing: {fileID: 8300000, guid: b9035c673f189654eaba9d3f0f594967, type: 3}

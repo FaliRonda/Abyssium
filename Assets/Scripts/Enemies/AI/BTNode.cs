@@ -17,8 +17,6 @@ public abstract class BTNode : ScriptableObject
     public Animator enemyAnimator;
     [HideInInspector]
     public SpriteRenderer enemySprite;
-    [HideInInspector]
-    public AudioSource detectedAudioSource;
     
     public abstract BTNodeState Execute();
     public virtual void ResetNode(){}
@@ -39,8 +37,6 @@ public abstract class BTNode : ScriptableObject
         enemyAnimator = parameterObj as Animator;
         parameters.TryGetValue("EnemySprite", out parameterObj);
         enemySprite = parameterObj as SpriteRenderer;
-        parameters.TryGetValue("DetectedAudioSource", out parameterObj);
-        detectedAudioSource = parameterObj as AudioSource;
     }
 }
 

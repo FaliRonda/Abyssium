@@ -26,7 +26,7 @@ public class BTChaseNode : BTNode
             {
                 if (!currentlyChasing)
                 {
-                    detectedAudioSource.Play();
+                    Core.Audio.Play(SOUND_TYPE.EnemyChasing, 1, 0.1f, 0.01f);
                 }
                 currentlyChasing = true;
                 // Move towards the player

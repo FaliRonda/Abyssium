@@ -32,7 +32,6 @@ public class EnemyAI : MonoBehaviour
     private SpriteRenderer enemySprite;
     private SpriteRenderer shadowSprite;
     private Animator enemyAnimator;
-    private AudioSource detectedAudioSource;
 
     private Quaternion defaultEnemySpriteRotation;
     private SphereCollider attackCollider;
@@ -43,7 +42,6 @@ public class EnemyAI : MonoBehaviour
         
         this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
         
-        detectedAudioSource = GetComponentInChildren<AudioSource>();
         SpriteRenderer[] enemySprites = GetComponentsInChildren<SpriteRenderer>();
         enemySprite = enemySprites[0];
         shadowSprite = enemySprites[1];
@@ -63,7 +61,6 @@ public class EnemyAI : MonoBehaviour
             { "Waypoints", waypoints },
             { "EnemyAnimator", enemyAnimator },
             { "EnemySprite", enemySprite },
-            { "DetectedAudioSource", detectedAudioSource },
             // Agrega otros parámetros según sea necesario
         };
 
@@ -90,7 +87,7 @@ public class EnemyAI : MonoBehaviour
 
     public void GetDamage(int damageAmount)
     {
-        Core.Audio.Play(SOUND_TYPE.PjImpact, 1, 0.2f, 0.03f);
+        Core.Audio.Play(SOUND_TYPE.PjImpact, 1, 0.1f, 0.05f);
         PlayDamagedAnimation();
         
         if (!isDead)
@@ -115,6 +112,7 @@ public class EnemyAI : MonoBehaviour
 
         rootNode.AIActive = false;
         enemyAnimator.Play("Enemy_die");
+        Core.Audio.Play(SOUND_TYPE.EnemyDied, 1, 0.05f, 0.01f);
         shadowSprite.enabled = false;
         float animLenght = Core.AnimatorHelper.GetAnimLength(enemyAnimator, "Enemy_die");
         Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () =>

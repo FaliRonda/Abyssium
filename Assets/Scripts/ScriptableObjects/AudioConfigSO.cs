@@ -12,4 +12,8 @@ public class AudioConfigSO : ScriptableObject
     public AudioClip pjImpact;
     public AudioClip swordAttack;
     public AudioClip pjdash;
+    public AudioClip itemGot;
+    public AudioClip enemyDied;
+    public AudioClip cameraChange;
+    public AudioClip enemyChasing;
 }
