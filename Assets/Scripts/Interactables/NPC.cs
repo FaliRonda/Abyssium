@@ -20,29 +20,36 @@ public class NPC : Interactable
 
     public override void Interact(PJ pj)
     {
-        if (pj.inventory.HasNPCMemory)
+        if (Core.Dialogue.IsShowingText)
         {
-            memoryFound = true;
-            dialoguesToShow = finalDialogues;
-        }
-        else if (choiceSelected || dialogueEnded) // Dialogue ended
-        {
-            dialoguesToShow = new DialogueSO[] {lastDialog};
-            Core.Event.Fire(new GameEvents.NPCDialogueEnded() {npc = this, lastDialogue = lastDialog});
+            Core.Dialogue.ShowFullCurrentText(lastDialog);
         }
         else
         {
-            dialoguesToShow = dialogues;
-        }
-        
+            if (pj.inventory.HasNPCMemory)
+            {
+                memoryFound = true;
+                dialoguesToShow = finalDialogues;
+            }
+            else if (choiceSelected || dialogueEnded) // Dialogue ended
+            {
+                dialoguesToShow = new DialogueSO[] {lastDialog};
+                Core.Event.Fire(new GameEvents.NPCDialogueEnded() {npc = this, lastDialogue = lastDialog});
+            }
+            else
+            {
+                dialoguesToShow = dialogues;
+            }
+            
 
-        if (!IsInteracting())
-        {
-            StartDialogue();
-        }
-        else
-        {
-            ContinueDialog();
+            if (!IsInteracting())
+            {
+                StartDialogue();
+            }
+            else
+            {
+                ContinueDialog();
+            }
         }
     }
 

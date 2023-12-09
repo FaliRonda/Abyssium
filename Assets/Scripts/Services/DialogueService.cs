@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class DialogueService : IService
 {
+    public bool ChoicesInScreen => choicesInScreen;
+    public bool IsShowingText => isShowingText;
     private GameObject gameUIGO;
     
     private TMP_Text conversationDialogueText;
@@ -24,7 +26,8 @@ public class DialogueService : IService
     private TypingConfigSO typingConfig;
     private bool choicesInScreen;
     private int preselectedChoiceIndex;
-    public bool ChoicesInScreen => choicesInScreen;
+    private bool isShowingText;
+    private Sequence textShowSequence;
 
     public void StartConversation()
     {
@@ -90,15 +93,20 @@ public class DialogueService : IService
                 conversationPJImage.enabled = true;
             }
         }
-        
+
+        isShowingText = true;
         int charIndex = 0;
         conversationDialogueText.text = "";
 
-        // Use DoTween to animate each letter in the text.
-        DOTween.To(() => charIndex, x => charIndex = x, dialogue.dialogueText.Length, dialogue.dialogueText.Length * typingConfig.typingSpeed)
-            .OnUpdate(() => {
-                conversationDialogueText.text = dialogue.dialogueText.Substring(0, charIndex);
-            });
+        textShowSequence = DOTween.Sequence();
+        
+        textShowSequence
+            .Append(DOTween.To(() => charIndex, x => charIndex = x, dialogue.dialogueText.Length, dialogue.dialogueText.Length * typingConfig.typingSpeed)
+                .OnUpdate(() => {
+                    conversationDialogueText.text = dialogue.dialogueText.Substring(0, charIndex);
+                })
+                .OnComplete(() => { isShowingText = false; })
+            );
     }
 
     public void ShowChoice(int choiceIndex, ChoiceSO choice, NPC npc)
@@ -204,5 +212,12 @@ public class DialogueService : IService
             lateralDialogPortraitImage.sprite = lateralDialogSO.lateralCharacterPortrait;
             lateralDialogPortraitImage.enabled = true;
         }
+    }
+
+    public void ShowFullCurrentText(DialogueSO lastDialog)
+    {
+        textShowSequence.Kill();
+        conversationDialogueText.text = lastDialog.dialogueText;
+        isShowingText = false;
     }
 }
