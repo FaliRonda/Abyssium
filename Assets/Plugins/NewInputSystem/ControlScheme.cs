@@ -73,6 +73,15 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""CameraRotationMouse"",
+                    ""type"": ""Value"",
+                    ""id"": ""7152d9f0-a945-46bf-99ed-f9b2acd636b4"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Close"",
                     ""type"": ""Button"",
                     ""id"": ""3c43f890-f1b9-4250-a275-258c19c4f016"",
@@ -262,7 +271,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""a0e4cf81-04ea-419a-b851-fd74a1e530ff"",
-                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -304,39 +313,6 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Mouse"",
-                    ""id"": ""8e76edf8-c1cd-400a-b5f2-30d1e04703a2"",
-                    ""path"": ""2DVector(mode=2)"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CameraRotation"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""2ce863e3-a86d-43ba-830a-7a9ff2c13559"",
-                    ""path"": ""<Mouse>/delta/left"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale(factor=0.25)"",
-                    ""groups"": """",
-                    ""action"": ""CameraRotation"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""55e6f412-4306-4722-afc9-1efa96abc7b4"",
-                    ""path"": ""<Mouse>/delta/right"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale(factor=0.25)"",
-                    ""groups"": """",
-                    ""action"": ""CameraRotation"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
                     ""id"": ""ce8835f8-4f98-4adb-b3e9-f05bec1448bc"",
                     ""path"": ""<Keyboard>/escape"",
@@ -346,6 +322,39 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                     ""action"": ""Close"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Mouse"",
+                    ""id"": ""20e0b98e-ba6e-4774-a0af-2c79334bf7d7"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotationMouse"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""253d007e-c601-4b83-8b43-3621f7ac48aa"",
+                    ""path"": ""<Mouse>/delta/left"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=0.25)"",
+                    ""groups"": """",
+                    ""action"": ""CameraRotationMouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""fb31445d-c299-4044-9b28-e661a5857beb"",
+                    ""path"": ""<Mouse>/delta/right"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=0.25)"",
+                    ""groups"": """",
+                    ""action"": ""CameraRotationMouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -387,6 +396,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
         m_Gameplay_Action = m_Gameplay.FindAction("Action", throwIfNotFound: true);
         m_Gameplay_CameraChange = m_Gameplay.FindAction("CameraChange", throwIfNotFound: true);
         m_Gameplay_CameraRotation = m_Gameplay.FindAction("CameraRotation", throwIfNotFound: true);
+        m_Gameplay_CameraRotationMouse = m_Gameplay.FindAction("CameraRotationMouse", throwIfNotFound: true);
         m_Gameplay_Close = m_Gameplay.FindAction("Close", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
@@ -457,6 +467,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Action;
     private readonly InputAction m_Gameplay_CameraChange;
     private readonly InputAction m_Gameplay_CameraRotation;
+    private readonly InputAction m_Gameplay_CameraRotationMouse;
     private readonly InputAction m_Gameplay_Close;
     public struct GameplayActions
     {
@@ -467,6 +478,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
         public InputAction @Action => m_Wrapper.m_Gameplay_Action;
         public InputAction @CameraChange => m_Wrapper.m_Gameplay_CameraChange;
         public InputAction @CameraRotation => m_Wrapper.m_Gameplay_CameraRotation;
+        public InputAction @CameraRotationMouse => m_Wrapper.m_Gameplay_CameraRotationMouse;
         public InputAction @Close => m_Wrapper.m_Gameplay_Close;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
@@ -492,6 +504,9 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
             @CameraRotation.started += instance.OnCameraRotation;
             @CameraRotation.performed += instance.OnCameraRotation;
             @CameraRotation.canceled += instance.OnCameraRotation;
+            @CameraRotationMouse.started += instance.OnCameraRotationMouse;
+            @CameraRotationMouse.performed += instance.OnCameraRotationMouse;
+            @CameraRotationMouse.canceled += instance.OnCameraRotationMouse;
             @Close.started += instance.OnClose;
             @Close.performed += instance.OnClose;
             @Close.canceled += instance.OnClose;
@@ -514,6 +529,9 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
             @CameraRotation.started -= instance.OnCameraRotation;
             @CameraRotation.performed -= instance.OnCameraRotation;
             @CameraRotation.canceled -= instance.OnCameraRotation;
+            @CameraRotationMouse.started -= instance.OnCameraRotationMouse;
+            @CameraRotationMouse.performed -= instance.OnCameraRotationMouse;
+            @CameraRotationMouse.canceled -= instance.OnCameraRotationMouse;
             @Close.started -= instance.OnClose;
             @Close.performed -= instance.OnClose;
             @Close.canceled -= instance.OnClose;
@@ -587,6 +605,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
         void OnAction(InputAction.CallbackContext context);
         void OnCameraChange(InputAction.CallbackContext context);
         void OnCameraRotation(InputAction.CallbackContext context);
+        void OnCameraRotationMouse(InputAction.CallbackContext context);
         void OnClose(InputAction.CallbackContext context);
     }
     public interface IDebugActions

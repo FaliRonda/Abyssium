@@ -80,7 +80,7 @@ public class PJ : MonoBehaviour
             DoPjMovement(controlInputData);
             inventory.UpdatePosition(transform);
             
-            PjDoRotation(controlInputData.cameraRotation);
+            PjDoRotation(controlInputData);
         } else
         {
             StopRollingWhenHitWall();
@@ -212,20 +212,28 @@ public class PJ : MonoBehaviour
 
     #region Movement, rotation and orientation
 
-    private void PjDoRotation(Vector2 cameraRotation)
+    private void PjDoRotation(GameDirector.ControlInputData controlInputData)
     {
         float mouseX = 0;
         float mouseY = 0;
         //Core.Input.Mouse.GetPositionDelta(out mouseX, out mouseY);
 
-        if (cameraRotation.x != 0)
+        if (controlInputData.cameraRotation.x != 0)
         {
-            mouseX = cameraRotation.x;
+            mouseX = controlInputData.cameraRotation.x;
+        }
+        else if (controlInputData.cameraMouseRotation.x != 0)
+        {
+            mouseX = controlInputData.cameraMouseRotation.x;
         }
 
-        if (cameraRotation.y != 0)
+        if (controlInputData.cameraRotation.y != 0)
         {
-            mouseY = cameraRotation.y;
+            mouseY = controlInputData.cameraRotation.y;
+        }
+        else if (controlInputData.cameraMouseRotation.y != 0)
+        {
+            mouseY = controlInputData.cameraMouseRotation.y;
         }
         
         mouseY = Mathf.Clamp(mouseY, -1f, 1f);

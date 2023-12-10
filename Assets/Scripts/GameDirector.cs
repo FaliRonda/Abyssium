@@ -37,12 +37,14 @@ public class GameDirector : MonoBehaviour
         public Vector3 movementDirection;
         public Vector3 inputDirection;
         public Vector2 cameraRotation;
+        public Vector2 cameraMouseRotation;
 
-        public ControlInputData(Vector3 movementDirection, Vector3 inputDirection, Vector2 cameraRotation)
+        public ControlInputData(Vector3 movementDirection, Vector3 inputDirection, Vector2 cameraRotation, Vector2 cameraMouseRotation)
         {
             this.movementDirection = movementDirection;
             this.inputDirection = inputDirection;
             this.cameraRotation = cameraRotation;
+            this.cameraMouseRotation = cameraMouseRotation;
         }
     }
 
@@ -88,6 +90,7 @@ public class GameDirector : MonoBehaviour
     private InputAction InteractAction;
     private InputAction CameraChangeAction;
     private InputAction CameraRotationAction;
+    private InputAction CameraRotationMouseAction;
     private InputAction CloseAction;
 
     private static bool IsSceneGameLoader => SceneManager.GetActiveScene().name == "GameLoader";
@@ -120,7 +123,9 @@ public class GameDirector : MonoBehaviour
     
     private void Start()
     {
-        Cursor.visible = false;
+        #if !UNITY_EDITOR
+                Cursor.visible = false;
+        #endif
         initialTimeLoopDuration = timeLoopDuration;
 
         if (isInitialLoad)
@@ -198,6 +203,7 @@ public class GameDirector : MonoBehaviour
             InteractAction = playerInput.actions["Action"];
             CameraChangeAction = playerInput.actions["CameraChange"];
             CameraRotationAction = playerInput.actions["CameraRotation"];
+            CameraRotationMouseAction = playerInput.actions["CameraRotationMouse"];
             CloseAction = playerInput.actions["Close"];
         }
 
@@ -741,7 +747,7 @@ public class GameDirector : MonoBehaviour
             direction += -pj.transform.forward;
         }
 
-        return new ControlInputData(direction, inputDirection, CameraRotationAction.ReadValue<Vector2>());
+        return new ControlInputData(direction, inputDirection, CameraRotationAction.ReadValue<Vector2>(), CameraRotationMouseAction.ReadValue<Vector2>());
     }
 
     #endregion

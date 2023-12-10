@@ -51,6 +51,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "CameraRotationMouse",
+                    "type": "Value",
+                    "id": "7152d9f0-a945-46bf-99ed-f9b2acd636b4",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Close",
                     "type": "Button",
                     "id": "3c43f890-f1b9-4250-a275-258c19c4f016",
@@ -240,7 +249,7 @@
                 {
                     "name": "up",
                     "id": "a0e4cf81-04ea-419a-b851-fd74a1e530ff",
-                    "path": "<Gamepad>/rightStick/up",
+                    "path": "<Gamepad>/leftStick/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -282,39 +291,6 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Mouse",
-                    "id": "8e76edf8-c1cd-400a-b5f2-30d1e04703a2",
-                    "path": "2DVector(mode=2)",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "CameraRotation",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "left",
-                    "id": "2ce863e3-a86d-43ba-830a-7a9ff2c13559",
-                    "path": "<Mouse>/delta/left",
-                    "interactions": "",
-                    "processors": "Scale(factor=0.25)",
-                    "groups": "",
-                    "action": "CameraRotation",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "55e6f412-4306-4722-afc9-1efa96abc7b4",
-                    "path": "<Mouse>/delta/right",
-                    "interactions": "",
-                    "processors": "Scale(factor=0.25)",
-                    "groups": "",
-                    "action": "CameraRotation",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "ce8835f8-4f98-4adb-b3e9-f05bec1448bc",
                     "path": "<Keyboard>/escape",
@@ -324,6 +300,39 @@
                     "action": "Close",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Mouse",
+                    "id": "20e0b98e-ba6e-4774-a0af-2c79334bf7d7",
+                    "path": "2DVector(mode=2)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraRotationMouse",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "left",
+                    "id": "253d007e-c601-4b83-8b43-3621f7ac48aa",
+                    "path": "<Mouse>/delta/left",
+                    "interactions": "",
+                    "processors": "Scale(factor=0.25)",
+                    "groups": "",
+                    "action": "CameraRotationMouse",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "fb31445d-c299-4044-9b28-e661a5857beb",
+                    "path": "<Mouse>/delta/right",
+                    "interactions": "",
+                    "processors": "Scale(factor=0.25)",
+                    "groups": "",
+                    "action": "CameraRotationMouse",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
