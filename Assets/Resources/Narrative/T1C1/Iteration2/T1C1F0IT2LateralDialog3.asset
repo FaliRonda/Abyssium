@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C1F0IT2LateralDialog3
   m_EditorClassIdentifier: 
-  dialogueText: (this guy really doesn't remember me... I'd better not tell him any
-    more about this strange loop)
+  dialogueText: (She said that again... she completely forgot about me... wait, the
+    beast! I'll tell her!)
   choices: []
   drop: {fileID: 0}
   isLateral: 1
@@ -21,3 +21,4 @@ MonoBehaviour:
   conversationCharacterPortrait: {fileID: 0}
   lateralCharacterPortrait: {fileID: 21300000, guid: de2ae1b772d07c645aa77b8c9aa22fca, type: 3}
   lateralDialogLifeTime: 12
+  playSuspenseMusic: 0

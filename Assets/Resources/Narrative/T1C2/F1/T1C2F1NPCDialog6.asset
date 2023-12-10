@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C2F1NPCDialog6
   m_EditorClassIdentifier: 
-  dialogueText: 'Wait. Perhaps I can give you something usefull for your venture.
+  dialogueText: 'Wait a sec. Maybe I can give you something useful for your venture.
     Tell me child, which do you treasure more: strength or knowledge?'
   choices:
   - {fileID: 11400000, guid: 380368b17f7f21548b132af4fde01174, type: 2}

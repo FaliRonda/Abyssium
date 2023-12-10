@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C1F0NPCDialog1
   m_EditorClassIdentifier: 
-  dialogueText: Hi child, my name's Greenlig, I've been here for a while and you...
-    just appeared! What's your name?
+  dialogueText: Hi child, my name's Greenlig. I was hanging around in my city and
+    then... I was here... like you just did now! Who are you? Do you know this place?
   choices: []
   drop: {fileID: 0}
   isLateral: 0

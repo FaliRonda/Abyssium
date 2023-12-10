@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C1F0IT2NPCDialog4
   m_EditorClassIdentifier: 
-  dialogueText: 'i said... wait, a monster? When went you to the floor below? Anyway,
-    it sounds dangerous, take this!
+  dialogueText: 'A beast, you say? When did you go downstairs? Anyway, I might face
+    it myself, but it sounds dangerous, you better take this.
 
-    [use insteract (E key / X button) during
-    2D to attack]'
+    [Use insteract
+    (E key / X button) during 2D to attack]'
   choices: []
   drop: {fileID: 1538108864428168070, guid: a1abc41c426c2204db0b51a4f1d5b8f2, type: 3}
   isLateral: 0

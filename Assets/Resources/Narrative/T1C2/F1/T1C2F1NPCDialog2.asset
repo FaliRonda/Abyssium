@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C2F1NPCDialog2
   m_EditorClassIdentifier: 
-  dialogueText: Books... are amazing right? Centuries of carefully curated knowledge
-    accumulated in hundreds of marvellous books.
+  dialogueText: Books... they are amazing right? Centuries of carefully curated knowledge,
+    accumulated in hundreds of intriguing pages.
   choices: []
   drop: {fileID: 0}
   isLateral: 0

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C1F0LateralDialog5
   m_EditorClassIdentifier: 
-  dialogueText: '[Move the camera with the mouse / right joystick]
+  dialogueText: '[Use the mouse / right joystick to move the camera]
 
-    [interact
-    by pressing E key  / X button]'
+    [Press
+    E key  / X button to interact]'
   choices: []
   drop: {fileID: 0}
   isLateral: 1

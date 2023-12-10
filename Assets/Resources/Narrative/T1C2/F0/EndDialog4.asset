@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: EndDialog4
   m_EditorClassIdentifier: 
-  dialogueText: (!!!) Wait... what did you said?? Your "lovely God of Time and Space"!?
-    The same one that has cursed and trapped us!?
+  dialogueText: (!!!) Wait... what did you say?? Your "lovely Space-Time Godess"!?
+    What are you talking about?
   choices: []
   drop: {fileID: 0}
   isLateral: 0

@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: EndDialog9
   m_EditorClassIdentifier: 
-  dialogueText: '* it fades away like little pieces of paper blown away by the wind
-    *'
+  dialogueText: 'Remember: don''t be scared, you are not alone...
+
+    * She fades
+    away *'
   choices: []
   drop: {fileID: 0}
   isLateral: 0

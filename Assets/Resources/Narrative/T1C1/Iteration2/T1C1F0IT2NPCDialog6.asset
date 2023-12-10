@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C1F0IT2NPCDialog6
   m_EditorClassIdentifier: 
-  dialogueText: And by the way, I feel I'm forgeting something important, so please
-    let me know if you find something inusual.
+  dialogueText: By the way, I feel like there's something important I'm missing...
+    If you figure anything out, give me a heads up.
   choices: []
   drop: {fileID: 0}
   isLateral: 0

@@ -12,26 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C2God
   m_EditorClassIdentifier: 
-  dialogueText: 'Damn you! You had to give him back that memory... now no one can
-    stop him!
-
-
-
-    I won''t let you ruin my plans again, you''ll all be trapped
-    here forever and you''ll never know your true identity!
-
-
-
-    I finally got
-    some of my power back... this time I won''t give you a choice... you''re still
-    going to roam Abyssium but... in another timeline!!!
-
-
-    End of the Demo, thank
-    you for playing!
-
-
-    [Press Escape to close the game]'
+  dialogueText: "You had to bring back her memories... of course you had... Now,
+    it's too late. She will bring infinite pain to the world.\r\n\r\nI hope you've
+    learned your lesson; you need to stay out of this, for everyone's sake. If you
+    keep restoring their memories, you will eventually uncover your own identity,
+    and that would be the end.\n\r\nI have been neglectful, but now that I have gathered
+    more strength, I will ensure it does not happen again. I will send you to another
+    timeline within this tower... one where you can't interfere with my plans anymore.\n\nEnd
+    of the Demo, thank you for playing!\r\n\r\n[Press escape to close the game]\r"
   choices: []
   drop: {fileID: 0}
   isLateral: 0
@@ -39,3 +27,4 @@ MonoBehaviour:
   conversationCharacterPortrait: {fileID: 0}
   lateralCharacterPortrait: {fileID: 0}
   lateralDialogLifeTime: 6
+  playSuspenseMusic: 0

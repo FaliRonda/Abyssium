@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: EndDialog8
   m_EditorClassIdentifier: 
-  dialogueText: DIE!? No way... wait, you are... fading away?
+  dialogueText: DIE!? No... no way... what's going on here... Wait, Am I seeing the
+    wall through you? Are you... fading away?
   choices: []
   drop: {fileID: 0}
   isLateral: 0
@@ -20,3 +21,4 @@ MonoBehaviour:
   conversationCharacterPortrait: {fileID: 21300000, guid: de2ae1b772d07c645aa77b8c9aa22fca, type: 3}
   lateralCharacterPortrait: {fileID: 21300000, guid: de2ae1b772d07c645aa77b8c9aa22fca, type: 3}
   lateralDialogLifeTime: 10
+  playSuspenseMusic: 0

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: EndDialog5
   m_EditorClassIdentifier: 
-  dialogueText: I have been waiting for your call my whole life... and you where
-    there all the time... now I can continue with my promise...
+  dialogueText: I've been waiting for her call my whole life... and she was here
+    all this time... now I can go on with my destiny...
   choices: []
   drop: {fileID: 0}
   isLateral: 0

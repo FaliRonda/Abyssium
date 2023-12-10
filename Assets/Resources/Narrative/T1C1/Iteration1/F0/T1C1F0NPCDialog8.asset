@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C1F0NPCDialog8
   m_EditorClassIdentifier: 
-  dialogueText: It's curious... I feel like I'm forgetting something too... something
-    important... Hey! If you find something, let me know, maybe it will remind me
-    of what I forgot.
+  dialogueText: It's weird... I feel like there's something I'm missing... something
+    meaningful... Hey! If you figure anything out, give me a heads up.
   choices: []
   drop: {fileID: 0}
   isLateral: 0

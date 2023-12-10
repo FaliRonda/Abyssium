@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C2F1NPCDialog3
   m_EditorClassIdentifier: 
-  dialogueText: Books? Yeah but... please, I'm hurry, is there anything you found
-    about this God in your books?
+  dialogueText: Books? Yeah but... I don't have time for this... Is there anything
+    useful you could tell me?
   choices: []
   drop: {fileID: 0}
   isLateral: 0
@@ -21,3 +21,4 @@ MonoBehaviour:
   conversationCharacterPortrait: {fileID: 21300000, guid: de2ae1b772d07c645aa77b8c9aa22fca, type: 3}
   lateralCharacterPortrait: {fileID: 21300000, guid: de2ae1b772d07c645aa77b8c9aa22fca, type: 3}
   lateralDialogLifeTime: 10
+  playSuspenseMusic: 0

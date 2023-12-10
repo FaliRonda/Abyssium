@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C1F-1LateralDialog2
   m_EditorClassIdentifier: 
-  dialogueText: (!!) The moon! It suddenly moved! What's going on with the time?
+  dialogueText: (When I'm in pain I feel time speeds up... (!!) The moon! It suddenly
+    moved?)
   choices: []
   drop: {fileID: 0}
   isLateral: 1

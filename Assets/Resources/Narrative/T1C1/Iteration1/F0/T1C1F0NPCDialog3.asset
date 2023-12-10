@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C1F0NPCDialog3
   m_EditorClassIdentifier: 
-  dialogueText: What do you mean? I've never talk to you before. And you say that
-    don't remember your name? Did you hit your head?
+  dialogueText: What do you mean? I've never talked to you. You also say you don't
+    know who you are. You bump your head or something?
   choices: []
   drop: {fileID: 0}
   isLateral: 0

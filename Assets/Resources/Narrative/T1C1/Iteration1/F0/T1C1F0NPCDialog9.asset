@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C1F0NPCDialog9
   m_EditorClassIdentifier: 
-  dialogueText: I realized that in this tower the orange arrow above the doors indicates
-    if they go upwards or downwards. Take it into account durnig your research!
+  dialogueText: It looks like this place is some sort of tower... you could go downstairs
+    and research that floor. I'll help you out if you're in trouble!
   choices: []
   drop: {fileID: 0}
   isLateral: 0

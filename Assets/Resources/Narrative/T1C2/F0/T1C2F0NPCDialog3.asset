@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C2F0NPCDialog3
   m_EditorClassIdentifier: 
-  dialogueText: Please trust me, we are in a rush, the God has cursed us within an
-    eternal time loop and trapped us in this tower!
+  dialogueText: Please, I need you to trust me, we are in a rush. Somebody trapped
+    us here and I must find I way out!
   choices: []
   drop: {fileID: 0}
   isLateral: 0
@@ -21,3 +21,4 @@ MonoBehaviour:
   conversationCharacterPortrait: {fileID: 21300000, guid: de2ae1b772d07c645aa77b8c9aa22fca, type: 3}
   lateralCharacterPortrait: {fileID: 21300000, guid: de2ae1b772d07c645aa77b8c9aa22fca, type: 3}
   lateralDialogLifeTime: 10
+  playSuspenseMusic: 0

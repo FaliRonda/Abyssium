@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C0F0Dialog7
   m_EditorClassIdentifier: 
-  dialogueText: I don't know who I am and... it's strange, I'm seeing myself from
-    the... sky? Is this a dream?
+  dialogueText: I don't know who I am and... it's strange, I'm seeing myself from...
+    above? I guess I'm dreaming.
   choices: []
+  drop: {fileID: 0}
   isLateral: 1
   isSpeakingNPC: 0
   conversationCharacterPortrait: {fileID: 0}
   lateralCharacterPortrait: {fileID: 21300000, guid: de2ae1b772d07c645aa77b8c9aa22fca, type: 3}
   lateralDialogLifeTime: 10
+  playSuspenseMusic: 0

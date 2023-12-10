@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C2F0NPCDialog5
   m_EditorClassIdentifier: 
-  dialogueText: I'll be waiting for you here if you find my lost memory...
+  dialogueText: As you said, I feel like there's something important I'm missing...
+    If you figure anything out, give me a heads up.
   choices: []
   drop: {fileID: 0}
   isLateral: 0

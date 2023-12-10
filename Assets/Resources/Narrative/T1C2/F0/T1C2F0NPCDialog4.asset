@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C2F0NPCDialog4
   m_EditorClassIdentifier: 
-  dialogueText: Everything you're saying sounds crazy but... something tells me that
-    we know each other and I can trust you... take my sword.
+  dialogueText: Everything you say sounds quite crazy... but somehow I know I can
+    trust you... You wanted my sword, right? There you go.
   choices: []
   drop: {fileID: 1538108864428168070, guid: a1abc41c426c2204db0b51a4f1d5b8f2, type: 3}
   isLateral: 0

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C0F0Dialog6
   m_EditorClassIdentifier: 
-  dialogueText: My name's Greenlig, what is yours? I'm below this awning, near to
-    the candles... can't you see me?
+  dialogueText: My name's Greenlig, what's yours? I'm below this portico, near the
+    candles... can't you see me?
   choices: []
   drop: {fileID: 0}
   isLateral: 1

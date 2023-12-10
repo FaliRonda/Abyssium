@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: EndDialog3
   m_EditorClassIdentifier: 
-  dialogueText: (!!!) This... this vision... is what I forgot... I forgot my... my
-    lovely God of Time and Space!
+  dialogueText: (!!!) This... this vision... this is what I forgot... I forgot my...
+    my lovely Space-Time Godess!
   choices: []
   drop: {fileID: 0}
   isLateral: 0

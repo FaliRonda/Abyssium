@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: EndDialog2
   m_EditorClassIdentifier: 
-  dialogueText: An orb? Let me have a look at it. *He grabs it*
+  dialogueText: Hey, what's that? An orb? Let me have a look. *She holds it*
   choices: []
   drop: {fileID: 0}
   isLateral: 0

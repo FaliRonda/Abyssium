@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C1F0IT2NPCDialog5
   m_EditorClassIdentifier: 
-  dialogueText: 'you should also try to dodge their attacks... have you tried to
-    get some momentum? You''ll have to wait a bit to do it again, but it''s very
-    effective!
+  dialogueText: 'You could also try to avoid its attacks... Did you try getting some
+    impulse? I''ll teach you how!
 
-    [press left shift / RB to dodge]'
+    [Press left shift / RB to dash]'
   choices: []
   drop: {fileID: 0}
   isLateral: 0
