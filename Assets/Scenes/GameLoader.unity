@@ -233,7 +233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: sceneLateralDialogs.values.Array.data[3].values.Array.data[1]
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: sceneLateralDialogs.values.Array.data[3].values.Array.data[2]
