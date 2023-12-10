@@ -21626,6 +21626,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: double_roof
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 608
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3157f62de53cc9d41811a86c0f0ff69a
+      internalID: 1692660980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: double-roof-top
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 624
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 875a1b516bdbacd459c1b7e4fc843c84
+      internalID: 1056762408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: double-roof-bottom
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 592
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02f92336fb040c94190ce847e7820783
+      internalID: -1516063260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -21637,6 +21700,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      double-roof-bottom: -1516063260
+      double-roof-top: 1056762408
+      double_roof: 1692660980
       mainlevbuild_0: -519621500
       mainlevbuild_1: -1374845296
       mainlevbuild_10: -357479146
