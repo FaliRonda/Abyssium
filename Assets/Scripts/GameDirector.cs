@@ -120,6 +120,7 @@ public class GameDirector : MonoBehaviour
     
     private void Start()
     {
+        Cursor.visible = false;
         initialTimeLoopDuration = timeLoopDuration;
 
         if (isInitialLoad)
