@@ -12,43 +12,50 @@ public class NPC : Interactable
     public bool dialogueEnded;
     
     private int dialogueIndex = 0;
-    private List<ChoiceSO> currentChoices = new List<ChoiceSO>();
-    private bool isSelectingChoice;
+    public List<ChoiceSO> currentChoices = new List<ChoiceSO>();
+    public bool isSelectingChoice;
     private bool choiceSelected;
     private bool memoryFound;
     private DialogueSO lastChoiceDialog;
 
     public override void Interact(PJ pj)
     {
-        if (Core.Dialogue.IsShowingText)
+        if (isSelectingChoice)
         {
-            Core.Dialogue.ShowFullCurrentText(lastDialog);
+            isSelectingChoice = false;
         }
         else
         {
-            if (pj.inventory.HasNPCMemory)
+            if (Core.Dialogue.IsShowingText)
             {
-                memoryFound = true;
-                dialoguesToShow = finalDialogues;
-            }
-            else if (choiceSelected || dialogueEnded) // Dialogue ended
-            {
-                dialoguesToShow = new DialogueSO[] {lastDialog};
-                Core.Event.Fire(new GameEvents.NPCDialogueEnded() {npc = this, lastDialogue = lastDialog});
+                Core.Dialogue.ShowFullCurrentText(lastDialog);
             }
             else
             {
-                dialoguesToShow = dialogues;
-            }
-            
+                if (pj.inventory.HasNPCMemory)
+                {
+                    memoryFound = true;
+                    dialoguesToShow = finalDialogues;
+                }
+                else if (choiceSelected || dialogueEnded) // Dialogue ended
+                {
+                    dialoguesToShow = new DialogueSO[] {lastDialog};
+                    Core.Event.Fire(new GameEvents.NPCDialogueEnded() {npc = this, lastDialogue = lastDialog});
+                }
+                else
+                {
+                    dialoguesToShow = dialogues;
+                }
+                
 
-            if (!IsInteracting())
-            {
-                StartDialogue();
-            }
-            else
-            {
-                ContinueDialog();
+                if (!IsInteracting())
+                {
+                    StartDialogue();
+                }
+                else
+                {
+                    ContinueDialog();
+                }
             }
         }
     }
@@ -58,7 +65,7 @@ public class NPC : Interactable
         SetInteracting(true);
         
         Core.Event.Fire(new GameEvents.NPCDialogue(){ started = true });
-        Core.Dialogue.StartConversation();
+        Core.Dialogue.StartConversation(this);
 
         ShowNextDialog();
     }
@@ -78,7 +85,6 @@ public class NPC : Interactable
         {
             lastDialog = dialoguesToShow[dialogueIndex];
             Core.Dialogue.ShowText(dialoguesToShow[dialogueIndex]);
-            ShowChoices(dialoguesToShow[dialogueIndex]);
 
             if (lastDialog.drop != null)
             {
@@ -96,31 +102,12 @@ public class NPC : Interactable
         {
             lastDialog = lastChoiceDialog;
             Core.Dialogue.ShowText(lastChoiceDialog);
-            ShowChoices(lastChoiceDialog);
-
             lastChoiceDialog = null;
         }
         // Termina la conversación
         else
         {
             EndDialogue();
-        }
-    }
-
-    private void ShowChoices(DialogueSO dialogue)
-    {
-        ChoiceSO[] choices = dialogue.choices;
-        int choicesCount = choices.Length;
-        bool haveChoices = choicesCount > 0;
-
-        if (haveChoices)
-        {
-            isSelectingChoice = true;
-            for (int i = 0; i < choicesCount; i++)
-            {
-                currentChoices.Add(choices[i]);
-                Core.Dialogue.ShowChoice(i, choices[i], this);
-            }
         }
     }
 
@@ -161,8 +148,8 @@ public class NPC : Interactable
         }
         
         currentChoices.Clear();
-        isSelectingChoice = false;
-        
+
+        dialogueIndex++;
         ShowNextDialog();
     }
 }

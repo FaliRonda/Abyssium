@@ -29,8 +29,11 @@ public class DialogueService : IService
     private bool isShowingText;
     private Sequence textShowSequence;
 
-    public void StartConversation()
+    private DialogueSO killedDialog;
+
+    public void StartConversation(NPC npc)
     {
+        currentNPC = npc;
         gameUIGO.SetActive(true);
     }
 
@@ -75,7 +78,9 @@ public class DialogueService : IService
             Debug.LogError("TypingConfig not found in Resources folder.");
         }
     }
-    
+
+    #region Conversation
+
     public void ShowText(DialogueSO dialogue)
     {
         conversatioNPCImage.enabled = false;
@@ -110,15 +115,41 @@ public class DialogueService : IService
                 .OnUpdate(() => {
                     conversationDialogueText.text = dialogue.dialogueText.Substring(0, charIndex);
                 })
-                .OnComplete(() => { isShowingText = false; })
+                .OnKill(() =>
+                {
+                    isShowingText = false;
+                    conversationDialogueText.text = killedDialog.dialogueText;
+                    CheckAndShowChoices(dialogue);
+                })
+                .OnComplete(() =>
+                {
+                    isShowingText = false;
+                    CheckAndShowChoices(dialogue);
+                })
             );
     }
 
-    public void ShowChoice(int choiceIndex, ChoiceSO choice, NPC npc)
+    private void CheckAndShowChoices(DialogueSO dialogue)
+    {
+        ChoiceSO[] choices = dialogue.choices;
+        int choicesCount = choices.Length;
+        bool haveChoices = choicesCount > 0;
+
+        if (haveChoices)
+        {
+            currentNPC.isSelectingChoice = true;
+            for (int i = 0; i < choicesCount; i++)
+            {
+                currentNPC.currentChoices.Add(choices[i]);
+                ShowChoice(i, choices[i]);
+            }
+        }
+    }
+
+    public void ShowChoice(int choiceIndex, ChoiceSO choice)
     {
         choicesInScreen = true;
         var currentChoice = conversationDialogueChoicesGO[choiceIndex];
-        currentNPC = npc;
         conversationDialogueChoicesGO[choiceIndex].SetActive(true);
         conversationDialogueChoicesText[choiceIndex].text = choice.choiceText;
 
@@ -173,7 +204,17 @@ public class DialogueService : IService
         
         choicesInScreen = false;
     }
+    
+    public void ShowFullCurrentText(DialogueSO lastDialog)
+    {
+        killedDialog = lastDialog;
+        textShowSequence.Kill();
+    }
 
+    #endregion
+
+    #region Lateral dialog
+    
     public void ShowLateralDialogs(GameDirector.DialogueDictionary lateralDialogs)
     {
         var orderedLateralDialogs = lateralDialogs.OrderBy(x => x.Key.name).ToDictionary(x => x.Key, x => x.Value);
@@ -219,10 +260,5 @@ public class DialogueService : IService
         }
     }
 
-    public void ShowFullCurrentText(DialogueSO lastDialog)
-    {
-        textShowSequence.Kill();
-        conversationDialogueText.text = lastDialog.dialogueText;
-        isShowingText = false;
-    }
+    #endregion
 }
