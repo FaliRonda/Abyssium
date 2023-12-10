@@ -46,10 +46,10 @@ public class AnimatorHelperService : IAnimatorHelperService, IService
         return overrideAnimName;
     }
 
-    public void DoOnAnimationFinish(float animLenght, Action callback)
+    public void DoOnAnimationFinish(float animLength, Action callback)
     {
         Sequence sequence = DOTween.Sequence();
-        sequence.AppendInterval(animLenght)
+        sequence.AppendInterval(animLength)
             .AppendCallback(()=>
             {
                 callback();

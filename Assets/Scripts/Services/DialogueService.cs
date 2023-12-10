@@ -29,8 +29,6 @@ public class DialogueService : IService
     private bool isShowingText;
     private Sequence textShowSequence;
 
-    private DialogueSO killedDialog;
-
     public void StartConversation(NPC npc)
     {
         currentNPC = npc;
@@ -118,7 +116,6 @@ public class DialogueService : IService
                 .OnKill(() =>
                 {
                     isShowingText = false;
-                    conversationDialogueText.text = killedDialog.dialogueText;
                     CheckAndShowChoices(dialogue);
                 })
                 .OnComplete(() =>
@@ -207,7 +204,7 @@ public class DialogueService : IService
     
     public void ShowFullCurrentText(DialogueSO lastDialog)
     {
-        killedDialog = lastDialog;
+        conversationDialogueText.text = lastDialog.dialogueText;
         textShowSequence.Kill();
     }
 

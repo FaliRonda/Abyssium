@@ -115,8 +115,8 @@ public class EnemyAI : MonoBehaviour
         enemyAnimator.Play("Enemy_die");
         Core.Audio.Play(SOUND_TYPE.EnemyDied, 1, 0.05f, 0.01f);
         shadowSprite.enabled = false;
-        float animLenght = Core.AnimatorHelper.GetAnimLength(enemyAnimator, "Enemy_die");
-        Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () =>
+        float animLength = Core.AnimatorHelper.GetAnimLength(enemyAnimator, "Enemy_die");
+        Core.AnimatorHelper.DoOnAnimationFinish(animLength, () =>
         {
             enemySprite.GetComponent<LookCameraOn3D>().rotateCameraOn3DActive = false;
             Core.Event.Fire(new GameEvents.EnemyDied(){ enemy = this});

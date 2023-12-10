@@ -70,8 +70,8 @@ public class BTAttackNode : BTNode
         // Animation
         enemyAnimator.Play("Enemy_attack");
         attackPlaying = true;
-        float animLenght = Core.AnimatorHelper.GetAnimLength(enemyAnimator, "Enemy_attack");
-        Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () => { attackPlaying = false; });
+        float animLength = Core.AnimatorHelper.GetAnimLength(enemyAnimator, "Enemy_attack");
+        Core.AnimatorHelper.DoOnAnimationFinish(animLength, () => { attackPlaying = false; });
 
         // CD
         waitForNextAttack = true;

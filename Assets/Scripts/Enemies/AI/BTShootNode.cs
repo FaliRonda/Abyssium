@@ -47,8 +47,8 @@ public class BTShootNode : BTNode
         // Animation
         enemyAnimator.Play("Enemy_attack");
         shootPlaying = true;
-        float animLenght = Core.AnimatorHelper.GetAnimLength(enemyAnimator, "Enemy_attack");
-        Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () => { shootPlaying = false; });
+        float animLength = Core.AnimatorHelper.GetAnimLength(enemyAnimator, "Enemy_attack");
+        Core.AnimatorHelper.DoOnAnimationFinish(animLength, () => { shootPlaying = false; });
 
         // CD
         waitForNextShoot = true;

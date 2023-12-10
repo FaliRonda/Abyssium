@@ -146,16 +146,16 @@ public class PJ : MonoBehaviour
 
             pjAnimator.Play("PJ_roll");
             Core.Audio.Play(SOUND_TYPE.PjDash, 1f, 0.1f, 0.01f);
-            float animLenght = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
+            float animLength = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
             
-            PjActionFalseWhenAnimFinish(animLenght);
+            PjActionFalseWhenAnimFinish(animLength);
 
             Vector3 endPosition = GetRollEndPosition();
             
             Debug.DrawRay(transform.position, lastDirection, Color.red);
             if (!PjRaycastHit(Color.red) || !PjRayHitLayer(Layers.WALL_LAYER))
             {
-                rollingTween = transform.DOMove(endPosition, animLenght)
+                rollingTween = transform.DOMove(endPosition, animLength)
                     //.OnComplete(StopRolling)
                     .OnKill(StopRolling);
 
@@ -368,9 +368,9 @@ public class PJ : MonoBehaviour
         }
     }
     
-    private void PjActionFalseWhenAnimFinish(float animLenght)
+    private void PjActionFalseWhenAnimFinish(float animLength)
     {
-        Core.AnimatorHelper.DoOnAnimationFinish(animLenght, () => { pjDoingAction = false; });
+        Core.AnimatorHelper.DoOnAnimationFinish(animLength, () => { pjDoingAction = false; });
     }
 
     #endregion
@@ -392,9 +392,9 @@ public class PJ : MonoBehaviour
             else if (pjIsRolling) // Attack on dash Input Buffer
             {
                 bufferedAttack = true;
-                float animLenght = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
+                float animLength = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
                 Sequence sequence = DOTween.Sequence();
-                sequence.AppendInterval(animLenght).AppendCallback((() => 
+                sequence.AppendInterval(animLength).AppendCallback((() => 
                 {
                     if (bufferedAttack && !pjIsRolling && inventory.HasWeapon)
                     {
@@ -433,7 +433,7 @@ public class PJ : MonoBehaviour
         pjAnimator.Play("PJ_attack");
         Core.Audio.Play(SOUND_TYPE.SwordAttack, 1, 0.1f, 0.01f);
         
-        float animLenght = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_attack");
+        float animLength = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_attack");
 
         Weapon activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
         if (activeWeapon != null)
@@ -441,7 +441,7 @@ public class PJ : MonoBehaviour
             activeWeapon.DoAttack();
         }
 
-        PjActionFalseWhenAnimFinish(animLenght);
+        PjActionFalseWhenAnimFinish(animLength);
         attackReady = false;
         StartAttackCooldown();
         

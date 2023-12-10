@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: T1C2F1NPCDialog6
   m_EditorClassIdentifier: 
   dialogueText: 'Wait. Perhaps I can give you something usefull for your venture.
-    Tell me child: which do you treasure more: strength or knowledge?'
+    Tell me child, which do you treasure more: strength or knowledge?'
   choices:
   - {fileID: 11400000, guid: 380368b17f7f21548b132af4fde01174, type: 2}
   - {fileID: 11400000, guid: e63c576500e8d954091347a8420c8430, type: 2}
