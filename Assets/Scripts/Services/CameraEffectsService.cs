@@ -35,12 +35,22 @@ public class CameraEffectsService : IService
     {
         if (shakingActive)
         {
-            DOVirtual.DelayedCall(0.02f, () =>
+            DOVirtual.DelayedCall(0.01f, () =>
             {
                 Vector3 randomOffset = Random.insideUnitSphere * shakeIntensity;
                 cameraToShake.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset = originalTrackedObjectOffset + randomOffset;
                 ShakeRoutine(cameraToShake, shakeIntensity, originalTrackedObjectOffset);
             });
         }
+    }
+
+    public void ZoomOut(int zoomDuration)
+    {
+        DOTween.To(() => cameraTD.m_Lens.OrthographicSize, x => cameraTD.m_Lens.OrthographicSize = x, 10, zoomDuration);
+    }
+    
+    public void ZoomIn(int zoomDuration)
+    {
+        DOTween.To(() => cameraTD.m_Lens.OrthographicSize, x => cameraTD.m_Lens.OrthographicSize = x, 5f, zoomDuration);
     }
 }

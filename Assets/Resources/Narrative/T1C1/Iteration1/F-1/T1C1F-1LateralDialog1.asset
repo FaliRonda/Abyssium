@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: T1C1F-1LateralDialog1
   m_EditorClassIdentifier: 
-  dialogueText: Wait... A MONSTER? Is too fast! I can't dodge their blows, ouch!
+  dialogueText: A MONSTER!? Is too fast! Wait... it doesn't hurt but... is like I
+    feel the time is passing faster...
   choices: []
   drop: {fileID: 0}
   isLateral: 1
@@ -20,3 +21,4 @@ MonoBehaviour:
   conversationCharacterPortrait: {fileID: 0}
   lateralCharacterPortrait: {fileID: 21300000, guid: de2ae1b772d07c645aa77b8c9aa22fca, type: 3}
   lateralDialogLifeTime: 12
+  playSuspenseMusic: 0

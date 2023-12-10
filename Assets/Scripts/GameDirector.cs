@@ -99,6 +99,8 @@ public class GameDirector : MonoBehaviour
     private static bool IsSceneT1C2Fm2 => SceneManager.GetActiveScene().name == "T1C2F-2";
     private bool doorLockedAttemptOpen;
     private bool controlBlocked;
+    private bool firstTimeDamaged;
+    private bool neverDamaged = true;
     private bool bossDefeated;
     private bool demoEnded;
     
@@ -260,7 +262,7 @@ public class GameDirector : MonoBehaviour
                 
                 pj.DoUpdate(controlInputData);
 
-                if (enemies != null)
+                if (enemies != null && !controlBlocked)
                 {
                     foreach (EnemyAI enemy in enemies)
                     {
@@ -374,11 +376,6 @@ public class GameDirector : MonoBehaviour
                 Core.Audio.StopAll();
             }
             CheckEnemiesInScene(false);
-        }
-
-        if (IsSceneT1C1Fm1)
-        {
-            Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["T1C1F-1"]);
         }
     }
 
@@ -604,12 +601,40 @@ public class GameDirector : MonoBehaviour
     {
         float pendingTimeLoopDurationPorcentage = timeLoopDuration / initialTimeLoopDuration;
         float nextLighthoyseYRotation = 360f * pendingTimeLoopDurationPorcentage * -1;
+        
+        Vector3 finalMoonAngles = new Vector3(moon.transform.eulerAngles.x, nextLighthoyseYRotation,
+            moon.transform.eulerAngles.z);
 
-        // Make sure the rotation value stays within 0 to 360 degrees
-        //currentLighthouseYRotation = currentLighthouseYRotation % 360.0f;
+        if (IsSceneT1C1Fm1 && firstTimeDamaged)
+        {
+            firstTimeDamaged = false;
+            controlBlocked = true;
+            timeLoopPaused = true;
 
-        // Apply the rotation to the GameObject
-        moon.transform.eulerAngles = new Vector3(moon.transform.eulerAngles.x, nextLighthoyseYRotation, moon.transform.eulerAngles.z);
+            pj.PlayIdle();
+            
+            Sequence firstDamagedSequence = DOTween.Sequence();
+
+            firstDamagedSequence
+                .AppendInterval(2f)
+                .AppendCallback(() => { Core.CameraEffects.ZoomOut(1); })
+                .AppendInterval(2f)
+                .AppendCallback(() => { moon.transform.DORotate(finalMoonAngles, 2f); })
+                .AppendInterval(2)
+                .AppendCallback(() => { Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["T1C1F-1"]); })
+                .AppendInterval(12)
+                .AppendCallback(() => { Core.CameraEffects.ZoomIn(1); })
+                .AppendInterval(2f)
+                .AppendCallback(() =>
+                {
+                    controlBlocked = false;
+                    timeLoopPaused = false;
+                });
+        }
+        else
+        {
+            moon.transform.DORotate(finalMoonAngles, 0.2f);
+        }
     }
 
     private void EndTimeLoop()
@@ -725,6 +750,12 @@ public class GameDirector : MonoBehaviour
     private void PlayerDamaged(float deathFrameDuration)
     {
         timeLoopDuration -= 10;
+        Core.CameraEffects.ShakeCamera(1f, 0.5f);
+        if (neverDamaged)
+        {
+            neverDamaged = false;
+            firstTimeDamaged = true;
+        }
     }
 
     private void EndDemo()
