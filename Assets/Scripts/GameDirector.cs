@@ -749,7 +749,14 @@ public class GameDirector : MonoBehaviour
     
     private void PlayerDamaged(float deathFrameDuration)
     {
-        timeLoopDuration -= 10;
+        if (pj.inventory.HasWeapon || IsSceneT1C1Fm1)
+        {
+            timeLoopDuration -= 10;
+        }
+        else
+        {
+            timeLoopDuration -= 40;
+        }
         Core.CameraEffects.ShakeCamera(1f, 0.5f);
         if (neverDamaged)
         {
