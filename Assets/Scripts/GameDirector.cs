@@ -762,6 +762,7 @@ public class GameDirector : MonoBehaviour
     {
         demoEnded = true;
         timeLoopPaused = true;
+        pj.PlayIdle();
         
         Sequence angryGodSequence = DOTween.Sequence();
 
@@ -771,7 +772,6 @@ public class GameDirector : MonoBehaviour
             .AppendInterval(3f)
             .AppendCallback(() =>
             {
-                pj.PlayIdle();
                 narrativeDirector.ShowNarrative();
             });
     }
