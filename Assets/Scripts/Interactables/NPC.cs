@@ -40,7 +40,6 @@ public class NPC : Interactable
                 else if (choiceSelected || dialogueEnded) // Dialogue ended
                 {
                     dialoguesToShow = new DialogueSO[] {lastDialog};
-                    Core.Event.Fire(new GameEvents.NPCDialogueEnded() {npc = this, lastDialogue = lastDialog});
                 }
                 else
                 {
@@ -117,6 +116,7 @@ public class NPC : Interactable
         Core.Dialogue.HideCanvas();
         
         Core.Event.Fire(new GameEvents.NPCDialogue(){ started = false });
+        Core.Event.Fire(new GameEvents.NPCDialogueEnded() {npc = this, lastDialogue = lastDialog});
 
         dialogueIndex = 0;
 
