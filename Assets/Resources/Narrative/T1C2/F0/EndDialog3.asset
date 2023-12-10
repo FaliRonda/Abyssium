@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EndDialog3
   m_EditorClassIdentifier: 
   dialogueText: (!!!) This... this vision... this is what I forgot... I forgot my...
-    my lovely Space-Time Godess!
+    my lovely Space-Time Goddess!
   choices: []
   drop: {fileID: 0}
   isLateral: 0
