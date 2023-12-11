@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a99969abf3e6c4586716bacbb5be31, type: 3}
   m_Name: T1C2F1NPCChoice1
   m_EditorClassIdentifier: 
-  choiceText: Strenght
+  choiceText: Strength
   nextDialogue: {fileID: 11400000, guid: 2a73bfbc7ee1ae7409d1759a33e7baee, type: 2}
   drop: {fileID: 1538108864428168070, guid: 75169d93b4a9e0b418188a27e89e980c, type: 3}
