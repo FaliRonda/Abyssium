@@ -60768,7 +60768,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3398849607486738090, guid: e8a6425ddff61664086d696f7ab379d3, type: 3}
       propertyPath: lifeAmount
-      value: 26
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3398849607486738090, guid: e8a6425ddff61664086d696f7ab379d3, type: 3}
       propertyPath: chasePivotTransform

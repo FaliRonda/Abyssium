@@ -71,7 +71,7 @@ public class AudioService : IService
             AudioSource audioSource = new GameObject("AudioSource").AddComponent<AudioSource>();
             audioSource.transform.parent = audioGO.transform; 
             audioSource.clip = audioClip;
-            audioSource.volume = volume;
+            audioSource.volume = volume + 0.05f;
             audioSource.pitch = pitch;
 
             if (soundType == SOUND_TYPE.BackgroundMusic || soundType == SOUND_TYPE.EndMusic)
