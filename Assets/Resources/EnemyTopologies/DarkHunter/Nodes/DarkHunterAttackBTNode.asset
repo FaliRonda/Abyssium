@@ -20,11 +20,11 @@ MonoBehaviour:
   - {fileID: 0}
   enemyAnimator: {fileID: 0}
   enemySprite: {fileID: 0}
-  detectedAudioSource: {fileID: 0}
-  attackVisibilityDistance: 1
+  attackVisibilityDistance: 1.25
   attackCD: 1
+  standAfterAttackCD: 1.25
   anticipationDistance: 0.5
-  anticipacionDuration: 0.1
-  attackMovementDistance: 4
+  anticipacionDuration: 0.2
+  attackMovementDistance: 4.5
   attackMovementDuration: 0.2
-  enemyRayMaxDistance: 0.75
+  enemyRayMaxDistance: 1.1

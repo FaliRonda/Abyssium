@@ -220,7 +220,7 @@ public class PJ : MonoBehaviour
 
         if (controlInputData.cameraRotation.x != 0)
         {
-            mouseX = controlInputData.cameraRotation.x;
+            mouseX = controlInputData.cameraRotation.x * 1.5f;
         }
         else if (controlInputData.cameraMouseRotation.x != 0)
         {
@@ -229,7 +229,7 @@ public class PJ : MonoBehaviour
 
         if (controlInputData.cameraRotation.y != 0)
         {
-            mouseY = controlInputData.cameraRotation.y;
+            mouseY = controlInputData.cameraRotation.y * 1.5f;
         }
         else if (controlInputData.cameraMouseRotation.y != 0)
         {

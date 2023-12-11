@@ -8,12 +8,14 @@ public class BTAttackNode : BTNode
 {
     [FormerlySerializedAs("attackDistance")] public float attackVisibilityDistance;
     public float attackCD = 1f;
+    public float standAfterAttackCD = 0;
     public float anticipationDistance = 0.5f;
     public float anticipacionDuration = 0.3f;
     public float attackMovementDistance = 2f;
     public float attackMovementDuration = 0.3f;
     public float enemyRayMaxDistance = .75f;
     
+    private bool standAfterAttack;
     private bool waitForNextAttack;
     private bool attackPlaying;
     private Ray ray;
@@ -23,6 +25,10 @@ public class BTAttackNode : BTNode
 
     public override BTNodeState Execute()
     {
+        if (standAfterAttack)
+        {
+            return BTNodeState.Success;
+        }
         // Check if the player is within attack distance
         Vector3 direction = playerTransform.position - enemyTransform.position;
         float distance = direction.magnitude;
@@ -77,7 +83,7 @@ public class BTAttackNode : BTNode
         waitForNextAttack = true;
         Sequence attackCDSequence = DOTween.Sequence();
         attackCDSequence.AppendInterval(attackCD).AppendCallback(() => { waitForNextAttack = false; });
-        
+
         // Attack
         attackSequence = DOTween.Sequence();
         
@@ -92,7 +98,16 @@ public class BTAttackNode : BTNode
         Vector3 attackDirection = (targetPosition - startPosition).normalized * attackMovementDistance;
         
         attackSequence.Append(enemyTransform.DOMove(enemyPosition + attackDirection, attackMovementDuration));
+
+        attackSequence.AppendCallback(StandAfterAttack);
         attackSequence.Play();
+    }
+
+    private void StandAfterAttack()
+    {
+        standAfterAttack = true;
+        Sequence standAfterAttackCDSequence = DOTween.Sequence();
+        standAfterAttackCDSequence.AppendInterval(standAfterAttackCD).AppendCallback(() => { standAfterAttack = false; });
     }
 
     private bool EnemyRaycastHit(Color color)

@@ -58878,7 +58878,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: timeLoopDuration
-      value: -1
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 4723417635908149436, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: m_Name
@@ -60680,6 +60680,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1799084693320912194, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
+      propertyPath: canRoll
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799084693320912194, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
+      propertyPath: debugAttack
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4435485806179355217, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
       propertyPath: m_Type
       value: 2
@@ -60760,7 +60768,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3398849607486738090, guid: e8a6425ddff61664086d696f7ab379d3, type: 3}
       propertyPath: lifeAmount
-      value: 25
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 3398849607486738090, guid: e8a6425ddff61664086d696f7ab379d3, type: 3}
       propertyPath: chasePivotTransform
