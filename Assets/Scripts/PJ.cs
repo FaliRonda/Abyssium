@@ -220,7 +220,7 @@ public class PJ : MonoBehaviour
 
         if (controlInputData.cameraRotation.x != 0)
         {
-            mouseX = controlInputData.cameraRotation.x * 1.5f;
+            mouseX = controlInputData.cameraRotation.x * 2f;
         }
         else if (controlInputData.cameraMouseRotation.x != 0)
         {
@@ -229,7 +229,7 @@ public class PJ : MonoBehaviour
 
         if (controlInputData.cameraRotation.y != 0)
         {
-            mouseY = controlInputData.cameraRotation.y * 1.5f;
+            mouseY = controlInputData.cameraRotation.y * 2f;
         }
         else if (controlInputData.cameraMouseRotation.y != 0)
         {
@@ -539,6 +539,11 @@ public class PJ : MonoBehaviour
     public void PlayIdle()
     {
         pjAnimator.Play("PJ_idle");
+    }
+
+    public void PlayWalk()
+    {
+        pjAnimator.Play("PJ_walk");
     }
 
     public void Rotate180()

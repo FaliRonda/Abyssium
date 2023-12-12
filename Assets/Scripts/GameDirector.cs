@@ -123,9 +123,10 @@ public class GameDirector : MonoBehaviour
     
     private void Start()
     {
-        #if !UNITY_EDITOR
-                Cursor.visible = false;
-        #endif
+#if !UNITY_EDITOR
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
+#endif
         initialTimeLoopDuration = timeLoopDuration;
 
         if (isInitialLoad)
@@ -675,6 +676,7 @@ public class GameDirector : MonoBehaviour
         if (IsSceneT1C0F0)
         {
             Core.PositionRecorder.StopRecording();
+            pj.PlayWalk();
             Core.PositionRecorder.DoRewind(pj.transform, moon.transform, () => { StartCycle1(); });
         }
         else if (IsSceneT1C1Fm1)
