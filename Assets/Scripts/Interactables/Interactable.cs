@@ -67,7 +67,7 @@ public class Interactable : MonoBehaviour, I_Interactable
     
     public void SetOutlineVisibility(bool isActive)
     {
-        int activeIntValue = isActive ? 1 : 0;
+        int activeIntValue = GameState.gameIn3D && isActive ? 1 : 0;
         material.SetInt("_OutlineActive", activeIntValue);
     }
     
