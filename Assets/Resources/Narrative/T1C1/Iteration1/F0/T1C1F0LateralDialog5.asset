@@ -15,7 +15,7 @@ MonoBehaviour:
   dialogueText: '[Use the mouse / right joystick to move the camera]
 
     [Press
-    E key  / X button to interact]'
+    O key  / X button to interact]'
   choices: []
   drop: {fileID: 0}
   isLateral: 1

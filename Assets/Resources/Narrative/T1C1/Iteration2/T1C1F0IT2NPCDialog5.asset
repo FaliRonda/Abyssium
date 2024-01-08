@@ -15,7 +15,7 @@ MonoBehaviour:
   dialogueText: 'You could also try to avoid its attacks... Did you try getting some
     impulse? I''ll teach you how!
 
-    [Press left shift / RB to dash]'
+    [Press P key / RB to dash]'
   choices: []
   drop: {fileID: 0}
   isLateral: 0

@@ -19,7 +19,8 @@ MonoBehaviour:
     and that would be the end.\n\r\nI have been neglectful, but now that I have gathered
     more strength, I will ensure it does not happen again. I will send you to another
     timeline within this tower... one where you can't interfere with my plans anymore.\n\nEnd
-    of the Demo, thank you for playing!\r\n\r\n[Press escape to close the game]\r"
+    of the Demo, thank you for playing!\r\n\r\n[Press escape key / start button to
+    close the game]\r"
   choices: []
   drop: {fileID: 0}
   isLateral: 0

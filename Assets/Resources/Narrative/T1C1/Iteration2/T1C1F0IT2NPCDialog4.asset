@@ -15,8 +15,8 @@ MonoBehaviour:
   dialogueText: 'A beast, you say? When did you go downstairs? Anyway, I might face
     it myself, but it sounds dangerous, you better take this.
 
-    [Use insteract
-    (E key / X button) during 2D to attack]'
+    [Use O key / X
+    button during 2D to attack]'
   choices: []
   drop: {fileID: 1538108864428168070, guid: a1abc41c426c2204db0b51a4f1d5b8f2, type: 3}
   isLateral: 0

@@ -27,7 +27,7 @@ MonoBehaviour:
 
 
     [Press
-    E key / X button to continue]'
+    O key / X button to continue]'
   choices: []
   drop: {fileID: 0}
   isLateral: 0
