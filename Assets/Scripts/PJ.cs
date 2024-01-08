@@ -41,7 +41,7 @@ public class PJ : MonoBehaviour
     private float initialPlayerRayMaxDistance;
     
     private Ray ray;
-    private RaycastHit hit;
+    private RaycastHit[] hits;
     private TweenerCore<Vector3, Vector3, VectorOptions> rollingTween;
     private Interactable interactableInContact;
     private bool pjInvulnerable;
@@ -329,13 +329,23 @@ public class PJ : MonoBehaviour
 
     private bool PjRayHitLayer(int layer)
     {
-        return hit.transform.gameObject.layer == layer;
+        bool layerHit = false;
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.transform.gameObject.layer == layer)
+            {
+                layerHit = true;
+            }
+        }
+
+        return layerHit;
     }
 
     private bool PjRaycastHit(Color color)
     {
         Debug.DrawRay(ray.origin, ray.direction);
-        return Physics.Raycast(ray, out hit, playerRayMaxDistance);
+        hits = Physics.RaycastAll(ray.origin, ray.direction, playerRayMaxDistance);
+        return hits.Length > 0;
     }
 
     #endregion
