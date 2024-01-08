@@ -5,13 +5,11 @@ public class Bullet : MonoBehaviour
 {
     public float speed = 5f;
     public float lifeTime = 2f;
-    private Transform playerTransform;
 
-    public void Initialize(float bulletSpeed, float bulletLifeTime, Transform playerTransform)
+    public void Initialize(float bulletSpeed, float bulletLifeTime)
     {
         speed = bulletSpeed;
         lifeTime = bulletLifeTime;
-        this.playerTransform = playerTransform;
         Vector3 position = transform.position;
         transform.position = new Vector3(position.x, 0.3f, position.z);
     }
@@ -28,17 +26,16 @@ public class Bullet : MonoBehaviour
 
     private void DestroyBullet()
     {
-        // Puedes agregar aquí cualquier lógica adicional antes de destruir el objeto
         Destroy(gameObject);
     }
     
-    public void OnTriggerEnter(Collider other)
+    public void OnTriggerStay(Collider other)
     {
         if (other.gameObject.layer == Layers.PJ_LAYER)
         {
             if (other.GetComponent<PJ>().GetDamage(transform))
             {
-                Destroy(gameObject);
+                DestroyBullet();
             }
         }
     }

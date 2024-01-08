@@ -181,7 +181,13 @@ public class PJ : MonoBehaviour
     {
         pjIsRolling = false;
         rollReady = false;
-        pjInvulnerable = false;
+
+        Sequence invulnerableAfterDashSequence = DOTween.Sequence();
+
+        invulnerableAfterDashSequence
+            .AppendInterval(0.3f)
+            .AppendCallback(() => pjInvulnerable = false);
+        
         StartRollCoolown();
         var emissionModule = pjStepDust.emission;
         emissionModule.rateOverTime = 40;

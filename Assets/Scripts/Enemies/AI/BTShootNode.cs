@@ -56,9 +56,10 @@ public class BTShootNode : BTNode
         shootCDSequence.AppendInterval(shootCD).AppendCallback(() => { waitForNextShoot = false; });
         
         // Shoot
-        GameObject bulletGO = Object.Instantiate(bulletPrefab, enemyTransform);
+        GameObject bulletGO = Object.Instantiate(bulletPrefab);
+        bulletGO.transform.position = enemyTransform.position;
         Bullet bullet = bulletGO.GetComponent<Bullet>();
-        bullet.Initialize(bulletSpeed, bulletLifeTime, playerTransform);
+        bullet.Initialize(bulletSpeed, bulletLifeTime);
         bullet.StartShoot(direction);
     }
 
