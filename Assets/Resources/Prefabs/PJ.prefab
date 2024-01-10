@@ -5357,7 +5357,7 @@ MonoBehaviour:
   debugAttack: 0
   canRoll: 0
   attackCooldown: 0.25
-  playerRayMaxDistance: 1
+  playerRayMaxDistance: 0.75
   playerDustParticlesDelay: 0.4
   damageBlinkingDuration: 1
   spriteBlinkingFrecuency: 0.15
