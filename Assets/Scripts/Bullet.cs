@@ -38,5 +38,9 @@ public class Bullet : MonoBehaviour
                 DestroyBullet();
             }
         }
+        else if (other.gameObject.layer == Layers.WEAPON_LAYER)
+        {
+            DestroyBullet();
+        }
     }
 }
