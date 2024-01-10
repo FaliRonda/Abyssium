@@ -152,9 +152,9 @@ public class DialogueService : IService
 
         if (choiceIndex == 0)
         {
-            Color color = Color.white;
-            ColorUtility.TryParseHtmlString("#D19B50", out color);
-            conversationDialogueChoicesGO[choiceIndex].GetComponent<Image>().color = color;
+            preselectedChoiceIndex = 0;
+            conversationDialogueChoicesGO[0].GetComponentInChildren<Outline>().enabled = true;
+            conversationDialogueChoicesGO[1].GetComponentInChildren<Outline>().enabled = false;
         }
         
         var choiceButton = currentChoice.GetComponent<Button>();
@@ -163,20 +163,17 @@ public class DialogueService : IService
     
     public void SelectChoicesWithControl(Vector3 inputDirection)
     {
-        Color color = Color.white;
-        ColorUtility.TryParseHtmlString("#D19B50", out color);
-
         if (inputDirection.y == 1)
         {
             preselectedChoiceIndex = 0;
-            conversationDialogueChoicesGO[0].GetComponent<Image>().color = color;
-            conversationDialogueChoicesGO[1].GetComponent<Image>().color = Color.white;
+            conversationDialogueChoicesGO[0].GetComponentInChildren<Outline>().enabled = true;
+            conversationDialogueChoicesGO[1].GetComponentInChildren<Outline>().enabled = false;
         }
         else if (inputDirection.y == -1)
         {
             preselectedChoiceIndex = 1;
-            conversationDialogueChoicesGO[0].GetComponent<Image>().color = Color.white;
-            conversationDialogueChoicesGO[1].GetComponent<Image>().color = color;
+            conversationDialogueChoicesGO[0].GetComponentInChildren<Outline>().enabled = false;
+            conversationDialogueChoicesGO[1].GetComponentInChildren<Outline>().enabled = true;
         }
     }
 
