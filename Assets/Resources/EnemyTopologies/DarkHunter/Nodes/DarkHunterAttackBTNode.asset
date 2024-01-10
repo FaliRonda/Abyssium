@@ -24,7 +24,7 @@ MonoBehaviour:
   attackCD: 1
   standAfterAttackCD: 1.25
   anticipationDistance: 0.5
-  anticipacionDuration: 0.2
+  anticipacionDuration: 0.25
   attackMovementDistance: 4.5
   attackMovementDuration: 0.2
   enemyRayMaxDistance: 1.1
