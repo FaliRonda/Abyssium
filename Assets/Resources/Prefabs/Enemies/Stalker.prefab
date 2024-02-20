@@ -192,7 +192,7 @@ Transform:
   - {fileID: 3934487933963042791}
   - {fileID: 1779781707427425096}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6596143782328173389
 GameObject:
@@ -429,6 +429,8 @@ MonoBehaviour:
   chasePivotTransform: {fileID: 0}
   lifeAmount: 3
   itemToDrop: {fileID: 0}
+  damagedCamShakeIntensity: 1
+  damagedCamShakeDuration: 0.3
   spriteBlinkingFrecuency: 0.15
   damageBlinkingDuration: 1
   waypoints:

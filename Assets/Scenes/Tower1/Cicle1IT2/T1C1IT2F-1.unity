@@ -3574,6 +3574,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stalker
       objectReference: {fileID: 0}
+    - target: {fileID: 3368591435065734892, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5741983929386749315, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -3617,6 +3621,22 @@ PrefabInstance:
     - target: {fileID: 5741983929386749315, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: aIActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: lifeAmount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: damagedCamShakeDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: damagedCamShakeIntensity
+      value: 0.15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9148,6 +9168,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stalker (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3368591435065734892, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5741983929386749315, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -9196,6 +9220,14 @@ PrefabInstance:
       propertyPath: behaviorNodeContainer
       value: 
       objectReference: {fileID: 11400000, guid: 15222e01a591ddb4aafc751875f34e7f, type: 2}
+    - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: damagedCamShakeDuration
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: damagedCamShakeIntensity
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14860,7 +14892,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: timeLoopDuration
-      value: 300
+      value: 1e+24
       objectReference: {fileID: 0}
     - target: {fileID: 4723417635908149436, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: m_Name
@@ -60950,6 +60982,26 @@ PrefabInstance:
     - target: {fileID: 1799084693320912194, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
       propertyPath: debugAttack
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799084693320912194, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
+      propertyPath: attackImpulseFactor
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799084693320912194, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
+      propertyPath: damagedCamShakeDuration
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799084693320912194, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
+      propertyPath: knockbackMovementFactor
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799084693320912194, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
+      propertyPath: damagedCamShakeIntensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4438735944751835573, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7771127239736067787, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
       propertyPath: m_Name
