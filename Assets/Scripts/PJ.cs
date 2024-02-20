@@ -12,6 +12,7 @@ public class PJ : MonoBehaviour
     public float playerSpeed = 1;
     public float playerRotationSpeed = 1f;
     public float playerRollFactor = 2f;
+    public float attackImpulseFactor = 1.5f;
     public float rollCooldown;
     public bool debugAttack;
     public bool canRoll;
@@ -488,6 +489,8 @@ public class PJ : MonoBehaviour
         
         pjAnimator.Play("PJ_attack");
         Core.Audio.Play(SOUND_TYPE.SwordAttack, 1, 0.1f, 0.01f);
+
+        PlayAttackImpulseAnimation();
         
         float animLength = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_attack");
 
@@ -526,7 +529,7 @@ public class PJ : MonoBehaviour
             float deathFrameDuration = 1f;
             
             Core.Event.Fire(new GameEvents.PlayerDamaged(){deathFrameDuration = deathFrameDuration});
-            PlayDamagedAnimation(damager);
+            PlayDamagedKockbackAnimation(damager);
             Core.CameraEffects.ShakeCamera(2, 0.3f);
             
             Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.03f);
@@ -535,7 +538,7 @@ public class PJ : MonoBehaviour
         return damaged;
     }
 
-    private void PlayDamagedAnimation(Transform damager)
+    private void PlayDamagedKockbackAnimation(Transform damager)
     {
         beingDamaged = true;
         damagedSequence = DOTween.Sequence();
@@ -551,6 +554,17 @@ public class PJ : MonoBehaviour
         
         damagedBlinkingCounter = damageBlinkingDuration;
         StartCoroutine(SpriteBlinking());
+    }
+    
+    private void PlayAttackImpulseAnimation()
+    {
+        damagedSequence = DOTween.Sequence();
+        
+        Vector3 impulseDirection = lastDirection * attackImpulseFactor;
+
+        damagedSequence
+            .Append(transform.DOMove(transform.position + impulseDirection, 0.2f));
+        damagedSequence.Play();
     }
 
     IEnumerator SpriteBlinking()
