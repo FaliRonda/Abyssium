@@ -19,6 +19,7 @@ public class PJ : MonoBehaviour
     public float attackCooldown;
     public float playerRayMaxDistance = 0.5f;
     public float playerDustParticlesDelay = 0.5f;
+    public float knockbackMovementFactor = 2f;
     public float damagedCamShakeIntensity = 2f;
     public float damagedCamShakeDuration = 0.3f;
     public float damageBlinkingDuration = 1f;
@@ -531,7 +532,7 @@ public class PJ : MonoBehaviour
             float deathFrameDuration = 1f;
             
             Core.Event.Fire(new GameEvents.PlayerDamaged(){deathFrameDuration = deathFrameDuration});
-            PlayDamagedKockbackAnimation(damager);
+            PlayDamagedKnockbackAnimation(damager);
             Core.CameraEffects.ShakeCamera(damagedCamShakeIntensity, damagedCamShakeDuration);
             
             Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.03f);
@@ -540,14 +541,14 @@ public class PJ : MonoBehaviour
         return damaged;
     }
 
-    private void PlayDamagedKockbackAnimation(Transform damager)
+    private void PlayDamagedKnockbackAnimation(Transform damager)
     {
         beingDamaged = true;
         damagedSequence = DOTween.Sequence();
         
         Vector3 position = transform.position;
         Vector3 enemyPosition = damager.position;
-        Vector3 damagedDirection = (position - enemyPosition).normalized * 2f;
+        Vector3 damagedDirection = (position - enemyPosition).normalized * knockbackMovementFactor;
         
         damagedSequence
             .Append(transform.DOMove(position + new Vector3(damagedDirection.x, position.y, damagedDirection.z), 0.2f))
