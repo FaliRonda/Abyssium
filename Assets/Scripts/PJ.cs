@@ -263,7 +263,7 @@ public class PJ : MonoBehaviour
         if (!directionIsZero)
         {
             SetSpriteXOrientation(controlInputData.inputDirection.x);
-            pjAnimator.Play("PJ_walk");
+            PlayDirectionalWalkAnimation(direction);
             CreatePlayerDustParticles();
         }
         else
@@ -292,7 +292,39 @@ public class PJ : MonoBehaviour
         
         transform.position += direction * (Time.deltaTime * playerSpeed);
     }
-    
+
+    private void PlayDirectionalWalkAnimation(Vector3 direction)
+    {
+        // Top direction
+        if (direction.x == 0 && direction.z == 1)
+        {
+            Debug.Log("Top");
+            pjAnimator.Play("PJ_walk");
+        }
+        // Diagonal direction
+        else if (direction.x == 1 && direction.z == 1 ||
+                 direction.x == 1 && direction.z == -1 ||
+                 direction.x == -1 && direction.z == -1 ||
+                 direction.x == -1 && direction.z == 1)
+        {
+            Debug.Log("Diagonal");
+            pjAnimator.Play("PJ_walk");
+        }
+        // Forward direction
+        else if (direction.x == 1 && direction.z == 0 ||
+                 direction.x == -1 && direction.z == 0)
+        {
+            Debug.Log("Forward");
+            pjAnimator.Play("PJ_walk");
+        }
+        // Bottom direction
+        else if (direction.x == 0 && direction.z == -1)
+        {
+            Debug.Log("Bottom");
+            pjAnimator.Play("PJ_walk");
+        }
+    }
+
     private static Vector3 FixDiagonalSpeedMovement(Vector3 direction)
     {
         bool directionIsDiagonal = direction.x != 0 && direction.z != 0;
