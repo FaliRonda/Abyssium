@@ -16,6 +16,9 @@ public class EnemyAI : MonoBehaviour
     public int lifeAmount = 3;
     public GameObject itemToDrop;
 
+    public float damagedCamShakeIntensity = 2f;
+    public float damagedCamShakeDuration = 0.3f;
+    
     // Attack distance
     public float spriteBlinkingFrecuency = 0.15f;
     public float damageBlinkingDuration = 1f;
@@ -90,6 +93,8 @@ public class EnemyAI : MonoBehaviour
     {
         Core.Audio.Play(SOUND_TYPE.PjImpact, 1, 0.1f, 0.05f);
         PlayDamagedAnimation();
+        Core.CameraEffects.ShakeCamera(damagedCamShakeIntensity, damagedCamShakeDuration);
+
         
         if (!isDead)
         {

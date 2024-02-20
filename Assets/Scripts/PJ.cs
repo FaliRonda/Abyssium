@@ -19,6 +19,8 @@ public class PJ : MonoBehaviour
     public float attackCooldown;
     public float playerRayMaxDistance = 0.5f;
     public float playerDustParticlesDelay = 0.5f;
+    public float damagedCamShakeIntensity = 2f;
+    public float damagedCamShakeDuration = 0.3f;
     public float damageBlinkingDuration = 1f;
     public float spriteBlinkingFrecuency = 0.15f;
     
@@ -530,7 +532,7 @@ public class PJ : MonoBehaviour
             
             Core.Event.Fire(new GameEvents.PlayerDamaged(){deathFrameDuration = deathFrameDuration});
             PlayDamagedKockbackAnimation(damager);
-            Core.CameraEffects.ShakeCamera(2, 0.3f);
+            Core.CameraEffects.ShakeCamera(damagedCamShakeIntensity, damagedCamShakeDuration);
             
             Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.03f);
         }
