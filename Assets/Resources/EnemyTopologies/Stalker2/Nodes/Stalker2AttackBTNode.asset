@@ -27,4 +27,4 @@ MonoBehaviour:
   anticipacionDuration: 0.35
   attackMovementDistance: 2.5
   attackMovementDuration: 0.3
-  enemyRayMaxDistance: 0.75
+  enemyRayMaxDistance: 0.25

@@ -19,7 +19,7 @@ public class BTAttackNode : BTNode
     private bool waitForNextAttack;
     private bool attackPlaying;
     private Ray ray;
-    private RaycastHit hit;
+    private RaycastHit[] hits;
     private Sequence attackSequence;
     private Vector3 lastDirectionBeforeAttack;
 
@@ -51,9 +51,8 @@ public class BTAttackNode : BTNode
                 }
                 else
                 {
-                    if (EnemyRayHitLayer(Layers.WALL_LAYER) || EnemyRayHitLayer(Layers.DOOR_LAYER))
+                    if (EnemyRayHitLayer(Layers.WALL_LAYER) || EnemyRayHitLayer(Layers.DOOR_LAYER) || EnemyRayHitLayer(Layers.PJ_LAYER))
                     {
-                        attackPlaying = false;
                         attackSequence.Kill();
                     }
                 }
@@ -77,7 +76,7 @@ public class BTAttackNode : BTNode
         enemyAnimator.Play("Enemy_attack");
         attackPlaying = true;
         float animLength = Core.AnimatorHelper.GetAnimLength(enemyAnimator, "Enemy_attack");
-        Core.AnimatorHelper.DoOnAnimationFinish(animLength, () => { attackPlaying = false; });
+        //Core.AnimatorHelper.DoOnAnimationFinish(animLength, () => { attackPlaying = false; });
 
         // CD
         waitForNextAttack = true;
@@ -100,6 +99,17 @@ public class BTAttackNode : BTNode
         attackSequence.Append(enemyTransform.DOMove(enemyPosition + attackDirection, attackMovementDuration));
 
         attackSequence.AppendCallback(StandAfterAttack);
+        
+        attackSequence.OnKill(() =>
+        {
+            var attackingCooldownSequence = DOTween.Sequence();
+            attackingCooldownSequence.AppendInterval(1f);
+            attackingCooldownSequence.AppendCallback(() =>
+            {
+                attackPlaying = false;
+            });
+        });
+        
         attackSequence.Play();
     }
 
@@ -110,25 +120,27 @@ public class BTAttackNode : BTNode
         standAfterAttackCDSequence.AppendInterval(standAfterAttackCD).AppendCallback(() => { standAfterAttack = false; });
     }
 
-    private bool EnemyRaycastHit(Color color)
+    private void EnemyRaycastHit(Color color)
     {
         Debug.DrawRay(ray.origin, ray.direction, color);
-        return Physics.Raycast(ray, out hit, enemyRayMaxDistance);
+        hits = Physics.RaycastAll(ray.origin, ray.direction, enemyRayMaxDistance);
     }
     
     private bool EnemyRayHitLayer(int layer)
     {
-        bool hitLayer = false;
+        bool layerHit = false;
         
-        if (hit.transform != null)
+        foreach (RaycastHit hit in hits)
         {
-            hitLayer = hit.transform.gameObject.layer == layer;
+            if (hit.transform.gameObject.layer == layer)
+            {
+                layerHit = true;
+            }
         }
 
-        return hitLayer;
+        return layerHit;
     }
-    
-    
+
     public override void ResetNode()
     {
         waitForNextAttack = false;
