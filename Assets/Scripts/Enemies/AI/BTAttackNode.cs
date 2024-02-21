@@ -143,8 +143,13 @@ public class BTAttackNode : BTNode
 
     public override void ResetNode()
     {
-        waitForNextAttack = false;
-        attackPlaying = false;
+        var attackingCooldownSequence = DOTween.Sequence();
+        attackingCooldownSequence.AppendInterval(1f);
+        attackingCooldownSequence.AppendCallback(() =>
+        {
+            waitForNextAttack = false;
+            attackPlaying = false;
+        });
     }
     
     public override void DrawGizmos()

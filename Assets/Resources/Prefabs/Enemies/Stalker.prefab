@@ -431,6 +431,7 @@ MonoBehaviour:
   itemToDrop: {fileID: 0}
   damagedCamShakeIntensity: 1
   damagedCamShakeDuration: 0.3
+  knockbackMovementFactor: 0.5
   spriteBlinkingFrecuency: 0.15
   damageBlinkingDuration: 1
   waypoints:

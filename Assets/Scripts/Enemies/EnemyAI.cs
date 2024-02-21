@@ -20,6 +20,7 @@ public class EnemyAI : MonoBehaviour
     public float damagedCamShakeDuration = 0.3f;
     
     // Attack distance
+    public float knockbackMovementFactor = 1f;
     public float spriteBlinkingFrecuency = 0.15f;
     public float damageBlinkingDuration = 1f;
     public Transform[] waypoints;
@@ -93,8 +94,8 @@ public class EnemyAI : MonoBehaviour
     {
         Core.Audio.Play(SOUND_TYPE.PjImpact, 1, 0.1f, 0.05f);
         PlayDamagedAnimation();
+        PlayDamagedKnockbackAnimation();
         Core.CameraEffects.ShakeCamera(damagedCamShakeIntensity, damagedCamShakeDuration);
-
         
         if (!isDead)
         {
@@ -104,6 +105,20 @@ public class EnemyAI : MonoBehaviour
                 Die();
             }
         }
+    }
+    
+    private void PlayDamagedKnockbackAnimation()
+    {
+        var damagedSequence = DOTween.Sequence();
+        
+        Vector3 position = transform.position;
+        Vector3 damagedDirection = (position - playerTransform.position).normalized * knockbackMovementFactor;
+
+        damagedSequence
+            .Append(transform.DOMove(position + new Vector3(damagedDirection.x, position.y, damagedDirection.z), 0.2f));
+        damagedSequence.Play();
+        
+        rootNode.ResetNode();
     }
 
     private void Die()

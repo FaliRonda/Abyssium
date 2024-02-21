@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New BT Chase Node", menuName = "AI/BT Nodes/Chase Node")]
