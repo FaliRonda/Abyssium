@@ -51,6 +51,7 @@ public class PJ : MonoBehaviour
     private bool gameIn3D;
     private bool pjDoingAction;
     private bool pjIsRolling;
+    private bool pjIsImpulsing;
     private bool rollReady = true;
     private bool attackReady = true;
     private float lastAttackInputTime;
@@ -65,6 +66,7 @@ public class PJ : MonoBehaviour
     private bool beingDamaged;
     private bool stepReady = true;
     private Sequence damagedSequence;
+    private Sequence impulseSequence;
 
     #region Unity events
     
@@ -100,7 +102,7 @@ public class PJ : MonoBehaviour
             PjDoRotation(controlInputData);
         } else
         {
-            StopRollingWhenHitWall();
+            StopRollAndImpulseWhenHitWall();
         }
     }
 
@@ -153,7 +155,7 @@ public class PJ : MonoBehaviour
 
     #region Roll
 
-    public void DoRoll(Vector3 direction)
+    public void DoRoll()
     {
         if (!pjDoingAction && rollReady && canRoll)
         {
@@ -186,11 +188,19 @@ public class PJ : MonoBehaviour
         }
     }
     
-    private void StopRollingWhenHitWall()
+    private void StopRollAndImpulseWhenHitWall()
     {
-        if (pjIsRolling && PjRaycastHit(Color.yellow) && (PjRayHitLayer(Layers.WALL_LAYER) || PjRayHitLayer(Layers.DOOR_LAYER)))
+        if (PjRaycastHit(Color.yellow) && (PjRayHitLayer(Layers.WALL_LAYER) || PjRayHitLayer(Layers.DOOR_LAYER)))
         {
-            rollingTween.Kill();
+            if (pjIsRolling)
+            {
+                rollingTween.Kill();
+            }
+
+            if (pjIsImpulsing)
+            {
+                impulseSequence.Kill();
+            }
         }
     }
 
@@ -403,7 +413,7 @@ public class PJ : MonoBehaviour
 
     private bool PjRaycastHit(Color color)
     {
-        Debug.DrawRay(ray.origin, ray.direction);
+        Debug.DrawRay(ray.origin, ray.direction, color);
         hits = Physics.RaycastAll(ray.origin, ray.direction, playerRayMaxDistance);
         return hits.Length > 0;
     }
@@ -626,13 +636,20 @@ public class PJ : MonoBehaviour
     
     private void PlayAttackImpulseAnimation()
     {
-        damagedSequence = DOTween.Sequence();
-        
-        Vector3 impulseDirection = lastDirection * attackImpulseFactor;
+        Debug.DrawRay(transform.position, lastDirection, Color.green);
+        if (!PjRaycastHit(Color.green) || !PjRayHitLayer(Layers.WALL_LAYER))
+        {
+            pjIsImpulsing = true;
+            
+            impulseSequence = DOTween.Sequence();
+            
+            Vector3 impulseDirection = lastDirection * attackImpulseFactor;
 
-        damagedSequence
-            .Append(transform.DOMove(transform.position + impulseDirection, 0.2f));
-        damagedSequence.Play();
+            impulseSequence
+                .Append(transform.DOMove(transform.position + impulseDirection, 0.2f));
+            impulseSequence.OnKill(() => { pjIsImpulsing = false; });
+            impulseSequence.Play();
+        }
     }
 
     IEnumerator SpriteBlinking()
