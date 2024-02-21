@@ -5355,9 +5355,13 @@ MonoBehaviour:
   playerRollFactor: 2.9
   rollCooldown: 0.35
   attackImpulseFactor: 1.5
-  attackCooldown: 0.25
+  combo1AttackCooldown: 0.15
+  combo2AttackCooldown: 0.3
+  combo3AttackCooldown: 0.5
   playerRayMaxDistance: 0.75
   playerDustParticlesDelay: 0.4
+  comboTimeWindow: 1.5
+  comboCount: 0
   knockbackMovementFactor: 2
   damagedCamShakeIntensity: 2
   damagedCamShakeDuration: 0.3

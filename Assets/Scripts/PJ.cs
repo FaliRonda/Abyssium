@@ -5,6 +5,7 @@ using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Ju.Extensions;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PJ : MonoBehaviour
 {
@@ -18,10 +19,14 @@ public class PJ : MonoBehaviour
     
     [Header("ATTACK")]
     public float attackImpulseFactor = 1.5f;
-    public float attackCooldown;
+    public float combo1AttackCooldown;
+    public float combo2AttackCooldown;
+    public float combo3AttackCooldown;
     public float playerRayMaxDistance = 0.5f;
     public float playerDustParticlesDelay = 0.5f;
-    
+    public float comboTimeWindow = 1.5f; // Ventana de tiempo para realizar el siguiente golpe del combo
+    public int comboCount = 0; // Contador de golpes en el combo
+
     [Header("PLAYER DAMAGED")]
     public float knockbackMovementFactor = 2f;
     public float damagedCamShakeIntensity = 2f;
@@ -48,6 +53,7 @@ public class PJ : MonoBehaviour
     private bool pjIsRolling;
     private bool rollReady = true;
     private bool attackReady = true;
+    private float lastAttackInputTime;
     private bool bufferedAttack;
     private float initialPlayerRayMaxDistance;
     
@@ -459,6 +465,11 @@ public class PJ : MonoBehaviour
         {
             if (!pjDoingAction && attackReady && (inventory.HasWeapon || debugAttack)) // Basic attack
             {
+                if (Time.time - lastAttackInputTime > comboTimeWindow)
+                {
+                    comboCount = 0;
+                }
+                
                 Attack();
             }
             else if (pjIsRolling) // Attack on dash Input Buffer
@@ -502,6 +513,49 @@ public class PJ : MonoBehaviour
     {
         pjDoingAction = true;
         
+        if (Time.time - lastAttackInputTime > comboTimeWindow)
+        {
+            comboCount = 1;
+        }
+        else // Si está dentro del margen de tiempo, incrementa el contador del combo
+        {
+            comboCount++;
+        }
+
+        // Actualiza el tiempo de la última pulsación
+        lastAttackInputTime = Time.time;
+
+        // Ejecuta la acción correspondiente al golpe del combo según el contador actual
+        PerformComboAction(comboCount);
+    }
+    
+    void PerformComboAction(int count)
+    {
+        switch (count)
+        {
+            case 1:
+                Debug.Log("Golpe 1 del combo");
+                ShowAttackVisualFeedback(combo1AttackCooldown);
+                break;
+            case 2:
+                Debug.Log("Golpe 2 del combo");
+                ShowAttackVisualFeedback(combo2AttackCooldown);
+                break;
+            case 3:
+                Debug.Log("Golpe 3 del combo");
+                ShowAttackVisualFeedback(combo3AttackCooldown);
+                // Aquí podrías ejecutar una acción especial o el golpe final del combo
+                // Luego resetea el combo
+                comboCount = 0;
+                break;
+            default:
+                Debug.Log("Combo reseteado");
+                break;
+        }
+    }
+
+    private void ShowAttackVisualFeedback(float comboAttackCooldown)
+    {
         pjAnimator.Play("PJ_attack");
         Core.Audio.Play(SOUND_TYPE.SwordAttack, 1, 0.1f, 0.01f);
 
@@ -517,14 +571,13 @@ public class PJ : MonoBehaviour
 
         PjActionFalseWhenAnimFinish(animLength);
         attackReady = false;
-        StartAttackCooldown();
-        
+        StartAttackCooldown(comboAttackCooldown);
     }
 
-    private void StartAttackCooldown()
+    private void StartAttackCooldown(float comboAttackCooldown)
     {
         Sequence sequence = DOTween.Sequence();
-        sequence.AppendInterval(attackCooldown).AppendCallback(() => attackReady = true);
+        sequence.AppendInterval(comboAttackCooldown).AppendCallback(() => attackReady = true);
     }
 
     public void CollectItem(Item item)
