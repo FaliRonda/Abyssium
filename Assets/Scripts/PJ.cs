@@ -274,7 +274,7 @@ public class PJ : MonoBehaviour
         if (!directionIsZero)
         {
             SetSpriteXOrientation(controlInputData.inputDirection.x);
-            PlayDirectionalWalkAnimation(direction);
+            PlayDirectionalWalkAnimation(controlInputData.inputDirection);
             CreatePlayerDustParticles();
         }
         else
@@ -307,34 +307,34 @@ public class PJ : MonoBehaviour
     private void PlayDirectionalWalkAnimation(Vector3 direction)
     {
         // Top direction
-        if (direction.x == 0 && direction.z == 1)
+        if (direction.x == 0 && direction.y == 1)
         {
             Debug.Log("Top");
             pjAnimator.Play("PJ_walk");
         }
         // Diagonal top direction
-        else if (direction.x == 1 && direction.z == 1 ||
-                 direction.x == -1 && direction.z == 1)
+        else if (direction.x > 0 && direction.y > 0 ||
+                 direction.x < 0 && direction.y > 0)
         {
             Debug.Log("Diagonal top");
             pjAnimator.Play("PJ_walk");
         }
         // Diagonal bottom direction
-        else if (direction.x == 1 && direction.z == -1 ||
-                 direction.x == -1 && direction.z == -1)
+        else if (direction.x > 0 && direction.y < 0 ||
+                 direction.x < 0 && direction.y < 0)
         {
             Debug.Log("Diagonal bottom");
             pjAnimator.Play("PJ_walk");
         }
         // Forward direction
-        else if (direction.x == 1 && direction.z == 0 ||
-                 direction.x == -1 && direction.z == 0)
+        else if (direction.x > 0 && direction.y == 0 ||
+                 direction.x < 0 && direction.y == 0)
         {
             Debug.Log("Forward");
             pjAnimator.Play("PJ_walk");
         }
         // Bottom direction
-        else if (direction.x == 0 && direction.z == -1)
+        else if (direction.x == 0 && direction.y < 0)
         {
             Debug.Log("Bottom");
             pjAnimator.Play("PJ_walk");
