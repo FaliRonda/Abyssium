@@ -9,24 +9,31 @@ using UnityEngine;
 public class PJ : MonoBehaviour
 {
     public Inventory inventory;
+    
+    [Header("MOVEMENT")]
     public float playerSpeed = 1;
     public float playerRotationSpeed = 1f;
     public float playerRollFactor = 2f;
-    public float attackImpulseFactor = 1.5f;
     public float rollCooldown;
-    public bool debugAttack;
-    public bool canRoll;
+    
+    [Header("ATTACK")]
+    public float attackImpulseFactor = 1.5f;
     public float attackCooldown;
     public float playerRayMaxDistance = 0.5f;
     public float playerDustParticlesDelay = 0.5f;
+    
+    [Header("PLAYER DAMAGED")]
     public float knockbackMovementFactor = 2f;
     public float damagedCamShakeIntensity = 2f;
     public float damagedCamShakeDuration = 0.3f;
     public float damageBlinkingDuration = 1f;
     public float spriteBlinkingFrecuency = 0.15f;
-    
     private float damagedBlinkingCounter;
     private bool spriteBlinking;
+    
+    [Header("DEBUG")]
+    public bool debugAttack;
+    public bool canRoll;
     
     private ParticleSystem pjStepDust;
     private Animator pjAnimator;
