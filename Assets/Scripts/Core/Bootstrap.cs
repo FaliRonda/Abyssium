@@ -26,5 +26,6 @@ public static class Bootstrap
 		ServiceContainer.RegisterService<PositionRecorderService, PositionRecorderService>();
 		ServiceContainer.RegisterService<AudioService, AudioService>();
 		ServiceContainer.RegisterService<CameraEffectsService, CameraEffectsService>();
+		ServiceContainer.RegisterService<GamepadVibrationService, GamepadVibrationService>();
 	}
 }

@@ -67,6 +67,8 @@ public class PJ : MonoBehaviour
     private bool stepReady = true;
     private Sequence damagedSequence;
     private Sequence impulseSequence;
+    private float damagedGamepadVibrationIntensity = 1f;
+    private float damagedGamepadVibrationDuration = 0.2f;
 
     #region Unity events
     
@@ -545,15 +547,15 @@ public class PJ : MonoBehaviour
         {
             case 1:
                 Debug.Log("Golpe 1 del combo");
-                ShowAttackVisualFeedback(combo1AttackCooldown);
+                ShowAttackFeedback(combo1AttackCooldown);
                 break;
             case 2:
                 Debug.Log("Golpe 2 del combo");
-                ShowAttackVisualFeedback(combo2AttackCooldown);
+                ShowAttackFeedback(combo2AttackCooldown);
                 break;
             case 3:
                 Debug.Log("Golpe 3 del combo");
-                ShowAttackVisualFeedback(combo3AttackCooldown);
+                ShowAttackFeedback(combo3AttackCooldown);
                 // Aquí podrías ejecutar una acción especial o el golpe final del combo
                 // Luego resetea el combo
                 comboCount = 0;
@@ -564,7 +566,7 @@ public class PJ : MonoBehaviour
         }
     }
 
-    private void ShowAttackVisualFeedback(float comboAttackCooldown)
+    private void ShowAttackFeedback(float comboAttackCooldown)
     {
         pjAnimator.Play("PJ_attack");
         Core.Audio.Play(SOUND_TYPE.SwordAttack, 1, 0.1f, 0.01f);
@@ -608,6 +610,7 @@ public class PJ : MonoBehaviour
             
             Core.Event.Fire(new GameEvents.PlayerDamaged(){deathFrameDuration = deathFrameDuration});
             PlayDamagedKnockbackAnimation(damager);
+            Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
             Core.CameraEffects.ShakeCamera(damagedCamShakeIntensity, damagedCamShakeDuration);
             
             Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.1f);

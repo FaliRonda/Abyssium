@@ -40,6 +40,8 @@ public class EnemyAI : MonoBehaviour
 
     private Quaternion defaultEnemySpriteRotation;
     private SphereCollider attackCollider;
+    private float damagedGamepadVibrationIntensity = 1f;
+    private float damagedGamepadVibrationDuration = 0.2f;
 
     public void Initialize(Transform pjTransform)
     {
@@ -95,6 +97,7 @@ public class EnemyAI : MonoBehaviour
         Core.Audio.Play(SOUND_TYPE.PjImpact, 1, 0.1f, 0.05f);
         PlayDamagedAnimation();
         PlayDamagedKnockbackAnimation();
+        Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
         Core.CameraEffects.ShakeCamera(damagedCamShakeIntensity, damagedCamShakeDuration);
         
         if (!isDead)
