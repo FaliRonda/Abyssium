@@ -187,7 +187,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.3
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0.29, z: 0}
 --- !u!114 &133871207785623483
 MonoBehaviour:
@@ -204,7 +204,8 @@ MonoBehaviour:
   itemType: 1
   keyId: 0
   weaponDamage: 3
-  weaponRange: 6
+  weaponHeight: 6
+  weaponCenter: 0
   weaponCd: 9
 --- !u!114 &837013165908383336
 MonoBehaviour:
