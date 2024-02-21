@@ -5354,13 +5354,17 @@ MonoBehaviour:
   playerRotationSpeed: 1
   playerRollFactor: 2.9
   rollCooldown: 0.35
-  debugAttack: 0
-  canRoll: 0
+  attackImpulseFactor: 1.5
   attackCooldown: 0.25
   playerRayMaxDistance: 0.75
   playerDustParticlesDelay: 0.4
+  knockbackMovementFactor: 2
+  damagedCamShakeIntensity: 2
+  damagedCamShakeDuration: 0.3
   damageBlinkingDuration: 1
   spriteBlinkingFrecuency: 0.15
+  debugAttack: 0
+  canRoll: 0
 --- !u!54 &8550691314693124260
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5384,7 +5388,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
