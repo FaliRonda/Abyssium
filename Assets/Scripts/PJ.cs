@@ -305,13 +305,18 @@ public class PJ : MonoBehaviour
             Debug.Log("Top");
             pjAnimator.Play("PJ_walk");
         }
-        // Diagonal direction
+        // Diagonal top direction
         else if (direction.x == 1 && direction.z == 1 ||
-                 direction.x == 1 && direction.z == -1 ||
-                 direction.x == -1 && direction.z == -1 ||
                  direction.x == -1 && direction.z == 1)
         {
-            Debug.Log("Diagonal");
+            Debug.Log("Diagonal top");
+            pjAnimator.Play("PJ_walk");
+        }
+        // Diagonal bottom direction
+        else if (direction.x == 1 && direction.z == -1 ||
+                 direction.x == -1 && direction.z == -1)
+        {
+            Debug.Log("Diagonal bottom");
             pjAnimator.Play("PJ_walk");
         }
         // Forward direction
