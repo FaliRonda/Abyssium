@@ -207,4 +207,13 @@ public class EnemyAI : MonoBehaviour
             attackCollider.enabled = false;
         }
     }
+    
+    public void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.layer == Layers.PJ_LAYER)
+        {
+            other.gameObject.GetComponent<PJ>().GetDamage(transform);
+            attackCollider.enabled = false;
+        }
+    }
 }

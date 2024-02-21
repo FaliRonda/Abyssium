@@ -547,7 +547,7 @@ public class PJ : MonoBehaviour
             PlayDamagedKnockbackAnimation(damager);
             Core.CameraEffects.ShakeCamera(damagedCamShakeIntensity, damagedCamShakeDuration);
             
-            Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.03f);
+            Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.1f);
         }
 
         return damaged;

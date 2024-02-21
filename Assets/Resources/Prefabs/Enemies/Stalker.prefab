@@ -427,7 +427,7 @@ MonoBehaviour:
   aIActive: 1
   playerTransform: {fileID: 0}
   chasePivotTransform: {fileID: 0}
-  lifeAmount: 3
+  lifeAmount: 5
   itemToDrop: {fileID: 0}
   damagedCamShakeIntensity: 1
   damagedCamShakeDuration: 0.3
@@ -464,13 +464,13 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 2112
+    m_Bits: 2048
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.3
+  m_Radius: 0.2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &7534994692394902429
 SphereCollider:
