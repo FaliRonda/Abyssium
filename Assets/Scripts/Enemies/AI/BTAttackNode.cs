@@ -147,6 +147,7 @@ public class BTAttackNode : BTNode
         attackingCooldownSequence.AppendInterval(1f);
         attackingCooldownSequence.AppendCallback(() =>
         {
+            standAfterAttack = false;
             waitForNextAttack = false;
             attackPlaying = false;
         });
