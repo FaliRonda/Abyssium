@@ -758,6 +758,18 @@ public class GameDirector : MonoBehaviour
     
     private void PlayerDamaged(float deathFrameDuration)
     {
+        timeLoopPaused = true;
+        controlBlocked = true;
+        
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendInterval(deathFrameDuration).AppendCallback(() =>
+        {
+            timeLoopPaused = false;
+            controlBlocked = false;
+            Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.1f);
+        });
+        
+        
         if (pj.inventory.HasWeapon || IsSceneT1C1Fm1)
         {
             timeLoopDuration -= 10;

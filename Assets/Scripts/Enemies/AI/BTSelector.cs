@@ -49,4 +49,12 @@ public class BTSelector : BTNode
             node.DrawGizmos();
         }
     }
+
+    public void ResetNodes()
+    {
+        foreach (BTNode node in nodes)
+        {
+            node.ResetNode();
+        }
+    }
 }

@@ -22,12 +22,14 @@ public class PJ : MonoBehaviour
     public float combo1AttackCooldown;
     public float combo2AttackCooldown;
     public float combo3AttackCooldown;
+    public float moveAfterAttackCooldown = 0.5f;
     public float playerRayMaxDistance = 0.5f;
     public float playerDustParticlesDelay = 0.5f;
     public float comboTimeWindow = 1.5f; // Ventana de tiempo para realizar el siguiente golpe del combo
     public int comboCount = 0; // Contador de golpes en el combo
 
     [Header("PLAYER DAMAGED")]
+    public float deathFrameDuration = 0.5f;
     public float knockbackMovementFactor = 2f;
     public float damagedCamShakeIntensity = 2f;
     public float damagedCamShakeDuration = 0.3f;
@@ -498,6 +500,9 @@ public class PJ : MonoBehaviour
                     bufferedAttack = false;
                 }));
             }
+            
+            // Actualiza el tiempo de la última pulsación
+            lastAttackInputTime = Time.time;
         }
     }
 
@@ -524,7 +529,8 @@ public class PJ : MonoBehaviour
     private void Attack()
     {
         pjDoingAction = true;
-        
+        attackReady = false;
+
         if (Time.time - lastAttackInputTime > comboTimeWindow)
         {
             comboCount = 1;
@@ -533,9 +539,6 @@ public class PJ : MonoBehaviour
         {
             comboCount++;
         }
-
-        // Actualiza el tiempo de la última pulsación
-        lastAttackInputTime = Time.time;
 
         // Ejecuta la acción correspondiente al golpe del combo según el contador actual
         PerformComboAction(comboCount);
@@ -573,23 +576,23 @@ public class PJ : MonoBehaviour
 
         PlayAttackImpulseAnimation();
         
-        float animLength = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_attack");
-
         Weapon activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
         if (activeWeapon != null)
         {
             activeWeapon.DoAttack();
         }
 
-        PjActionFalseWhenAnimFinish(animLength);
-        attackReady = false;
         StartAttackCooldown(comboAttackCooldown);
     }
 
     private void StartAttackCooldown(float comboAttackCooldown)
     {
         Sequence sequence = DOTween.Sequence();
-        sequence.AppendInterval(comboAttackCooldown).AppendCallback(() => attackReady = true);
+        sequence.AppendInterval(comboAttackCooldown).AppendCallback(() =>
+        {
+            attackReady = true;
+            pjDoingAction = false;
+        });
     }
 
     public void CollectItem(Item item)
@@ -606,14 +609,19 @@ public class PJ : MonoBehaviour
         if (!pjInvulnerable)
         {
             damaged = true;
-            float deathFrameDuration = 1f;
             
+            Core.Audio.Play(SOUND_TYPE.PjHitted, 1, 0, 0.5f);
             Core.Event.Fire(new GameEvents.PlayerDamaged(){deathFrameDuration = deathFrameDuration});
-            PlayDamagedKnockbackAnimation(damager);
-            Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
-            Core.CameraEffects.ShakeCamera(damagedCamShakeIntensity, damagedCamShakeDuration);
             
-            Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.1f);
+            Sequence sequence = DOTween.Sequence();
+            sequence.AppendInterval(deathFrameDuration).AppendCallback(() =>
+            {
+                PlayDamagedKnockbackAnimation(damager);
+                Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
+                Core.CameraEffects.ShakeCamera(damagedCamShakeIntensity, damagedCamShakeDuration);
+                
+            });
+            
         }
 
         return damaged;

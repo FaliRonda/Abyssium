@@ -20,4 +20,5 @@ public class AudioConfigSO : ScriptableObject
     public AudioClip bossMusic;
     public AudioClip pjStep;
     public AudioClip endMusic;
+    public AudioClip pjHitted;
 }

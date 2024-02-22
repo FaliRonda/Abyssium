@@ -20,7 +20,8 @@ public enum SOUND_TYPE
     BossDoorClosed,
     BossMusic,
     PjStep,
-    EndMusic
+    EndMusic,
+    PjHitted
 }
 
 public class AudioService : IService
@@ -59,6 +60,7 @@ public class AudioService : IService
             { SOUND_TYPE.BossMusic, audioConfig.bossMusic },
             { SOUND_TYPE.PjStep, audioConfig.pjStep },
             { SOUND_TYPE.EndMusic, audioConfig.endMusic },
+            { SOUND_TYPE.PjHitted, audioConfig.pjHitted },
         };
     }
 

@@ -206,17 +206,22 @@ public class EnemyAI : MonoBehaviour
     {
         if (other.gameObject.layer == Layers.PJ_LAYER)
         {
-            other.GetComponent<PJ>().GetDamage(transform);
-            attackCollider.enabled = false;
+            HitPlayer(other.gameObject);
         }
     }
-    
+
     public void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.layer == Layers.PJ_LAYER)
         {
-            other.gameObject.GetComponent<PJ>().GetDamage(transform);
-            attackCollider.enabled = false;
+            HitPlayer(other.gameObject);
         }
+    }
+
+    private void HitPlayer(GameObject other)
+    {
+        rootNode.ResetNodes();
+        other.GetComponent<PJ>().GetDamage(transform);
+        attackCollider.enabled = false;
     }
 }

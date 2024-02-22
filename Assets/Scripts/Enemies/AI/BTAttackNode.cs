@@ -143,6 +143,8 @@ public class BTAttackNode : BTNode
 
     public override void ResetNode()
     {
+        attackSequence.Kill();
+        
         var attackingCooldownSequence = DOTween.Sequence();
         attackingCooldownSequence.AppendInterval(1f);
         attackingCooldownSequence.AppendCallback(() =>
