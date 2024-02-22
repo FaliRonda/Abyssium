@@ -126,7 +126,9 @@ public class EnemyAI : MonoBehaviour
 
     private void Die()
     {
+        rootNode.ResetNodes();
         isDead = true;
+        aIActive = false;
         
         Dropper dropper = GetComponent<Dropper>();
         if (dropper != null && itemToDrop != null)
@@ -134,7 +136,6 @@ public class EnemyAI : MonoBehaviour
             dropper.Drop(itemToDrop);
         }
 
-        aIActive = false;
         enemyAnimator.Play("Enemy_die");
         Core.Audio.Play(SOUND_TYPE.EnemyDied, 1, 0.05f, 0.01f);
         shadowSprite.enabled = false;
@@ -213,6 +214,11 @@ public class EnemyAI : MonoBehaviour
     private void HitPlayer(GameObject other)
     {
         other.GetComponent<PJ>().GetDamage(transform);
+        ResetAINodes();
+    }
+
+    public void ResetAINodes()
+    {
         rootNode.ResetNodes();
     }
 }

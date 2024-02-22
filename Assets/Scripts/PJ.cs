@@ -319,7 +319,7 @@ public class PJ : MonoBehaviour
 
         if (stepReady && controlInputData.inputDirection != Vector3.zero)
         {
-            Core.Audio.Play(SOUND_TYPE.PjStep, 1, 0.1f, 0.03f);
+            Core.Audio.Play(SOUND_TYPE.PjStep, 1, 0.1f, 0.01f);
 
             stepReady = false;
             Sequence sequence = DOTween.Sequence();
