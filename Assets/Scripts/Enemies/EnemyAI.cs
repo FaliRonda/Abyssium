@@ -40,7 +40,7 @@ public class EnemyAI : MonoBehaviour
 
     private Quaternion defaultEnemySpriteRotation;
     private SphereCollider attackCollider;
-    private float damagedGamepadVibrationIntensity = 1f;
+    private float damagedGamepadVibrationIntensity = 0.5f;
     private float damagedGamepadVibrationDuration = 0.2f;
 
     public void Initialize(Transform pjTransform)
