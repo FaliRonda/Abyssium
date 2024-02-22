@@ -201,14 +201,6 @@ public class EnemyAI : MonoBehaviour
     {
         attackCollider.enabled = false;
     }
-    
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer == Layers.PJ_LAYER)
-        {
-            HitPlayer(other.gameObject);
-        }
-    }
 
     public void OnCollisionEnter(Collision other)
     {
@@ -220,8 +212,7 @@ public class EnemyAI : MonoBehaviour
 
     private void HitPlayer(GameObject other)
     {
-        rootNode.ResetNodes();
         other.GetComponent<PJ>().GetDamage(transform);
-        attackCollider.enabled = false;
+        rootNode.ResetNodes();
     }
 }

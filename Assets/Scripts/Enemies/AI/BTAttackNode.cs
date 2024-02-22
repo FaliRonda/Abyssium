@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -7,83 +8,64 @@ using Sequence = DG.Tweening.Sequence;
 public class BTAttackNode : BTNode
 {
     [FormerlySerializedAs("attackDistance")] public float attackVisibilityDistance;
-    public float attackCD = 1f;
-    public float standAfterAttackCD = 0;
+    public float standAfterAttackCD = 1;
     public float anticipationDistance = 0.5f;
     public float anticipacionDuration = 0.3f;
     public float attackMovementDistance = 2f;
     public float attackMovementDuration = 0.3f;
     public float enemyRayMaxDistance = .75f;
     
-    private bool standAfterAttack;
-    private bool waitForNextAttack;
     private bool attackPlaying;
     private Ray ray;
     private RaycastHit[] hits;
     private Sequence attackSequence;
-    private Vector3 lastDirectionBeforeAttack;
+    private Vector3 lastPlayerDirectionBeforeAttack;
 
     public override BTNodeState Execute()
     {
-        if (standAfterAttack)
-        {
-            return BTNodeState.Success;
-        }
-        // Check if the player is within attack distance
-        Vector3 direction = playerTransform.position - enemyTransform.position;
-        float distance = direction.magnitude;
-        
-        ray = new Ray(enemyTransform.position, lastDirectionBeforeAttack);
+        ray = new Ray(enemyTransform.position, lastPlayerDirectionBeforeAttack);
         EnemyRaycastHit(Color.green);
-
-        if (distance <= attackVisibilityDistance)
-        {
-            if (!waitForNextAttack)
-            {
-                lastDirectionBeforeAttack = direction;
-                Attack(direction);
-            }
-            else
-            {
-                if (!attackPlaying)
-                {
-                    return BTNodeState.Failure;
-                }
-                else
-                {
-                    if (EnemyRayHitLayer(Layers.WALL_LAYER) || EnemyRayHitLayer(Layers.DOOR_LAYER) || EnemyRayHitLayer(Layers.PJ_LAYER))
-                    {
-                        attackSequence.Kill();
-                    }
-                }
-            } 
-            return BTNodeState.Success;
-        }
         
         if (attackPlaying)
         {
+            if (EnemyRayHitLayer(Layers.WALL_LAYER) || EnemyRayHitLayer(Layers.DOOR_LAYER) || EnemyRayHitLayer(Layers.PJ_LAYER))
+            {
+                attackSequence.Kill();
+            }
+            
             return BTNodeState.Success;
         }
+        
+        // Check if the player is within attack distance
+        Vector3 playerDirection = playerTransform.position - enemyTransform.position;
+        float playerDistance = playerDirection.magnitude;
+        
+        ray = new Ray(enemyTransform.position, lastPlayerDirectionBeforeAttack);
+        EnemyRaycastHit(Color.green);
+        
+        if (playerDistance <= attackVisibilityDistance)
+        {
+            if (!attackPlaying)
+            {
+                lastPlayerDirectionBeforeAttack = playerDirection;
+                Attack(playerDirection);
+            }
 
+            return BTNodeState.Success;
+        }
+        
         return BTNodeState.Failure;
     }
 
     private void Attack(Vector3 direction)
     {
-        enemySprite.flipX = direction.x > 0;
-
-        // Animation
-        enemyAnimator.Play("Enemy_attack");
         attackPlaying = true;
-        float animLength = Core.AnimatorHelper.GetAnimLength(enemyAnimator, "Enemy_attack");
-        //Core.AnimatorHelper.DoOnAnimationFinish(animLength, () => { attackPlaying = false; });
+        
+        // Animation
+        enemySprite.flipX = direction.x > 0;
+        enemyAnimator.Play("Enemy_attack");
 
-        // CD
-        waitForNextAttack = true;
-        Sequence attackCDSequence = DOTween.Sequence();
-        attackCDSequence.AppendInterval(attackCD).AppendCallback(() => { waitForNextAttack = false; });
-
-        // Attack
+        // Sequence
         attackSequence = DOTween.Sequence();
         
         Vector3 targetPosition = playerTransform.position;
@@ -97,27 +79,21 @@ public class BTAttackNode : BTNode
         Vector3 attackDirection = (targetPosition - startPosition).normalized * attackMovementDistance;
         
         attackSequence.Append(enemyTransform.DOMove(enemyPosition + attackDirection, attackMovementDuration));
-
-        attackSequence.AppendCallback(StandAfterAttack);
-        
+        attackSequence.AppendCallback(AttackEndCD);
         attackSequence.OnKill(() =>
         {
-            var attackingCooldownSequence = DOTween.Sequence();
-            attackingCooldownSequence.AppendInterval(1f);
-            attackingCooldownSequence.AppendCallback(() =>
-            {
-                attackPlaying = false;
-            });
+            AttackEndCD();
         });
-        
-        attackSequence.Play();
     }
 
-    private void StandAfterAttack()
+    private void AttackEndCD()
     {
-        standAfterAttack = true;
-        Sequence standAfterAttackCDSequence = DOTween.Sequence();
-        standAfterAttackCDSequence.AppendInterval(standAfterAttackCD).AppendCallback(() => { standAfterAttack = false; });
+        var attackingCooldownSequence = DOTween.Sequence();
+        attackingCooldownSequence.AppendInterval(standAfterAttackCD);
+        attackingCooldownSequence.AppendCallback(() =>
+        {
+            attackPlaying = false;
+        });
     }
 
     private void EnemyRaycastHit(Color color)
@@ -140,19 +116,16 @@ public class BTAttackNode : BTNode
 
         return layerHit;
     }
+    
+    public override void InitializeNode(Dictionary<string, object> parameters)
+    {
+        base.InitializeNode(parameters);
+        attackPlaying = false;
+    }
 
     public override void ResetNode()
     {
         attackSequence.Kill();
-        
-        var attackingCooldownSequence = DOTween.Sequence();
-        attackingCooldownSequence.AppendInterval(1f);
-        attackingCooldownSequence.AppendCallback(() =>
-        {
-            standAfterAttack = false;
-            waitForNextAttack = false;
-            attackPlaying = false;
-        });
     }
     
     public override void DrawGizmos()

@@ -21,8 +21,7 @@ MonoBehaviour:
   enemyAnimator: {fileID: 0}
   enemySprite: {fileID: 0}
   attackVisibilityDistance: 1
-  attackCD: 1.75
-  standAfterAttackCD: 0
+  standAfterAttackCD: 0.5
   anticipationDistance: 0.3
   anticipacionDuration: 0.35
   attackMovementDistance: 2.5
