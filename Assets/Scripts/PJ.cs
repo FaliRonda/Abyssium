@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Ju.Extensions;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PJ : MonoBehaviour
 {
@@ -16,6 +14,7 @@ public class PJ : MonoBehaviour
     public float playerRotationSpeed = 1f;
     public float playerRollFactor = 2f;
     public float rollCooldown;
+    public float invulnerableAfterDashCD = 0.3f;
     
     [Header("ATTACK")]
     public float attackImpulseFactor = 1.5f;
@@ -45,6 +44,7 @@ public class PJ : MonoBehaviour
     private ParticleSystem pjStepDust;
     private Animator pjAnimator;
     private SpriteRenderer pjSprite;
+    private CapsuleCollider pjCollider;
     
     private Quaternion initialPlayerRotation;
     private Vector3 lastDirection;
@@ -79,6 +79,7 @@ public class PJ : MonoBehaviour
         pjStepDust = GetComponentInChildren<ParticleSystem>();
         pjSprite = GetComponentInChildren<SpriteRenderer>();
         pjAnimator = GetComponentInChildren<Animator>();
+        pjCollider = GetComponent<CapsuleCollider>();
 
         initialPlayerRotation = transform.rotation;
         initialPlayerRayMaxDistance = playerRayMaxDistance;
@@ -167,6 +168,8 @@ public class PJ : MonoBehaviour
             pjIsRolling = true;
             pjInvulnerable = true;
 
+            pjCollider.isTrigger = true;
+            
             pjAnimator.Play("PJ_roll");
             Core.Audio.Play(SOUND_TYPE.PjDash, 1f, 0.1f, 0.01f);
             float animLength = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
@@ -212,11 +215,13 @@ public class PJ : MonoBehaviour
     {
         pjIsRolling = false;
         rollReady = false;
+        
+        pjCollider.isTrigger = false;
 
         Sequence invulnerableAfterDashSequence = DOTween.Sequence();
 
         invulnerableAfterDashSequence
-            .AppendInterval(0.3f)
+            .AppendInterval(invulnerableAfterDashCD)
             .AppendCallback(() => pjInvulnerable = false);
         
         StartRollCoolown();
@@ -624,17 +629,21 @@ public class PJ : MonoBehaviour
 
     private void PlayDamagedKnockbackAnimation(Transform damager)
     {
-        beingDamaged = true;
-        damagedSequence = DOTween.Sequence();
+        Debug.DrawRay(transform.position, lastDirection, Color.green);
+        if (!PjRaycastHit(Color.green) || !PjRayHitLayer(Layers.WALL_LAYER))
+        {
+            beingDamaged = true;
+            damagedSequence = DOTween.Sequence();
         
-        Vector3 position = transform.position;
-        Vector3 enemyPosition = damager.position;
-        Vector3 damagedDirection = (position - enemyPosition).normalized * knockbackMovementFactor;
+            Vector3 position = transform.position;
+            Vector3 enemyPosition = damager.position;
+            Vector3 damagedDirection = (position - enemyPosition).normalized * knockbackMovementFactor;
         
-        damagedSequence
-            .Append(transform.DOMove(position + new Vector3(damagedDirection.x, position.y, damagedDirection.z), 0.2f))
-            .OnComplete(() => { beingDamaged = false; });
-        damagedSequence.Play();
+            damagedSequence
+                .Append(transform.DOMove(position + new Vector3(damagedDirection.x, position.y, damagedDirection.z), 0.2f))
+                .OnComplete(() => { beingDamaged = false; });
+            damagedSequence.Play();
+        }
         
         damagedBlinkingCounter = damageBlinkingDuration;
         StartCoroutine(SpriteBlinking());
