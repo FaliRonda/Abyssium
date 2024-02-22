@@ -427,7 +427,7 @@ MonoBehaviour:
   aIActive: 1
   playerTransform: {fileID: 0}
   chasePivotTransform: {fileID: 0}
-  lifeAmount: 5
+  lifeAmount: 10
   itemToDrop: {fileID: 0}
   damagedCamShakeIntensity: 1
   damagedCamShakeDuration: 0.3
