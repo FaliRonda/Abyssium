@@ -429,15 +429,15 @@ MonoBehaviour:
   chasePivotTransform: {fileID: 0}
   lifeAmount: 10
   itemToDrop: {fileID: 0}
-  damagedCamShakeIntensity: 1
-  damagedCamShakeDuration: 0.3
+  damagedCamShakeIntensity: 0.5
+  damagedCamShakeDuration: 0.15
   knockbackMovementFactor: 0.5
   spriteBlinkingFrecuency: 0.15
   damageBlinkingDuration: 1
   waypoints:
   - {fileID: 7266895700364366196}
   - {fileID: 8423899225659954203}
-  behaviorNodeContainer: {fileID: 11400000, guid: b789166367ac9ea4386008d79b4dab14, type: 2}
+  behaviorNodeContainer: {fileID: 11400000, guid: 15222e01a591ddb4aafc751875f34e7f, type: 2}
 --- !u!114 &7984870695088626944
 MonoBehaviour:
   m_ObjectHideFlags: 0
