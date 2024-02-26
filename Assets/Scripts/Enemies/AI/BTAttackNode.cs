@@ -63,7 +63,6 @@ public class BTAttackNode : BTNode
         
         // Animation
         enemySprite.flipX = direction.x > 0;
-        enemyAnimator.Play("Enemy_attack");
 
         // Sequence
         attackSequence = DOTween.Sequence();
@@ -77,6 +76,8 @@ public class BTAttackNode : BTNode
         attackSequence.Append(enemyTransform.DOMove(enemyPosition + anticipationDirection, anticipacionDuration));
         
         Vector3 attackDirection = (targetPosition - startPosition).normalized * attackMovementDistance;
+
+        attackSequence.AppendCallback(() => enemyAnimator.Play("Enemy_attack"));
         
         attackSequence.Append(enemyTransform.DOMove(enemyPosition + attackDirection, attackMovementDuration));
         attackSequence.AppendCallback(AttackEndCD);

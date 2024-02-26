@@ -761,6 +761,11 @@ public class GameDirector : MonoBehaviour
         timeLoopPaused = true;
         controlBlocked = true;
         
+        foreach (EnemyAI enemy in enemies)
+        {
+            enemy.ResetAINodes();
+        }
+        
         Sequence sequence = DOTween.Sequence();
         sequence.AppendInterval(deathFrameDuration).AppendCallback(() =>
         {
