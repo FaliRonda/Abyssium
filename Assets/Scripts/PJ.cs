@@ -549,22 +549,18 @@ public class PJ : MonoBehaviour
         switch (count)
         {
             case 1:
-                Debug.Log("Golpe 1 del combo");
                 ShowAttackFeedback(combo1AttackCooldown);
                 break;
             case 2:
-                Debug.Log("Golpe 2 del combo");
                 ShowAttackFeedback(combo2AttackCooldown);
                 break;
             case 3:
-                Debug.Log("Golpe 3 del combo");
                 ShowAttackFeedback(combo3AttackCooldown);
                 // Aquí podrías ejecutar una acción especial o el golpe final del combo
                 // Luego resetea el combo
                 comboCount = 0;
                 break;
             default:
-                Debug.Log("Combo reseteado");
                 break;
         }
     }
@@ -579,6 +575,7 @@ public class PJ : MonoBehaviour
         Weapon activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
         if (activeWeapon != null)
         {
+            Debug.Log("Weapon attack");
             activeWeapon.DoAttack();
         }
 

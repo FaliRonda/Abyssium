@@ -8,12 +8,11 @@ public class Weapon : MonoBehaviour
     public int weaponDamage = 1;
     public float weaponHeight = 1.5f;
     public float weaponCenter = 0.25f;
-    public float weaponCd = 0.5f;
+    public float weaponCd = 0.1f;
 
     private float initialWeaponHeight;
     private float initialWeaponCenter;
     
-    private SpriteRenderer weaponSprite;
     private CapsuleCollider weaponCollider;
     
     private bool currentlyAttacking = false;
@@ -24,7 +23,6 @@ public class Weapon : MonoBehaviour
 
     private void Start()
     {
-        weaponSprite = GetComponent<SpriteRenderer>();
         weaponCollider = GetComponent<CapsuleCollider>();
 
         initialWeaponHeight = weaponHeight;
@@ -32,7 +30,6 @@ public class Weapon : MonoBehaviour
 
         UpdateWeaponRange();
         
-        weaponSprite.enabled = false;
         weaponCollider.enabled = false;
 
         initialWeaponDamage = weaponDamage;
@@ -58,20 +55,16 @@ public class Weapon : MonoBehaviour
     public void DoAttack()
     {
         currentlyAttacking = true;
+        weaponCollider.enabled = true;
         
         Sequence sequence = DOTween.Sequence();
-        sequence.AppendCallback(() =>
-            {
-                weaponSprite.enabled = true;
-                weaponCollider.enabled = true;
-            })
-            .AppendInterval(weaponCd)
+        sequence
+            .AppendInterval(0.2f)
             .AppendCallback(() =>
             {
-                weaponSprite.enabled = false;
                 weaponCollider.enabled = false;
-            })
-            .AppendCallback(() => currentlyAttacking = false);
+                currentlyAttacking = false;
+            });
     }
 
     public bool IsCurrentlyAttacking()

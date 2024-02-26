@@ -23,6 +23,7 @@ public class EnemyAI : MonoBehaviour
     public float knockbackMovementFactor = 1f;
     public float spriteBlinkingFrecuency = 0.15f;
     public float damageBlinkingDuration = 1f;
+    private float invulnerableCD = 0.1f;
     public Transform[] waypoints;
     
     // Behavior tree root node
@@ -32,6 +33,7 @@ public class EnemyAI : MonoBehaviour
     
     private bool spriteBlinking = false;
     private float damagedBlinkingCounter;
+    private bool enemyInvulnerable;
     private bool isDead = false;
     
     private SpriteRenderer enemySprite;
@@ -94,18 +96,29 @@ public class EnemyAI : MonoBehaviour
 
     public void GetDamage(int damageAmount)
     {
-        Core.Audio.Play(SOUND_TYPE.PjImpact, 1, 0.1f, 0.05f);
-        PlayDamagedAnimation();
-        PlayDamagedKnockbackAnimation();
-        Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
-        Core.CameraEffects.ShakeCamera(damagedCamShakeIntensity, damagedCamShakeDuration);
-        
-        if (!isDead)
+        if (!enemyInvulnerable)
         {
-            lifeAmount -= damageAmount;
-            if (lifeAmount <= 0)
+            enemyInvulnerable = true;
+            
+            Sequence invulnerableSequence = DOTween.Sequence();
+            invulnerableSequence
+                .AppendInterval(invulnerableCD)
+                .AppendCallback(() => enemyInvulnerable = false);
+            
+            Core.Audio.Play(SOUND_TYPE.PjImpact, 1, 0.1f, 0.05f);
+            PlayDamagedAnimation();
+            PlayDamagedKnockbackAnimation();
+            rootNode.ResetNodes();
+            Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
+            Core.CameraEffects.ShakeCamera(damagedCamShakeIntensity, damagedCamShakeDuration);
+            
+            if (!isDead)
             {
-                Die();
+                lifeAmount -= damageAmount;
+                if (lifeAmount <= 0)
+                {
+                    Die();
+                }
             }
         }
     }
@@ -120,8 +133,6 @@ public class EnemyAI : MonoBehaviour
         damagedSequence
             .Append(transform.DOMove(position + new Vector3(damagedDirection.x, position.y, damagedDirection.z), 0.2f));
         damagedSequence.Play();
-        
-        rootNode.ResetNode();
     }
 
     private void Die()
