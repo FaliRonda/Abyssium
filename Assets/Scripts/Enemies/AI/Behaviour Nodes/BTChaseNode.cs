@@ -1,18 +1,22 @@
-using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New BT Chase Node", menuName = "AI/BT Nodes/Chase Node")]
 public class BTChaseNode : BTNode
 {
-    public float visibilityRadius = 10f;
-    public float minimumDistanceToPlayer;
-    public float lightRadius = 10f;
-    
-    public float chaseSpeed;
-    public float chaseInLightSpeed;
-
+    public Enemies.CODE_NAMES enemyCode;
     public bool isShadow;
+    
+    private float visibilityRadius = 10f;
+    private float minimumDistanceToPlayer;
+    private float lightRadius = 10f;
+    
+    private float chaseSpeed;
+    private float chaseInLightSpeed;
+
     private bool currentlyChasing;
+    private ChaseNodeParametersSO chaseNodeParameters;
+
 
     public override BTNodeState Execute()
     {
@@ -54,6 +58,30 @@ public class BTChaseNode : BTNode
 
         currentlyChasing = false;
         return BTNodeState.Failure;
+    }
+    
+    public override void InitializeNode(Dictionary<string, object> parameters)
+    {
+        base.InitializeNode(parameters);
+        AssignNodeParameters();
+    }
+
+    private void AssignNodeParameters()
+    {
+        chaseNodeParameters =
+            Resources.Load<ChaseNodeParametersSO>(Enemies.EnemiesParametersPathDictionary(enemyCode, "Chase"));
+
+        // Check if the ScriptableObject was loaded successfully.
+        if (chaseNodeParameters == null)
+        {
+            Debug.LogError("EnemyParemeters not found in Resources folder.");
+        }
+
+        visibilityRadius = chaseNodeParameters.visibilityRadius;
+        minimumDistanceToPlayer = chaseNodeParameters.minimumDistanceToPlayer;
+        lightRadius = chaseNodeParameters.lightRadius;
+        chaseSpeed = chaseNodeParameters.chaseSpeed;
+        chaseInLightSpeed = chaseNodeParameters.chaseInLightSpeed;
     }
 
     public void ResetChasing()

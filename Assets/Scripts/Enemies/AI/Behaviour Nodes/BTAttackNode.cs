@@ -1,25 +1,26 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Sequence = DG.Tweening.Sequence;
 
 [CreateAssetMenu(fileName = "New BT Attack Node", menuName = "AI/BT Nodes/Attack Node")]
 public class BTAttackNode : BTNode
 {
-    [FormerlySerializedAs("attackDistance")] public float attackVisibilityDistance;
-    public float standAfterAttackCD = 1;
-    public float anticipationDistance = 0.5f;
-    public float anticipacionDuration = 0.3f;
-    public float attackMovementDistance = 2f;
-    public float attackMovementDuration = 0.3f;
-    public float enemyRayMaxDistance = .75f;
+    public Enemies.CODE_NAMES enemyCode;
+    private float attackVisibilityDistance;
+    private float standAfterAttackCD = 1;
+    private float anticipationDistance = 0.5f;
+    private float anticipacionDuration = 0.3f;
+    private float attackMovementDistance = 2f;
+    private float attackMovementDuration = 0.3f;
+    private float enemyRayMaxDistance = .75f;
     
     private bool attackPlaying;
     private Ray ray;
     private RaycastHit[] hits;
     private Sequence attackSequence;
     private Vector3 lastPlayerDirectionBeforeAttack;
+    private AttackNodeParametersSO attackNodeParameters;
 
     public override BTNodeState Execute()
     {
@@ -122,6 +123,28 @@ public class BTAttackNode : BTNode
     {
         base.InitializeNode(parameters);
         attackPlaying = false;
+
+        AssignNodeParameters();
+    }
+
+    private void AssignNodeParameters()
+    {
+        attackNodeParameters =
+            Resources.Load<AttackNodeParametersSO>(Enemies.EnemiesParametersPathDictionary(enemyCode, "Attack"));
+
+        // Check if the ScriptableObject was loaded successfully.
+        if (attackNodeParameters == null)
+        {
+            Debug.LogError("EnemyParemeters not found in Resources folder.");
+        }
+
+        attackVisibilityDistance = attackNodeParameters.attackVisibilityDistance;
+        standAfterAttackCD = attackNodeParameters.standAfterAttackCD;
+        anticipationDistance = attackNodeParameters.anticipationDistance;
+        anticipacionDuration = attackNodeParameters.anticipacionDuration;
+        attackMovementDistance = attackNodeParameters.attackMovementDistance;
+        attackMovementDuration = attackNodeParameters.attackMovementDuration;
+        enemyRayMaxDistance = attackNodeParameters.enemyRayMaxDistance;
     }
 
     public override void ResetNode()

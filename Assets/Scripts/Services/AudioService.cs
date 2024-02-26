@@ -86,7 +86,7 @@ public class AudioService : IService
         }
         else
         {
-            Debug.LogWarning("SoundType no encontrado en el diccionario.");
+            Debug.LogError("SoundType no encontrado en el diccionario.");
         }
     }
 

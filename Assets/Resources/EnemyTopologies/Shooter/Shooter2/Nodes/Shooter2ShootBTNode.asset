@@ -9,15 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b79189ab66c5a64b975d90056e4961b, type: 3}
-  m_Name: Shooter1PatrolBTNode
+  m_Script: {fileID: 11500000, guid: c784e76a50261684c8d3d48b41467929, type: 3}
+  m_Name: Shooter2ShootBTNode
   m_EditorClassIdentifier: 
   enemyTransform: {fileID: 0}
   playerTransform: {fileID: 0}
+  chasePivotTransform: {fileID: 0}
   waypoints:
   - {fileID: 0}
   - {fileID: 0}
   enemyAnimator: {fileID: 0}
   enemySprite: {fileID: 0}
-  detectedAudioSource: {fileID: 0}
-  patrolSpeed: 0.2
+  enemyCode: 1
+  bulletPrefab: {fileID: 9109705668636447229, guid: 91d5333cb5df9944290653861e1eeaef, type: 3}

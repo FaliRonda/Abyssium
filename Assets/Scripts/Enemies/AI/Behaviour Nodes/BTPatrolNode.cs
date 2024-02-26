@@ -1,11 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New BT Patrol Node", menuName = "AI/BT Nodes/Patrol Node")]
 public class BTPatrolNode : BTNode
 {
-    public float patrolSpeed;
+    public Enemies.CODE_NAMES enemyCode;
     
+    private float patrolSpeed;
     private int currentWaypointIndex = 0;
+    private PatrolNodeParametersSO patrolNodeParameters;
 
     public override BTNodeState Execute()
     {
@@ -27,6 +30,26 @@ public class BTPatrolNode : BTNode
         enemyAnimator.Play("Enemy_walk");
         
         return BTNodeState.Running;
+    }
+    
+    public override void InitializeNode(Dictionary<string, object> parameters)
+    {
+        base.InitializeNode(parameters);
+        AssignNodeParameters();
+    }
+    
+    private void AssignNodeParameters()
+    {
+        patrolNodeParameters =
+            Resources.Load<PatrolNodeParametersSO>(Enemies.EnemiesParametersPathDictionary(enemyCode, "Patrol"));
+
+        // Check if the ScriptableObject was loaded successfully.
+        if (patrolNodeParameters == null)
+        {
+            Debug.LogError("EnemyParemeters not found in Resources folder.");
+        }
+
+        patrolSpeed = patrolNodeParameters.patrolSpeed;
     }
 
     public override void ResetNode()

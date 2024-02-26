@@ -20,9 +20,5 @@ MonoBehaviour:
   - {fileID: 0}
   enemyAnimator: {fileID: 0}
   enemySprite: {fileID: 0}
-  detectedAudioSource: {fileID: 0}
+  enemyCode: 1
   bulletPrefab: {fileID: 9109705668636447229, guid: 91d5333cb5df9944290653861e1eeaef, type: 3}
-  bulletLifeTime: 8
-  bulletSpeed: 6
-  attackVisibilityDistance: 14
-  shootCD: 2

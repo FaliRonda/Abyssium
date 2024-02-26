@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca92339c6336f644d8f3f9bba501fda4, type: 3}
-  m_Name: Stalker1AttackBTNode
+  m_Script: {fileID: 11500000, guid: 9b79189ab66c5a64b975d90056e4961b, type: 3}
+  m_Name: Shooter1PatrolBTNode
   m_EditorClassIdentifier: 
   enemyTransform: {fileID: 0}
   playerTransform: {fileID: 0}
@@ -20,10 +20,4 @@ MonoBehaviour:
   - {fileID: 0}
   enemyAnimator: {fileID: 0}
   enemySprite: {fileID: 0}
-  attackVisibilityDistance: 2.75
-  standAfterAttackCD: 1.5
-  anticipationDistance: 0.4
-  anticipacionDuration: 0.75
-  attackMovementDistance: 2.5
-  attackMovementDuration: 0.2
-  enemyRayMaxDistance: 0.25
+  enemyCode: 1

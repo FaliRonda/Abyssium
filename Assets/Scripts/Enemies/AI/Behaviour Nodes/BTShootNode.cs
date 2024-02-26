@@ -1,20 +1,23 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Sequence = DG.Tweening.Sequence;
 
 [CreateAssetMenu(fileName = "New BT Shoot Node", menuName = "AI/BT Nodes/Shoot Node")]
 public class BTShootNode : BTNode
 {
+    public Enemies.CODE_NAMES enemyCode;
     public GameObject bulletPrefab;
-    public float bulletLifeTime = 2f;
-    public float bulletSpeed = 1f;
     
-    public float attackVisibilityDistance;
-    public float shootCD = 1f;
+    private float bulletLifeTime = 2f;
+    private float bulletSpeed = 1f;
+    
+    private float attackVisibilityDistance;
+    private float shootCD = 1f;
     
     private bool waitForNextShoot;
     private bool shootPlaying;
+    private ShootNodeParametersSO shootNodeParameters;
 
     public override BTNodeState Execute()
     {
@@ -61,6 +64,29 @@ public class BTShootNode : BTNode
         Bullet bullet = bulletGO.GetComponent<Bullet>();
         bullet.Initialize(bulletSpeed, bulletLifeTime);
         bullet.StartShoot(direction);
+    }
+    
+    public override void InitializeNode(Dictionary<string, object> parameters)
+    {
+        base.InitializeNode(parameters);
+        AssignNodeParameters();
+    }
+    
+    private void AssignNodeParameters()
+    {
+        shootNodeParameters =
+            Resources.Load<ShootNodeParametersSO>(Enemies.EnemiesParametersPathDictionary(enemyCode, "Shoot"));
+
+        // Check if the ScriptableObject was loaded successfully.
+        if (shootNodeParameters == null)
+        {
+            Debug.LogError("EnemyParemeters not found in Resources folder.");
+        }
+
+        bulletLifeTime = shootNodeParameters.bulletLifeTime;
+        bulletSpeed = shootNodeParameters.bulletSpeed;
+        attackVisibilityDistance = shootNodeParameters.attackVisibilityDistance;
+        shootCD = shootNodeParameters.shootCD;
     }
 
     public override void ResetNode()

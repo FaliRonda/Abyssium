@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c784e76a50261684c8d3d48b41467929, type: 3}
-  m_Name: Shooter2ShootBTNode
+  m_Script: {fileID: 11500000, guid: ca92339c6336f644d8f3f9bba501fda4, type: 3}
+  m_Name: Stalker1AttackBTNode
   m_EditorClassIdentifier: 
   enemyTransform: {fileID: 0}
   playerTransform: {fileID: 0}
@@ -20,9 +20,11 @@ MonoBehaviour:
   - {fileID: 0}
   enemyAnimator: {fileID: 0}
   enemySprite: {fileID: 0}
-  detectedAudioSource: {fileID: 0}
-  bulletPrefab: {fileID: 9109705668636447229, guid: 91d5333cb5df9944290653861e1eeaef, type: 3}
-  bulletLifeTime: 8
-  bulletSpeed: 6
-  attackVisibilityDistance: 14
-  shootCD: 2
+  attackVisibilityDistance: 2.75
+  nodeParametersPath: 
+  standAfterAttackCD: 1.5
+  anticipationDistance: 0.4
+  anticipacionDuration: 0.75
+  attackMovementDistance: 2.5
+  attackMovementDuration: 0.2
+  enemyRayMaxDistance: 0.25

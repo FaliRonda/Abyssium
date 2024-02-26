@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyTransform: {fileID: 0}
   playerTransform: {fileID: 0}
+  chasePivotTransform: {fileID: 0}
   waypoints:
   - {fileID: 0}
   - {fileID: 0}
   enemyAnimator: {fileID: 0}
   enemySprite: {fileID: 0}
-  detectedAudioSource: {fileID: 0}
-  patrolSpeed: 0.2
+  enemyCode: 1

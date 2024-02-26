@@ -20,9 +20,5 @@ MonoBehaviour:
   - {fileID: 0}
   enemyAnimator: {fileID: 0}
   enemySprite: {fileID: 0}
-  visibilityRadius: 10
-  minimumDistanceToPlayer: 1.2
-  lightRadius: 2.75
-  chaseSpeed: 4.75
-  chaseInLightSpeed: 1.75
+  enemyCode: 2
   isShadow: 1

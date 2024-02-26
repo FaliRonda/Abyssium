@@ -9,13 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b79189ab66c5a64b975d90056e4961b, type: 3}
-  m_Name: DarkHunterPatrolBTNode
+  m_Script: {fileID: 11500000, guid: a9267ff600891944babe91fcadb7d0a0, type: 3}
+  m_Name: StalkerPatrolNodeParameters
   m_EditorClassIdentifier: 
-  enemyTransform: {fileID: 0}
-  playerTransform: {fileID: 0}
-  chasePivotTransform: {fileID: 0}
-  waypoints: []
-  enemyAnimator: {fileID: 0}
-  enemySprite: {fileID: 0}
-  enemyCode: 2
+  patrolSpeed: 2
