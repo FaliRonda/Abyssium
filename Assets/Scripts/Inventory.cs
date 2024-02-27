@@ -25,6 +25,7 @@ public class Inventory : MonoBehaviour
 
     private Light lanternEnv;
     private Light lanternPj;
+    private float lastAngle;
 
     private void Start()
     {
@@ -57,17 +58,17 @@ public class Inventory : MonoBehaviour
         transform.position = new Vector3(position.x, transform.position.y, position.z);
     }
 
-    public void RotateItems(bool gameIn3D, Vector3 direction)
+    public void RotateItems(bool gameIn3D, GameDirector.ControlInputData controlInputData)
     {
         foreach (GameObject item in items)
         {
             switch (item.layer)
             {
                 case Layers.WEAPON_LAYER:
-                    RotateWeapon(item, direction, gameIn3D);
+                    RotateWeapon(item, controlInputData, gameIn3D);
                     break;
                 case Layers.LIGHT_LAYER:
-                    RotateLight(item, direction, gameIn3D);
+                    RotateLight(item, controlInputData, gameIn3D);
                     break;
                 default:
                     break;
@@ -98,28 +99,57 @@ public class Inventory : MonoBehaviour
         }
     }
     
-    private void RotateLight(GameObject item, Vector3 direction, bool gameIn3D)
+    private void RotateLight(GameObject item, GameDirector.ControlInputData controlInputData, bool gameIn3D)
     {
-        RotateItem(0, -CalculateRotationAngle(direction), 0, item, gameIn3D);
+        RotateItem(0, -CalculateRotationAngle(controlInputData), 0, item, gameIn3D);
     }
 
-    private void RotateWeapon(GameObject item, Vector3 direction, bool gameIn3D)
+    private void RotateWeapon(GameObject item, GameDirector.ControlInputData controlInputData, bool gameIn3D)
     {
-        RotateItem(0, -CalculateRotationAngle(direction), 0, item, gameIn3D);
+        RotateItem(0, -CalculateRotationAngle(controlInputData), 0, item, gameIn3D);
     }
 
-    private float CalculateRotationAngle(Vector3 direction)
+    private float CalculateRotationAngle(GameDirector.ControlInputData controlInputData)
     {
-        float angle = 0;
+        float angle = lastAngle;
+        
+        var x = controlInputData.inputDirection.x;
+        var y = controlInputData.inputDirection.y;
+        
+        if (x == 0 && y > 0)
+        {
+            angle = 0;
+        }
+        else if (x > 0 && y > 0)
+        {
+            angle = -45;
+        }
+        else if (x > 0 && y == 0)
+        {
+            angle = -90;
+        }
+        else if (x > 0 && y < 0)
+        {
+            angle = -135;
+        }
+        else if (x == 0 && y < 0)
+        {
+            angle = 180;
+        }
+        else if (x < 0 && y < 0)
+        {
+            angle = 135;
+        }
+        else if (x < 0 && y == 0)
+        {
+            angle = 90;
+        }
+        else if (x < 0 && y > 0)
+        {
+            angle = 45;
+        }
 
-        if (direction.x != 0)
-        {
-            angle = direction.x * -90;
-        }
-        else if (direction.z < 0)
-        {
-            angle = -180;
-        }
+        lastAngle = angle;
 
         return angle;
     }
