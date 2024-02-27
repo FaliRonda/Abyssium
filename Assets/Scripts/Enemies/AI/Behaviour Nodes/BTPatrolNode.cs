@@ -6,7 +6,6 @@ public class BTPatrolNode : BTNode
 {
     public Enemies.CODE_NAMES enemyCode;
     
-    private float patrolSpeed;
     private int currentWaypointIndex = 0;
     private PatrolNodeParametersSO patrolNodeParameters;
 
@@ -25,7 +24,7 @@ public class BTPatrolNode : BTNode
         }
 
         // Move towards the waypoint
-        enemyTransform.Translate(direction.normalized * (Time.deltaTime * patrolSpeed));
+        enemyTransform.Translate(direction.normalized * (Time.deltaTime * patrolNodeParameters.patrolSpeed));
         enemySprite.flipX = direction.x > 0;
         enemyAnimator.Play("Enemy_walk");
         
@@ -48,8 +47,6 @@ public class BTPatrolNode : BTNode
         {
             Debug.LogError("EnemyParemeters not found in Resources folder.");
         }
-
-        patrolSpeed = patrolNodeParameters.patrolSpeed;
     }
 
     public override void ResetNode()

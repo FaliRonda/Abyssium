@@ -21,7 +21,8 @@ public enum SOUND_TYPE
     BossMusic,
     PjStep,
     EndMusic,
-    PjHitted
+    PjHitted,
+    EnemySpawn
 }
 
 public class AudioService : IService
@@ -61,6 +62,7 @@ public class AudioService : IService
             { SOUND_TYPE.PjStep, audioConfig.pjStep },
             { SOUND_TYPE.EndMusic, audioConfig.endMusic },
             { SOUND_TYPE.PjHitted, audioConfig.pjHitted },
+            { SOUND_TYPE.EnemySpawn, audioConfig.enemySpawn },
         };
     }
 

@@ -9,14 +9,7 @@ public class BTShootNode : BTNode
     public Enemies.CODE_NAMES enemyCode;
     public GameObject bulletPrefab;
     
-    private float bulletLifeTime = 2f;
-    private float bulletSpeed = 1f;
-    
-    private float attackVisibilityDistance;
-    private float shootCD = 1f;
-    
     private bool waitForNextShoot;
-    private bool shootPlaying;
     private ShootNodeParametersSO shootNodeParameters;
 
     public override BTNodeState Execute()
@@ -25,7 +18,7 @@ public class BTShootNode : BTNode
         Vector3 direction = playerTransform.position - enemyTransform.position;
         float distance = direction.magnitude;
 
-        if (distance <= attackVisibilityDistance)
+        if (distance <= shootNodeParameters.attackVisibilityDistance)
         {
             if (!waitForNextShoot)
             {
@@ -49,20 +42,18 @@ public class BTShootNode : BTNode
 
         // Animation
         enemyAnimator.Play("Enemy_attack");
-        shootPlaying = true;
         float animLength = Core.AnimatorHelper.GetAnimLength(enemyAnimator, "Enemy_attack");
-        Core.AnimatorHelper.DoOnAnimationFinish(animLength, () => { shootPlaying = false; });
 
         // CD
         waitForNextShoot = true;
         Sequence shootCDSequence = DOTween.Sequence();
-        shootCDSequence.AppendInterval(shootCD).AppendCallback(() => { waitForNextShoot = false; });
+        shootCDSequence.AppendInterval(shootNodeParameters.shootCD).AppendCallback(() => { waitForNextShoot = false; });
         
         // Shoot
         GameObject bulletGO = Object.Instantiate(bulletPrefab);
         bulletGO.transform.position = enemyTransform.position;
         Bullet bullet = bulletGO.GetComponent<Bullet>();
-        bullet.Initialize(bulletSpeed, bulletLifeTime);
+        bullet.Initialize(shootNodeParameters.bulletSpeed, shootNodeParameters.bulletLifeTime);
         bullet.StartShoot(direction);
     }
     
@@ -82,22 +73,16 @@ public class BTShootNode : BTNode
         {
             Debug.LogError("EnemyParemeters not found in Resources folder.");
         }
-
-        bulletLifeTime = shootNodeParameters.bulletLifeTime;
-        bulletSpeed = shootNodeParameters.bulletSpeed;
-        attackVisibilityDistance = shootNodeParameters.attackVisibilityDistance;
-        shootCD = shootNodeParameters.shootCD;
     }
 
     public override void ResetNode()
     {
         waitForNextShoot = false;
-        shootPlaying = false;
     }
     
     public override void DrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(enemyTransform.position, attackVisibilityDistance);
+        Gizmos.DrawWireSphere(enemyTransform.position, shootNodeParameters.attackVisibilityDistance);
     }
 }

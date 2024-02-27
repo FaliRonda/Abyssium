@@ -21,4 +21,5 @@ public class AudioConfigSO : ScriptableObject
     public AudioClip pjStep;
     public AudioClip endMusic;
     public AudioClip pjHitted;
+    public AudioClip enemySpawn;
 }

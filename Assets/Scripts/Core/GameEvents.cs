@@ -44,4 +44,9 @@ public static class GameEvents
     public struct OrbGot {}
 
     public struct BossCombatReached {}
+
+    public struct EnemySpawned
+    {
+        public EnemyAI enemyAI;
+    }
 }

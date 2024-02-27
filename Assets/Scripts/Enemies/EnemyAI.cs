@@ -140,6 +140,7 @@ public class EnemyAI : MonoBehaviour
         rootNode.ResetNodes();
         isDead = true;
         aIActive = false;
+        gameObject.GetComponentsInChildren<SphereCollider>()[0].enabled = false;
         
         Dropper dropper = GetComponent<Dropper>();
         if (dropper != null && itemToDrop != null)

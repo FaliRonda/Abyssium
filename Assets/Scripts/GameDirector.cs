@@ -67,7 +67,6 @@ public class GameDirector : MonoBehaviour
     private CameraDirector cameraDirector;
     private bool gameIn3D;
     private bool isInitialLoad = true;
-    private bool isFirstFloorLoad = true;
     private bool timeLoopEnded;
     private bool timeLoopPaused;
     private float initialTimeLoopDuration;
@@ -143,6 +142,7 @@ public class GameDirector : MonoBehaviour
             Core.Dialogue.Initialize(canvas);
 
             this.EventSubscribe<GameEvents.EnemyDied>(e => EnemyDied(e.enemy));
+            this.EventSubscribe<GameEvents.EnemySpawned>(e => EnemySpawned(e.enemyAI));
             this.EventSubscribe<GameEvents.NPCVanished>(e => EndDemo());
             this.EventSubscribe<GameEvents.NPCDialogue>(e => HandleConversation(e.started));
             this.EventSubscribe<GameEvents.NPCMemoryGot>(e => Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["MemoryGot"]));
@@ -233,6 +233,12 @@ public class GameDirector : MonoBehaviour
     {
         enemies.Remove(defeatedEnemy);
         CheckEnemiesInScene(true);
+    }
+
+    private void EnemySpawned(EnemyAI spawnEnemy)
+    {
+        spawnEnemy.Initialize(pjGO.transform);
+        enemies.Add(spawnEnemy);
     }
 
     private void UpdateCurrentFloorEndedNPCDialogue(NPC npc, DialogueSO lastDialogue)
@@ -686,7 +692,6 @@ public class GameDirector : MonoBehaviour
         }
         else if (!debugMode)
         {
-            isFirstFloorLoad = true;
             isNewCycleOrLoop = true;
             pj.ResetItems();
             Core.Event.Fire(new GameEvents.LoadInitialFloorSceneEvent());
@@ -896,7 +901,7 @@ public class GameDirector : MonoBehaviour
                         .AppendInterval(2)
                         .AppendCallback(() => { SetGameState(true, enemyDied); });
                 }
-                else
+                else if (!debugMode)
                 {
                     SetGameState(true, enemyDied);
                 }

@@ -6,13 +6,6 @@ public class BTChaseNode : BTNode
 {
     public Enemies.CODE_NAMES enemyCode;
     public bool isShadow;
-    
-    private float visibilityRadius = 10f;
-    private float minimumDistanceToPlayer;
-    private float lightRadius = 10f;
-    
-    private float chaseSpeed;
-    private float chaseInLightSpeed;
 
     private bool currentlyChasing;
     private ChaseNodeParametersSO chaseNodeParameters;
@@ -25,9 +18,9 @@ public class BTChaseNode : BTNode
             chasePivotTransform != null ? chasePivotTransform.position : enemyTransform.position;
         float distanceFromPivot = Vector3.Distance(distanceRootPosition, playerTransform.position);
         float distanceFromEnemy = Vector3.Distance(enemyTransform.position, playerTransform.position);
-        if (distanceFromPivot <= visibilityRadius)
+        if (distanceFromPivot <= chaseNodeParameters.visibilityRadius)
         {
-            if (minimumDistanceToPlayer <= distanceFromEnemy)
+            if (chaseNodeParameters.minimumDistanceToPlayer <= distanceFromEnemy)
             {
                 if (!currentlyChasing)
                 {
@@ -37,11 +30,11 @@ public class BTChaseNode : BTNode
                 // Move towards the player
                 Vector3 direction = playerTransform.position - enemyTransform.position;
 
-                float movementSpeed = chaseSpeed;
+                float movementSpeed = chaseNodeParameters.chaseSpeed;
                 
-                if (isShadow && distanceFromEnemy <= lightRadius && playerTransform.GetComponent<PJ>().inventory.HasLantern)
+                if (isShadow && distanceFromEnemy <= chaseNodeParameters.lightRadius && playerTransform.GetComponent<PJ>().inventory.HasLantern)
                 {
-                    movementSpeed = chaseInLightSpeed;
+                    movementSpeed = chaseNodeParameters.chaseInLightSpeed;
                 }
                 
                 enemyTransform.Translate(direction.normalized * (Time.deltaTime * movementSpeed));
@@ -76,12 +69,6 @@ public class BTChaseNode : BTNode
         {
             Debug.LogError("EnemyParemeters not found in Resources folder.");
         }
-
-        visibilityRadius = chaseNodeParameters.visibilityRadius;
-        minimumDistanceToPlayer = chaseNodeParameters.minimumDistanceToPlayer;
-        lightRadius = chaseNodeParameters.lightRadius;
-        chaseSpeed = chaseNodeParameters.chaseSpeed;
-        chaseInLightSpeed = chaseNodeParameters.chaseInLightSpeed;
     }
 
     public void ResetChasing()
@@ -97,6 +84,6 @@ public class BTChaseNode : BTNode
     public override void DrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(enemyTransform.position, visibilityRadius);
+        Gizmos.DrawWireSphere(enemyTransform.position, chaseNodeParameters.visibilityRadius);
     }
 }

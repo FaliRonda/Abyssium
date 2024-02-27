@@ -76,7 +76,6 @@ public class NarrativeDirector : MonoBehaviour
     {
         if (narrativeDialogueIndex < narrativeDialogues.Length)
         {
-            int charIndex = 0;
             isTypingText = true;
 
             var narrativeDialog = narrativeDialogues[narrativeDialogueIndex];

@@ -30,3 +30,4 @@ MonoBehaviour:
   pjStep: {fileID: 8300000, guid: 77a8efc7b52bbca4ead9b7b66c161d34, type: 3}
   endMusic: {fileID: 8300000, guid: fe3eb3a4cadc6854bb5caa8a1e52799f, type: 3}
   pjHitted: {fileID: 8300000, guid: a660b79c302e50f40ac6ac14648f7030, type: 3}
+  enemySpawn: {fileID: 8300000, guid: 4add9d9498a0f094694662a436d2dee2, type: 3}

@@ -288,7 +288,7 @@ public class PJ : MonoBehaviour
             transform.eulerAngles += anglesIncrement;
         }
 
-        inventory.RotateItems(gameIn3D, lastDirection);
+        inventory.RotateItems(gameIn3D, controlInputData);
     }
 
     private void DoPjMovement(GameDirector.ControlInputData controlInputData)

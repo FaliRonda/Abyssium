@@ -7,13 +7,6 @@ using Sequence = DG.Tweening.Sequence;
 public class BTAttackNode : BTNode
 {
     public Enemies.CODE_NAMES enemyCode;
-    private float attackVisibilityDistance;
-    private float standAfterAttackCD = 1;
-    private float anticipationDistance = 0.5f;
-    private float anticipacionDuration = 0.3f;
-    private float attackMovementDistance = 2f;
-    private float attackMovementDuration = 0.3f;
-    private float enemyRayMaxDistance = .75f;
     
     private bool attackPlaying;
     private Ray ray;
@@ -44,7 +37,7 @@ public class BTAttackNode : BTNode
         ray = new Ray(enemyTransform.position, lastPlayerDirectionBeforeAttack);
         EnemyRaycastHit(Color.green);
         
-        if (playerDistance <= attackVisibilityDistance)
+        if (playerDistance <= attackNodeParameters.attackVisibilityDistance)
         {
             if (!attackPlaying)
             {
@@ -72,15 +65,15 @@ public class BTAttackNode : BTNode
         Vector3 enemyPosition = enemyTransform.position;
 
         Vector3 startPosition = enemyPosition;
-        Vector3 anticipationDirection = (startPosition - targetPosition).normalized * anticipationDistance;
+        Vector3 anticipationDirection = (startPosition - targetPosition).normalized * attackNodeParameters.anticipationDistance;
 
-        attackSequence.Append(enemyTransform.DOMove(enemyPosition + anticipationDirection, anticipacionDuration));
+        attackSequence.Append(enemyTransform.DOMove(enemyPosition + anticipationDirection, attackNodeParameters.anticipacionDuration));
         
-        Vector3 attackDirection = (targetPosition - startPosition).normalized * attackMovementDistance;
+        Vector3 attackDirection = (targetPosition - startPosition).normalized * attackNodeParameters.attackMovementDistance;
 
         attackSequence.AppendCallback(() => enemyAnimator.Play("Enemy_attack"));
         
-        attackSequence.Append(enemyTransform.DOMove(enemyPosition + attackDirection, attackMovementDuration));
+        attackSequence.Append(enemyTransform.DOMove(enemyPosition + attackDirection, attackNodeParameters.attackMovementDuration));
         attackSequence.AppendCallback(AttackEndCD);
         attackSequence.OnKill(() =>
         {
@@ -91,7 +84,7 @@ public class BTAttackNode : BTNode
     private void AttackEndCD()
     {
         var attackingCooldownSequence = DOTween.Sequence();
-        attackingCooldownSequence.AppendInterval(standAfterAttackCD);
+        attackingCooldownSequence.AppendInterval(attackNodeParameters.standAfterAttackCD);
         attackingCooldownSequence.AppendCallback(() =>
         {
             attackPlaying = false;
@@ -101,7 +94,7 @@ public class BTAttackNode : BTNode
     private void EnemyRaycastHit(Color color)
     {
         Debug.DrawRay(ray.origin, ray.direction, color);
-        hits = Physics.RaycastAll(ray.origin, ray.direction, enemyRayMaxDistance);
+        hits = Physics.RaycastAll(ray.origin, ray.direction, attackNodeParameters.enemyRayMaxDistance);
     }
     
     private bool EnemyRayHitLayer(int layer)
@@ -137,14 +130,6 @@ public class BTAttackNode : BTNode
         {
             Debug.LogError("EnemyParemeters not found in Resources folder.");
         }
-
-        attackVisibilityDistance = attackNodeParameters.attackVisibilityDistance;
-        standAfterAttackCD = attackNodeParameters.standAfterAttackCD;
-        anticipationDistance = attackNodeParameters.anticipationDistance;
-        anticipacionDuration = attackNodeParameters.anticipacionDuration;
-        attackMovementDistance = attackNodeParameters.attackMovementDistance;
-        attackMovementDuration = attackNodeParameters.attackMovementDuration;
-        enemyRayMaxDistance = attackNodeParameters.enemyRayMaxDistance;
     }
 
     public override void ResetNode()
@@ -155,6 +140,6 @@ public class BTAttackNode : BTNode
     public override void DrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(enemyTransform.position, attackVisibilityDistance);
+        Gizmos.DrawWireSphere(enemyTransform.position, attackNodeParameters.attackVisibilityDistance);
     }
 }
