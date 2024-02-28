@@ -6,14 +6,18 @@ using Sequence = DG.Tweening.Sequence;
 [CreateAssetMenu(fileName = "New BT Attack Node", menuName = "AI/BT Nodes/Attack Node")]
 public class BTAttackNode : BTNode
 {
-    public Enemies.CODE_NAMES enemyCode;
-    
+    private Enemies.CODE_NAMES enemyCode;
     private bool attackPlaying;
     private Ray ray;
     private RaycastHit[] hits;
     private Sequence attackSequence;
     private Vector3 lastPlayerDirectionBeforeAttack;
     private AttackNodeParametersSO attackNodeParameters;
+
+    public BTAttackNode(Enemies.CODE_NAMES enemyCode)
+    {
+        this.enemyCode = enemyCode;
+    }
 
     public override BTNodeState Execute()
     {

@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BTNode : ScriptableObject
+public abstract class BTNode
 {
     [HideInInspector]
     public Transform enemyTransform;

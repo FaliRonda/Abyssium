@@ -1,14 +1,34 @@
 // Selector node
 
 using System.Collections.Generic;
+using System.Linq;
 
 public class BTSelector : BTNode
 {
-    public BTNode[] nodes;
+    public List<BTNode> nodes;
 
-    public BTSelector(BTNode[] nodes)
+    public BTSelector(EnemyBTNodesSO.BEHAVIOURS[] behaviours, Enemies.CODE_NAMES enemyCode)
     {
-        this.nodes = nodes;
+        nodes = new List<BTNode>();
+        
+        foreach (EnemyBTNodesSO.BEHAVIOURS behaviour in behaviours)
+        {
+            switch (behaviour)
+            {
+                case EnemyBTNodesSO.BEHAVIOURS.Attack:
+                    nodes.Add(new BTAttackNode(enemyCode));
+                    break;
+                case EnemyBTNodesSO.BEHAVIOURS.Chase:
+                    nodes.Add(new BTChaseNode(enemyCode));
+                    break;
+                case EnemyBTNodesSO.BEHAVIOURS.Patrol:
+                    nodes.Add(new BTPatrolNode(enemyCode));
+                    break;
+                case EnemyBTNodesSO.BEHAVIOURS.Shoot:
+                    nodes.Add(new BTShootNode(enemyCode));
+                    break;
+            }
+        }
     }
 
     public override BTNodeState Execute()

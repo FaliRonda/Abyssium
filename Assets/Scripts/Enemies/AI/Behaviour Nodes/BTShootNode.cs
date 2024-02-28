@@ -6,11 +6,14 @@ using Sequence = DG.Tweening.Sequence;
 [CreateAssetMenu(fileName = "New BT Shoot Node", menuName = "AI/BT Nodes/Shoot Node")]
 public class BTShootNode : BTNode
 {
-    public Enemies.CODE_NAMES enemyCode;
-    public GameObject bulletPrefab;
-    
+    private Enemies.CODE_NAMES enemyCode;
     private bool waitForNextShoot;
     private ShootNodeParametersSO shootNodeParameters;
+
+    public BTShootNode(Enemies.CODE_NAMES enemyCode)
+    {
+        this.enemyCode = enemyCode;
+    }
 
     public override BTNodeState Execute()
     {
@@ -50,7 +53,7 @@ public class BTShootNode : BTNode
         shootCDSequence.AppendInterval(shootNodeParameters.shootCD).AppendCallback(() => { waitForNextShoot = false; });
         
         // Shoot
-        GameObject bulletGO = Object.Instantiate(bulletPrefab);
+        GameObject bulletGO = Object.Instantiate(shootNodeParameters.bulletPrefab);
         bulletGO.transform.position = enemyTransform.position;
         Bullet bullet = bulletGO.GetComponent<Bullet>();
         bullet.Initialize(shootNodeParameters.bulletSpeed, shootNodeParameters.bulletLifeTime);

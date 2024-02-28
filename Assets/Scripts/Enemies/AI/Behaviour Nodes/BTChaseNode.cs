@@ -4,11 +4,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New BT Chase Node", menuName = "AI/BT Nodes/Chase Node")]
 public class BTChaseNode : BTNode
 {
-    public Enemies.CODE_NAMES enemyCode;
     public bool isShadow;
 
+    private Enemies.CODE_NAMES enemyCode;
     private bool currentlyChasing;
     private ChaseNodeParametersSO chaseNodeParameters;
+
+    public BTChaseNode(Enemies.CODE_NAMES enemyCode)
+    {
+        this.enemyCode = enemyCode;
+    }
 
 
     public override BTNodeState Execute()

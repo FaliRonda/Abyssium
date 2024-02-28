@@ -60,7 +60,7 @@ public class EnemyAI : MonoBehaviour
         defaultEnemySpriteRotation = enemySprite.transform.rotation;
 
         // Create the behavior tree
-        rootNode = new BTSelector(behaviorNodeContainer.behaviorNodes.ToArray());
+        rootNode = new BTSelector(behaviorNodeContainer.behaviorNodes.ToArray(), behaviorNodeContainer.enemyCode);
         
         parameters = new Dictionary<string, object>
         {

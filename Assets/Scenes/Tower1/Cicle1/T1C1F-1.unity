@@ -58449,7 +58449,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218217565279347703, guid: e8a6425ddff61664086d696f7ab379d3, type: 3}
       propertyPath: m_Name
-      value: DarkHunter
+      value: DarkHunterSlower
       objectReference: {fileID: 0}
     - target: {fileID: 3218217565279347703, guid: e8a6425ddff61664086d696f7ab379d3, type: 3}
       propertyPath: m_IsActive
@@ -58462,7 +58462,7 @@ PrefabInstance:
     - target: {fileID: 3398849607486738090, guid: e8a6425ddff61664086d696f7ab379d3, type: 3}
       propertyPath: behaviorNodeContainer
       value: 
-      objectReference: {fileID: 11400000, guid: 4e28c0de73c98af4cb5c0ee75ff1ffa6, type: 2}
+      objectReference: {fileID: 11400000, guid: 9fdff920c863fc0419f1b3c486c258b0, type: 2}
     - target: {fileID: 6404045028298958565, guid: e8a6425ddff61664086d696f7ab379d3, type: 3}
       propertyPath: m_RootOrder
       value: -1

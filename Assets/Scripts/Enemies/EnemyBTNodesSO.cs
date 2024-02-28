@@ -5,5 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New EnemyBTNodes", menuName = "AI/Enemy Behavior Tree Nodes Conf")]
 public class EnemyBTNodesSO : ScriptableObject
 {
-    public List<BTNode> behaviorNodes = new List<BTNode>();
+    public Enemies.CODE_NAMES enemyCode;
+    
+    public enum BEHAVIOURS {
+        Attack,
+        Chase,
+        Patrol,
+        Shoot
+    }
+    
+    public List<BEHAVIOURS> behaviorNodes = new List<BEHAVIOURS>();
 }
