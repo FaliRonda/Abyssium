@@ -41,9 +41,11 @@ public class EnemyAI : MonoBehaviour
     private SpriteRenderer enemySprite;
     private SpriteRenderer shadowSprite;
     private Animator enemyAnimator;
+    private ParticleSystem enemyDamagedParticles;
 
     private Quaternion defaultEnemySpriteRotation;
-    private SphereCollider attackCollider;
+    [HideInInspector]
+    public SphereCollider attackCollider;
     private float damagedGamepadVibrationIntensity = 0.5f;
     private float damagedGamepadVibrationDuration = 0.2f;
 
@@ -57,7 +59,8 @@ public class EnemyAI : MonoBehaviour
         enemySprite = enemySprites[0];
         shadowSprite = enemySprites[1];
         enemyAnimator = GetComponentInChildren<Animator>();
-        attackCollider = gameObject.GetComponentsInChildren<SphereCollider>()[1];
+        enemyDamagedParticles = GetComponentInChildren<ParticleSystem>();
+        attackCollider = gameObject.GetComponentsInChildren<SphereCollider>()[0];
 
         defaultEnemySpriteRotation = enemySprite.transform.rotation;
 
@@ -165,6 +168,7 @@ public class EnemyAI : MonoBehaviour
     private void PlayDamagedAnimation()
     {
         damagedBlinkingCounter = damageBlinkingDuration;
+        enemyDamagedParticles.Play();
         StartCoroutine(SpriteBlinking());
     }
 
@@ -210,12 +214,12 @@ public class EnemyAI : MonoBehaviour
 
     public void ActiveAttackTrigger()
     {
-        attackCollider.enabled = true;
+        // attackCollider.enabled = true;
     }
 
     public void DeactiveAttackTrigger()
     {
-        attackCollider.enabled = false;
+        // attackCollider.enabled = false;
     }
 
     public void OnCollisionEnter(Collision other)

@@ -98,12 +98,18 @@ public class BTAttackNode : BTNode
         {
             UpdateWhiteHitValue(1);
             enemyAnimator.Play("Enemy_attack");
+            enemyAI.attackCollider.isTrigger = false;
         });
         
         attackSequence.Append(enemyTransform.DOMove(enemyPosition + attackDirection, attackNodeParameters.attackMovementDuration));
-        attackSequence.AppendCallback(AttackEndCD);
+        attackSequence.AppendCallback(() =>
+        {
+            enemyAI.attackCollider.isTrigger = true;
+            AttackEndCD();
+        });
         attackSequence.OnKill(() =>
         {
+            enemyAI.attackCollider.isTrigger = true;
             UpdateWhiteHitValue(1);
             AttackEndCD();
         });
