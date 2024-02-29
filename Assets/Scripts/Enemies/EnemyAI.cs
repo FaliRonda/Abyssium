@@ -25,6 +25,7 @@ public class EnemyAI : MonoBehaviour
     public float knockbackMovementFactor = 1f;
     public float spriteBlinkingFrecuency = 0.15f;
     public float damageBlinkingDuration = 1f;
+    public float stunnedCD = 2f;
     private float invulnerableCD = 0.1f;
     
     public float damagedGamepadVibrationIntensity = 0.5f;
@@ -36,7 +37,9 @@ public class EnemyAI : MonoBehaviour
     private Dictionary<string, object> parameters;
     
     [HideInInspector]
-    public bool waitForNextAttack;
+    public bool attackInCD;
+    [HideInInspector]
+    public bool enemyStunned;
     private bool spriteBlinking = false;
     private float damagedBlinkingCounter;
     private bool enemyInvulnerable;
@@ -50,6 +53,7 @@ public class EnemyAI : MonoBehaviour
     private Quaternion defaultEnemySpriteRotation;
     [HideInInspector]
     public SphereCollider attackCollider;
+
 
     public void Initialize(Transform pjTransform)
     {
@@ -116,6 +120,17 @@ public class EnemyAI : MonoBehaviour
             PlayDamagedAnimation();
             PlayDamagedKnockbackAnimation();
             rootNode.ResetNodes();
+
+            if (!enemyStunned)
+            {
+                enemyStunned = true;
+                
+                Sequence stunnedSequence = DOTween.Sequence();
+                stunnedSequence
+                    .AppendInterval(stunnedCD)
+                    .AppendCallback(() => enemyStunned = false);
+            }
+            
             Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
             Core.CameraEffects.StartShakingEffect(damagedCamShakeIntensity, damagedCamShakeFrequency, damagedCamShakeDuration);
             

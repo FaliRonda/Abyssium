@@ -18,7 +18,7 @@ public class BTChaseNode : BTNode
 
     public override BTNodeState Execute()
     {
-        if (enemyAI.waitForNextAttack)
+        if (enemyAI.attackInCD || enemyAI.enemyStunned)
         {
             return BTNodeState.Failure;
         }

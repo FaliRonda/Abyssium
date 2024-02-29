@@ -18,35 +18,41 @@ public class BTPatrolNode : BTNode
 
     public override BTNodeState Execute()
     {
-        if (isWalking)
+        if (!enemyAI.enemyStunned)
         {
-            // Move towards the current waypoint
-            Vector3 direction = nextDestination - enemyTransform.position;
-            float distance = direction.magnitude;
-
-            if (distance < 0.1f)
+            if (isWalking)
             {
-                isWalking = false;
-                return BTNodeState.Success;
-            }
+                // Move towards the current waypoint
+                Vector3 direction = nextDestination - enemyTransform.position;
+                float distance = direction.magnitude;
 
-            // Move towards the waypoint
-            enemyTransform.Translate(direction.normalized * (Time.deltaTime * patrolNodeParameters.patrolSpeed));
-            enemySprite.flipX = direction.x > 0;
-            enemyAnimator.Play("Enemy_walk");
-            
-            return BTNodeState.Running;
+                if (distance < 0.1f)
+                {
+                    isWalking = false;
+                    return BTNodeState.Success;
+                }
+
+                // Move towards the waypoint
+                enemyTransform.Translate(direction.normalized * (Time.deltaTime * patrolNodeParameters.patrolSpeed));
+                enemySprite.flipX = direction.x > 0;
+                enemyAnimator.Play("Enemy_walk");
+                
+                return BTNodeState.Running;
+            }
+            else if(!calculatingNextDestination)
+            {
+                calculatingNextDestination = true;
+                WaitAndCalculateDestination();
+                return BTNodeState.Running;
+            }
+            else
+            {
+                return BTNodeState.Running;
+            }
         }
-        else if(!calculatingNextDestination)
-        {
-            calculatingNextDestination = true;
-            WaitAndCalculateDestination();
-            return BTNodeState.Running;
-        }
-        else
-        {
-            return BTNodeState.Running;
-        }
+
+        enemyAnimator.Play("Enemy_idle");
+        return BTNodeState.Running;
     }
 
     private void WaitAndCalculateDestination()

@@ -14,6 +14,8 @@ public class BTAttackNode : BTNode
     private Vector3 lastPlayerDirectionBeforeAttack;
     private AttackNodeParametersSO attackNodeParameters;
     private MaterialPropertyBlock propertyBlock;
+    private Sequence standAfterAttackSequence;
+    private Sequence waitForNextAttackSequence;
 
     public BTAttackNode(Enemies.CODE_NAMES enemyCode)
     {
@@ -44,7 +46,7 @@ public class BTAttackNode : BTNode
         
         if (playerDistance <= attackNodeParameters.attackVisibilityDistance)
         {
-            if (enemyAI.waitForNextAttack)
+            if (enemyAI.attackInCD || enemyAI.enemyStunned)
             {
                 return BTNodeState.Failure;
             }
@@ -54,18 +56,23 @@ public class BTAttackNode : BTNode
                 lastPlayerDirectionBeforeAttack = playerDirection;
                 Attack(playerDirection);
 
-                enemyAI.waitForNextAttack = true;
-                
-                Sequence waitForNextAttackSequence = DOTween.Sequence();
-                waitForNextAttackSequence
-                    .AppendInterval(attackNodeParameters.waitForNextAttackCD)
-                    .AppendCallback(() => { enemyAI.waitForNextAttack = false; });
+                WaitForNextAttack();
             }
 
             return BTNodeState.Success;
         }
         
         return BTNodeState.Failure;
+    }
+
+    private void WaitForNextAttack()
+    {
+        enemyAI.attackInCD = true;
+
+        waitForNextAttackSequence = DOTween.Sequence();
+        waitForNextAttackSequence
+            .AppendInterval(attackNodeParameters.waitForNextAttackCD)
+            .AppendCallback(() => { enemyAI.attackInCD = false; });
     }
 
     private void Attack(Vector3 direction)
@@ -86,32 +93,32 @@ public class BTAttackNode : BTNode
         
         float whiteHitTargetValue = 1 - attackNodeParameters.whiteHitPercentage; 
 
-        attackSequence.Append(enemyTransform.DOMove(enemyPosition + anticipationDirection, attackNodeParameters.anticipacionDuration));
-        attackSequence.Join(DOTween.To(() => 1, x => {
-            whiteHitTargetValue = x;
-            UpdateWhiteHitValue(x);
-        }, whiteHitTargetValue, attackNodeParameters.anticipacionDuration));     
+        attackSequence
+            .AppendCallback(() => { enemyAnimator.Play("Enemy_attack"); })
+            .Append(enemyTransform.DOMove(enemyPosition + anticipationDirection, attackNodeParameters.anticipacionDuration))
+            .Join(DOTween.To(() => 1, x => {
+                whiteHitTargetValue = x;
+                UpdateWhiteHitValue(x);
+            }, whiteHitTargetValue, attackNodeParameters.anticipacionDuration));     
         
         Vector3 attackDirection = (targetPosition - startPosition).normalized * attackNodeParameters.attackMovementDistance;
 
-        attackSequence.AppendCallback(() =>
-        {
-            UpdateWhiteHitValue(1);
-            enemyAnimator.Play("Enemy_attack");
-            enemyAI.attackCollider.isTrigger = false;
-        });
-        
         attackSequence
+            .AppendCallback(() =>
+            {
+                UpdateWhiteHitValue(1);
+                enemyAI.attackCollider.isTrigger = false;
+            })
             .Append(enemyTransform.DOMove(enemyPosition + attackDirection, attackNodeParameters.attackMovementDuration))
             .AppendCallback(StandAfterAttack)
             .AppendInterval(0.1f)
-            .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; });
-        attackSequence.OnKill(() =>
-        {
-            enemyAI.attackCollider.isTrigger = true;
-            UpdateWhiteHitValue(1);
-            StandAfterAttack();
-        });
+            .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; })
+            .OnKill(() =>
+            {
+                enemyAI.attackCollider.isTrigger = true;
+                UpdateWhiteHitValue(1);
+                StandAfterAttack();
+            });
     }
 
     private void UpdateWhiteHitValue(float value)
@@ -129,9 +136,9 @@ public class BTAttackNode : BTNode
 
     private void StandAfterAttack()
     {
-        var attackingCooldownSequence = DOTween.Sequence();
-        attackingCooldownSequence.AppendInterval(attackNodeParameters.standAfterAttackCD);
-        attackingCooldownSequence.AppendCallback(() =>
+        standAfterAttackSequence = DOTween.Sequence();
+        standAfterAttackSequence.AppendInterval(attackNodeParameters.standAfterAttackCD);
+        standAfterAttackSequence.AppendCallback(() =>
         {
             attackPlaying = false;
         });
