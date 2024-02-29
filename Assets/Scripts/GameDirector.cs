@@ -788,7 +788,7 @@ public class GameDirector : MonoBehaviour
         {
             timeLoopDuration -= 40;
         }
-        Core.CameraEffects.ShakeCamera(1f, 0.5f);
+        Core.CameraEffects.StartShakingEffect(1f, 0.2f, 0.5f);
         if (neverDamaged)
         {
             neverDamaged = false;
@@ -806,7 +806,7 @@ public class GameDirector : MonoBehaviour
 
         angryGodSequence
             .AppendCallback(() => { Core.Audio.Play(SOUND_TYPE.AngryGod, 1, 0, 0.1f); })
-            .AppendCallback(() => { Core.CameraEffects.ShakeCamera(2f, 2f); })
+            .AppendCallback(() => { Core.CameraEffects.StartShakingEffect(2f, 0.2f, 2f); })
             .AppendInterval(3f)
             .AppendCallback(() =>
             {
@@ -831,13 +831,13 @@ public class GameDirector : MonoBehaviour
                 .AppendCallback(() =>
                 {
                     Core.Audio.Play(SOUND_TYPE.BossDoorClosed, 1, 0, 0.05f);
-                    Core.CameraEffects.ShakeCamera(3, 1);
+                    Core.CameraEffects.StartShakingEffect(3, 0.2f, 1);
                     FindObjectOfType<BossDoor>().Appear();
                 })
                 .AppendInterval(2)
                 .AppendCallback(() =>
                 {
-                    Core.CameraEffects.ShakeCamera(3, 1);
+                    Core.CameraEffects.StartShakingEffect(3, 0.2f, 1);
                     Core.Audio.Play(SOUND_TYPE.AngryGod, 3, 0, 0.05f);
                 })
                 .AppendInterval(2)
@@ -863,7 +863,7 @@ public class GameDirector : MonoBehaviour
 
                 angryGodSequence
                     .AppendCallback(() => { Core.Audio.Play(SOUND_TYPE.AngryGod, 1, 0, 0.1f); })
-                    .AppendCallback(() => { Core.CameraEffects.ShakeCamera(2f, 1f); })
+                    .AppendCallback(() => { Core.CameraEffects.StartShakingEffect(2f, 0.2f, 1f); })
                     .AppendInterval(2f)
                     .AppendCallback(() =>
                     {
@@ -890,12 +890,12 @@ public class GameDirector : MonoBehaviour
 
                     bossdefeated
                         .AppendCallback(() => { Core.Audio.Play(SOUND_TYPE.AngryGod, 2.5f, 0, 0.1f); })
-                        .AppendCallback(() => { Core.CameraEffects.ShakeCamera(1.75f, 2.5f); })
+                        .AppendCallback(() => { Core.CameraEffects.StartShakingEffect(1.75f, 0.2f, 2.5f); })
                         .AppendInterval(4)
                         .AppendCallback(() =>
                         {
                             Core.Audio.Play(SOUND_TYPE.BossDoorClosed, 1, 0, 0.05f);
-                            Core.CameraEffects.ShakeCamera(3, 1);
+                            Core.CameraEffects.StartShakingEffect(3, 0.2f, 1);
                             FindObjectOfType<BossDoor>().Disappear();
                         })
                         .AppendInterval(2)

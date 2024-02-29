@@ -90,7 +90,7 @@ public class BTAttackNode : BTNode
         attackSequence.Join(DOTween.To(() => 1, x => {
             whiteHitTargetValue = x;
             UpdateWhiteHitValue(x);
-        }, whiteHitTargetValue, attackNodeParameters.anticipacionDuration));        
+        }, whiteHitTargetValue, attackNodeParameters.anticipacionDuration));     
         
         Vector3 attackDirection = (targetPosition - startPosition).normalized * attackNodeParameters.attackMovementDistance;
 

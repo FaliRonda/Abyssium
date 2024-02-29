@@ -4,6 +4,7 @@ using DG.Tweening;
 using Ju.Extensions;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Sequence = DG.Tweening.Sequence;
 
 public class EnemyAI : MonoBehaviour
@@ -17,14 +18,17 @@ public class EnemyAI : MonoBehaviour
     public GameObject itemToDrop;
 
     public float damagedCamShakeIntensity = 2f;
-    public float damagedCamShakeDuration = 0.3f;
+    public float damagedCamShakeFrequency = 0.3f;
+    public float damagedCamShakeDuration = 0.5f;
     
     // Attack distance
     public float knockbackMovementFactor = 1f;
     public float spriteBlinkingFrecuency = 0.15f;
     public float damageBlinkingDuration = 1f;
     private float invulnerableCD = 0.1f;
-    public Transform[] waypoints;
+    
+    public float damagedGamepadVibrationIntensity = 0.5f;
+    public float damagedGamepadVibrationDuration = 0.2f;
     
     // Behavior tree root node
     public EnemyBTNodesSO behaviorNodeContainer;
@@ -46,8 +50,6 @@ public class EnemyAI : MonoBehaviour
     private Quaternion defaultEnemySpriteRotation;
     [HideInInspector]
     public SphereCollider attackCollider;
-    private float damagedGamepadVibrationIntensity = 0.5f;
-    private float damagedGamepadVibrationDuration = 0.2f;
 
     public void Initialize(Transform pjTransform)
     {
@@ -73,7 +75,6 @@ public class EnemyAI : MonoBehaviour
             { "EnemyTransform", transform },
             { "PlayerTransform", playerTransform },
             { "ChasePivotTransform", chasePivotTransform },
-            { "Waypoints", waypoints },
             { "EnemyAnimator", enemyAnimator },
             { "EnemySprite", enemySprite },
             // Agrega otros parámetros según sea necesario
@@ -116,7 +117,7 @@ public class EnemyAI : MonoBehaviour
             PlayDamagedKnockbackAnimation();
             rootNode.ResetNodes();
             Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
-            Core.CameraEffects.ShakeCamera(damagedCamShakeIntensity, damagedCamShakeDuration);
+            Core.CameraEffects.StartShakingEffect(damagedCamShakeIntensity, damagedCamShakeFrequency, damagedCamShakeDuration);
             
             if (!isDead)
             {

@@ -31,11 +31,14 @@ public class PJ : MonoBehaviour
     public float deathFrameDuration = 0.5f;
     public float knockbackMovementFactor = 2f;
     public float damagedCamShakeIntensity = 2f;
+    public float damageCamShakeFrequency = 0.3f;
     public float damagedCamShakeDuration = 0.3f;
     public float damageBlinkingDuration = 1f;
     public float spriteBlinkingFrecuency = 0.15f;
     private float damagedBlinkingCounter;
     private bool spriteBlinking;
+    public float damagedGamepadVibrationIntensity = 1f;
+    public float damagedGamepadVibrationDuration = 0.2f;
     
     [Header("DEBUG")]
     public bool debugAttack;
@@ -69,8 +72,6 @@ public class PJ : MonoBehaviour
     private bool stepReady = true;
     private Sequence damagedSequence;
     private Sequence impulseSequence;
-    private float damagedGamepadVibrationIntensity = 1f;
-    private float damagedGamepadVibrationDuration = 0.2f;
 
     #region Unity events
     
@@ -615,7 +616,7 @@ public class PJ : MonoBehaviour
             {
                 PlayDamagedKnockbackAnimation(damager);
                 Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
-                Core.CameraEffects.ShakeCamera(damagedCamShakeIntensity, damagedCamShakeDuration);
+                Core.CameraEffects.StartShakingEffect(damagedCamShakeIntensity, damageCamShakeFrequency, damagedCamShakeDuration);
                 
             });
             

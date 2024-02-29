@@ -3636,19 +3636,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: aIActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: lifeAmount
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: behaviorNodeContainer
       value: 
       objectReference: {fileID: 11400000, guid: b789166367ac9ea4386008d79b4dab14, type: 2}
     - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
-      propertyPath: damagedCamShakeDuration
-      value: 0.5
+      propertyPath: damagedGamepadVibrationDuration
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
-      propertyPath: damagedCamShakeIntensity
-      value: 0.15
+      propertyPath: damagedGamepadVibrationIntensity
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
