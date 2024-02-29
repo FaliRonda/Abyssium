@@ -21,13 +21,14 @@ public class CameraEffectsService : IService
     {
         this.cameraTD = cameraTD;
         this.camera3D = camera3D;
+        originalScreenX = 0.5f;
+        originalScreenY = 0.5f;
     }
+    
     public void StartShakingEffect(float shakeIntensity, float shakeFrequency, float shakeDuration)
     {
         shakingActive = true;
         cameraToShake = GameState.gameIn3D ? camera3D : cameraTD;
-        originalScreenX = cameraToShake.GetCinemachineComponent<CinemachineFramingTransposer>().m_ScreenX;
-        originalScreenY = cameraToShake.GetCinemachineComponent<CinemachineFramingTransposer>().m_ScreenY;
 
         Sequence shakeDurationCDSequence = DOTween.Sequence();
         shakeDurationCDSequence
@@ -52,11 +53,11 @@ public class CameraEffectsService : IService
             .Append(DOTween.To(() => 0,
                 x => cameraToShake.GetCinemachineComponent<CinemachineFramingTransposer>().m_ScreenX =
                     originalScreenX + x, randomValue.x * shakeIntensity, shakeFrequency)
-            .SetEase(Ease.InOutQuad))
+            .SetEase(Ease.OutBack))
             .Join(DOTween.To(() => 0,
                     x => cameraToShake.GetCinemachineComponent<CinemachineFramingTransposer>().m_ScreenY =
                         originalScreenY + x, randomValue.y * shakeIntensity, shakeFrequency)
-                .SetEase(Ease.InOutQuad))
+                .SetEase(Ease.OutBack))
             .OnComplete(() =>
             {
                 // Si hay una duración de efecto especificada, iniciamos el siguiente movimiento de sacudida.
@@ -74,14 +75,14 @@ public class CameraEffectsService : IService
                     .m_ScreenX = x,
                 originalScreenX,
                 shakeDuration)
-            .SetEase(Ease.InOutQuad);
+            .SetEase(Ease.OutBack);
 
         DOTween.To(() => originalScreenY,
                 x => cameraToShake.GetCinemachineComponent<CinemachineFramingTransposer>()
                     .m_ScreenY = x,
                 originalScreenY,
                 shakeDuration)
-            .SetEase(Ease.InOutQuad);
+            .SetEase(Ease.OutBack);
     }
 
     public void ZoomOut(int zoomDuration)

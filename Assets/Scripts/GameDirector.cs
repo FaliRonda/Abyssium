@@ -779,7 +779,6 @@ public class GameDirector : MonoBehaviour
             Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.1f);
         });
         
-        
         if (pj.inventory.HasWeapon || IsSceneT1C1Fm1)
         {
             timeLoopDuration -= 10;
@@ -788,7 +787,7 @@ public class GameDirector : MonoBehaviour
         {
             timeLoopDuration -= 40;
         }
-        Core.CameraEffects.StartShakingEffect(1f, 0.2f, 0.5f);
+
         if (neverDamaged)
         {
             neverDamaged = false;
