@@ -13,6 +13,7 @@ public class BTAttackNode : BTNode
     private Sequence attackSequence;
     private Vector3 lastPlayerDirectionBeforeAttack;
     private AttackNodeParametersSO attackNodeParameters;
+    private MaterialPropertyBlock propertyBlock;
 
     public BTAttackNode(Enemies.CODE_NAMES enemyCode)
     {
@@ -82,19 +83,43 @@ public class BTAttackNode : BTNode
 
         Vector3 startPosition = enemyPosition;
         Vector3 anticipationDirection = (startPosition - targetPosition).normalized * attackNodeParameters.anticipationDistance;
+        
+        float whiteHitTargetValue = 1 - attackNodeParameters.whiteHitPercentage; 
 
         attackSequence.Append(enemyTransform.DOMove(enemyPosition + anticipationDirection, attackNodeParameters.anticipacionDuration));
+        attackSequence.Join(DOTween.To(() => 1, x => {
+            whiteHitTargetValue = x;
+            UpdateWhiteHitValue(x);
+        }, whiteHitTargetValue, attackNodeParameters.anticipacionDuration));        
         
         Vector3 attackDirection = (targetPosition - startPosition).normalized * attackNodeParameters.attackMovementDistance;
 
-        attackSequence.AppendCallback(() => enemyAnimator.Play("Enemy_attack"));
+        attackSequence.AppendCallback(() =>
+        {
+            UpdateWhiteHitValue(1);
+            enemyAnimator.Play("Enemy_attack");
+        });
         
         attackSequence.Append(enemyTransform.DOMove(enemyPosition + attackDirection, attackNodeParameters.attackMovementDuration));
         attackSequence.AppendCallback(AttackEndCD);
         attackSequence.OnKill(() =>
         {
+            UpdateWhiteHitValue(1);
             AttackEndCD();
         });
+    }
+
+    private void UpdateWhiteHitValue(float value)
+    {
+        if (propertyBlock == null)
+            propertyBlock = new MaterialPropertyBlock();
+        
+        Renderer renderer = enemySprite.GetComponent<Renderer>();
+        
+        Material mat = renderer.material;
+        mat.SetFloat("_AlphaHit", value);
+
+        renderer.material = mat;
     }
 
     private void AttackEndCD()

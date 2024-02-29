@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StalkerPatrolNodeParameters
   m_EditorClassIdentifier: 
   patrolSpeed: 3
-  innerRadius: 3
-  outerRadius: 5
+  innerRadius: 2
+  outerRadius: 4
   minWait: 0.2
-  maxWait: 1
+  maxWait: 0.5

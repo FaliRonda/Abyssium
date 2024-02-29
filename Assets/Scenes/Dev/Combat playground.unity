@@ -3570,6 +3570,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1914624926}
     m_Modifications:
+    - target: {fileID: 1900846550412069827, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1900846550412069827, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1900846550412069827, guid: 905d89633bafe1646942a702e46036d0, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3368591435065734892, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: m_Name
       value: Stalker

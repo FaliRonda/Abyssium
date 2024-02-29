@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Enemy AttackNodeParameters", menuName = "AI/Parameters/Enemy Attack Node Parameters")]
 public class AttackNodeParametersSO : ScriptableObject
@@ -11,4 +12,5 @@ public class AttackNodeParametersSO : ScriptableObject
     public float attackMovementDuration = 0.2f;
     public float enemyRayMaxDistance = .25f;
     public float waitForNextAttackCD = 3f;
+    public float whiteHitPercentage = 0.25f;
 }
