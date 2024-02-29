@@ -115,9 +115,13 @@ public class BTAttackNode : BTNode
             .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; })
             .OnKill(() =>
             {
-                enemyAI.attackCollider.isTrigger = true;
                 UpdateWhiteHitValue(1);
                 StandAfterAttack();
+
+                Sequence waitAndDisableColliderSequence = DOTween.Sequence();
+                waitAndDisableColliderSequence
+                    .AppendInterval(0.1f)
+                    .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; });
             });
     }
 
