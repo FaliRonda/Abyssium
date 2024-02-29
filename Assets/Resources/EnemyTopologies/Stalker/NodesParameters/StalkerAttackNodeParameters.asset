@@ -12,4 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7ba407ffd758524fb65764bc42f3869, type: 3}
   m_Name: StalkerAttackNodeParameters
   m_EditorClassIdentifier: 
-  standAfterAttackCD: 1.5
+  attackVisibilityDistance: 2.75
+  standAfterAttackCD: 1
+  anticipationDistance: 0.4
+  anticipacionDuration: 0.75
+  attackMovementDistance: 2.5
+  attackMovementDuration: 0.2
+  enemyRayMaxDistance: 0.25
+  waitForNextAttackCD: 5
