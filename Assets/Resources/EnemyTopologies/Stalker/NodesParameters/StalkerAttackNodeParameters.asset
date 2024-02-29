@@ -20,3 +20,4 @@ MonoBehaviour:
   attackMovementDuration: 0.2
   enemyRayMaxDistance: 0.25
   waitForNextAttackCD: 5
+  whiteHitPercentage: 0.25
