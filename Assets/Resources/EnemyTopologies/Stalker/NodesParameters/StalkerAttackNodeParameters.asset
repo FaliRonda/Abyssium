@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: StalkerAttackNodeParameters
   m_EditorClassIdentifier: 
   attackVisibilityDistance: 2.75
-  standAfterAttackCD: 1
+  standAfterAttackCD: 0.9
   anticipationDistance: 0.4
-  anticipacionDuration: 0.5
+  anticipacionDuration: 0.3
   attackMovementDistance: 2.5
-  attackMovementDuration: 0.2
+  attackMovementDuration: 0.15
   enemyRayMaxDistance: 0.25
-  waitForNextAttackCD: 5
+  waitForNextAttackCD: 3
   whiteHitPercentage: 0.25

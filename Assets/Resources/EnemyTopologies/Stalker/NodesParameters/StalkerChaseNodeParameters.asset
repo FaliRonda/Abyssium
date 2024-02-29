@@ -15,5 +15,5 @@ MonoBehaviour:
   visibilityRadius: 5
   minimumDistanceToPlayer: 0.8
   lightRadius: 2
-  chaseSpeed: 3
+  chaseSpeed: 3.25
   chaseInLightSpeed: 0.5
