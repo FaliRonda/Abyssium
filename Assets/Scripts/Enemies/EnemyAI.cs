@@ -31,11 +31,12 @@ public class EnemyAI : MonoBehaviour
     private BTSelector rootNode;
     private Dictionary<string, object> parameters;
     
+    [HideInInspector]
+    public bool waitForNextAttack;
     private bool spriteBlinking = false;
     private float damagedBlinkingCounter;
     private bool enemyInvulnerable;
     private bool isDead = false;
-    public bool waitForNextAttack;
     
     private SpriteRenderer enemySprite;
     private SpriteRenderer shadowSprite;
