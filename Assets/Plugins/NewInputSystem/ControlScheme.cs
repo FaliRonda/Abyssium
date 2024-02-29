@@ -216,7 +216,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d2df2604-91ff-4d2d-8429-a7f0aea4609d"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",

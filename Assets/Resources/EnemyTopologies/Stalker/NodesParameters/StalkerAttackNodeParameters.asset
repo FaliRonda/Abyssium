@@ -15,7 +15,7 @@ MonoBehaviour:
   attackVisibilityDistance: 2.75
   standAfterAttackCD: 0.9
   anticipationDistance: 0.4
-  anticipacionDuration: 0.3
+  anticipacionDuration: 0.35
   attackMovementDistance: 2.5
   attackMovementDuration: 0.15
   enemyRayMaxDistance: 0.25

@@ -610,12 +610,12 @@ public class PJ : MonoBehaviour
             
             Core.Audio.Play(SOUND_TYPE.PjHitted, 1, 0, 0.5f);
             Core.Event.Fire(new GameEvents.PlayerDamaged(){deathFrameDuration = deathFrameDuration});
+            Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
             
             Sequence sequence = DOTween.Sequence();
             sequence.AppendInterval(deathFrameDuration).AppendCallback(() =>
             {
                 PlayDamagedKnockbackAnimation(damager);
-                Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
                 Core.CameraEffects.StartShakingEffect(damagedCamShakeIntensity, damageCamShakeFrequency, damagedCamShakeDuration);
                 
             });
