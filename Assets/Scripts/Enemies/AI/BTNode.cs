@@ -6,13 +6,13 @@ using UnityEngine;
 public abstract class BTNode
 {
     [HideInInspector]
+    public EnemyAI enemyAI;
+    [HideInInspector]
     public Transform enemyTransform;
     [HideInInspector]
     public Transform playerTransform;
     [HideInInspector]
     public Transform chasePivotTransform;
-    [HideInInspector]
-    public Transform[] waypoints;
     [HideInInspector]
     public Animator enemyAnimator;
     [HideInInspector]
@@ -25,14 +25,14 @@ public abstract class BTNode
     public virtual void InitializeNode(Dictionary<string, object> parameters)
     {
         object parameterObj;
+        parameters.TryGetValue("EnemyAI", out parameterObj);
+        enemyAI = parameterObj as EnemyAI;
         parameters.TryGetValue("EnemyTransform", out parameterObj);
         enemyTransform = parameterObj as Transform;
         parameters.TryGetValue("PlayerTransform", out parameterObj);
         playerTransform = parameterObj as Transform;
         parameters.TryGetValue("ChasePivotTransform", out parameterObj);
         chasePivotTransform = parameterObj as Transform;
-        parameters.TryGetValue("Waypoints", out parameterObj);
-        waypoints = parameterObj as Transform[];
         parameters.TryGetValue("EnemyAnimator", out parameterObj);
         enemyAnimator = parameterObj as Animator;
         parameters.TryGetValue("EnemySprite", out parameterObj);

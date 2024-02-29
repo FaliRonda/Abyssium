@@ -43,10 +43,22 @@ public class BTAttackNode : BTNode
         
         if (playerDistance <= attackNodeParameters.attackVisibilityDistance)
         {
+            if (enemyAI.waitForNextAttack)
+            {
+                return BTNodeState.Failure;
+            }
+            
             if (!attackPlaying)
             {
                 lastPlayerDirectionBeforeAttack = playerDirection;
                 Attack(playerDirection);
+
+                enemyAI.waitForNextAttack = true;
+                
+                Sequence waitForNextAttackSequence = DOTween.Sequence();
+                waitForNextAttackSequence
+                    .AppendInterval(attackNodeParameters.waitForNextAttackCD)
+                    .AppendCallback(() => { enemyAI.waitForNextAttack = false; });
             }
 
             return BTNodeState.Success;

@@ -35,6 +35,7 @@ public class EnemyAI : MonoBehaviour
     private float damagedBlinkingCounter;
     private bool enemyInvulnerable;
     private bool isDead = false;
+    public bool waitForNextAttack;
     
     private SpriteRenderer enemySprite;
     private SpriteRenderer shadowSprite;
@@ -64,6 +65,7 @@ public class EnemyAI : MonoBehaviour
         
         parameters = new Dictionary<string, object>
         {
+            { "EnemyAI", this },
             { "EnemyTransform", transform },
             { "PlayerTransform", playerTransform },
             { "ChasePivotTransform", chasePivotTransform },

@@ -10,4 +10,5 @@ public class AttackNodeParametersSO : ScriptableObject
     public float attackMovementDistance = 2.5f;
     public float attackMovementDuration = 0.2f;
     public float enemyRayMaxDistance = .25f;
+    public float waitForNextAttackCD = 3f;
 }

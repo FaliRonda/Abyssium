@@ -18,6 +18,10 @@ public class BTChaseNode : BTNode
 
     public override BTNodeState Execute()
     {
+        if (enemyAI.waitForNextAttack)
+        {
+            return BTNodeState.Failure;
+        }
         // Check if the player is within the visibility radius
         Vector3 distanceRootPosition =
             chasePivotTransform != null ? chasePivotTransform.position : enemyTransform.position;
