@@ -101,17 +101,16 @@ public class BTAttackNode : BTNode
             enemyAI.attackCollider.isTrigger = false;
         });
         
-        attackSequence.Append(enemyTransform.DOMove(enemyPosition + attackDirection, attackNodeParameters.attackMovementDuration));
-        attackSequence.AppendCallback(() =>
-        {
-            enemyAI.attackCollider.isTrigger = true;
-            AttackEndCD();
-        });
+        attackSequence
+            .Append(enemyTransform.DOMove(enemyPosition + attackDirection, attackNodeParameters.attackMovementDuration))
+            .AppendCallback(StandAfterAttack)
+            .AppendInterval(0.1f)
+            .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; });
         attackSequence.OnKill(() =>
         {
             enemyAI.attackCollider.isTrigger = true;
             UpdateWhiteHitValue(1);
-            AttackEndCD();
+            StandAfterAttack();
         });
     }
 
@@ -128,7 +127,7 @@ public class BTAttackNode : BTNode
         renderer.material = mat;
     }
 
-    private void AttackEndCD()
+    private void StandAfterAttack()
     {
         var attackingCooldownSequence = DOTween.Sequence();
         attackingCooldownSequence.AppendInterval(attackNodeParameters.standAfterAttackCD);
