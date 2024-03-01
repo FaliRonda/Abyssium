@@ -5,35 +5,38 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GameLoader.unity
     guid: 269aedd6b11de7b43b3a248b22bb98c3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tower1/Cicle0/T1C0F0.unity
     guid: 66e089efbfb5f464a97e7bec6f102a08
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tower1/Cicle1/T1C1F-1.unity
     guid: ff98cf1beb697cb4aa836414b8006029
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tower1/Cicle1/T1C1F0.unity
     guid: 5d22c8b287d69c9429bd8387c0e148c6
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tower1/Cicle1IT2/T1C1IT2F-1.unity
     guid: 702a9b071240b904eb52d157b5cf611e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tower1/Cicle1IT2/T1C1IT2F0.unity
     guid: 416ce073c4b786e49b875bf1f7bffccd
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tower1/Cicle2/T1C2F-1.unity
-    guid: 8776c2c9df2d26745a98319f8c27d8e4
-  - enabled: 1
+    guid: 313fa400bd1dbf4428d907b8538b52f7
+  - enabled: 0
     path: Assets/Scenes/Tower1/Cicle2/T1C2F-2.unity
     guid: 851da2efc1d0a3d4c9fa8388b949d45b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tower1/Cicle2/T1C2F0.unity
-    guid: f2b1cef438555bf4e99e2d512ee5f430
-  - enabled: 1
+    guid: 36130a2effd9b684db018fc1233255af
+  - enabled: 0
     path: Assets/Scenes/Tower1/Cicle2/T1C2F1.unity
     guid: feb28eb9fec40f0468fa8a458fa5eb46
+  - enabled: 1
+    path: Assets/Scenes/Dev/Combat playground.unity
+    guid: e791bb8d72f7a8d48b4cb69d2df45145
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 4b66d4bfc5345664c8b7b34ac35c3b63, type: 2}
