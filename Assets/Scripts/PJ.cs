@@ -335,30 +335,30 @@ public class PJ : MonoBehaviour
         // Top direction
         if (direction.x == 0 && direction.y == 1)
         {
-            pjAnimator.Play("PJ_walk");
+            pjAnimator.Play("PJ_walk_up");
         }
         // Diagonal top direction
         else if (direction.x > 0 && direction.y > 0 ||
                  direction.x < 0 && direction.y > 0)
         {
-            pjAnimator.Play("PJ_walk");
-        }
-        // Diagonal bottom direction
-        else if (direction.x > 0 && direction.y < 0 ||
-                 direction.x < 0 && direction.y < 0)
-        {
-            pjAnimator.Play("PJ_walk");
+            pjAnimator.Play("PJ_walk_diagonal_up");
         }
         // Forward direction
         else if (direction.x > 0 && direction.y == 0 ||
                  direction.x < 0 && direction.y == 0)
         {
-            pjAnimator.Play("PJ_walk");
+            pjAnimator.Play("PJ_walk_forward");
+        }
+        // Diagonal bottom direction
+        else if (direction.x > 0 && direction.y < 0 ||
+                 direction.x < 0 && direction.y < 0)
+        {
+            pjAnimator.Play("PJ_walk_diagonal_down");
         }
         // Bottom direction
         else if (direction.x == 0 && direction.y < 0)
         {
-            pjAnimator.Play("PJ_walk");
+            pjAnimator.Play("PJ_walk_down");
         }
     }
 
@@ -576,7 +576,6 @@ public class PJ : MonoBehaviour
         Weapon activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
         if (activeWeapon != null)
         {
-            Debug.Log("Weapon attack");
             activeWeapon.DoAttack();
         }
 

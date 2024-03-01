@@ -563,6 +563,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: PJ_attack_6
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 74
+        width: 58
+        height: 37
+      alignment: 9
+      pivot: {x: 0.35, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a67c1faf5850f442a0fc1a843df3107
+      internalID: -915480451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -579,6 +600,7 @@ TextureImporter:
       PJ_attack_3: 224538238
       PJ_attack_4: 1479567102
       PJ_attack_5: 1717784248
+      PJ_attack_6: -915480451
       PJ_dash_1: -1946391118
       PJ_dash_2: 1646501242
       PJ_dash_3: 1753881106
