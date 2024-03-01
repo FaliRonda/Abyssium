@@ -205,7 +205,7 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""1333af91-67a4-4b76-9288-c5ea57ce1058"",
-                    ""path"": ""<Keyboard>/p"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -227,7 +227,18 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ef5f62b3-b2e3-4675-8cae-59f5efcc67ac"",
-                    ""path"": ""<Keyboard>/o"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7f59c62a-e87c-4503-bfc3-6208a2783a5b"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
