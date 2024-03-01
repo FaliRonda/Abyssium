@@ -126,6 +126,7 @@ public class GameDirector : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
 #endif
         initialTimeLoopDuration = timeLoopDuration;
+        GameState.debugMode = debugMode;
 
         if (isInitialLoad)
         {

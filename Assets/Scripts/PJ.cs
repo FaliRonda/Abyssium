@@ -474,40 +474,48 @@ public class PJ : MonoBehaviour
     {
         if (gameIn3D)
         {
-            Interact();
+            if (!Interact() && GameState.debugMode)
+            {
+                TryAttack();
+            }
+            else
+            {
+                Interact();
+            }
         }
         else
         {
-            if (!pjDoingAction && attackReady && (inventory.HasWeapon || debugAttack)) // Basic attack
-            {
-                if (Time.time - lastAttackInputTime > comboTimeWindow)
-                {
-                    comboCount = 0;
-                }
-                
-                Attack();
-            }
-            else if (pjIsRolling) // Attack on dash Input Buffer
-            {
-                bufferedAttack = true;
-                float animLength = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
-                Sequence sequence = DOTween.Sequence();
-                sequence.AppendInterval(animLength).AppendCallback((() => 
-                {
-                    if (bufferedAttack && !pjIsRolling && inventory.HasWeapon)
-                    {
-                        Attack();
-                    }
-                    bufferedAttack = false;
-                }));
-            }
-            
-            // Actualiza el tiempo de la última pulsación
-            lastAttackInputTime = Time.time;
+            TryAttack();
         }
     }
 
-    private void Interact()
+    private void TryAttack()
+    {
+        if (!pjDoingAction && attackReady && (inventory.HasWeapon || debugAttack)) // Basic attack
+        {
+            Attack();
+        }
+        else if (pjIsRolling) // Attack on dash Input Buffer
+        {
+            bufferedAttack = true;
+            float animLength = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
+            Sequence sequence = DOTween.Sequence();
+            sequence.AppendInterval(animLength).AppendCallback((() =>
+            {
+                if (bufferedAttack && !pjIsRolling && inventory.HasWeapon)
+                {
+                    Attack();
+                }
+
+                bufferedAttack = false;
+            }));
+        }
+
+        // Actualiza el tiempo de la última pulsación
+        lastAttackInputTime = Time.time;
+    }
+
+    private bool Interact()
     {
         pjDoingAction = true;
         
@@ -525,10 +533,17 @@ public class PJ : MonoBehaviour
         {
             pjDoingAction = false;
         }
+
+        return pjDoingAction;
     }
 
     private void Attack()
     {
+        if (Time.time - lastAttackInputTime > comboTimeWindow)
+        {
+            comboCount = 0;
+        }
+        
         pjDoingAction = true;
         attackReady = false;
 

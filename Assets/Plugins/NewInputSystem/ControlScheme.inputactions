@@ -344,6 +344,17 @@
                     "action": "CameraRotationMouse",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "210ff30b-a6f2-4424-a2b6-5aa630c6dbec",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraChange",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -367,6 +378,17 @@
                     "id": "93a69c53-99f9-4206-b5ac-332986067dcd",
                     "path": "<Keyboard>/c",
                     "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraChange",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "27d2822d-405d-4160-a4ed-a3c0e7c9ba95",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
                     "action": "CameraChange",

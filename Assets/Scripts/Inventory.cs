@@ -80,7 +80,8 @@ public class Inventory : MonoBehaviour
     {
         if (item.gameObject.name.Contains("pivot"))
         {
-            if (!gameIn3D)
+            item.transform.DORotate(new Vector3(xRotation, yRotation, zRotation), 0.2f);
+            /*if (!gameIn3D)
             {
                 item.transform.DORotate(new Vector3(xRotation, yRotation, zRotation), 0.2f);
             }
@@ -94,8 +95,8 @@ public class Inventory : MonoBehaviour
                 
                 Core.Input.Mouse.GetPositionDelta(out mouseX, out mouseY);
                 item.transform.eulerAngles += new Vector3(0, mouseX,0);
-                */
-            }
+                -/
+            }*/
         }
     }
     
