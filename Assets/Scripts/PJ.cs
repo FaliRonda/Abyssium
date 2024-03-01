@@ -474,7 +474,7 @@ public class PJ : MonoBehaviour
     {
         if (gameIn3D)
         {
-            if (!Interact() && GameState.debugMode)
+            if (GameState.debugMode)
             {
                 TryAttack();
             }
@@ -584,7 +584,8 @@ public class PJ : MonoBehaviour
     private void ShowAttackFeedback(float comboAttackCooldown)
     {
         pjAnimator.Play("PJ_attack");
-        Core.Audio.Play(SOUND_TYPE.SwordAttack, 1, 0.1f, 0.01f);
+        //Core.Audio.Play(SOUND_TYPE.SwordAttack, 1, 0.1f, 0.01f);
+        Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/Weapons/Sword1_Attack1", transform);
 
         PlayAttackImpulseAnimation();
         

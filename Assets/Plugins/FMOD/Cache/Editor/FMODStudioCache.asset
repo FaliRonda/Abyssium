@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-9200391695456527289
+--- !u!114 &-9036533784236851285
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,313 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/LevelsFail/Woman_Level7
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Sword1_Hit1/PlayerWeaponSurfaceHit
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/LevelsFail/Woman_Level7
-  Guid:
-    Data1: -353143300
-    Data2: 1133245489
-    Data3: -302165109
-    Data4: 976246603
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 5270
---- !u!114 &-8835414004955821028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (5)
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (5)
-  Guid:
-    Data1: -1998056787
-    Data2: 1207177166
-    Data3: 371714957
-    Data4: 566501455
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 4275
---- !u!114 &-8785005495616013561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/LevelsFail/Woman_Level9
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/LevelsFail/Woman_Level9
-  Guid:
-    Data1: -68115157
-    Data2: 1234778151
-    Data3: 871820428
-    Data4: -553747153
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 5270
---- !u!114 &-8401769626870429140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Ingame_Crystal_LastSweep
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Ingame_Crystal_LastSweep
-  Guid:
-    Data1: -1990805360
-    Data2: 1142266617
-    Data3: -1364859979
-    Data4: -741612981
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 764
---- !u!114 &-7944246265677467165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/UI_Counter_LevelCounter_07
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/UI_Counter_LevelCounter_07
-  Guid:
-    Data1: 836662620
-    Data2: 1131871675
-    Data3: 544460982
-    Data4: 1010777697
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 10200
---- !u!114 &-7697054082435247500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/Man_Easy
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/Man_Easy
-  Guid:
-    Data1: 137610761
-    Data2: 1284931441
-    Data3: 478405508
-    Data4: 857016690
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 2811
---- !u!114 &-7229532062971800231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/Man_Awesome
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/Man_Awesome
-  Guid:
-    Data1: 2031921380
-    Data2: 1311742818
-    Data3: 657969814
-    Data4: -537908411
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 2397
---- !u!114 &-6758809962409157951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/Man_StillEasy
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/Man_StillEasy
-  Guid:
-    Data1: 834555884
-    Data2: 1228692948
-    Data3: 1138412168
-    Data4: 487246220
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 2811
---- !u!114 &-6679938070925802329
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (10)
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (10)
-  Guid:
-    Data1: 975178303
-    Data2: 1191668785
-    Data3: 2100954291
-    Data4: 548917305
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 8582
---- !u!114 &-6556487951656315684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/UI_Counter_LevelCounter_09
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/UI_Counter_LevelCounter_09
-  Guid:
-    Data1: 1666708571
-    Data2: 1285330729
-    Data3: 624075185
-    Data4: 884897124
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 14034
---- !u!114 &-6396057529909480546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/Levels0k/Woman_Level5
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/Levels0k/Woman_Level5
-  Guid:
-    Data1: 1143107833
-    Data2: 1171264717
-    Data3: -1311204953
-    Data4: -1692951793
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 4649
---- !u!114 &-6244045967129414342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master_Bank.bank
-  m_EditorClassIdentifier: 
-  Path: Assets/Audio/FMOD bank files/Master_Bank.bank
-  Name: Master_Bank
-  StudioPath: bank:/Master_Bank
-  lastModified: 638448962334767010
-  FileSizes: []
+  Name: PlayerWeaponSurfaceHit
+  StudioPath: 
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 3873977917
+    data2: 3372947433
+  Type: 1
+  IsGlobal: 0
+  Labels: []
   Exists: 1
---- !u!114 &-6101095119834965534
+--- !u!114 &-8108592297341784842
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -325,51 +34,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/UI_Counter_LevelCounter_08
+  m_Name: event:/Items/Get_Lantern
   m_EditorClassIdentifier: 
-  Path: event:/SFX/UI_Counter_LevelCounter_08
+  Path: event:/Items/Get_Lantern
   Guid:
-    Data1: -1601264050
-    Data2: 1333507326
-    Data3: -1078239093
-    Data4: 2082669992
+    Data1: -661656633
+    Data2: 1213870408
+    Data3: 1848878011
+    Data4: 548371198
   Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 10600
---- !u!114 &-5995313506337614881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/Man_NotBad
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/Man_NotBad
-  Guid:
-    Data1: -870617751
-    Data2: 1185768267
-    Data3: 1333650846
-    Data4: -1717879630
-  Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 2875
---- !u!114 &-5905207298995474578
+  Length: 0
+--- !u!114 &-7107865703089437140
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -379,24 +61,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/LevelsFail/Woman_Level8
+  m_Name: event:/IngameUI/TimeLoop/Timeloop_end_Bell
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/LevelsFail/Woman_Level8
+  Path: event:/IngameUI/TimeLoop/Timeloop_end_Bell
   Guid:
-    Data1: 825505406
-    Data2: 1337637893
-    Data3: -794810234
-    Data4: -406686665
+    Data1: 1975495706
+    Data2: 1252125968
+    Data3: 1171098019
+    Data4: 1717079537
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 5270
---- !u!114 &-5244714698967413210
+  Length: 0
+--- !u!114 &-7015015271913701256
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -406,78 +88,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/UI_Counter_LevelCounter_05
+  m_Name: event:/Characters/VO/Characters/PJ/Emocion 1
   m_EditorClassIdentifier: 
-  Path: event:/SFX/UI_Counter_LevelCounter_05
+  Path: event:/Characters/VO/Characters/PJ/Emocion 1
   Guid:
-    Data1: -777172624
-    Data2: 1304556301
-    Data3: -349440383
-    Data4: 422252076
+    Data1: -362278277
+    Data2: 1146602646
+    Data3: -633572206
+    Data4: -429901323
   Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 7800
---- !u!114 &-5156144154021165981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/UI_Counter_LevelCounter_06
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/UI_Counter_LevelCounter_06
-  Guid:
-    Data1: -609751883
-    Data2: 1216403998
-    Data3: 1523977110
-    Data4: 931048710
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 9600
---- !u!114 &-5140563636277089480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/LevelsFail/Woman_Level4
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/LevelsFail/Woman_Level4
-  Guid:
-    Data1: -1288522709
-    Data2: 1244357049
-    Data3: -2003257421
-    Data4: 245919719
-  Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 5270
---- !u!114 &-4202309991785433250
+  Length: 0
+--- !u!114 &-6682576830407079376
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -487,24 +115,48 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/Man_WaitingforYou
+  m_Name: event:/Background/MVP_CombatDemoScene_BackgroundSFX
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/Man_WaitingforYou
+  Path: event:/Background/MVP_CombatDemoScene_BackgroundSFX
   Guid:
-    Data1: -1850960410
-    Data2: 1267537344
-    Data3: -207317376
-    Data4: -1965445249
+    Data1: -307264135
+    Data2: 1278885491
+    Data3: 678325176
+    Data4: 2031185290
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 4892
---- !u!114 &-4031365606817692898
+  Length: 0
+--- !u!114 &-6619360593634651895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Steps/Surface
+  m_EditorClassIdentifier: 
+  Name: Surface
+  StudioPath: 
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 2603236205
+    data2: 1385483803
+  Type: 1
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &-6440406298719037247
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -514,24 +166,51 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Ingame_Crystal_Clicks
+  m_Name: event:/Characters/Player/Exploration/Dash
   m_EditorClassIdentifier: 
-  Path: event:/SFX/Ingame_Crystal_Clicks
+  Path: event:/Characters/Player/Exploration/Dash
   Guid:
-    Data1: -685196300
-    Data2: 1154036848
-    Data3: -97867603
-    Data4: 1170148848
+    Data1: -1362074905
+    Data2: 1261713567
+    Data3: 24292534
+    Data4: 1228064749
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 312
+--- !u!114 &-6403034660071324034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Characters/Player/Combat/GetImpact
+  m_EditorClassIdentifier: 
+  Path: event:/Characters/Player/Combat/GetImpact
+  Guid:
+    Data1: -1563536633
+    Data2: 1250626836
+    Data3: -1736801141
+    Data4: -670658052
+  Banks:
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 2232
---- !u!114 &-3974989704731681197
+  Length: 1671
+--- !u!114 &-5704383508586737751
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -541,24 +220,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/MUSIC/Music_Level9
+  m_Name: event:/Characters/Enemies/Stalker/Die
   m_EditorClassIdentifier: 
-  Path: event:/MUSIC/Music_Level9
+  Path: event:/Characters/Enemies/Stalker/Die
   Guid:
-    Data1: 222125241
-    Data2: 1220697159
-    Data3: 1798294446
-    Data4: 1374537130
+    Data1: -1657955450
+    Data2: 1118890396
+    Data3: -1177959294
+    Data4: -1835692305
   Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 20000
---- !u!114 &-2768776764300204970
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1410
+--- !u!114 &-5554704935384581270
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -568,24 +247,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (9)
+  m_Name: event:/IngameUI/TimeLoop/FirstTime/Timeloop_Start_Bell
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (9)
+  Path: event:/IngameUI/TimeLoop/FirstTime/Timeloop_Start_Bell
   Guid:
-    Data1: -37766177
-    Data2: 1137865457
-    Data3: -417224303
-    Data4: 356014542
+    Data1: 1897784907
+    Data2: 1334310645
+    Data3: -606903888
+    Data4: -1861295304
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 4175
---- !u!114 &-2720665642152787376
+  Length: 0
+--- !u!114 &-5518073881467303285
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -595,24 +274,48 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/Levels0k/Woman_Level3
+  m_Name: event:/Items/Get_MemoryFragment
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/Levels0k/Woman_Level3
+  Path: event:/Items/Get_MemoryFragment
   Guid:
-    Data1: -1296206896
-    Data2: 1305977777
-    Data3: 1321364389
-    Data4: 875448857
+    Data1: -161109163
+    Data2: 1079704140
+    Data3: -1900121183
+    Data4: 1635782296
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 4649
---- !u!114 &-2688889251596513454
+  Length: 0
+--- !u!114 &-5226936377549690309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MVP_Tower1_Music/MVP_Tower1_State
+  m_EditorClassIdentifier: 
+  Name: MVP_Tower1_State
+  StudioPath: 
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 1535864862
+    data2: 4131089846
+  Type: 1
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &-5210324411327621114
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -622,24 +325,78 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/Levels0k/Woman_Level2
+  m_Name: event:/Props/Door_01
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/Levels0k/Woman_Level2
+  Path: event:/Props/Door_01
   Guid:
-    Data1: -157848669
-    Data2: 1186539100
-    Data3: 585899172
-    Data4: 1109856488
+    Data1: 697717009
+    Data2: 1341284834
+    Data3: -1293346402
+    Data4: 1074787674
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-4965533324539134053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Characters/Enemies/Stalker/GetDamage
+  m_EditorClassIdentifier: 
+  Path: event:/Characters/Enemies/Stalker/GetDamage
+  Guid:
+    Data1: 1701856642
+    Data2: 1247676856
+    Data3: -471531367
+    Data4: 1121957476
+  Banks:
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 576
+--- !u!114 &-4894780780931081057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/IngameUI/Dialogue/Newdialogue
+  m_EditorClassIdentifier: 
+  Path: event:/IngameUI/Dialogue/Newdialogue
+  Guid:
+    Data1: -2131107508
+    Data2: 1235450382
+    Data3: -1180169565
+    Data4: 736454968
+  Banks:
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 4649
---- !u!114 &-2554252792071349149
+  Length: 0
+--- !u!114 &-4746320260892447085
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -649,17 +406,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master_Bank.strings.bank
+  m_Name: bank:/Master.strings.bank
   m_EditorClassIdentifier: 
-  Path: Assets/Audio/FMOD bank files/Master_Bank.strings.bank
-  Name: Master_Bank.strings
-  StudioPath: bank:/Master_Bank.strings
-  lastModified: 638448962342671633
+  Path: Assets/Audio/FMOD bank files/Master.strings.bank
+  Name: Master.strings
+  StudioPath: bank:/Master.strings
+  lastModified: 638449156163065508
   FileSizes:
   - Name: 
-    Value: 4278
+    Value: 3866
   Exists: 1
---- !u!114 &-2383538513756855074
+--- !u!114 &-4269545179445214356
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -669,24 +426,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/Levels0k/Woman_Level1
+  m_Name: event:/Music/MVP_Tower1_Music
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/Levels0k/Woman_Level1
+  Path: event:/Music/MVP_Tower1_Music
   Guid:
-    Data1: 936833257
-    Data2: 1303531330
-    Data3: -912899664
-    Data4: -572980568
+    Data1: 248004561
+    Data2: 1248051877
+    Data3: 1649916293
+    Data4: 174886988
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
-  Parameters: []
+  Parameters:
+  - {fileID: -5226936377549690309}
+  - {fileID: -3079256354778604893}
   MinDistance: 0
   MaxDistance: 0
-  Length: 4649
---- !u!114 &-2365935814323392983
+  Length: 0
+--- !u!114 &-4011802877181121845
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -696,24 +455,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/Levels0k/Woman_Level10
+  m_Name: event:/Characters/Player/Exploration/Steps
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/Levels0k/Woman_Level10
+  Path: event:/Characters/Player/Exploration/Steps
   Guid:
-    Data1: 1612882308
-    Data2: 1128230940
-    Data3: -598099065
-    Data4: 519789063
+    Data1: -200027956
+    Data2: 1303714532
+    Data3: -616052546
+    Data4: -2070522230
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 4649
---- !u!114 &-2206873641166777095
+  Parameters:
+  - {fileID: -6619360593634651895}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 216
+--- !u!114 &-3784860299650431515
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -723,51 +483,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/Woman_ChallengeAccepted
+  m_Name: event:/Music/MVP_CombatDemoScene_Music
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/Woman_ChallengeAccepted
+  Path: event:/Music/MVP_CombatDemoScene_Music
   Guid:
-    Data1: 297162378
-    Data2: 1225473063
-    Data3: 1265235615
-    Data4: 1371492583
+    Data1: 745328440
+    Data2: 1334149032
+    Data3: 1853759138
+    Data4: -1887573708
   Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 4272
---- !u!114 &-2136453958971998459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/MUSIC/Music_Level10
-  m_EditorClassIdentifier: 
-  Path: event:/MUSIC/Music_Level10
-  Guid:
-    Data1: -612594272
-    Data2: 1116304978
-    Data3: -477027434
-    Data4: 956560464
-  Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 1
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 20000
---- !u!114 &-1925679146681981907
+  Length: 308480
+--- !u!114 &-3406048511639725680
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -777,24 +510,48 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (6)
+  m_Name: event:/Items/Lantern_Droped
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (6)
+  Path: event:/Items/Lantern_Droped
   Guid:
-    Data1: 1756456501
-    Data2: 1079997204
-    Data3: -1750890569
-    Data4: 254101853
+    Data1: -1128911653
+    Data2: 1189941728
+    Data3: -876190310
+    Data4: 1890704658
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 4175
---- !u!114 &-1779824480092567187
+  Length: 0
+--- !u!114 &-3079256354778604893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MVP_Tower1_Music/MVP_Tower1_Floor
+  m_EditorClassIdentifier: 
+  Name: MVP_Tower1_Floor
+  StudioPath: 
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 1564698343
+    data2: 1242404853
+  Type: 1
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &-2659975809580112047
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -804,24 +561,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/MUSIC/Music_Level8
+  m_Name: event:/Characters/Enemies/Goddess/AngryScream_01
   m_EditorClassIdentifier: 
-  Path: event:/MUSIC/Music_Level8
+  Path: event:/Characters/Enemies/Goddess/AngryScream_01
   Guid:
-    Data1: -900479998
-    Data2: 1282045312
-    Data3: -302487902
-    Data4: -1189642116
+    Data1: 1791977295
+    Data2: 1078927579
+    Data3: 921161886
+    Data4: 791676063
   Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 20000
---- !u!114 &-1703990914057986413
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-1736772895961015277
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -831,24 +588,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Ingame_Crystal_Sweeps
+  m_Name: snapshot:/CameraBehind
   m_EditorClassIdentifier: 
-  Path: event:/SFX/Ingame_Crystal_Sweeps
+  Path: snapshot:/CameraBehind
   Guid:
-    Data1: 1352724385
-    Data2: 1329643303
-    Data3: -619686271
-    Data4: 183785890
+    Data1: 1709069185
+    Data2: 1276061765
+    Data3: 521760446
+    Data4: -1367053574
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 764
---- !u!114 &-1686658087645164215
+  Length: 0
+--- !u!114 &-1319269151782207188
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -858,51 +615,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/MUSIC/Music_Level7
+  m_Name: event:/Items/Orb_Droped
   m_EditorClassIdentifier: 
-  Path: event:/MUSIC/Music_Level7
+  Path: event:/Items/Orb_Droped
   Guid:
-    Data1: 1651732811
-    Data2: 1149007635
-    Data3: -1950435449
-    Data4: -96037652
+    Data1: 534666962
+    Data2: 1324790199
+    Data3: -1748779646
+    Data4: 1790357292
   Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 20000
---- !u!114 &-1633656553821015505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/LevelsFail/Woman_Level3
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/LevelsFail/Woman_Level3
-  Guid:
-    Data1: 187814670
-    Data2: 1102381939
-    Data3: 1666225057
-    Data4: -1433728760
-  Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 5270
---- !u!114 &-1633537071737871328
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-1027931478935963538
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -912,51 +642,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/MUSIC/Music_Level1
+  m_Name: event:/Characters/Enemies/Stalker/AttackHit
   m_EditorClassIdentifier: 
-  Path: event:/MUSIC/Music_Level1
+  Path: event:/Characters/Enemies/Stalker/AttackHit
   Guid:
-    Data1: 1635363506
-    Data2: 1163601981
-    Data3: -227270250
-    Data4: -753439753
+    Data1: -1614792841
+    Data2: 1299891009
+    Data3: 398092690
+    Data4: 1061651840
   Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 20000
---- !u!114 &-1505711043080191114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Button_Try Now
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Button_Try Now
-  Guid:
-    Data1: 101899684
-    Data2: 1077028481
-    Data3: 2011822756
-    Data4: 1218411578
-  Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 3000
---- !u!114 &-951526571545259667
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-577198384652015075
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -966,24 +669,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/Levels0k/Woman_Level9
+  m_Name: event:/Characters/Enemies/Stalker/JumpToAttack
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/Levels0k/Woman_Level9
+  Path: event:/Characters/Enemies/Stalker/JumpToAttack
   Guid:
-    Data1: -228559394
-    Data2: 1231200625
-    Data3: 1862220674
-    Data4: 1693749372
+    Data1: -819116958
+    Data2: 1083022893
+    Data3: 161657728
+    Data4: 1845936097
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 4649
---- !u!114 &-600799181383011141
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-351970640866418696
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -993,185 +696,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/LevelsFail/Woman_Level1
+  m_Name: event:/Characters/Player/Combat/Weapons/Sword1_Attack1
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/LevelsFail/Woman_Level1
+  Path: event:/Characters/Player/Combat/Weapons/Sword1_Attack1
   Guid:
-    Data1: 606640581
-    Data2: 1179734703
-    Data3: 1355166091
-    Data4: 2079525592
+    Data1: -1515260973
+    Data2: 1220928362
+    Data3: 1525926322
+    Data4: -846869696
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 5270
---- !u!114 &-572643680720096121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Button_Home
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Button_Home
-  Guid:
-    Data1: -1013864333
-    Data2: 1337780907
-    Data3: -1314710908
-    Data4: -871376472
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 2100
---- !u!114 &-568412678623321033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/Man_TooMuchforYou
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/Man_TooMuchforYou
-  Guid:
-    Data1: 818247081
-    Data2: 1077878510
-    Data3: -221254483
-    Data4: -561370807
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 10281
---- !u!114 &-490776090516537640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/MUSIC/Music_Level2
-  m_EditorClassIdentifier: 
-  Path: event:/MUSIC/Music_Level2
-  Guid:
-    Data1: -2127243671
-    Data2: 1335163019
-    Data3: 989049752
-    Data4: 1332529234
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 20000
---- !u!114 &-455646835903443581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Button_Button_X1Sweep
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Button_Button_X1Sweep
-  Guid:
-    Data1: 1416818289
-    Data2: 1120544698
-    Data3: 925256851
-    Data4: -840866794
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 3000
---- !u!114 &-292925945644880858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/Woman_HurryUp
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/Woman_HurryUp
-  Guid:
-    Data1: -396563597
-    Data2: 1332514770
-    Data3: -1883069550
-    Data4: 1726274283
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 2965
---- !u!114 &-137156430942283152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/UI_Counter_LevelCounter_01
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/UI_Counter_LevelCounter_01
-  Guid:
-    Data1: -1932234942
-    Data2: 1245309173
-    Data3: -1613357425
-    Data4: 1983377017
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 3960
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 417
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1185,101 +726,64 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: -2554252792071349149}
-  - {fileID: -6244045967129414342}
+  - {fileID: -4746320260892447085}
+  - {fileID: 4939600592296312691}
   EditorEvents:
-  - {fileID: -1779824480092567187}
-  - {fileID: 6905675021754479416}
-  - {fileID: 4219730729214606935}
-  - {fileID: 2075597765606898760}
-  - {fileID: -7697054082435247500}
-  - {fileID: 263253632087256705}
-  - {fileID: -1633656553821015505}
-  - {fileID: 8876099825909913341}
-  - {fileID: 1384355251816838755}
-  - {fileID: 2808997188378550947}
-  - {fileID: 3036298226878867385}
-  - {fileID: 1725440295688000666}
-  - {fileID: 9022654481492098271}
-  - {fileID: 7533431219340592265}
-  - {fileID: 2952660568080095503}
-  - {fileID: 4856758664696467173}
-  - {fileID: 103983733255246961}
-  - {fileID: -8785005495616013561}
-  - {fileID: -5140563636277089480}
-  - {fileID: -1925679146681981907}
-  - {fileID: 211410704752410464}
-  - {fileID: -6679938070925802329}
-  - {fileID: -137156430942283152}
-  - {fileID: 4767457285588631462}
-  - {fileID: -1686658087645164215}
-  - {fileID: 3774465588370673436}
-  - {fileID: -6101095119834965534}
-  - {fileID: 1077240042525303831}
-  - {fileID: 2819850665480629370}
-  - {fileID: 2102043013713748823}
-  - {fileID: 9034334790586448950}
-  - {fileID: -6556487951656315684}
-  - {fileID: -7944246265677467165}
-  - {fileID: 2858036943982669604}
-  - {fileID: -5995313506337614881}
-  - {fileID: -490776090516537640}
-  - {fileID: 4952676634796251181}
-  - {fileID: 5960877889903785151}
-  - {fileID: -5244714698967413210}
-  - {fileID: -455646835903443581}
-  - {fileID: -572643680720096121}
-  - {fileID: -292925945644880858}
-  - {fileID: 2163948851982233229}
-  - {fileID: 3678887583830489907}
-  - {fileID: -5905207298995474578}
-  - {fileID: -2365935814323392983}
-  - {fileID: -2206873641166777095}
-  - {fileID: 6880872873891790201}
-  - {fileID: 7278253992687876561}
-  - {fileID: -8401769626870429140}
-  - {fileID: 6715446043694509441}
-  - {fileID: 8541862282541938497}
-  - {fileID: -2136453958971998459}
-  - {fileID: 602028293116095644}
-  - {fileID: -1703990914057986413}
-  - {fileID: -2688889251596513454}
-  - {fileID: 1728282083472572164}
-  - {fileID: -1505711043080191114}
-  - {fileID: -568412678623321033}
-  - {fileID: -8835414004955821028}
-  - {fileID: 9002831818556296514}
-  - {fileID: -1633537071737871328}
-  - {fileID: 8593813485865161798}
-  - {fileID: -5156144154021165981}
-  - {fileID: -3974989704731681197}
-  - {fileID: 7896070549936341738}
-  - {fileID: -600799181383011141}
-  - {fileID: 816025383638513646}
-  - {fileID: -2720665642152787376}
-  - {fileID: 9125641506143678076}
-  - {fileID: 3675601377601316928}
-  - {fileID: 5124258075749488786}
-  - {fileID: -951526571545259667}
-  - {fileID: -2768776764300204970}
-  - {fileID: 3503774843805620370}
-  - {fileID: -7229532062971800231}
-  - {fileID: -4202309991785433250}
-  - {fileID: -2383538513756855074}
-  - {fileID: -6758809962409157951}
-  - {fileID: 7790658583824578408}
-  - {fileID: -4031365606817692898}
-  - {fileID: -6396057529909480546}
-  - {fileID: -9200391695456527289}
-  - {fileID: 7448089317225339352}
+  - {fileID: -6403034660071324034}
+  - {fileID: 4142026869178372577}
+  - {fileID: -5210324411327621114}
+  - {fileID: 3976786802237981300}
+  - {fileID: -7107865703089437140}
+  - {fileID: 3120554972308653185}
+  - {fileID: 2007864092114155490}
+  - {fileID: 6937775753634882747}
+  - {fileID: -3784860299650431515}
+  - {fileID: 3993808488346639220}
+  - {fileID: 1083856092499699314}
+  - {fileID: 8270212338729348223}
+  - {fileID: -5554704935384581270}
+  - {fileID: -4894780780931081057}
+  - {fileID: -2659975809580112047}
+  - {fileID: 976483247460521160}
+  - {fileID: -5518073881467303285}
+  - {fileID: 3582557929089554883}
+  - {fileID: 1878844347041117212}
+  - {fileID: -577198384652015075}
+  - {fileID: 4835960536824216929}
+  - {fileID: -1027931478935963538}
+  - {fileID: -6682576830407079376}
+  - {fileID: -7015015271913701256}
+  - {fileID: 694550575712314783}
+  - {fileID: -1736772895961015277}
+  - {fileID: -4965533324539134053}
+  - {fileID: -5704383508586737751}
+  - {fileID: 9046824538144457609}
+  - {fileID: 3725502467759362742}
+  - {fileID: 4524845128783958904}
+  - {fileID: 1144917658783511324}
+  - {fileID: 7700932111668949143}
+  - {fileID: 6317556199977176811}
+  - {fileID: 8158366115534714467}
+  - {fileID: 6048179240435390004}
+  - {fileID: -8108592297341784842}
+  - {fileID: 7314248566218698311}
+  - {fileID: -4011802877181121845}
+  - {fileID: 7107361360776885665}
+  - {fileID: 3344322243895468408}
+  - {fileID: -4269545179445214356}
+  - {fileID: -1319269151782207188}
+  - {fileID: -351970640866418696}
+  - {fileID: -3406048511639725680}
+  - {fileID: -6440406298719037247}
+  - {fileID: 6189466475296097541}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   StringsBanks:
-  - {fileID: -2554252792071349149}
-  cacheTime: 638448962342671633
+  - {fileID: -4746320260892447085}
+  cacheTime: 638449156163065508
   cacheVersion: 131616
---- !u!114 &103983733255246961
+--- !u!114 &694550575712314783
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1289,24 +793,51 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/Man_Unbeliveable
+  m_Name: event:/IngameUI/TimeLoop/FirstTime/MoonLight_Appears
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/Man_Unbeliveable
+  Path: event:/IngameUI/TimeLoop/FirstTime/MoonLight_Appears
   Guid:
-    Data1: -1489877717
-    Data2: 1336363461
-    Data3: 308952237
-    Data4: 146376385
+    Data1: 1319720571
+    Data2: 1280510257
+    Data3: 368268469
+    Data4: -719625010
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &976483247460521160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/IngameUI/Dialogue/DialogueSelection
+  m_EditorClassIdentifier: 
+  Path: event:/IngameUI/Dialogue/DialogueSelection
+  Guid:
+    Data1: 264410448
+    Data2: 1118780680
+    Data3: 2070166930
+    Data4: -456550398
+  Banks:
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 3734
---- !u!114 &211410704752410464
+  Length: 0
+--- !u!114 &1083856092499699314
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1316,24 +847,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/MUSIC/Music_Level3
+  m_Name: event:/Props/Candle_01
   m_EditorClassIdentifier: 
-  Path: event:/MUSIC/Music_Level3
+  Path: event:/Props/Candle_01
   Guid:
-    Data1: 1295456059
-    Data2: 1298558299
-    Data3: 2062807682
-    Data4: -658304646
+    Data1: -662940602
+    Data2: 1316962738
+    Data3: 1529359286
+    Data4: 1308038983
   Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 20000
---- !u!114 &263253632087256705
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &1144917658783511324
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1343,51 +874,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/MUSIC/Music_Level5
+  m_Name: event:/Characters/Player/Combat/Die
   m_EditorClassIdentifier: 
-  Path: event:/MUSIC/Music_Level5
+  Path: event:/Characters/Player/Combat/Die
   Guid:
-    Data1: 1078027533
-    Data2: 1265254742
-    Data3: -1268868944
-    Data4: 1643062504
+    Data1: 1733871284
+    Data2: 1222221319
+    Data3: 666702477
+    Data4: -2007940202
   Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 20000
---- !u!114 &602028293116095644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/Woman_TryAgain
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/Woman_TryAgain
-  Guid:
-    Data1: 1646456481
-    Data2: 1087727067
-    Data3: 958022825
-    Data4: -2109472635
-  Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 3369
---- !u!114 &816025383638513646
+  Length: 0
+--- !u!114 &1878844347041117212
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1397,24 +901,51 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (3)
+  m_Name: event:/Items/Get_Orb
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (3)
+  Path: event:/Items/Get_Orb
   Guid:
-    Data1: 1545189831
-    Data2: 1320591702
-    Data3: 1726680225
-    Data4: 2038351940
+    Data1: 422879069
+    Data2: 1225475862
+    Data3: 1965544603
+    Data4: -1924469784
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &2007864092114155490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Characters/VO/Characters/PJ/Emocion 2
+  m_EditorClassIdentifier: 
+  Path: event:/Characters/VO/Characters/PJ/Emocion 2
+  Guid:
+    Data1: 448135209
+    Data2: 1232992646
+    Data3: -1623221341
+    Data4: 1150398431
+  Banks:
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 4175
---- !u!114 &1077240042525303831
+  Length: 0
+--- !u!114 &3120554972308653185
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1424,24 +955,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (4)
+  m_Name: event:/IngameUI/Camera/CameraToTop
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (4)
+  Path: event:/IngameUI/Camera/CameraToTop
   Guid:
-    Data1: -1157415601
-    Data2: 1084762760
-    Data3: -392426361
-    Data4: 653254869
+    Data1: -473050086
+    Data2: 1329115062
+    Data3: 283732405
+    Data4: -305863731
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 4075
---- !u!114 &1384355251816838755
+  Length: 0
+--- !u!114 &3344322243895468408
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1451,24 +982,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (7)
+  m_Name: event:/Items/MemoryFragment_Droped
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (7)
+  Path: event:/Items/MemoryFragment_Droped
   Guid:
-    Data1: 1937228825
-    Data2: 1213093071
-    Data3: 397564561
-    Data4: 1443906329
+    Data1: 1421479630
+    Data2: 1215816424
+    Data3: 118092217
+    Data4: -1641299827
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 4175
---- !u!114 &1725440295688000666
+  Length: 0
+--- !u!114 &3582557929089554883
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1478,645 +1009,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/UI_Counter_LevelCounter_02
+  m_Name: snapshot:/IngameMenu
   m_EditorClassIdentifier: 
-  Path: event:/SFX/UI_Counter_LevelCounter_02
+  Path: snapshot:/IngameMenu
   Guid:
-    Data1: 1567135010
-    Data2: 1197187936
-    Data3: 979659159
-    Data4: 1439677444
+    Data1: -736585895
+    Data2: 1105715520
+    Data3: -773726044
+    Data4: 1169096447
   Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 4970
---- !u!114 &1728282083472572164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/MUSIC/Music_PreGame
-  m_EditorClassIdentifier: 
-  Path: event:/MUSIC/Music_PreGame
-  Guid:
-    Data1: -493313628
-    Data2: 1335340493
-    Data3: -1264228218
-    Data4: 179113686
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 22250
---- !u!114 &2075597765606898760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Ingame_YellowFlashing
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Ingame_YellowFlashing
-  Guid:
-    Data1: -615579385
-    Data2: 1171410722
-    Data3: 1413874597
-    Data4: -1995597464
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 500
---- !u!114 &2102043013713748823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/MUSIC/Music_Level6
-  m_EditorClassIdentifier: 
-  Path: event:/MUSIC/Music_Level6
-  Guid:
-    Data1: -1354061478
-    Data2: 1121681948
-    Data3: 1624947378
-    Data4: -1256441699
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 20000
---- !u!114 &2163948851982233229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/Man_YouLose
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/Man_YouLose
-  Guid:
-    Data1: 2008514680
-    Data2: 1333053685
-    Data3: -1803678793
-    Data4: -145855186
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 3991
---- !u!114 &2808997188378550947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/UI_Counter_LevelCounter_03
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/UI_Counter_LevelCounter_03
-  Guid:
-    Data1: 1347691034
-    Data2: 1096233264
-    Data3: 2030027396
-    Data4: -1578050506
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 6000
---- !u!114 &2819850665480629370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/LevelsFail/Woman_Level6
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/LevelsFail/Woman_Level6
-  Guid:
-    Data1: 1365159763
-    Data2: 1172394065
-    Data3: 75316633
-    Data4: -174684181
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 5270
---- !u!114 &2858036943982669604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Ingame_GlowSweep_02
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Ingame_GlowSweep_02
-  Guid:
-    Data1: -1892351127
-    Data2: 1118423140
-    Data3: 951810948
-    Data4: 98803285
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 10000
---- !u!114 &2952660568080095503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (8)
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (8)
-  Guid:
-    Data1: -14026716
-    Data2: 1079960221
-    Data3: 84424630
-    Data4: -1031448784
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 4275
---- !u!114 &3036298226878867385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/Woman_JustOneMore
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/Woman_JustOneMore
-  Guid:
-    Data1: 1974082848
-    Data2: 1317468077
-    Data3: -559132760
-    Data4: -1351642686
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 3217
---- !u!114 &3503774843805620370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/Levels0k/Woman_Level6
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/Levels0k/Woman_Level6
-  Guid:
-    Data1: 749825251
-    Data2: 1253689361
-    Data3: 1843765911
-    Data4: -1485173477
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 4649
---- !u!114 &3675601377601316928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/LevelsFail/Woman_Level10
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/LevelsFail/Woman_Level10
-  Guid:
-    Data1: 1502934996
-    Data2: 1131520446
-    Data3: -334348102
-    Data4: -193043632
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 5270
---- !u!114 &3678887583830489907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/UI_Counter_NumberPeople01
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/UI_Counter_NumberPeople01
-  Guid:
-    Data1: -1760523656
-    Data2: 1236051422
-    Data3: 466113471
-    Data4: -1089547737
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 14117
---- !u!114 &3774465588370673436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/Man_OMG
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/Man_OMG
-  Guid:
-    Data1: -838590132
-    Data2: 1112481180
-    Data3: -264172890
-    Data4: -660070673
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 3734
---- !u!114 &4219730729214606935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/LevelsFail/Woman_Level5
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/LevelsFail/Woman_Level5
-  Guid:
-    Data1: 371099908
-    Data2: 1192980381
-    Data3: -1891247473
-    Data4: 991551799
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 5270
---- !u!114 &4767457285588631462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Button_Basic
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Button_Basic
-  Guid:
-    Data1: 1343102790
-    Data2: 1191892447
-    Data3: -365478738
-    Data4: -472715211
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 700
---- !u!114 &4856758664696467173
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/MUSIC/Music_Menu
-  m_EditorClassIdentifier: 
-  Path: event:/MUSIC/Music_Menu
-  Guid:
-    Data1: -1601949913
-    Data2: 1205449216
-    Data3: 1239678864
-    Data4: -643438698
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 185000
---- !u!114 &4952676634796251181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/Levels0k/Woman_Level4
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/Levels0k/Woman_Level4
-  Guid:
-    Data1: 446029930
-    Data2: 1273372605
-    Data3: -1268714079
-    Data4: -590585947
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 4649
---- !u!114 &5124258075749488786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Ingame_GlowSweep_01
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Ingame_GlowSweep_01
-  Guid:
-    Data1: -1697668389
-    Data2: 1282471626
-    Data3: 2072182700
-    Data4: -1102707908
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 10000
---- !u!114 &5960877889903785151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Ingame_StartLevel
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Ingame_StartLevel
-  Guid:
-    Data1: -1824735890
-    Data2: 1191807977
-    Data3: -315784314
-    Data4: -1455974150
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 7906
---- !u!114 &6715446043694509441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/Man_Almost
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/Man_Almost
-  Guid:
-    Data1: -2133208680
-    Data2: 1115762719
-    Data3: 496588453
-    Data4: -2009365066
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 13165
---- !u!114 &6880872873891790201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/LevelsFail/Woman_Level2
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/LevelsFail/Woman_Level2
-  Guid:
-    Data1: 2042978446
-    Data2: 1167359622
-    Data3: 311548554
-    Data4: 1715752550
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 5270
---- !u!114 &6905675021754479416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Ingame_Die
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Ingame_Die
-  Guid:
-    Data1: -1990703869
-    Data2: 1190391013
-    Data3: -283051610
-    Data4: 1578509182
-  Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 1550
---- !u!114 &7278253992687876561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/UI_Counter_NumberPeople02
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/UI_Counter_NumberPeople02
-  Guid:
-    Data1: 1912473743
-    Data2: 1111457845
-    Data3: 1240756612
-    Data4: -1941235544
-  Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 110
---- !u!114 &7448089317225339352
+  Length: 0
+--- !u!114 &3725502467759362742
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2126,24 +1036,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/Man_Incredible
+  m_Name: event:/IngameUI/Camera/CameraToBehind
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/Man_Incredible
+  Path: event:/IngameUI/Camera/CameraToBehind
   Guid:
-    Data1: 1105943293
-    Data2: 1225138074
-    Data3: 1257436040
-    Data4: 2098681096
+    Data1: -1689324909
+    Data2: 1225343062
+    Data3: 1637761165
+    Data4: 1851893433
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 2497
---- !u!114 &7533431219340592265
+  Length: 0
+--- !u!114 &3976786802237981300
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2153,24 +1063,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (2)
+  m_Name: event:/Characters/VO/Characters/PJ/Talking
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/ManLevels/Man_Level_x_Try (2)
+  Path: event:/Characters/VO/Characters/PJ/Talking
   Guid:
-    Data1: 1503586339
-    Data2: 1229241038
-    Data3: 1207948416
-    Data4: -1753412294
+    Data1: 835159577
+    Data2: 1282173652
+    Data3: -745919335
+    Data4: -726386768
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 4275
---- !u!114 &7790658583824578408
+  Length: 0
+--- !u!114 &3993808488346639220
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2180,24 +1090,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/MUSIC/Music_Level4
+  m_Name: event:/Characters/Enemies/Stalker/Spawn
   m_EditorClassIdentifier: 
-  Path: event:/MUSIC/Music_Level4
+  Path: event:/Characters/Enemies/Stalker/Spawn
   Guid:
-    Data1: 628671212
-    Data2: 1082532603
-    Data3: -61668968
-    Data4: -1038036569
+    Data1: -430221500
+    Data2: 1137555867
+    Data3: 571524258
+    Data4: 2125722623
   Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 20000
---- !u!114 &7896070549936341738
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1560
+--- !u!114 &4142026869178372577
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2207,24 +1117,75 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Ingame_Crystal_LastClick
+  m_Name: event:/Items/Get_Weapon
   m_EditorClassIdentifier: 
-  Path: event:/SFX/Ingame_Crystal_LastClick
+  Path: event:/Items/Get_Weapon
   Guid:
-    Data1: -1123104326
-    Data2: 1189683139
-    Data3: -2007232358
-    Data4: -1205044334
+    Data1: 311323660
+    Data2: 1078333177
+    Data3: 291067790
+    Data4: 1090260345
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &4524845128783958904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/IngameUI/Dialogue/DialogueWritting
+  m_EditorClassIdentifier: 
+  Path: event:/IngameUI/Dialogue/DialogueWritting
+  Guid:
+    Data1: -959656793
+    Data2: 1102098695
+    Data3: -775674737
+    Data4: 2128462720
+  Banks:
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 2000
---- !u!114 &8541862282541938497
+  Length: 0
+--- !u!114 &4661790335138211752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MVP_Tower1_BackgroundSfX/MVP_Tower1_Floor
+  m_EditorClassIdentifier: 
+  Name: MVP_Tower1_Floor
+  StudioPath: 
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 1564698343
+    data2: 1242404853
+  Type: 1
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &4835960536824216929
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2234,24 +1195,98 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/Levels0k/Woman_Level8
+  m_Name: event:/Background/MVP_Tower1_BackgroundSfX
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/Levels0k/Woman_Level8
+  Path: event:/Background/MVP_Tower1_BackgroundSfX
   Guid:
-    Data1: 1958110623
-    Data2: 1095654785
-    Data3: -511928915
-    Data4: 1786886894
+    Data1: -1417847954
+    Data2: 1149548586
+    Data3: -947293040
+    Data4: -1115607282
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 9128186690571753223}
+  - {fileID: 4661790335138211752}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
+--- !u!114 &4939600592296312691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Audio/FMOD bank files/Master.bank
+  Name: Master
+  StudioPath: bank:/Master
+  lastModified: 638449156162891555
+  FileSizes: []
+  Exists: 1
+--- !u!114 &6048179240435390004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Items/Weapon_Droped
+  m_EditorClassIdentifier: 
+  Path: event:/Items/Weapon_Droped
+  Guid:
+    Data1: -1362054208
+    Data2: 1269793381
+    Data3: 1517156799
+    Data4: -1457222714
+  Banks:
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &6189466475296097541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/IngameUI/Dialogue/DialoguePre_Selection
+  m_EditorClassIdentifier: 
+  Path: event:/IngameUI/Dialogue/DialoguePre_Selection
+  Guid:
+    Data1: -406122499
+    Data2: 1325956825
+    Data3: -1196445270
+    Data4: -880836199
+  Banks:
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 4649
---- !u!114 &8593813485865161798
+  Length: 0
+--- !u!114 &6317556199977176811
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2261,24 +1296,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/ManLevels/Man_Level_x_Try
+  m_Name: event:/Characters/VO/Characters/PJ/Emocion 3
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/ManLevels/Man_Level_x_Try
+  Path: event:/Characters/VO/Characters/PJ/Emocion 3
   Guid:
-    Data1: -2053846093
-    Data2: 1086184891
-    Data3: -2018660968
-    Data4: 1557945238
+    Data1: 1204061624
+    Data2: 1257728606
+    Data3: 264077240
+    Data4: -1039930452
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 4175
---- !u!114 &8876099825909913341
+  Length: 0
+--- !u!114 &6937775753634882747
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2288,51 +1323,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/UI_Counter_LevelCounter_04
+  m_Name: event:/IngameUI/TimeLoop/ClockSfx
   m_EditorClassIdentifier: 
-  Path: event:/SFX/UI_Counter_LevelCounter_04
+  Path: event:/IngameUI/TimeLoop/ClockSfx
   Guid:
-    Data1: -914048745
-    Data2: 1289096675
-    Data3: -1512857420
-    Data4: 1438093369
+    Data1: -1738768087
+    Data2: 1324249106
+    Data3: 1804800926
+    Data4: 1654013988
   Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 7200
---- !u!114 &9002831818556296514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/WOMAN/Levels0k/Woman_Level7
-  m_EditorClassIdentifier: 
-  Path: event:/VOICES/WOMAN/Levels0k/Woman_Level7
-  Guid:
-    Data1: -827069266
-    Data2: 1260086429
-    Data3: -1695031164
-    Data4: -663115127
-  Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 4649
---- !u!114 &9022654481492098271
+  Length: 0
+--- !u!114 &7107361360776885665
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2342,24 +1350,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Ingame_WinLevel
+  m_Name: event:/Characters/Enemies/Stalker/Steps
   m_EditorClassIdentifier: 
-  Path: event:/SFX/Ingame_WinLevel
+  Path: event:/Characters/Enemies/Stalker/Steps
   Guid:
-    Data1: 65385506
-    Data2: 1233340072
-    Data3: 272384384
-    Data4: -1832494411
+    Data1: 2083459789
+    Data2: 1102939999
+    Data3: -1174649446
+    Data4: -19873732
   Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 32000
---- !u!114 &9034334790586448950
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &7314248566218698311
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2369,24 +1377,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/Man_Level3_OK
+  m_Name: event:/IngameUI/TimeLoop/Timeloop_MoveFordward
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/Man_Level3_OK
+  Path: event:/IngameUI/TimeLoop/Timeloop_MoveFordward
   Guid:
-    Data1: -2078839973
-    Data2: 1173961916
-    Data3: -1699388273
-    Data4: -1087393785
+    Data1: 1650043337
+    Data2: 1121250721
+    Data3: 169846422
+    Data4: 570191169
   Banks:
-  - {fileID: -6244045967129414342}
-  IsStream: 1
-  Is3D: 0
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 339298
---- !u!114 &9125641506143678076
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &7700932111668949143
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2396,20 +1404,126 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VOICES/MAN/Man_Level3_MmOK
+  m_Name: event:/Characters/Player/Combat/GetDamage
   m_EditorClassIdentifier: 
-  Path: event:/VOICES/MAN/Man_Level3_MmOK
+  Path: event:/Characters/Player/Combat/GetDamage
   Guid:
-    Data1: 1760547540
-    Data2: 1185126508
-    Data3: 662669489
-    Data4: 1201767835
+    Data1: -1141995595
+    Data2: 1146999499
+    Data3: -1276805248
+    Data4: -158233000
   Banks:
-  - {fileID: -6244045967129414342}
+  - {fileID: 4939600592296312691}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 3500
+  Length: 365
+--- !u!114 &8158366115534714467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Characters/Player/Combat/Weapons/Sword1_Hit1
+  m_EditorClassIdentifier: 
+  Path: event:/Characters/Player/Combat/Weapons/Sword1_Hit1
+  Guid:
+    Data1: 1165850297
+    Data2: 1128692252
+    Data3: 802023343
+    Data4: -2053426249
+  Banks:
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -9036533784236851285}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &8270212338729348223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/IngameUI/TimeLoop/FirstTime/ClockSfx_ Reverse
+  m_EditorClassIdentifier: 
+  Path: event:/IngameUI/TimeLoop/FirstTime/ClockSfx_ Reverse
+  Guid:
+    Data1: 898747466
+    Data2: 1199902495
+    Data3: -1269237345
+    Data4: -65465024
+  Banks:
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
+--- !u!114 &9046824538144457609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Props/OrbDoor_Lock
+  m_EditorClassIdentifier: 
+  Path: event:/Props/OrbDoor_Lock
+  Guid:
+    Data1: 1367041674
+    Data2: 1241421767
+    Data3: -1216672851
+    Data4: 514762706
+  Banks:
+  - {fileID: 4939600592296312691}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &9128186690571753223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MVP_Tower1_BackgroundSfX/MVP_Tower1_State
+  m_EditorClassIdentifier: 
+  Name: MVP_Tower1_State
+  StudioPath: 
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 1535864862
+    data2: 4131089846
+  Type: 1
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
