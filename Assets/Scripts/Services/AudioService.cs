@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FMODUnity;
 using Ju.Services;
 using UnityEngine;
 
@@ -31,6 +32,7 @@ public class AudioService : IService
     private AudioConfigSO audioConfig;
     private Dictionary<SOUND_TYPE, AudioClip> soundDictionary;
     private GameObject audioGO;
+    private FMOD.Studio.EventInstance soundEvent;
 
     public void Initialize(GameObject audioGO)
     {
@@ -90,6 +92,13 @@ public class AudioService : IService
         {
             Debug.LogError("SoundType no encontrado en el diccionario.");
         }
+    }
+    
+    public void PlayFMODAudio(string eventName, Transform parentTransform)
+    {
+        soundEvent = RuntimeManager.CreateInstance(eventName);
+        soundEvent.set3DAttributes(RuntimeUtils.To3DAttributes(parentTransform));
+        soundEvent.start();
     }
 
     public void StopAll()

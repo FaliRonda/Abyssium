@@ -117,6 +117,7 @@ public class EnemyAI : MonoBehaviour
                 .AppendCallback(() => enemyInvulnerable = false);
             
             Core.Audio.Play(SOUND_TYPE.PjImpact, 1, 0.1f, 0.05f);
+            //Core.Audio.PlayFMODAudio("event:/SFX/Button_Button_X1Sweep", transform);
             PlayDamagedAnimation();
             PlayDamagedKnockbackAnimation();
             rootNode.ResetNodes();
