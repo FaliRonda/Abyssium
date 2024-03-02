@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using FMOD.Studio;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New BT Patrol Node", menuName = "AI/BT Nodes/Patrol Node")]
@@ -10,6 +11,7 @@ public class BTPatrolNode : BTNode
     private Vector3 nextDestination;
     private PatrolNodeParametersSO patrolNodeParameters;
     private bool calculatingNextDestination;
+    private EventInstance stepFMODAudio;
 
     public BTPatrolNode(Enemies.CODE_NAMES enemyCode)
     {
@@ -29,6 +31,7 @@ public class BTPatrolNode : BTNode
                 if (distance < 0.1f)
                 {
                     isWalking = false;
+                    stepFMODAudio.stop(STOP_MODE.ALLOWFADEOUT);
                     return BTNodeState.Success;
                 }
 
@@ -36,8 +39,7 @@ public class BTPatrolNode : BTNode
                 enemyTransform.Translate(direction.normalized * (Time.deltaTime * patrolNodeParameters.patrolSpeed));
                 enemySprite.flipX = direction.x > 0;
                 enemyAnimator.Play("Enemy_walk");
-                Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/Steps", enemyTransform);
-                
+
                 return BTNodeState.Running;
             }
             else if(!calculatingNextDestination)
@@ -95,6 +97,7 @@ public class BTPatrolNode : BTNode
         {
             nextDestination = randomPoint;
             isWalking = true;
+            stepFMODAudio = Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/Steps", enemyTransform);
             calculatingNextDestination = false;
         }
     }
@@ -127,5 +130,6 @@ public class BTPatrolNode : BTNode
     public override void ResetNode()
     {
         isWalking = false;
+        stepFMODAudio.stop(STOP_MODE.ALLOWFADEOUT);
     }
 }

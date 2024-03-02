@@ -94,11 +94,12 @@ public class AudioService : IService
         }
     }
     
-    public void PlayFMODAudio(string eventName, Transform parentTransform)
+    public FMOD.Studio.EventInstance PlayFMODAudio(string eventName, Transform parentTransform)
     {
         soundEvent = RuntimeManager.CreateInstance(eventName);
         soundEvent.set3DAttributes(RuntimeUtils.To3DAttributes(parentTransform));
         soundEvent.start();
+        return soundEvent;
     }
 
     public void StopAll()

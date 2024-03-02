@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FMOD.Studio;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New BT Chase Node", menuName = "AI/BT Nodes/Chase Node")]
@@ -9,6 +10,7 @@ public class BTChaseNode : BTNode
     private Enemies.CODE_NAMES enemyCode;
     private bool currentlyChasing;
     private ChaseNodeParametersSO chaseNodeParameters;
+    private EventInstance stepFMODAudio;
 
     public BTChaseNode(Enemies.CODE_NAMES enemyCode)
     {
@@ -33,6 +35,7 @@ public class BTChaseNode : BTNode
             {
                 if (!currentlyChasing)
                 {
+                    stepFMODAudio = Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/Steps", enemyTransform);
                     // Core.Audio.Play(SOUND_TYPE.EnemyChasing, 1, 0.1f, 0.01f);
                 }
                 currentlyChasing = true;
@@ -49,10 +52,10 @@ public class BTChaseNode : BTNode
                 enemyTransform.Translate(direction.normalized * (Time.deltaTime * movementSpeed));
                 enemySprite.flipX = direction.x > 0;
                 enemyAnimator.Play("Enemy_walk");
-                Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/Steps", enemyTransform);
             }
             else
             {
+                stepFMODAudio.stop(STOP_MODE.ALLOWFADEOUT);
                 enemyAnimator.Play("Enemy_idle");
             }
             
@@ -60,6 +63,8 @@ public class BTChaseNode : BTNode
         }
 
         currentlyChasing = false;
+        stepFMODAudio.stop(STOP_MODE.ALLOWFADEOUT);
+
         return BTNodeState.Failure;
     }
     
@@ -84,6 +89,7 @@ public class BTChaseNode : BTNode
     public void ResetChasing()
     {
         currentlyChasing = false;
+        stepFMODAudio.stop(STOP_MODE.ALLOWFADEOUT);
     }
 
     public override void ResetNode()
