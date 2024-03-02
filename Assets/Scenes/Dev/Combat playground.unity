@@ -15493,7 +15493,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: debugMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: combatDemo
@@ -15501,7 +15501,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: timeLoopDuration
-      value: 1e+24
+      value: 240
       objectReference: {fileID: 0}
     - target: {fileID: 4723417635908149436, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: m_Name
@@ -15553,11 +15553,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7158898870885404308, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: towerFloors.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7158898870885404308, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: towerFloors.Array.data[0]
-      value: T1C1F0
+      value: Combat playground
       objectReference: {fileID: 0}
     - target: {fileID: 7158898870885404308, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: towerFloors.Array.data[1]
