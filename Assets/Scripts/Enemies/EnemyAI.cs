@@ -116,8 +116,8 @@ public class EnemyAI : MonoBehaviour
                 .AppendInterval(invulnerableCD)
                 .AppendCallback(() => enemyInvulnerable = false);
             
-            Core.Audio.Play(SOUND_TYPE.PjImpact, 1, 0.1f, 0.05f);
-            //Core.Audio.PlayFMODAudio("event:/SFX/Button_Button_X1Sweep", transform);
+            //Core.Audio.Play(SOUND_TYPE.PjImpact, 1, 0.1f, 0.05f);
+            Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/GetDamage", transform);
             PlayDamagedAnimation();
             PlayDamagedKnockbackAnimation();
             rootNode.ResetNodes();
@@ -172,7 +172,8 @@ public class EnemyAI : MonoBehaviour
         }
 
         enemyAnimator.Play("Enemy_die");
-        Core.Audio.Play(SOUND_TYPE.EnemyDied, 1, 0.05f, 0.01f);
+        //Core.Audio.Play(SOUND_TYPE.EnemyDied, 1, 0.05f, 0.01f);
+        Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/Die", transform);
         shadowSprite.enabled = false;
         float animLength = Core.AnimatorHelper.GetAnimLength(enemyAnimator, "Enemy_die");
         Core.AnimatorHelper.DoOnAnimationFinish(animLength, () =>

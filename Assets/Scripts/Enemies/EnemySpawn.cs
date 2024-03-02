@@ -34,7 +34,8 @@ public class EnemySpawn : MonoBehaviour
     public void SpawnEnemy()
     {
         fxGO.gameObject.SetActive(true);
-        Core.Audio.Play(SOUND_TYPE.EnemySpawn, 1, 0, 0.03f);
+        //Core.Audio.Play(SOUND_TYPE.EnemySpawn, 1, 0, 0.03f);
+        Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/Spawn", transform);
         
         Sequence fxSpawnSequence = DOTween.Sequence();
         fxSpawnSequence

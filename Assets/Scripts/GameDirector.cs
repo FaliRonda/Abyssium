@@ -192,7 +192,8 @@ public class GameDirector : MonoBehaviour
             }
 
             Core.Audio.Initialize(audioGO);
-            Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1, 0, 0.03f);
+            //Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1, 0, 0.03f);
+            Core.Audio.PlayFMODAudio("event:/Music/MVP_CombatDemoScene_Music", transform);
             
             isInitialLoad = false;
         }
@@ -777,7 +778,8 @@ public class GameDirector : MonoBehaviour
         {
             timeLoopPaused = false;
             controlBlocked = false;
-            Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.1f);
+            //Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.1f);
+            Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/GetDamage", pj.transform);
         });
         
         if (pj.inventory.HasWeapon || IsSceneT1C1Fm1)
@@ -929,7 +931,8 @@ public class GameDirector : MonoBehaviour
             vignette.intensity.value = 0.55f;
             vignette.smoothness.value = 0.55f;
             Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = this.gameIn3D });
-            Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
+            //Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
+            Core.Audio.PlayFMODAudio("event:/IngameUI/Camera/CameraToBehind", transform);
         }
         else
         {
@@ -950,7 +953,8 @@ public class GameDirector : MonoBehaviour
                     .AppendCallback(() =>
                     {
                         Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = this.gameIn3D });
-                        Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
+                        // Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
+                        Core.Audio.PlayFMODAudio("event:/IngameUI/Camera/CameraToBehind", transform);
                     })
                     .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.5f, 0.3f)
                         .SetEase(Ease.OutQuad))
@@ -959,7 +963,8 @@ public class GameDirector : MonoBehaviour
             else
             {
                 Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = this.gameIn3D });
-                Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
+                // Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
+                Core.Audio.PlayFMODAudio("event:/IngameUI/Camera/CameraToTop", transform);
             }
         }
     }

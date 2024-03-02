@@ -172,7 +172,8 @@ public class PJ : MonoBehaviour
             pjCollider.isTrigger = true;
             
             pjAnimator.Play("PJ_roll");
-            Core.Audio.Play(SOUND_TYPE.PjDash, 1f, 0.1f, 0.01f);
+            //Core.Audio.Play(SOUND_TYPE.PjDash, 1f, 0.1f, 0.01f);
+            Core.Audio.PlayFMODAudio("event:/Characters/Player/Exploration/Dash", transform);
             float animLength = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
             
             PjActionFalseWhenAnimFinish(animLength);
@@ -320,7 +321,8 @@ public class PJ : MonoBehaviour
 
         if (stepReady && controlInputData.inputDirection != Vector3.zero)
         {
-            Core.Audio.Play(SOUND_TYPE.PjStep, 1, 0.1f, 0.01f);
+            //Core.Audio.Play(SOUND_TYPE.PjStep, 1, 0.1f, 0.01f);
+            Core.Audio.PlayFMODAudio("event:/Characters/Player/Exploration/Steps", transform);
 
             stepReady = false;
             Sequence sequence = DOTween.Sequence();
@@ -623,7 +625,8 @@ public class PJ : MonoBehaviour
         {
             damaged = true;
             
-            Core.Audio.Play(SOUND_TYPE.PjHitted, 1, 0, 0.5f);
+            //Core.Audio.Play(SOUND_TYPE.PjHitted, 1, 0, 0.5f);
+            Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/GetImpact", transform);
             Core.Event.Fire(new GameEvents.PlayerDamaged(){deathFrameDuration = deathFrameDuration});
             Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
             
