@@ -245,11 +245,13 @@ public class EnemyAI : MonoBehaviour
         if (other.gameObject.layer == Layers.PJ_LAYER)
         {
             HitPlayer(other.gameObject);
+            HitPlayer(other.gameObject);
         }
     }
 
     private void HitPlayer(GameObject other)
     {
+        Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/AttackHit", transform);
         other.GetComponent<PJ>().GetDamage(transform);
         ResetAINodes();
     }

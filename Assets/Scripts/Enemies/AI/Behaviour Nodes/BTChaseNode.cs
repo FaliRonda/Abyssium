@@ -49,6 +49,7 @@ public class BTChaseNode : BTNode
                 enemyTransform.Translate(direction.normalized * (Time.deltaTime * movementSpeed));
                 enemySprite.flipX = direction.x > 0;
                 enemyAnimator.Play("Enemy_walk");
+                Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/Steps", enemyTransform);
             }
             else
             {

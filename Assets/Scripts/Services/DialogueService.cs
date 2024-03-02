@@ -111,6 +111,7 @@ public class DialogueService : IService
         textShowSequence
             .Append(DOTween.To(() => charIndex, x => charIndex = x, dialogue.dialogueText.Length, dialogue.dialogueText.Length * typingConfig.typingSpeed)
                 .OnUpdate(() => {
+                    Core.Audio.PlayFMODAudio("event:/IngameUI/Dialogue/DialogueWritting", gameUIGO.transform);
                     conversationDialogueText.text = dialogue.dialogueText.Substring(0, charIndex);
                 })
                 .OnKill(() =>
@@ -159,6 +160,7 @@ public class DialogueService : IService
         
         var choiceButton = currentChoice.GetComponent<Button>();
         choiceButton.onClick.AddListener(delegate() { ChoiceSelected(choiceIndex); });
+        Core.Audio.PlayFMODAudio("event:/IngameUI/Dialogue/Newdialogue", gameUIGO.transform);
     }
     
     public void SelectChoicesWithControl(Vector3 inputDirection)
@@ -175,6 +177,8 @@ public class DialogueService : IService
             conversationDialogueChoicesGO[0].GetComponentInChildren<Outline>().enabled = false;
             conversationDialogueChoicesGO[1].GetComponentInChildren<Outline>().enabled = true;
         }
+        
+        Core.Audio.PlayFMODAudio("event:/IngameUI/Dialogue/DialoguePre_Selection", gameUIGO.transform);
     }
 
     public void ChoiceSelected(int choiceIndex)

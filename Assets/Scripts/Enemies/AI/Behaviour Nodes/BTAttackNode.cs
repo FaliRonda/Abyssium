@@ -94,7 +94,11 @@ public class BTAttackNode : BTNode
         float whiteHitTargetValue = 1 - attackNodeParameters.whiteHitPercentage; 
 
         attackSequence
-            .AppendCallback(() => { enemyAnimator.Play("Enemy_attack"); })
+            .AppendCallback(() =>
+            {
+                Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/JumpToAttack", enemyTransform);
+                enemyAnimator.Play("Enemy_attack");
+            })
             .Append(enemyTransform.DOMove(enemyPosition + anticipationDirection, attackNodeParameters.anticipacionDuration))
             .Join(DOTween.To(() => 1, x => {
                 whiteHitTargetValue = x;

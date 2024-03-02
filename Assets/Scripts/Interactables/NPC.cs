@@ -79,6 +79,7 @@ public class NPC : Interactable
 
     private void ShowNextDialog()
     {
+        Core.Audio.PlayFMODAudio("event:/IngameUI/Dialogue/Newdialogue", transform);
         // Hay más diálogos que mostrar
         if (dialogueIndex < dialoguesToShow.Length)
         {

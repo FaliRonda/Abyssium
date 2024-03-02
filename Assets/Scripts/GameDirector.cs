@@ -18,6 +18,7 @@ public class GameDirector : MonoBehaviour
     #region Public variables
     
     public bool debugMode;
+    public bool combatDemo;
     public float timeLoopDuration = 10f;
     public GameObject moon;
     public Canvas canvas;
@@ -193,7 +194,17 @@ public class GameDirector : MonoBehaviour
 
             Core.Audio.Initialize(audioGO);
             //Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1, 0, 0.03f);
-            Core.Audio.PlayFMODAudio("event:/Music/MVP_CombatDemoScene_Music", transform);
+
+            if (combatDemo)
+            {
+                Core.Audio.PlayFMODAudio("event:/Music/MVP_CombatDemoScene_Music", transform);
+                Core.Audio.PlayFMODAudio("event:/Background/MVP_CombatDemoScene_BackgroundSFX", transform);
+            }
+            else
+            {
+                Core.Audio.PlayFMODAudio("event:/Music/MVP_Tower1_Music", transform);
+                Core.Audio.PlayFMODAudio("event:/Background/MVP_Tower1_BackgroundSfX", transform);
+            }
             
             isInitialLoad = false;
         }
@@ -807,7 +818,11 @@ public class GameDirector : MonoBehaviour
         Sequence angryGodSequence = DOTween.Sequence();
 
         angryGodSequence
-            .AppendCallback(() => { Core.Audio.Play(SOUND_TYPE.AngryGod, 1, 0, 0.1f); })
+            .AppendCallback(() =>
+            {
+                //Core.Audio.Play(SOUND_TYPE.AngryGod, 1, 0, 0.1f);
+                Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Goddess/AngryScream_01", transform);
+            })
             .AppendCallback(() => { Core.CameraEffects.StartShakingEffect(2f, 0.2f, 2f); })
             .AppendInterval(3f)
             .AppendCallback(() =>
@@ -840,7 +855,8 @@ public class GameDirector : MonoBehaviour
                 .AppendCallback(() =>
                 {
                     Core.CameraEffects.StartShakingEffect(3, 0.2f, 1);
-                    Core.Audio.Play(SOUND_TYPE.AngryGod, 3, 0, 0.05f);
+                    //Core.Audio.Play(SOUND_TYPE.AngryGod, 3, 0, 0.05f);
+                    Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Goddess/AngryScream_01", transform);
                 })
                 .AppendInterval(2)
                 .AppendCallback(() =>
@@ -864,7 +880,11 @@ public class GameDirector : MonoBehaviour
                 Sequence angryGodSequence = DOTween.Sequence();
 
                 angryGodSequence
-                    .AppendCallback(() => { Core.Audio.Play(SOUND_TYPE.AngryGod, 1, 0, 0.1f); })
+                    .AppendCallback(() =>
+                    {
+                        //Core.Audio.Play(SOUND_TYPE.AngryGod, 1, 0, 0.1f);
+                        Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Goddess/AngryScream_01", transform);
+                    })
                     .AppendCallback(() => { Core.CameraEffects.StartShakingEffect(2f, 0.2f, 1f); })
                     .AppendInterval(2f)
                     .AppendCallback(() =>
@@ -891,7 +911,11 @@ public class GameDirector : MonoBehaviour
                     Sequence bossdefeated = DOTween.Sequence();
 
                     bossdefeated
-                        .AppendCallback(() => { Core.Audio.Play(SOUND_TYPE.AngryGod, 2.5f, 0, 0.1f); })
+                        .AppendCallback(() =>
+                        {
+                            //Core.Audio.Play(SOUND_TYPE.AngryGod, 2.5f, 0, 0.1f);
+                            Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Goddess/AngryScream_01", transform);
+                        })
                         .AppendCallback(() => { Core.CameraEffects.StartShakingEffect(1.75f, 0.2f, 2.5f); })
                         .AppendInterval(4)
                         .AppendCallback(() =>

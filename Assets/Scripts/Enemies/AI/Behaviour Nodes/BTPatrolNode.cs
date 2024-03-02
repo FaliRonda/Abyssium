@@ -36,6 +36,7 @@ public class BTPatrolNode : BTNode
                 enemyTransform.Translate(direction.normalized * (Time.deltaTime * patrolNodeParameters.patrolSpeed));
                 enemySprite.flipX = direction.x > 0;
                 enemyAnimator.Play("Enemy_walk");
+                Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/Steps", enemyTransform);
                 
                 return BTNodeState.Running;
             }
