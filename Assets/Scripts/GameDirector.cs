@@ -277,7 +277,7 @@ public class GameDirector : MonoBehaviour
         }
         if (!demoEnded && cameraDirector != null && !cameraDirector.CamerasTransitionBlending() && (!timeLoopEnded || debugMode))
         {
-            if (debugMode && CameraChangeAction.triggered)
+            if ((debugMode || combatDemo) && CameraChangeAction.triggered)
             {
                 ForceSwitchGamePerspective();
             }
@@ -934,7 +934,7 @@ public class GameDirector : MonoBehaviour
                         .AppendInterval(2)
                         .AppendCallback(() => { SetGameState(true, enemyDied); });
                 }
-                else if (!debugMode)
+                else if (!debugMode && !combatDemo)
                 {
                     SetGameState(true, enemyDied);
                 }
