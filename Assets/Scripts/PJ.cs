@@ -165,6 +165,7 @@ public class PJ : MonoBehaviour
     {
         if (!pjDoingAction && rollReady && canRoll)
         {
+            Core.Audio.PlayFMODAudio("event:/Characters/Player/Exploration/Dash", transform);
             pjDoingAction = true;
             pjIsRolling = true;
             pjInvulnerable = true;
@@ -173,7 +174,6 @@ public class PJ : MonoBehaviour
             
             pjAnimator.Play("PJ_roll");
             //Core.Audio.Play(SOUND_TYPE.PjDash, 1f, 0.1f, 0.01f);
-            Core.Audio.PlayFMODAudio("event:/Characters/Player/Exploration/Dash", transform);
             float animLength = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
             
             PjActionFalseWhenAnimFinish(animLength);
@@ -627,6 +627,7 @@ public class PJ : MonoBehaviour
             
             //Core.Audio.Play(SOUND_TYPE.PjHitted, 1, 0, 0.5f);
             Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/GetImpact", transform);
+            Core.Audio.PlayFMODAudio("event:/IngameUI/TimeLoop/Timeloop_MoveFordward", transform);
             Core.Event.Fire(new GameEvents.PlayerDamaged(){deathFrameDuration = deathFrameDuration});
             Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
             

@@ -674,6 +674,7 @@ public class GameDirector : MonoBehaviour
         timeLoopEnded = true;
         //Core.Audio.Play(SOUND_TYPE.Bell, 1, 0, 0.01f);
         Core.Audio.PlayFMODAudio("event:/IngameUI/TimeLoop/Timeloop_end_Bell", transform);
+        Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/Die", transform);
 
         if (!IsSceneT1C0F0)
         {
@@ -797,7 +798,6 @@ public class GameDirector : MonoBehaviour
             controlBlocked = false;
             //Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.1f);
             Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/GetDamage", pj.transform);
-            Core.Audio.PlayFMODAudio("event:/IngameUI/TimeLoop/Timeloop_MoveFordward", transform);
         });
         
         if (pj.inventory.HasWeapon || IsSceneT1C1Fm1 || combatDemo)
