@@ -484,7 +484,7 @@ public class GameDirector : MonoBehaviour
     {
         GameObject[] pjSpawnPoints = GameObject.FindObjectsOfType<GameObject>()
             .Where(objeto => objeto.layer == Layers.PJ_SPAWN_LAYER).ToArray();
-        if (!debugMode && isNewCycleOrLoop)
+        if (!debugMode && !combatDemo && isNewCycleOrLoop)
         {
             pj.transform.position = new Vector3(0, 0, 0);
         }
