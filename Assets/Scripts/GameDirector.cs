@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Ju.Extensions;
 using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
@@ -142,6 +144,11 @@ public class GameDirector : MonoBehaviour
             sceneDirector.DoStart();
 
             Core.Dialogue.Initialize(canvas);
+
+            if (combatDemo)
+            {
+                canvas.transform.GetChild(4).gameObject.SetActive(true);
+            }
 
             this.EventSubscribe<GameEvents.EnemyDied>(e => EnemyDied(e.enemy));
             this.EventSubscribe<GameEvents.EnemySpawned>(e => EnemySpawned(e.enemyAI));
@@ -467,6 +474,14 @@ public class GameDirector : MonoBehaviour
                 npc.dialogueEnded = true;
                 npc.lastDialog = lastNPCDialogue;
             }
+        }
+        
+        if (combatDemo)
+        {
+            var counterText = canvas.transform.GetChild(4).GetComponentInChildren<TMP_Text>();
+            var initialText = counterText.text.Split(' ')[0] + " " + counterText.text.Split(' ')[1];
+            int counter = 0;
+            counterText.text = initialText + " " + counter;
         }
         
         if (timeLoopEnded)
@@ -878,6 +893,14 @@ public class GameDirector : MonoBehaviour
     
     private void CheckEnemiesInScene(bool enemyDied)
     {
+        if (combatDemo && enemyDied)
+        {
+            var counterText = canvas.transform.GetChild(4).GetComponentInChildren<TMP_Text>();
+            var initialText = counterText.text.Split(' ')[0] + " " + counterText.text.Split(' ')[1];
+            int counter = Int32.Parse(counterText.text.Split(' ')[2]);
+            counter += 1;
+            counterText.text = initialText + " " + counter;
+        }
         if (enemies.Count <= 0)
         {
             if (IsSceneT1C1IT2Fm1)
