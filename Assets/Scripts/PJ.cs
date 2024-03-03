@@ -65,7 +65,7 @@ public class PJ : MonoBehaviour
     
     private Ray ray;
     private RaycastHit[] hits;
-    private TweenerCore<Vector3, Vector3, VectorOptions> rollingTween;
+    private Sequence rollingSequence;
     private Interactable interactableInContact;
     private bool pjInvulnerable;
     private bool beingDamaged;
@@ -186,8 +186,10 @@ public class PJ : MonoBehaviour
             Debug.DrawRay(transform.position, lastDirection, Color.red);
             if (!PjRaycastHit(Color.red) || !PjRayHitLayer(Layers.WALL_LAYER))
             {
-                rollingTween = transform.DOMove(endPosition, animLength)
-                    //.OnComplete(StopRolling)
+                rollingSequence = DOTween.Sequence();
+                rollingSequence
+                    .Append(transform.DOMove(endPosition, animLength))
+                    .OnComplete(StopRolling)
                     .OnKill(StopRolling);
 
                 var emissionModule = pjStepDust.emission;
@@ -196,6 +198,10 @@ public class PJ : MonoBehaviour
                 mainModule.loop = true;
                 pjStepDust.Play();
                 dustParticlesPlaying = true;
+            }
+            else
+            {
+                StopRolling();
             }
             
         }
@@ -207,7 +213,7 @@ public class PJ : MonoBehaviour
         {
             if (pjIsRolling)
             {
-                rollingTween.Kill();
+                rollingSequence.Kill();
             }
 
             if (pjIsImpulsing)
@@ -245,7 +251,7 @@ public class PJ : MonoBehaviour
         endDirection *= playerRollFactor;
         var position = transform.position;
         Vector3 endPosition =
-            new Vector3(position.x + endDirection.x, position.y + endDirection.z, position.z + endDirection.y);
+            new Vector3(position.x + endDirection.x, 0, position.z + endDirection.y);
         return endPosition;
     }
 
