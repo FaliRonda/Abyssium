@@ -20,6 +20,8 @@ public class Weapon : MonoBehaviour
     private int initialWeaponDamage;
     private float initialWeaponRangeValue;
     private float initialWeaponCd;
+    [HideInInspector]
+    public Sequence attackingSequence;
 
     private void Start()
     {
@@ -58,10 +60,15 @@ public class Weapon : MonoBehaviour
         currentlyAttacking = true;
         weaponCollider.enabled = true;
         
-        Sequence sequence = DOTween.Sequence();
-        sequence
+        attackingSequence = DOTween.Sequence();
+        attackingSequence
             .AppendInterval(0.2f)
             .AppendCallback(() =>
+            {
+                weaponCollider.enabled = false;
+                currentlyAttacking = false;
+            })
+            .OnKill(() =>
             {
                 weaponCollider.enabled = false;
                 currentlyAttacking = false;

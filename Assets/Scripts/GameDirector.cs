@@ -312,7 +312,7 @@ public class GameDirector : MonoBehaviour
                 
                 if (RollAction.triggered)
                 {
-                    pj.DoRoll();
+                    pj.DoRoll(controlInputData.inputDirection);
                 }
 
             } else if (narrativeDirector.IsShowingNarrative && !narrativeDirector.IsTypingText && InteractAction.triggered)

@@ -161,24 +161,27 @@ public class PJ : MonoBehaviour
 
     #region Roll
 
-    public void DoRoll()
+    public void DoRoll(Vector3 inputDirection)
     {
-        if (!pjDoingAction && rollReady && canRoll)
+        if (!pjIsRolling && rollReady && canRoll)
         {
-            Core.Audio.PlayFMODAudio("event:/Characters/Player/Exploration/Dash", transform);
             pjDoingAction = true;
             pjIsRolling = true;
             pjInvulnerable = true;
 
             pjCollider.isTrigger = true;
+            inventory.GetActiveWeapon().attackingSequence.Kill();
             
-            pjAnimator.Play("PJ_roll");
             //Core.Audio.Play(SOUND_TYPE.PjDash, 1f, 0.1f, 0.01f);
+            Core.Audio.PlayFMODAudio("event:/Characters/Player/Exploration/Dash", transform);
+            
             float animLength = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
             
             PjActionFalseWhenAnimFinish(animLength);
 
-            Vector3 endPosition = GetRollEndPosition();
+            Vector3 endPosition = GetRollEndPosition(inputDirection);
+            SetSpriteXOrientation(inputDirection.x);
+            pjAnimator.Play("PJ_roll");
             
             Debug.DrawRay(transform.position, lastDirection, Color.red);
             if (!PjRaycastHit(Color.red) || !PjRayHitLayer(Layers.WALL_LAYER))
@@ -194,6 +197,7 @@ public class PJ : MonoBehaviour
                 pjStepDust.Play();
                 dustParticlesPlaying = true;
             }
+            
         }
     }
     
@@ -235,13 +239,13 @@ public class PJ : MonoBehaviour
         dustParticlesPlaying = false;
     }
 
-    private Vector3 GetRollEndPosition()
+    private Vector3 GetRollEndPosition(Vector3 inputDirection)
     {
-        Vector3 endDirection = lastDirection != Vector3.zero ? lastDirection.normalized : transform.right;
+        Vector3 endDirection = inputDirection != Vector3.zero ? inputDirection.normalized : lastDirection != Vector3.zero ? lastDirection.normalized : transform.right;
         endDirection *= playerRollFactor;
         var position = transform.position;
         Vector3 endPosition =
-            new Vector3(position.x + endDirection.x, position.y + endDirection.y, position.z + endDirection.z);
+            new Vector3(position.x + endDirection.x, position.y + endDirection.z, position.z + endDirection.y);
         return endPosition;
     }
 

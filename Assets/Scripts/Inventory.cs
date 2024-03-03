@@ -34,6 +34,8 @@ public class Inventory : MonoBehaviour
         lanternPj = GetComponentsInChildren<Light>()[1];
         lanternPj.enabled = hasLantern;
         
+        lastAngle = -90;
+        
         bool activeWeaponFilled = false;
         
         foreach (Transform t in GetComponentsInChildren<Transform>())
