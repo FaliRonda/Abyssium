@@ -3819,7 +3819,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: aIActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: behaviorNodeContainer
