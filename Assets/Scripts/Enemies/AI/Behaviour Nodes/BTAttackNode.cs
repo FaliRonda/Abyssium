@@ -91,12 +91,19 @@ public class BTAttackNode : BTNode
         Vector3 startPosition = enemyPosition;
         Vector3 anticipationDirection = (startPosition - targetPosition).normalized * attackNodeParameters.anticipationDistance;
         
-        float whiteHitTargetValue = 1 - attackNodeParameters.whiteHitPercentage; 
+        float whiteHitTargetValue = 1 - attackNodeParameters.whiteHitPercentage;
+
+        Sequence attackSoundSequence = DOTween.Sequence();
+        attackSoundSequence
+            .AppendInterval(0.3f)
+            .AppendCallback(() =>
+            {
+                Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/JumpToAttack", enemyTransform);
+            });
 
         attackSequence
             .AppendCallback(() =>
             {
-                Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/JumpToAttack", enemyTransform);
                 enemyAnimator.Play("Enemy_attack");
             })
             .Append(enemyTransform.DOMove(enemyPosition + anticipationDirection, attackNodeParameters.anticipacionDuration))
