@@ -62098,10 +62098,6 @@ PrefabInstance:
       propertyPath: debugAttack
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1799084693320912194, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
-      propertyPath: deathFrameDuration
-      value: 0.15
-      objectReference: {fileID: 0}
     - target: {fileID: 4438735944751835573, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
       propertyPath: m_IsActive
       value: 0
