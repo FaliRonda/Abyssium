@@ -15,6 +15,7 @@ public class PJ : MonoBehaviour
     public float playerRollFactor = 2f;
     public float rollCooldown;
     public float invulnerableAfterDashCD = 0.3f;
+    public float playerRayMaxDistance = 0.5f;
     
     [Header("ATTACK")]
     public float attackImpulseFactor = 1.5f;
@@ -22,7 +23,6 @@ public class PJ : MonoBehaviour
     public float combo2AttackCooldown;
     public float combo3AttackCooldown;
     public float moveAfterAttackCooldown = 0.5f;
-    public float playerRayMaxDistance = 0.5f;
     public float playerDustParticlesDelay = 0.5f;
     public float comboTimeWindow = 1.5f; // Ventana de tiempo para realizar el siguiente golpe del combo
     public int comboCount = 0; // Contador de golpes en el combo
@@ -68,9 +68,9 @@ public class PJ : MonoBehaviour
     private Sequence rollingSequence;
     private Interactable interactableInContact;
     private bool pjInvulnerable;
-    private bool beingDamaged;
+    private bool pjIsBeingDamaged;
     private bool stepReady = true;
-    private Sequence damagedSequence;
+    private Sequence knockbackSequence;
     private Sequence impulseSequence;
 
     #region Unity events
@@ -106,19 +106,13 @@ public class PJ : MonoBehaviour
             inventory.UpdatePosition(transform);
             
             PjDoRotation(controlInputData);
-        } else
-        {
-            StopRollAndImpulseWhenHitWall();
         }
+        
+        StopMovementSequencesWhenHitWall();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (beingDamaged && (other.gameObject.layer == Layers.WALL_LAYER || other.gameObject.layer == Layers.DOOR_LAYER))
-        {
-            damagedSequence.Kill();
-        }
-
         if (other.gameObject.layer == Layers.BOSS_COMBAT_LAYER)
         {
             Core.Event.Fire(new GameEvents.BossCombatReached(){});
@@ -137,11 +131,6 @@ public class PJ : MonoBehaviour
                     interactableInContact.SetOutlineVisibility(true);
                 }
             }
-        }
-        
-        if (beingDamaged && (other.gameObject.layer == Layers.WALL_LAYER || other.gameObject.layer == Layers.DOOR_LAYER))
-        {
-            damagedSequence.Kill();
         }
     }
     
@@ -207,7 +196,7 @@ public class PJ : MonoBehaviour
         }
     }
     
-    private void StopRollAndImpulseWhenHitWall()
+    private void StopMovementSequencesWhenHitWall()
     {
         if (PjRaycastHit(Color.yellow) && (PjRayHitLayer(Layers.WALL_LAYER) || PjRayHitLayer(Layers.DOOR_LAYER)))
         {
@@ -219,6 +208,11 @@ public class PJ : MonoBehaviour
             if (pjIsImpulsing)
             {
                 impulseSequence.Kill();
+            }
+
+            if (pjIsBeingDamaged)
+            {
+                knockbackSequence.Kill();
             }
         }
     }
@@ -406,7 +400,7 @@ public class PJ : MonoBehaviour
     
     private void UpdateLastDirection(Vector3 direction)
     {
-        lastDirection = !pjDoingAction ? (direction != Vector3.zero ? direction : lastDirection) : lastDirection;
+        lastDirection = !pjDoingAction && !pjIsBeingDamaged ? (direction != Vector3.zero ? direction : lastDirection) : lastDirection;
     }
 
     private void SetSpriteXOrientation(float xInputDirection)
@@ -449,10 +443,16 @@ public class PJ : MonoBehaviour
 
     private bool PjRaycastHit(Color color)
     {
+        return PjRaycastHit(color, playerRayMaxDistance);
+    }
+    
+    private bool PjRaycastHit(Color color, float playerRayDistance)
+    {
         Debug.DrawRay(ray.origin, ray.direction, color);
-        hits = Physics.RaycastAll(ray.origin, ray.direction, playerRayMaxDistance);
+        hits = Physics.RaycastAll(ray.origin, ray.direction, playerRayDistance);
         return hits.Length > 0;
     }
+    
 
     #endregion
 
@@ -675,20 +675,24 @@ public class PJ : MonoBehaviour
 
     private void PlayDamagedKnockbackAnimation(Transform damager)
     {
-        Debug.DrawRay(transform.position, lastDirection, Color.green);
-        if (!PjRaycastHit(Color.green) || !PjRayHitLayer(Layers.WALL_LAYER))
+        Vector3 position = transform.position;
+        Vector3 enemyPosition = damager.position;
+        Vector3 damagedDirection = (position - enemyPosition).normalized * knockbackMovementFactor;
+        var previousLastDirection = lastDirection;
+        lastDirection = damagedDirection;
+        UpdatePjRay();
+        
+        Debug.DrawRay(transform.position, damagedDirection, Color.green);
+        
+        if (!PjRaycastHit(Color.green, 1.5f) || !PjRayHitLayer(Layers.WALL_LAYER))
         {
-            beingDamaged = true;
-            damagedSequence = DOTween.Sequence();
-        
-            Vector3 position = transform.position;
-            Vector3 enemyPosition = damager.position;
-            Vector3 damagedDirection = (position - enemyPosition).normalized * knockbackMovementFactor;
-        
-            damagedSequence
+            lastDirection = previousLastDirection;
+            pjIsBeingDamaged = true;
+            knockbackSequence = DOTween.Sequence();
+            
+            knockbackSequence
                 .Append(transform.DOMove(position + new Vector3(damagedDirection.x, position.y, damagedDirection.z), 0.2f))
-                .OnComplete(() => { beingDamaged = false; });
-            damagedSequence.Play();
+                .OnKill(() => { pjIsBeingDamaged = false; });
         }
         
         damagedBlinkingCounter = damageBlinkingDuration;
