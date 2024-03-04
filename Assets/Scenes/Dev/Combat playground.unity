@@ -688,7 +688,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3460625134005943900, guid: baff628f31769bb4ea6346d5da25a25d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -72.20711
+      value: -67.70711
       objectReference: {fileID: 0}
     - target: {fileID: 8583044140561377347, guid: baff628f31769bb4ea6346d5da25a25d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -700,7 +700,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8583044140561377347, guid: baff628f31769bb4ea6346d5da25a25d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -72.20711
+      value: -67.70711
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3819,7 +3819,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: aIActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8759257620489798341, guid: 905d89633bafe1646942a702e46036d0, type: 3}
       propertyPath: behaviorNodeContainer
@@ -4980,8 +4980,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4, y: 6, z: 0.01}
-  m_Center: {x: 0, y: 3, z: 0}
+  m_Size: {x: 6, y: 6, z: 1}
+  m_Center: {x: 0, y: 3, z: 0.5}
 --- !u!212 &300979576
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -13766,8 +13766,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4, y: 6, z: 0.01}
-  m_Center: {x: 0, y: 3, z: 0}
+  m_Size: {x: 6, y: 6, z: 1}
+  m_Center: {x: 0, y: 3, z: 0.5}
 --- !u!212 &782829369
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -15518,8 +15518,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1559478951254936260, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1559478951254936260, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 11.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1559478951254936260, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.5
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 1559478951254936260, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: m_LocalRotation.x
@@ -15527,19 +15535,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1559478951254936260, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.97236997
+      value: 0.92387956
       objectReference: {fileID: 0}
     - target: {fileID: 1559478951254936260, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.23344536
+      value: -0.38268343
       objectReference: {fileID: 0}
     - target: {fileID: 1559478951254936260, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 27
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: debugMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2247875458755568361, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: combatDemo
@@ -21801,8 +21809,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4, y: 6, z: 0.01}
-  m_Center: {x: 0, y: 3, z: 0}
+  m_Size: {x: 6, y: 6, z: 1}
+  m_Center: {x: 0, y: 3, z: 0.5}
 --- !u!212 &1320174089
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -23272,8 +23280,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4, y: 6, z: 0.01}
-  m_Center: {x: 0, y: 3, z: 0}
+  m_Size: {x: 6, y: 6, z: 1}
+  m_Center: {x: 0, y: 3, z: 0.5}
 --- !u!212 &1439976889
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -59910,8 +59918,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4, y: 6, z: 0.01}
-  m_Center: {x: 0, y: 3, z: 0}
+  m_Size: {x: 6, y: 6, z: 1}
+  m_Center: {x: 0, y: 3, z: 0.5}
 --- !u!212 &2013887798
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -61812,8 +61820,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4, y: 6, z: 0.01}
-  m_Center: {x: 0, y: 3, z: 0}
+  m_Size: {x: 6, y: 6, z: 1}
+  m_Center: {x: 0, y: 3, z: 0.5}
 --- !u!212 &2127824375
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -62056,7 +62064,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1420401184455798622, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1420401184455798622, guid: 8c24edd904cb20b4b9c8e72382b89424, type: 3}
       propertyPath: m_LocalRotation.w
