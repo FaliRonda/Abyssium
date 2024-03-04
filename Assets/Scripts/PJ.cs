@@ -161,7 +161,7 @@ public class PJ : MonoBehaviour
 
     #region Roll
 
-    public void DoRoll(Vector3 inputDirection)
+    public void DoRoll(GameDirector.ControlInputData controlInputData)
     {
         if (!pjIsRolling && rollReady && canRoll)
         {
@@ -179,8 +179,8 @@ public class PJ : MonoBehaviour
             
             PjActionFalseWhenAnimFinish(animLength);
 
-            Vector3 endPosition = GetRollEndPosition(inputDirection);
-            SetSpriteXOrientation(inputDirection.x);
+            Vector3 endPosition = GetRollEndPosition(controlInputData);
+            SetSpriteXOrientation(controlInputData.inputDirection.x);
             pjAnimator.Play("PJ_roll");
             
             Debug.DrawRay(transform.position, lastDirection, Color.red);
@@ -245,13 +245,32 @@ public class PJ : MonoBehaviour
         dustParticlesPlaying = false;
     }
 
-    private Vector3 GetRollEndPosition(Vector3 inputDirection)
+    private Vector3 GetRollEndPosition(GameDirector.ControlInputData controlInputData)
     {
-        Vector3 endDirection = inputDirection != Vector3.zero ? inputDirection.normalized : lastDirection != Vector3.zero ? lastDirection.normalized : transform.right;
+        Vector3 endDirection;
+        Vector3 inputDirection = controlInputData.inputDirection;
+        
+        if (!GameState.gameIn3D && inputDirection != Vector3.zero)
+        {
+            endDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
+        }
+        else
+        {
+            endDirection = lastDirection != Vector3.zero ? lastDirection.normalized : transform.right;
+        }
+        
         endDirection *= playerRollFactor;
         var position = transform.position;
-        Vector3 endPosition =
-            new Vector3(position.x + endDirection.x, 0, position.z + endDirection.y);
+
+        Vector3 endPosition;
+        if (GameState.gameIn3D)
+        {
+            endPosition = new Vector3(position.x + endDirection.x, 0, position.z + endDirection.z);
+        }
+        else
+        {
+            endPosition = new Vector3(position.x + endDirection.x, 0, position.z + endDirection.z);
+        }
         return endPosition;
     }
 
@@ -486,7 +505,7 @@ public class PJ : MonoBehaviour
     {
         if (gameIn3D)
         {
-            if (GameState.debugMode)
+            if (GameState.combatDemo)
             {
                 TryAttack();
             }

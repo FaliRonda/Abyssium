@@ -145,6 +145,7 @@ public class GameDirector : MonoBehaviour
 
             Core.Dialogue.Initialize(canvas);
 
+            GameState.combatDemo = combatDemo;
             if (combatDemo)
             {
                 canvas.transform.GetChild(4).gameObject.SetActive(true);
@@ -319,7 +320,7 @@ public class GameDirector : MonoBehaviour
                 
                 if (RollAction.triggered)
                 {
-                    pj.DoRoll(controlInputData.inputDirection);
+                    pj.DoRoll(controlInputData);
                 }
 
             } else if (narrativeDirector.IsShowingNarrative && !narrativeDirector.IsTypingText && InteractAction.triggered)
