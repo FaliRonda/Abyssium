@@ -682,8 +682,6 @@ public class PJ : MonoBehaviour
         lastDirection = damagedDirection;
         UpdatePjRay();
         
-        Debug.DrawRay(transform.position, damagedDirection, Color.green);
-        
         if (!PjRaycastHit(Color.green, 1.5f) || !PjRayHitLayer(Layers.WALL_LAYER))
         {
             lastDirection = previousLastDirection;

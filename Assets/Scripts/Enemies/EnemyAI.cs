@@ -54,6 +54,10 @@ public class EnemyAI : MonoBehaviour
     [HideInInspector]
     public SphereCollider attackCollider;
 
+    private Ray ray;
+    private RaycastHit[] hits;
+    private Sequence knockbackSequence;
+
 
     public void Initialize(Transform pjTransform)
     {
@@ -148,14 +152,34 @@ public class EnemyAI : MonoBehaviour
     
     private void PlayDamagedKnockbackAnimation()
     {
-        var damagedSequence = DOTween.Sequence();
-        
         Vector3 position = transform.position;
         Vector3 damagedDirection = (position - playerTransform.position).normalized * knockbackMovementFactor;
+        
+        ray = new Ray(transform.position, damagedDirection);
+        
+        if (!EnemyRaycastHit(Color.green, 1f) || !EnemyRayHitLayer(Layers.WALL_LAYER))
+        {
+            knockbackSequence = DOTween.Sequence();
 
-        damagedSequence
-            .Append(transform.DOMove(position + new Vector3(damagedDirection.x, position.y, damagedDirection.z), 0.2f));
-        damagedSequence.Play();
+            knockbackSequence
+                .Append(transform.DOMove(position + new Vector3(damagedDirection.x, position.y, damagedDirection.z), 0.2f));
+            knockbackSequence.Play();
+        }
+
+    }
+
+    private bool EnemyRayHitLayer(int layer)
+    {
+        bool layerHit = false;
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.transform.gameObject.layer == layer)
+            {
+                layerHit = true;
+            }
+        }
+
+        return layerHit;
     }
 
     private void Die()
@@ -260,4 +284,12 @@ public class EnemyAI : MonoBehaviour
     {
         rootNode.ResetNodes();
     }
-}
+    
+    private bool EnemyRaycastHit(Color color, float enemyRayDistance)
+    {
+        Debug.DrawRay(ray.origin, ray.direction, color);
+        hits = Physics.RaycastAll(ray.origin, ray.direction, enemyRayDistance);
+        return hits.Length > 0;
+    }
+    }
+
