@@ -3,7 +3,6 @@ using DG.Tweening;
 using UnityEngine;
 using Sequence = DG.Tweening.Sequence;
 
-[CreateAssetMenu(fileName = "New BT Shoot Node", menuName = "AI/BT Nodes/Shoot Node")]
 public class BTShootNode : BTNode
 {
     private Enemies.CODE_NAMES enemyCode;
@@ -78,11 +77,6 @@ public class BTShootNode : BTNode
         }
     }
 
-    public override void ResetNode()
-    {
-        waitForNextShoot = false;
-    }
-    
     public override void DrawGizmos()
     {
         Gizmos.color = Color.red;

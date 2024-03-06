@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using FMOD.Studio;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New BT Chase Node", menuName = "AI/BT Nodes/Chase Node")]
 public class BTChaseNode : BTNode
 {
     public bool isShadow;

@@ -3,7 +3,6 @@ using DG.Tweening;
 using FMOD.Studio;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New BT Patrol Node", menuName = "AI/BT Nodes/Patrol Node")]
 public class BTPatrolNode : BTNode
 {
     private Enemies.CODE_NAMES enemyCode;

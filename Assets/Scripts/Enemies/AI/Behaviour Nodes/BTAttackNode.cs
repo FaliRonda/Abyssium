@@ -3,7 +3,6 @@ using DG.Tweening;
 using UnityEngine;
 using Sequence = DG.Tweening.Sequence;
 
-[CreateAssetMenu(fileName = "New BT Attack Node", menuName = "AI/BT Nodes/Attack Node")]
 public class BTAttackNode : BTNode
 {
     private Enemies.CODE_NAMES enemyCode;
