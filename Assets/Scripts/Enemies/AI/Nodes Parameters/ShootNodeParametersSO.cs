@@ -8,4 +8,6 @@ public class ShootNodeParametersSO : ScriptableObject
     public float attackVisibilityDistance = 14f;
     public float shootCD = 2f;
     public GameObject bulletPrefab;
+    public float anticipacionDuration;
+    public float whiteHitPercentage = 0.25f;
 }
