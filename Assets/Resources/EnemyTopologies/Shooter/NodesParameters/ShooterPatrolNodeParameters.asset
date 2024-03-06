@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9267ff600891944babe91fcadb7d0a0, type: 3}
   m_Name: ShooterPatrolNodeParameters
   m_EditorClassIdentifier: 
-  patrolSpeed: 2
+  patrolSpeed: 0.1
+  innerRadius: 0.5
+  outerRadius: 1
+  minWait: 0.5
+  maxWait: 1

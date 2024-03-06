@@ -4,6 +4,7 @@
     public const int PJ_SPAWN_LAYER = 16;
     public const int PJ_LAYER = 6;
     public const int ENEMY_LAYER = 9;
+    public const int BULLET_LAYER = 19;
     public const int INTERACTABLE_LAYER = 13;
     
     public const int DOOR_LAYER = 12;

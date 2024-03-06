@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ebc57a13289a468919286b7abda74, type: 3}
   m_Name: ShooterShootNodeParameters
   m_EditorClassIdentifier: 
-  bulletLifeTime: 8
-  bulletSpeed: 6
-  attackVisibilityDistance: 14
-  shootCD: 2
+  bulletLifeTime: 12
+  bulletSpeed: 3
+  attackVisibilityDistance: 5
+  shootCD: 3
   bulletPrefab: {fileID: 9109705668636447229, guid: 91d5333cb5df9944290653861e1eeaef, type: 3}

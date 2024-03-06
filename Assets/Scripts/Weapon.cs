@@ -53,6 +53,12 @@ public class Weapon : MonoBehaviour
             Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/Weapons/Sword1_Hit1", transform);
             other.gameObject.GetComponent<EnemyAI>().GetDamage(weaponDamage);
         }
+        
+        if (other.gameObject.layer == Layers.BULLET_LAYER)
+        {
+            Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/Weapons/Sword1_Hit1", transform);
+            Destroy(other.gameObject);
+        }
     }
 
     public void DoAttack()

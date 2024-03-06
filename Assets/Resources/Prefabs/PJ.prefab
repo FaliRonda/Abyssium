@@ -5271,12 +5271,12 @@ MonoBehaviour:
   playerRollFactor: 2.5
   rollCooldown: 0.35
   invulnerableAfterDashCD: 0.3
+  playerRayMaxDistance: 0.75
   attackImpulseFactor: 0.5
   combo1AttackCooldown: 0.4
   combo2AttackCooldown: 0.6
   combo3AttackCooldown: 0.6
   moveAfterAttackCooldown: 0.5
-  playerRayMaxDistance: 0.75
   playerDustParticlesDelay: 0.4
   comboTimeWindow: 0.7
   comboCount: 0
@@ -5338,9 +5338,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.25
-  m_Height: 0.5
+  m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &7828840499791485495
 GameObject:
   m_ObjectHideFlags: 0

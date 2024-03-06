@@ -648,6 +648,7 @@ public class PJ : MonoBehaviour
 
     public bool GetDamage(Transform damager)
     {
+        Vector3 damagerPosition = damager.position;
         bool damaged = false;
         
         if (!pjInvulnerable)
@@ -663,7 +664,7 @@ public class PJ : MonoBehaviour
             Sequence sequence = DOTween.Sequence();
             sequence.AppendInterval(deathFrameDuration).AppendCallback(() =>
             {
-                PlayDamagedKnockbackAnimation(damager);
+                PlayDamagedKnockbackAnimation(damagerPosition);
                 Core.CameraEffects.StartShakingEffect(damagedCamShakeIntensity, damageCamShakeFrequency, damagedCamShakeDuration);
                 
             });
@@ -673,10 +674,10 @@ public class PJ : MonoBehaviour
         return damaged;
     }
 
-    private void PlayDamagedKnockbackAnimation(Transform damager)
+    private void PlayDamagedKnockbackAnimation(Vector3 damagerPosition)
     {
         Vector3 position = transform.position;
-        Vector3 enemyPosition = damager.position;
+        Vector3 enemyPosition = damagerPosition;
         Vector3 damagedDirection = (position - enemyPosition).normalized * knockbackMovementFactor;
         var previousLastDirection = lastDirection;
         lastDirection = damagedDirection;

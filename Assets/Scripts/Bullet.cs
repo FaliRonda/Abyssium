@@ -29,18 +29,15 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject);
     }
     
-    public void OnTriggerStay(Collider other)
+    public void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.layer == Layers.PJ_LAYER)
         {
-            if (other.GetComponent<PJ>().GetDamage(transform))
+            if (other.gameObject.GetComponent<PJ>().GetDamage(transform))
             {
+                Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/AttackHit", transform);
                 DestroyBullet();
             }
-        }
-        else if (other.gameObject.layer == Layers.WEAPON_LAYER)
-        {
-            DestroyBullet();
         }
     }
 }
