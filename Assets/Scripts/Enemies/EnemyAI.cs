@@ -4,7 +4,6 @@ using DG.Tweening;
 using Ju.Extensions;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Sequence = DG.Tweening.Sequence;
 
 public class EnemyAI : MonoBehaviour
@@ -187,7 +186,7 @@ public class EnemyAI : MonoBehaviour
         rootNode.ResetNodes();
         isDead = true;
         aIActive = false;
-        gameObject.GetComponentsInChildren<SphereCollider>()[0].enabled = false;
+        attackCollider.enabled = false;
         
         Dropper dropper = GetComponent<Dropper>();
         if (dropper != null && itemToDrop != null)
@@ -268,7 +267,6 @@ public class EnemyAI : MonoBehaviour
     {
         if (other.gameObject.layer == Layers.PJ_LAYER)
         {
-            HitPlayer(other.gameObject);
             HitPlayer(other.gameObject);
         }
     }
