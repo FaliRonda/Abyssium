@@ -5288,7 +5288,7 @@ MonoBehaviour:
   damageBlinkingDuration: 2.25
   spriteBlinkingFrecuency: 0.1
   damagedGamepadVibrationIntensity: 1
-  damagedGamepadVibrationDuration: 0.2
+  damagedGamepadVibrationDuration: 0.25
   debugAttack: 0
   canRoll: 0
 --- !u!54 &8550691314693124260
