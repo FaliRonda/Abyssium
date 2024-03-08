@@ -6,6 +6,7 @@ using DG.Tweening;
 using Ju.Extensions;
 using Sirenix.OdinInspector;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
@@ -13,6 +14,7 @@ using UnityEngine.Rendering;
 using Bloom = UnityEngine.Rendering.Universal.Bloom;
 using ChromaticAberration = UnityEngine.Rendering.Universal.ChromaticAberration;
 using InputAction = UnityEngine.InputSystem.InputAction;
+using Sequence = DG.Tweening.Sequence;
 using Vignette = UnityEngine.Rendering.Universal.Vignette;
 
 public class GameDirector : MonoBehaviour
@@ -387,6 +389,11 @@ public class GameDirector : MonoBehaviour
                 EndTimeLoop();
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        Core.GamepadVibrationService.StopVibration();
     }
 
     #endregion
