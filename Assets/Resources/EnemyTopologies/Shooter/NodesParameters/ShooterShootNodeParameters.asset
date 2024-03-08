@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: ShooterShootNodeParameters
   m_EditorClassIdentifier: 
   bulletLifeTime: 12
-  bulletSpeed: 6
+  bulletSpeed: 4
   attackVisibilityDistance: 8
   shootCD: 3
   bulletPrefab: {fileID: 9109705668636447229, guid: 91d5333cb5df9944290653861e1eeaef, type: 3}
   anticipacionDuration: 0.75
   whiteHitPercentage: 0.25
+  bulletsPerShoot: 5
+  timeBetweenBullets: 0.2
+  isRadialShoot: 0
+  numberOfRadialBullets: 20

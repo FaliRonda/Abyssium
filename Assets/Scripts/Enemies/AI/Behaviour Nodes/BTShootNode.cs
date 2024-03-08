@@ -11,6 +11,7 @@ public class BTShootNode : BTNode
     private ShootNodeParametersSO shootNodeParameters;
     private Sequence shootSequence;
     private MaterialPropertyBlock propertyBlock;
+    private int bulletsCreated;
 
     public BTShootNode(Enemies.CODE_NAMES enemyCode)
     {
@@ -43,16 +44,12 @@ public class BTShootNode : BTNode
     private void Shoot(Vector3 direction)
     {
         isShooting = true;
+        waitForNextShoot = true;
         enemySprite.flipX = direction.x > 0;
 
         // Animation
         enemyAnimator.Play("Enemy_attack");
         float animLength = Core.AnimatorHelper.GetAnimLength(enemyAnimator, "Enemy_attack");
-
-        // CD
-        waitForNextShoot = true;
-        Sequence shootCDSequence = DOTween.Sequence();
-        shootCDSequence.AppendInterval(shootNodeParameters.shootCD).AppendCallback(() => { waitForNextShoot = false; });
 
         float whiteHitTargetValue = 1 - shootNodeParameters.whiteHitPercentage;
 
@@ -65,13 +62,11 @@ public class BTShootNode : BTNode
             .AppendCallback(() =>
             {
                 UpdateWhiteHitValue(1);
-                CreateBullet(direction);
-                isShooting = false;
+                ShootBullets();
             })
             .OnKill(() =>
             {
                 UpdateWhiteHitValue(1);
-                isShooting = false;
             });
     }
     
@@ -88,14 +83,75 @@ public class BTShootNode : BTNode
         renderer.material = mat;
     }
 
-    private void CreateBullet(Vector3 direction)
+    private void ShootBullets()
+    {
+        bulletsCreated = 0;
+        CreateBullet();
+    }
+
+    private void CreateBullet()
+    {
+
+        if (!shootNodeParameters.isRadialShoot)
+        {
+            var bullet = InstanceBullet();
+
+            Vector3 direction = playerTransform.position - enemyTransform.position;
+            
+            bullet.StartShoot(direction);
+        }
+        else
+        {
+            Vector3[] radialDirections = CalculateRadialDirections();
+            
+            foreach (Vector3 direction in radialDirections)
+            {
+                var bullet = InstanceBullet();
+                bullet.StartShoot(direction);
+            }
+        }
+
+        bulletsCreated++;
+        
+        if (bulletsCreated < shootNodeParameters.bulletsPerShoot)
+        {
+            Sequence bulletsCDSequence = DOTween.Sequence();
+            bulletsCDSequence
+                .AppendInterval(shootNodeParameters.timeBetweenBullets)
+                .AppendCallback(() => CreateBullet());
+        }
+        else
+        {
+            isShooting = false;
+            bulletsCreated = 0;
+            Sequence shootCDSequence = DOTween.Sequence();
+            shootCDSequence.AppendInterval(shootNodeParameters.shootCD).AppendCallback(() => { waitForNextShoot = false; });
+        }
+    }
+
+    private Bullet InstanceBullet()
     {
         GameObject bulletGO = Object.Instantiate(shootNodeParameters.bulletPrefab);
         bulletGO.transform.position = enemyTransform.position;
         Bullet bullet = bulletGO.GetComponent<Bullet>();
         bullet.Initialize(shootNodeParameters.bulletSpeed, shootNodeParameters.bulletLifeTime);
-        bullet.StartShoot(direction);
+        return bullet;
     }
+
+    public Vector3[] CalculateRadialDirections()
+    {
+        Vector3[] directions = new Vector3[shootNodeParameters.numberOfRadialBullets];
+        float angleIncrement = 360f / shootNodeParameters.numberOfRadialBullets;
+
+        for (int i = 0; i <shootNodeParameters.numberOfRadialBullets; i++)
+        {
+            float angle = i * angleIncrement;
+            directions[i] = Quaternion.Euler(0, angle, 0) * Vector3.forward;
+        }
+
+        return directions;
+    }
+    
 
     public override void InitializeNode(Dictionary<string, object> parameters)
     {

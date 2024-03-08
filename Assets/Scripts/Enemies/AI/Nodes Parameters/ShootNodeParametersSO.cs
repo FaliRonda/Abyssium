@@ -10,4 +10,8 @@ public class ShootNodeParametersSO : ScriptableObject
     public GameObject bulletPrefab;
     public float anticipacionDuration;
     public float whiteHitPercentage = 0.25f;
+    public int bulletsPerShoot;
+    public float timeBetweenBullets;
+    public bool isRadialShoot;
+    public int numberOfRadialBullets;
 }
