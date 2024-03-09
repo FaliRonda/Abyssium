@@ -84,14 +84,6 @@ public class BTAttackNode : BTNode
         // Sequence
         attackSequence = DOTween.Sequence();
         
-        Vector3 targetPosition = playerTransform.position;
-        Vector3 enemyPosition = enemyTransform.position;
-
-        Vector3 startPosition = enemyPosition;
-        Vector3 anticipationDirection = (startPosition - targetPosition).normalized * attackNodeParameters.anticipationDistance;
-        
-        float whiteHitTargetValue = 1 - attackNodeParameters.whiteHitPercentage;
-
         Sequence attackSoundSequence = DOTween.Sequence();
         attackSoundSequence
             .AppendInterval(0.3f)
@@ -100,18 +92,34 @@ public class BTAttackNode : BTNode
                 Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/JumpToAttack", enemyTransform);
             });
 
+        if (!attackNodeParameters.jumpAttack)
+        {
+            DoLinealAttack();
+        }
+        else
+        {
+            DoJumpAttack();
+        }
+    }
+
+    private void DoLinealAttack()
+    {
+        Vector3 enemyPosition = enemyTransform.position;
+        Vector3 targetPosition = playerTransform.position;
+        
+        Vector3 anticipationDirection = (enemyPosition - targetPosition).normalized * attackNodeParameters.anticipationDistance;
+        float whiteHitTargetValue = 1 - attackNodeParameters.whiteHitPercentage;
+        
         attackSequence
-            .AppendCallback(() =>
-            {
-                enemyAnimator.Play("Enemy_attack");
-            })
+            .AppendCallback(() => { enemyAnimator.Play("Enemy_attack"); })
             .Append(enemyTransform.DOMove(enemyPosition + anticipationDirection, attackNodeParameters.anticipacionDuration))
-            .Join(DOTween.To(() => 1, x => {
+            .Join(DOTween.To(() => 1, x =>
+            {
                 whiteHitTargetValue = x;
                 UpdateWhiteHitValue(x);
-            }, whiteHitTargetValue, attackNodeParameters.anticipacionDuration));     
-        
-        Vector3 attackDirection = (targetPosition - startPosition).normalized * attackNodeParameters.attackMovementDistance;
+            }, whiteHitTargetValue, attackNodeParameters.anticipacionDuration));
+
+        Vector3 attackDirection = (targetPosition - enemyPosition).normalized * attackNodeParameters.attackMovementDistance;
 
         attackSequence
             .AppendCallback(() =>
@@ -132,6 +140,47 @@ public class BTAttackNode : BTNode
                 waitAndDisableColliderSequence
                     .AppendInterval(0.1f)
                     .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; });
+            });
+    }
+    
+    private void DoJumpAttack()
+    {
+        Vector3 targetPosition = playerTransform.position;
+        var position = enemyTransform.position;
+
+        attackSequence
+            .AppendCallback(() =>
+            {
+                enemyAI.attackCollider.isTrigger = false;
+            })
+            .Append(enemyTransform.DOJump(targetPosition, attackNodeParameters.jumpHeight, 1, attackNodeParameters.jumpDuration))
+            .SetEase(Ease.Linear)
+            .AppendCallback(() =>
+            {
+                ShowJumpParticles();
+            })
+            .AppendCallback(StandAfterAttack)
+            .AppendInterval(0.2f)
+            .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; })
+            .OnKill(() =>
+            {
+                StandAfterAttack();
+
+                Sequence waitAndDisableColliderSequence = DOTween.Sequence();
+                waitAndDisableColliderSequence
+                    .AppendInterval(0.1f)
+                    .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; });
+            });
+    }
+
+    private void ShowJumpParticles()
+    {
+        ParticleSystem jumpParticles = enemyTransform.GetComponentsInChildren<ParticleSystem>()[1];
+        jumpParticles.Play();
+        jumpParticles.transform.DOScale(new Vector3(5, 5, 5), 1)
+            .OnComplete(() =>
+            {
+                jumpParticles.transform.localScale = new Vector3(1, 1, 1);
             });
     }
 
@@ -201,7 +250,10 @@ public class BTAttackNode : BTNode
 
     public override void ResetNode()
     {
-        attackSequence.Kill();
+        if (!attackNodeParameters.jumpAttack)
+        {
+            attackSequence.Kill();
+        }
     }
     
     public override void DrawGizmos()

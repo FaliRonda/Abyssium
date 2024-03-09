@@ -13,4 +13,8 @@ public class AttackNodeParametersSO : ScriptableObject
     public float enemyRayMaxDistance = .25f;
     public float waitForNextAttackCD = 3f;
     public float whiteHitPercentage = 0.25f;
+    [Header("Jump attack")]
+    public bool jumpAttack;
+    public float jumpHeight;
+    public float jumpDuration;
 }
