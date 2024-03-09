@@ -15,17 +15,12 @@ public class EnemySpawn : MonoBehaviour
     {
         fxGO = gameObject.transform.GetChild(0).gameObject;
         fxGO.SetActive(false);
-
-        if (debug)
-        {
-            this.EventSubscribe<GameEvents.EnemyDied>(e => EnemyDied());
-        }
     }
 
-    private void EnemyDied()
+    public void DoSpawn()
     {
-        Sequence infiniteSpawnSequence = DOTween.Sequence();
-        infiniteSpawnSequence
+        Sequence spawnSequence = DOTween.Sequence();
+        spawnSequence
             .AppendInterval(spawnTime)
             .AppendCallback(SpawnEnemy);
     }
@@ -46,5 +41,11 @@ public class EnemySpawn : MonoBehaviour
                 GameObject enemy = Instantiate(enemyPrefab, transform);
                 Core.Event.Fire(new GameEvents.EnemySpawned(){ enemyAI = enemy.GetComponentInChildren<EnemyAI>() });
             });
+    }
+
+    public void Initialize(Vector3 spawnPosition, GameObject enemyGO)
+    {
+        transform.position = spawnPosition;
+        enemyPrefab = enemyGO;
     }
 }

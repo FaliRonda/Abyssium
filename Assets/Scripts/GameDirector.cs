@@ -6,7 +6,6 @@ using DG.Tweening;
 using Ju.Extensions;
 using Sirenix.OdinInspector;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
@@ -23,6 +22,8 @@ public class GameDirector : MonoBehaviour
     
     public bool debugMode;
     public bool combatDemo;
+    public GameObject spawnPrefab;
+    public List<EnemyWaveSO> enemyWaves;
     public float timeLoopDuration = 10f;
     public GameObject moon;
     public Canvas canvas;
@@ -79,6 +80,7 @@ public class GameDirector : MonoBehaviour
     private bool pjCameFromAbove;
     private bool pjCameFromDoor;
     private bool isNewCycleOrLoop = true;
+    private int enemyWaveCount;
 
     private Bloom bloom;
     private ChromaticAberration chromaticAberration;
@@ -908,6 +910,25 @@ public class GameDirector : MonoBehaviour
             int counter = Int32.Parse(counterText.text.Split(' ')[2]);
             counter += 1;
             counterText.text = initialText + " " + counter;
+
+            if (enemies.Count == 0)
+            {
+                if (enemyWaveCount < enemyWaves.Count)
+                {
+                    var nextWave = enemyWaves[enemyWaveCount];
+
+                    foreach (KeyValuePair<Vector3, GameObject> wavePair in nextWave.waveParametersDictionary)
+                    {
+                        GameObject enemySpawnGO = Instantiate(spawnPrefab, transform.parent);
+                        EnemySpawn enemySpawn = enemySpawnGO.GetComponent<EnemySpawn>();
+
+                        enemySpawn.Initialize(wavePair.Key, wavePair.Value);
+                        enemySpawn.DoSpawn();
+                    }
+
+                    enemyWaveCount++;
+                }
+            }
         }
         if (enemies.Count <= 0)
         {
