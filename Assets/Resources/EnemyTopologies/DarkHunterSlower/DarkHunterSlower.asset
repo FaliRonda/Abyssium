@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3706c88d3775eee4aafa75b76e4190c5, type: 3}
   m_Name: DarkHunterSlower
   m_EditorClassIdentifier: 
-  enemyCode: 3
+  enemyCode: 4
   behaviorNodes: 000000000100000002000000

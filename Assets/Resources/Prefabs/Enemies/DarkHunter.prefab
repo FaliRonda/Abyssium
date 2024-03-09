@@ -287,7 +287,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3218217565279347703}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.20317793, y: 0, z: -3.688682}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -415,12 +415,19 @@ MonoBehaviour:
   chasePivotTransform: {fileID: 0}
   lifeAmount: 3
   itemToDrop: {fileID: 3134486028856835127, guid: 97d20a51761f4a9419c35a9d57163c4d, type: 3}
+  damagedCamShakeIntensity: 2
+  damagedCamShakeFrequency: 0.3
+  damagedCamShakeDuration: 0.5
+  knockbackMovementFactor: 1
   spriteBlinkingFrecuency: 0.1
   damageBlinkingDuration: 0.3
-  waypoints:
-  - {fileID: 4515980751413817534}
-  - {fileID: 4826964562444982544}
+  stunnedCD: 2
+  damagedGamepadVibrationIntensity: 0.5
+  damagedGamepadVibrationDuration: 0.2
   behaviorNodeContainer: {fileID: 11400000, guid: b789166367ac9ea4386008d79b4dab14, type: 2}
+  attackInCD: 0
+  enemyStunned: 0
+  attackCollider: {fileID: 0}
 --- !u!114 &476646763585741070
 MonoBehaviour:
   m_ObjectHideFlags: 0

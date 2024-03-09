@@ -661,8 +661,8 @@ public class PJ : MonoBehaviour
             Core.Event.Fire(new GameEvents.PlayerDamaged(){deathFrameDuration = deathFrameDuration});
             Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
             
-            Sequence sequence = DOTween.Sequence();
-            sequence.AppendInterval(deathFrameDuration).AppendCallback(() =>
+            Sequence deathFrameSequence = DOTween.Sequence();
+            deathFrameSequence.AppendInterval(deathFrameDuration).AppendCallback(() =>
             {
                 PlayDamagedKnockbackAnimation(damagerPosition);
                 Core.CameraEffects.StartShakingEffect(damagedCamShakeIntensity, damageCamShakeFrequency, damagedCamShakeDuration);
@@ -690,7 +690,7 @@ public class PJ : MonoBehaviour
             knockbackSequence = DOTween.Sequence();
             
             knockbackSequence
-                .Append(transform.DOMove(position + new Vector3(damagedDirection.x, position.y, damagedDirection.z), 0.2f))
+                .Append(transform.DOMove(position + new Vector3(damagedDirection.x, 0, damagedDirection.z), 0.2f))
                 .OnKill(() => { pjIsBeingDamaged = false; });
         }
         
