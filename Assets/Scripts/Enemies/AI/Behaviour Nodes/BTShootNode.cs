@@ -91,41 +91,43 @@ public class BTShootNode : BTNode
 
     private void CreateBullet()
     {
-
-        if (!shootNodeParameters.isRadialShoot)
+        if (isShooting)
         {
-            var bullet = InstanceBullet();
-
-            Vector3 direction = playerTransform.position - enemyTransform.position;
-            
-            bullet.StartShoot(direction);
-        }
-        else
-        {
-            Vector3[] radialDirections = CalculateRadialDirections();
-            
-            foreach (Vector3 direction in radialDirections)
+            if (!shootNodeParameters.isRadialShoot)
             {
                 var bullet = InstanceBullet();
+
+                Vector3 direction = playerTransform.position - enemyTransform.position;
+                
                 bullet.StartShoot(direction);
             }
-        }
+            else
+            {
+                Vector3[] radialDirections = CalculateRadialDirections();
+                
+                foreach (Vector3 direction in radialDirections)
+                {
+                    var bullet = InstanceBullet();
+                    bullet.StartShoot(direction);
+                }
+            }
 
-        bulletsCreated++;
-        
-        if (bulletsCreated < shootNodeParameters.bulletsPerShoot)
-        {
-            Sequence bulletsCDSequence = DOTween.Sequence();
-            bulletsCDSequence
-                .AppendInterval(shootNodeParameters.timeBetweenBullets)
-                .AppendCallback(() => CreateBullet());
-        }
-        else
-        {
-            isShooting = false;
-            bulletsCreated = 0;
-            Sequence shootCDSequence = DOTween.Sequence();
-            shootCDSequence.AppendInterval(shootNodeParameters.shootCD).AppendCallback(() => { waitForNextShoot = false; });
+            bulletsCreated++;
+            
+            if (bulletsCreated < shootNodeParameters.bulletsPerShoot)
+            {
+                Sequence bulletsCDSequence = DOTween.Sequence();
+                bulletsCDSequence
+                    .AppendInterval(shootNodeParameters.timeBetweenBullets)
+                    .AppendCallback(() => CreateBullet());
+            }
+            else
+            {
+                isShooting = false;
+                bulletsCreated = 0;
+                Sequence shootCDSequence = DOTween.Sequence();
+                shootCDSequence.AppendInterval(shootNodeParameters.shootCD).AppendCallback(() => { waitForNextShoot = false; });
+            }
         }
     }
 
@@ -152,6 +154,15 @@ public class BTShootNode : BTNode
         return directions;
     }
     
+    public override void ResetNode(bool enemyDied)
+    {
+        if (enemyDied)
+        {
+            shootSequence.Kill();
+            isShooting = false;
+            bulletsCreated = 0;
+        }
+    }
 
     public override void InitializeNode(Dictionary<string, object> parameters)
     {

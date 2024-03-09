@@ -112,6 +112,9 @@ public class EnemyAI : MonoBehaviour
     {
         if (!enemyInvulnerable)
         {
+            lifeAmount -= damageAmount;
+            isDead = lifeAmount <= 0;
+            
             enemyInvulnerable = true;
             
             Sequence invulnerableSequence = DOTween.Sequence();
@@ -123,7 +126,15 @@ public class EnemyAI : MonoBehaviour
             Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/GetDamage", transform);
             PlayDamagedAnimation();
             PlayDamagedKnockbackAnimation();
-            rootNode.ResetNodes();
+
+            if (isDead)
+            {
+                rootNode.ResetNodes(true);
+            }
+            else
+            {
+                rootNode.ResetNodes(false);
+            }
 
             if (!enemyStunned)
             {
@@ -137,14 +148,10 @@ public class EnemyAI : MonoBehaviour
             
             Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
             Core.CameraEffects.StartShakingEffect(damagedCamShakeIntensity, damagedCamShakeFrequency, damagedCamShakeDuration);
-            
-            if (!isDead)
+
+            if (isDead)
             {
-                lifeAmount -= damageAmount;
-                if (lifeAmount <= 0)
-                {
-                    Die();
-                }
+                Die();
             }
         }
     }
@@ -161,7 +168,7 @@ public class EnemyAI : MonoBehaviour
             knockbackSequence = DOTween.Sequence();
 
             knockbackSequence
-                .Append(transform.DOMove(position + new Vector3(damagedDirection.x, position.y, damagedDirection.z), 0.2f));
+                .Append(transform.DOMove(position + new Vector3(damagedDirection.x, 0, damagedDirection.z), 0.2f));
             knockbackSequence.Play();
         }
 
@@ -183,7 +190,6 @@ public class EnemyAI : MonoBehaviour
 
     private void Die()
     {
-        rootNode.ResetNodes();
         isDead = true;
         aIActive = false;
         attackCollider.enabled = false;
@@ -280,7 +286,7 @@ public class EnemyAI : MonoBehaviour
 
     public void ResetAINodes()
     {
-        rootNode.ResetNodes();
+        rootNode.ResetNodes(false);
     }
     
     private bool EnemyRaycastHit(Color color, float enemyRayDistance)
@@ -289,5 +295,5 @@ public class EnemyAI : MonoBehaviour
         hits = Physics.RaycastAll(ray.origin, ray.direction, enemyRayDistance);
         return hits.Length > 0;
     }
-    }
+}
 

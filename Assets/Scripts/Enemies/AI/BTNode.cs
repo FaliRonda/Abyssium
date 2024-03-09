@@ -19,7 +19,12 @@ public abstract class BTNode
     public SpriteRenderer enemySprite;
     
     public abstract BTNodeState Execute();
-    public virtual void ResetNode(){}
+    public virtual void ResetNode(bool enemyDied){}
+
+    public virtual void ResetNode()
+    {
+        ResetNode(false);
+    }
     public virtual void DrawGizmos(){}
     
     public virtual void InitializeNode(Dictionary<string, object> parameters)
