@@ -9,6 +9,7 @@ public static class Enemies
     
     public enum CODE_NAMES {
         Stalker,
+        Jumper,
         Shooter,
         DarkHunter,
         DarkHunterSlower
@@ -17,8 +18,10 @@ public static class Enemies
     public static Dictionary<CODE_NAMES, string> enemiesNamesDictionary = new Dictionary<CODE_NAMES, string>
     {
         { CODE_NAMES.Stalker, "Stalker" },
+        { CODE_NAMES.Jumper, "Jumper" },
         { CODE_NAMES.Shooter, "Shooter" },
         { CODE_NAMES.DarkHunter, "DarkHunter" },
+        { CODE_NAMES.DarkHunterSlower, "DarkHunterSlower" },
     };
 
     public static string EnemiesParametersPathDictionary(CODE_NAMES enemyCode, string nodeName)
