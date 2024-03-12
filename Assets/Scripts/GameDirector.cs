@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 using Bloom = UnityEngine.Rendering.Universal.Bloom;
 using ChromaticAberration = UnityEngine.Rendering.Universal.ChromaticAberration;
 using InputAction = UnityEngine.InputSystem.InputAction;
@@ -153,6 +154,7 @@ public class GameDirector : MonoBehaviour
             if (combatDemo)
             {
                 canvas.transform.GetChild(4).gameObject.SetActive(true);
+                canvas.transform.GetChild(5).gameObject.SetActive(true);
             }
 
             this.EventSubscribe<GameEvents.EnemyDied>(e => EnemyDied(e.enemy));
@@ -905,14 +907,27 @@ public class GameDirector : MonoBehaviour
     {
         if (combatDemo)
         {
-            var counterText = canvas.transform.GetChild(4).GetComponentInChildren<TMP_Text>();
-            var initialText = counterText.text.Split(' ')[0] + " " + counterText.text.Split(' ')[1];
-            int counter = Int32.Parse(counterText.text.Split(' ')[2]);
-            counter += 1;
-            counterText.text = initialText + " " + counter;
+            if (enemyDied)
+            {
+                var counterText = canvas.transform.GetChild(4).GetComponentInChildren<TMP_Text>();
+                var initialText = counterText.text.Split(' ')[0] + " " + counterText.text.Split(' ')[1];
+                int counter = Int32.Parse(counterText.text.Split(' ')[2]);
+                counter += 1;
+                counterText.text = initialText + " " + counter;
+            }
 
             if (enemies.Count == 0)
             {
+                if (enemyWaveCount > 0)
+                {
+                    Image[] waveImages = canvas.transform.GetChild(5).GetComponentsInChildren<Image>();
+                    Color color;
+                    if (ColorUtility.TryParseHtmlString("#FFAA66", out color))
+                    {
+                        waveImages[enemyWaveCount - 1].color = color;
+                    }
+                }
+                
                 if (enemyWaveCount < enemyWaves.Count)
                 {
                     var nextWave = enemyWaves[enemyWaveCount];
