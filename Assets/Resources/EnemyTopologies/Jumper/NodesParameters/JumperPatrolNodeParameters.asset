@@ -17,3 +17,4 @@ MonoBehaviour:
   outerRadius: 4
   minWait: 0.2
   maxWait: 0.5
+  stoppedByStun: 0

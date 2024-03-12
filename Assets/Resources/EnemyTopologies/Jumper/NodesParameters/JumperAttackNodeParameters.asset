@@ -19,8 +19,9 @@ MonoBehaviour:
   attackMovementDistance: 2.5
   attackMovementDuration: 0.15
   enemyRayMaxDistance: 0.25
-  waitForNextAttackCD: 4.5
+  waitForNextAttackCD: 3.5
   whiteHitPercentage: 0.25
   jumpAttack: 1
   jumpHeight: 2
   jumpDuration: 0.5
+  stoppedByStun: 0
