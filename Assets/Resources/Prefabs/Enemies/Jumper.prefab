@@ -10077,7 +10077,7 @@ MonoBehaviour:
   aIActive: 1
   playerTransform: {fileID: 0}
   chasePivotTransform: {fileID: 0}
-  lifeAmount: 3
+  lifeAmount: 6
   itemToDrop: {fileID: 0}
   damagedCamShakeIntensity: 0.15
   damagedCamShakeFrequency: 0.15
@@ -10086,9 +10086,11 @@ MonoBehaviour:
   spriteBlinkingFrecuency: 0.15
   damageBlinkingDuration: 1
   stunnedCD: 1
+  invulnerableCD: 0.1
   damagedGamepadVibrationIntensity: 0.7
   damagedGamepadVibrationDuration: 0.2
-  behaviorNodeContainer: {fileID: 11400000, guid: 4b2f227042d15964b8046ff45819a9ed, type: 2}
+  behaviorNodesContainer:
+  - {fileID: 11400000, guid: 4b2f227042d15964b8046ff45819a9ed, type: 2}
   attackInCD: 0
   enemyStunned: 0
   attackCollider: {fileID: 0}

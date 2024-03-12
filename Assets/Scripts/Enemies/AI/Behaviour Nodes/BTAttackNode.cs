@@ -15,6 +15,7 @@ public class BTAttackNode : BTNode
     private MaterialPropertyBlock propertyBlock;
     private Sequence standAfterAttackSequence;
     private Sequence waitForNextAttackSequence;
+    private bool attackCDReady;
 
     public BTAttackNode(Enemies.CODE_NAMES enemyCode)
     {
@@ -25,6 +26,13 @@ public class BTAttackNode : BTNode
     {
         ray = new Ray(enemyTransform.position, lastPlayerDirectionBeforeAttack);
         EnemyRaycastHit(Color.green);
+
+        if (attackCDReady)
+        {
+            attackCDReady = false;
+            attackPlaying = false;
+            return BTNodeState.NextTree;
+        }
         
         if (attackPlaying)
         {
@@ -33,7 +41,7 @@ public class BTAttackNode : BTNode
                 attackSequence.Kill();
             }
             
-            return BTNodeState.Success;
+            return BTNodeState.Running;
         }
         
         // Check if the player is within attack distance
@@ -45,12 +53,7 @@ public class BTAttackNode : BTNode
         
         if (playerDistance <= attackNodeParameters.attackVisibilityDistance)
         {
-            if (enemyAI.attackInCD || enemyAI.enemyStunned)
-            {
-                return BTNodeState.Failure;
-            }
-            
-            if (!attackPlaying)
+            if (!attackPlaying && !(enemyAI.attackInCD || enemyAI.enemyStunned))
             {
                 lastPlayerDirectionBeforeAttack = playerDirection;
                 Attack(playerDirection);
@@ -58,7 +61,7 @@ public class BTAttackNode : BTNode
                 WaitForNextAttack();
             }
 
-            return BTNodeState.Success;
+            return BTNodeState.Running;
         }
         
         return BTNodeState.Failure;
@@ -203,7 +206,7 @@ public class BTAttackNode : BTNode
         standAfterAttackSequence.AppendInterval(attackNodeParameters.standAfterAttackCD);
         standAfterAttackSequence.AppendCallback(() =>
         {
-            attackPlaying = false;
+            attackCDReady = true;
         });
     }
 

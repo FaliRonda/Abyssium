@@ -12,6 +12,7 @@ public class BTShootNode : BTNode
     private Sequence shootSequence;
     private MaterialPropertyBlock propertyBlock;
     private int bulletsCreated;
+    private bool shootCDReady;
 
     public BTShootNode(Enemies.CODE_NAMES enemyCode)
     {
@@ -26,16 +27,23 @@ public class BTShootNode : BTNode
 
         if (distance <= shootNodeParameters.attackVisibilityDistance)
         {
+            if (shootCDReady)
+            {
+                waitForNextShoot = false;
+                shootCDReady = false;
+                return BTNodeState.NextTree;
+            }
+            
             if (!waitForNextShoot)
             {
                 Shoot(direction);
-                return BTNodeState.Success;
+                return BTNodeState.Running;
             }
             
             if (isShooting)
             {
                 return BTNodeState.Running;
-            } 
+            }
         }
         
         return BTNodeState.Failure;
@@ -126,7 +134,7 @@ public class BTShootNode : BTNode
                 isShooting = false;
                 bulletsCreated = 0;
                 Sequence shootCDSequence = DOTween.Sequence();
-                shootCDSequence.AppendInterval(shootNodeParameters.shootCD).AppendCallback(() => { waitForNextShoot = false; });
+                shootCDSequence.AppendInterval(shootNodeParameters.shootCD).AppendCallback(() => { shootCDReady = true; });
             }
         }
     }

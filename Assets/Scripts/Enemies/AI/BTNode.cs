@@ -48,7 +48,7 @@ public abstract class BTNode
 // Enum to represent the state of a behavior tree node
 public enum BTNodeState
 {
-    Success,
+    NextTree,
     Failure,
-    Running
+    Running,
 }

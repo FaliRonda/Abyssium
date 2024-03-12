@@ -10,12 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10af35bbc53275747b8b441a8df1f32a, type: 3}
-  m_Name: EnemyWave2
+  m_Name: EnemyWave4
   m_EditorClassIdentifier: 
   waveParametersDictionary:
     keys:
-    - {x: -6, y: 0, z: 0}
-    - {x: 6, y: 0, z: 0}
+    - {x: 0, y: 0, z: 0}
     values:
-    - {fileID: 3368591435065734892, guid: b670d2ef60def5843b60fabb10ae38c0, type: 3}
-    - {fileID: 3368591435065734892, guid: b670d2ef60def5843b60fabb10ae38c0, type: 3}
+    - {fileID: 3218217565279347703, guid: 12abc96abbcb84344b912f8f2d23ca4c, type: 3}

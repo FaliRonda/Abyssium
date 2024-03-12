@@ -903,7 +903,7 @@ public class GameDirector : MonoBehaviour
     
     private void CheckEnemiesInScene(bool enemyDied)
     {
-        if (combatDemo && enemyDied)
+        if (combatDemo)
         {
             var counterText = canvas.transform.GetChild(4).GetComponentInChildren<TMP_Text>();
             var initialText = counterText.text.Split(' ')[0] + " " + counterText.text.Split(' ')[1];

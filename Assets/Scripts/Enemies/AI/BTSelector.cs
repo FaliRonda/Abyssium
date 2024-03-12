@@ -27,6 +27,9 @@ public class BTSelector : BTNode
                 case EnemyBTNodesSO.BEHAVIOURS.Shoot:
                     nodes.Add(new BTShootNode(enemyCode));
                     break;
+                case EnemyBTNodesSO.BEHAVIOURS.Summon:
+                    nodes.Add(new BTSummonNode(enemyCode));
+                    break;
             }
         }
     }
@@ -38,17 +41,15 @@ public class BTSelector : BTNode
             foreach (BTNode node in nodes)
             {
                 BTNodeState state = node.Execute();
-                if (state == BTNodeState.Success || state == BTNodeState.Running)
+                if (state == BTNodeState.NextTree || state == BTNodeState.Running)
                 {
                     return state;
                 }
             }
             return BTNodeState.Failure;
         }
-        else
-        {
-            return BTNodeState.Success;
-        }
+     
+        return BTNodeState.NextTree;
     }
 
     public override void InitializeNode(Dictionary<string, object> parameters)

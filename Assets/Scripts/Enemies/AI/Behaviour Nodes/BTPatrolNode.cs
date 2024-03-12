@@ -31,7 +31,7 @@ public class BTPatrolNode : BTNode
                 {
                     isWalking = false;
                     stepFMODAudio.stop(STOP_MODE.ALLOWFADEOUT);
-                    return BTNodeState.Success;
+                    return BTNodeState.NextTree;
                 }
 
                 // Move towards the waypoint

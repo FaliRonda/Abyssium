@@ -12,7 +12,8 @@ public static class Enemies
         Jumper,
         Shooter,
         DarkHunter,
-        DarkHunterSlower
+        DarkHunterSlower,
+        Boss,
     }
     
     public static Dictionary<CODE_NAMES, string> enemiesNamesDictionary = new Dictionary<CODE_NAMES, string>
@@ -22,6 +23,7 @@ public static class Enemies
         { CODE_NAMES.Shooter, "Shooter" },
         { CODE_NAMES.DarkHunter, "DarkHunter" },
         { CODE_NAMES.DarkHunterSlower, "DarkHunterSlower" },
+        { CODE_NAMES.Boss, "Boss" },
     };
 
     public static string EnemiesParametersPathDictionary(CODE_NAMES enemyCode, string nodeName)

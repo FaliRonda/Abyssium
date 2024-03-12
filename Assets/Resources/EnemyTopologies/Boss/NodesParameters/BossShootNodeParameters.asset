@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a8ebc57a13289a468919286b7abda74, type: 3}
+  m_Name: BossShootNodeParameters
+  m_EditorClassIdentifier: 
+  bulletLifeTime: 12
+  bulletSpeed: 4
+  attackVisibilityDistance: 10
+  shootCD: 3
+  bulletPrefab: {fileID: 9109705668636447229, guid: 91d5333cb5df9944290653861e1eeaef, type: 3}
+  anticipacionDuration: 0.75
+  whiteHitPercentage: 0.25
+  bulletsPerShoot: 3
+  timeBetweenBullets: 0.5
+  isRadialShoot: 1
+  numberOfRadialBullets: 20

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f57196053c5c7fd4c87a4c498b94b3cd, type: 3}
+  m_Name: BossSummonNodeParameters
+  m_EditorClassIdentifier: 
+  standAfterSummonCD: 2
+  spawnPrefab: {fileID: 6006028703950835352, guid: 4625c35d94a9ca045ac3a75847acf705, type: 3}
+  enemiesToSpawn:
+  - {fileID: 11400000, guid: 362926ea3fa07834696b562dace638d7, type: 2}
+  - {fileID: 11400000, guid: 4069c2ad39713234aa96be8c7cec4f4d, type: 2}
+  anticipacionDuration: 1
+  whiteHitPercentage: 0.25
+  timeBetweenSummons: 5

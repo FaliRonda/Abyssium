@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +10,8 @@ public class EnemyBTNodesSO : ScriptableObject
         Attack,
         Chase,
         Patrol,
-        Shoot
+        Shoot,
+        Summon,
     }
     
     public List<BEHAVIOURS> behaviorNodes = new List<BEHAVIOURS>();

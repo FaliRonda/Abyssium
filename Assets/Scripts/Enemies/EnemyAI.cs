@@ -4,6 +4,7 @@ using DG.Tweening;
 using Ju.Extensions;
 using UnityEditor;
 using UnityEngine;
+using Random = System.Random;
 using Sequence = DG.Tweening.Sequence;
 
 public class EnemyAI : MonoBehaviour
@@ -19,20 +20,18 @@ public class EnemyAI : MonoBehaviour
     public float damagedCamShakeIntensity = 2f;
     public float damagedCamShakeFrequency = 0.3f;
     public float damagedCamShakeDuration = 0.5f;
-    
-    // Attack distance
     public float knockbackMovementFactor = 1f;
     public float spriteBlinkingFrecuency = 0.15f;
     public float damageBlinkingDuration = 1f;
     public float stunnedCD = 2f;
-    private float invulnerableCD = 0.1f;
+    public float invulnerableCD = 0.1f;
     
     public float damagedGamepadVibrationIntensity = 0.5f;
     public float damagedGamepadVibrationDuration = 0.2f;
     
     // Behavior tree root node
-    public EnemyBTNodesSO behaviorNodeContainer;
-    private BTSelector rootNode;
+    public List<EnemyBTNodesSO> behaviorNodesContainer;
+    private List<BTSelector> nodeTrees;
     private Dictionary<string, object> parameters;
     
     [HideInInspector]
@@ -56,6 +55,8 @@ public class EnemyAI : MonoBehaviour
     private Ray ray;
     private RaycastHit[] hits;
     private Sequence knockbackSequence;
+    private int currentTreeIndex = -1;
+    private BTSelector currentTree;
 
 
     public void Initialize(Transform pjTransform)
@@ -73,9 +74,6 @@ public class EnemyAI : MonoBehaviour
 
         defaultEnemySpriteRotation = enemySprite.transform.rotation;
 
-        // Create the behavior tree
-        rootNode = new BTSelector(behaviorNodeContainer.behaviorNodes.ToArray(), behaviorNodeContainer.enemyCode);
-        
         parameters = new Dictionary<string, object>
         {
             { "EnemyAI", this },
@@ -87,13 +85,33 @@ public class EnemyAI : MonoBehaviour
             // Agrega otros parámetros según sea necesario
         };
 
-        rootNode.InitializeNode(parameters);
+        nodeTrees = new List<BTSelector>();
+
+        foreach (EnemyBTNodesSO nodeTree in behaviorNodesContainer)
+        {
+            var newNodeTree = new BTSelector(nodeTree.behaviorNodes.ToArray(), nodeTree.enemyCode);
+            newNodeTree.InitializeNode(parameters);
+            nodeTrees.Add(newNodeTree);
+        }
     }
 
     public void DoUpdate()
     {
-        // Update the behavior tree
-        rootNode.Execute();
+        Random random = new Random();
+        
+        if (currentTreeIndex == -1)
+        {
+            currentTreeIndex = random.Next(0, nodeTrees.Count);
+            currentTree = nodeTrees[currentTreeIndex];
+            Debug.Log("Nodes: " + currentTree.nodes.Count);
+        }
+
+        var state = currentTree.Execute();
+
+        if (state == BTNodeState.NextTree)
+        {
+            currentTreeIndex = -1;
+        }
     }
 
 #if UNITY_EDITOR
@@ -102,7 +120,10 @@ public class EnemyAI : MonoBehaviour
     {
         if (EditorApplication.isPlaying)
         {
-            rootNode.DrawGizmos();
+            foreach (BTSelector nodeTree in nodeTrees)
+            {
+                nodeTree.DrawGizmos();
+            }
         }
     }
     
@@ -127,13 +148,16 @@ public class EnemyAI : MonoBehaviour
             PlayDamagedAnimation();
             PlayDamagedKnockbackAnimation();
 
-            if (isDead)
+            foreach (BTSelector nodeTree in nodeTrees)
             {
-                rootNode.ResetNodes(true);
-            }
-            else
-            {
-                rootNode.ResetNodes(false);
+                if (isDead)
+                {
+                    nodeTree.ResetNodes(true);
+                }
+                else
+                {
+                    nodeTree.ResetNodes(false);
+                }
             }
 
             if (!enemyStunned)
@@ -286,7 +310,10 @@ public class EnemyAI : MonoBehaviour
 
     public void ResetAINodes()
     {
-        rootNode.ResetNodes(false);
+        foreach (BTSelector nodeTree in nodeTrees)
+        {
+            nodeTree.ResetNodes(false);
+        }
     }
     
     private bool EnemyRaycastHit(Color color, float enemyRayDistance)
