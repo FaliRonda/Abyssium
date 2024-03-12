@@ -103,7 +103,6 @@ public class EnemyAI : MonoBehaviour
         {
             currentTreeIndex = random.Next(0, nodeTrees.Count);
             currentTree = nodeTrees[currentTreeIndex];
-            Debug.Log("Nodes: " + currentTree.nodes.Count);
         }
 
         var state = currentTree.Execute();
@@ -263,8 +262,6 @@ public class EnemyAI : MonoBehaviour
             yield return null;
         }
 
-        //TODO debería hacerse esto en otro lugar?
-        //chaseNode.ResetChasing();
         enemySprite.color = Color.white;
         yield return null;
     }
@@ -312,7 +309,7 @@ public class EnemyAI : MonoBehaviour
     {
         foreach (BTSelector nodeTree in nodeTrees)
         {
-            nodeTree.ResetNodes(false);
+            nodeTree.ResetNodes();
         }
     }
     

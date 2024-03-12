@@ -15,7 +15,7 @@ public class BTAttackNode : BTNode
     private MaterialPropertyBlock propertyBlock;
     private Sequence standAfterAttackSequence;
     private Sequence waitForNextAttackSequence;
-    private bool attackCDReady;
+    private bool waitAfterAttackFinished;
 
     public BTAttackNode(Enemies.CODE_NAMES enemyCode)
     {
@@ -27,9 +27,9 @@ public class BTAttackNode : BTNode
         ray = new Ray(enemyTransform.position, lastPlayerDirectionBeforeAttack);
         EnemyRaycastHit(Color.green);
 
-        if (attackCDReady)
+        if (waitAfterAttackFinished)
         {
-            attackCDReady = false;
+            waitAfterAttackFinished = false;
             attackPlaying = false;
             return BTNodeState.NextTree;
         }
@@ -43,25 +43,26 @@ public class BTAttackNode : BTNode
             
             return BTNodeState.Running;
         }
-        
-        // Check if the player is within attack distance
-        Vector3 playerDirection = playerTransform.position - enemyTransform.position;
-        float playerDistance = playerDirection.magnitude;
-        
-        ray = new Ray(enemyTransform.position, lastPlayerDirectionBeforeAttack);
-        EnemyRaycastHit(Color.green);
-        
-        if (playerDistance <= attackNodeParameters.attackVisibilityDistance)
+
+        if (!waitAfterAttackFinished)
         {
-            if (!attackPlaying && !(enemyAI.attackInCD || enemyAI.enemyStunned))
+            Vector3 playerDirection = playerTransform.position - enemyTransform.position;
+            float playerDistance = playerDirection.magnitude;
+            
+            ray = new Ray(enemyTransform.position, lastPlayerDirectionBeforeAttack);
+            EnemyRaycastHit(Color.green);
+            
+            if (playerDistance <= attackNodeParameters.attackVisibilityDistance)
             {
-                lastPlayerDirectionBeforeAttack = playerDirection;
-                Attack(playerDirection);
+                if (!attackPlaying && !enemyAI.attackInCD && (!enemyAI.enemyStunned || !attackNodeParameters.stoppedByStun))
+                {
+                    lastPlayerDirectionBeforeAttack = playerDirection;
+                    Attack(playerDirection);
 
-                WaitForNextAttack();
+                    WaitForNextAttack();
+                    return BTNodeState.Running;
+                }
             }
-
-            return BTNodeState.Running;
         }
         
         return BTNodeState.Failure;
@@ -167,6 +168,7 @@ public class BTAttackNode : BTNode
             .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; })
             .OnKill(() =>
             {
+                attackPlaying = false;
                 StandAfterAttack();
 
                 Sequence waitAndDisableColliderSequence = DOTween.Sequence();
@@ -206,14 +208,15 @@ public class BTAttackNode : BTNode
         standAfterAttackSequence.AppendInterval(attackNodeParameters.standAfterAttackCD);
         standAfterAttackSequence.AppendCallback(() =>
         {
-            attackCDReady = true;
+            waitAfterAttackFinished = true;
         });
     }
 
     private void EnemyRaycastHit(Color color)
     {
-        Debug.DrawRay(ray.origin, ray.direction, color);
+        Debug.DrawRay(ray.origin, ray.direction.normalized * attackNodeParameters.enemyRayMaxDistance, color);
         hits = Physics.RaycastAll(ray.origin, ray.direction, attackNodeParameters.enemyRayMaxDistance);
+        Debug.Log("Hits: " + hits.Length);
     }
     
     private bool EnemyRayHitLayer(int layer)

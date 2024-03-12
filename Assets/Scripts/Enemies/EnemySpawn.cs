@@ -38,8 +38,10 @@ public class EnemySpawn : MonoBehaviour
             .AppendCallback(() =>
             {
                 fxGO.gameObject.SetActive(false);
-                GameObject enemy = Instantiate(enemyPrefab, transform);
+                GameObject enemy = Instantiate(enemyPrefab, transform.parent);
+                enemy.transform.position = transform.position;
                 Core.Event.Fire(new GameEvents.EnemySpawned(){ enemyAI = enemy.GetComponentInChildren<EnemyAI>() });
+                Destroy(gameObject);
             });
     }
 

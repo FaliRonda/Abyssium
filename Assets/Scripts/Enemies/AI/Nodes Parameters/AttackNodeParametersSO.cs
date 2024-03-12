@@ -17,4 +17,5 @@ public class AttackNodeParametersSO : ScriptableObject
     public bool jumpAttack;
     public float jumpHeight;
     public float jumpDuration;
+    public bool stoppedByStun = true;
 }

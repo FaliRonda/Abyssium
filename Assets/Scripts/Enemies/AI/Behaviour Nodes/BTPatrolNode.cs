@@ -19,7 +19,7 @@ public class BTPatrolNode : BTNode
 
     public override BTNodeState Execute()
     {
-        if (!enemyAI.enemyStunned)
+        if (!enemyAI.enemyStunned || !patrolNodeParameters.stoppedByStun)
         {
             if (isWalking)
             {

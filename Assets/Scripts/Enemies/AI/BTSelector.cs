@@ -78,4 +78,12 @@ public class BTSelector : BTNode
             node.ResetNode(enemyDead);
         }
     }
+    
+    public void ResetNodes()
+    {
+        foreach (BTNode node in nodes)
+        {
+            node.ResetNode();
+        }
+    }
 }

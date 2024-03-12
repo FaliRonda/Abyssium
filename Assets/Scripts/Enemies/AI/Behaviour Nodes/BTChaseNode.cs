@@ -19,7 +19,7 @@ public class BTChaseNode : BTNode
 
     public override BTNodeState Execute()
     {
-        if (enemyAI.attackInCD || enemyAI.enemyStunned)
+        if (enemyAI.attackInCD || (chaseNodeParameters.stoppedByStun && enemyAI.enemyStunned))
         {
             return BTNodeState.Failure;
         }

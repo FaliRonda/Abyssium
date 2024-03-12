@@ -8,4 +8,5 @@ public class ChaseNodeParametersSO : ScriptableObject
     public float lightRadius = 2f;
     public float chaseSpeed = 2.25f;
     public float chaseInLightSpeed = 0.5f;
+    public bool stoppedByStun = true;
 }

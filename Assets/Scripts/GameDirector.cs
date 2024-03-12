@@ -6,6 +6,7 @@ using DG.Tweening;
 using Ju.Extensions;
 using Sirenix.OdinInspector;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
@@ -13,6 +14,7 @@ using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Bloom = UnityEngine.Rendering.Universal.Bloom;
 using ChromaticAberration = UnityEngine.Rendering.Universal.ChromaticAberration;
+using ColorUtility = UnityEngine.ColorUtility;
 using InputAction = UnityEngine.InputSystem.InputAction;
 using Sequence = DG.Tweening.Sequence;
 using Vignette = UnityEngine.Rendering.Universal.Vignette;
@@ -494,6 +496,14 @@ public class GameDirector : MonoBehaviour
             var initialText = counterText.text.Split(' ')[0] + " " + counterText.text.Split(' ')[1];
             int counter = 0;
             counterText.text = initialText + " " + counter;
+            
+            Image[] waveImages = canvas.transform.GetChild(5).GetComponentsInChildren<Image>();
+            foreach (Image waveImage in waveImages)
+            {
+                waveImage.color = Color.white;
+            }
+
+            enemyWaveCount = 0;
         }
         
         if (timeLoopEnded)
@@ -934,7 +944,7 @@ public class GameDirector : MonoBehaviour
 
                     foreach (KeyValuePair<Vector3, GameObject> wavePair in nextWave.waveParametersDictionary)
                     {
-                        GameObject enemySpawnGO = Instantiate(spawnPrefab, transform.parent);
+                        GameObject enemySpawnGO = Instantiate(spawnPrefab, transform.parent.parent);
                         EnemySpawn enemySpawn = enemySpawnGO.GetComponent<EnemySpawn>();
 
                         enemySpawn.Initialize(wavePair.Key, wavePair.Value);
