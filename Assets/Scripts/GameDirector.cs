@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using FMOD.Studio;
 using Ju.Extensions;
 using Sirenix.OdinInspector;
 using TMPro;
@@ -118,6 +119,7 @@ public class GameDirector : MonoBehaviour
     private bool orbLateralDialogShown;
 
     private Dictionary<string,FloorData> loopPersistentData;
+    private EventInstance combatDemoMusic;
 
     private struct FloorData
     {
@@ -160,6 +162,15 @@ public class GameDirector : MonoBehaviour
             }
 
             this.EventSubscribe<GameEvents.EnemyDied>(e => EnemyDied(e.enemy));
+            this.EventSubscribe<GameEvents.BossSpawned>(e => ShowBossLifeUI(e.bossLife));
+            this.EventSubscribe<GameEvents.BossDamaged>(e => UpdateBossLifeUI());
+            this.EventSubscribe<GameEvents.BossDied>(e =>
+            {
+                timeLoopPaused = true;
+                combatDemoMusic.stop(STOP_MODE.ALLOWFADEOUT);
+                Transform lifeSliderTransform = canvas.transform.GetChild(6);
+                lifeSliderTransform.gameObject.SetActive(false);
+            });
             this.EventSubscribe<GameEvents.EnemySpawned>(e => EnemySpawned(e.enemyAI));
             this.EventSubscribe<GameEvents.NPCVanished>(e => EndDemo());
             this.EventSubscribe<GameEvents.NPCDialogue>(e => HandleConversation(e.started));
@@ -213,7 +224,7 @@ public class GameDirector : MonoBehaviour
 
             if (combatDemo)
             {
-                Core.Audio.PlayFMODAudio("event:/Music/MVP_CombatDemoScene_Music", transform);
+                combatDemoMusic = Core.Audio.PlayFMODAudio("event:/Music/MVP_CombatDemoScene_Music", transform);
                 Core.Audio.PlayFMODAudio("event:/Background/MVP_CombatDemoScene_BackgroundSFX", transform);
             }
             else
@@ -244,6 +255,38 @@ public class GameDirector : MonoBehaviour
         {
             InitializeGameDirector();
         }
+    }
+
+    private void UpdateBossLifeUI()
+    {
+        Transform lifeSliderTransform = canvas.transform.GetChild(6);
+
+        float currentLife = lifeSliderTransform.GetComponent<Slider>().value;
+        float targetLife = currentLife - 1;
+        
+        
+        Sequence bossDamagedSequence = DOTween.Sequence();
+        bossDamagedSequence
+            .Append(DOTween.To(() => currentLife, x =>
+            {
+                targetLife = x;
+                lifeSliderTransform.GetComponent<Slider>().value = x;
+            }, targetLife, 0.2f));
+    }
+
+    private void ShowBossLifeUI(int maxLifeValue)
+    {
+        Transform lifeSliderTransform = canvas.transform.GetChild(6);
+        lifeSliderTransform.GetComponent<Slider>().maxValue = maxLifeValue;
+        lifeSliderTransform.GetComponent<Slider>().value = maxLifeValue;
+        
+        Vector3 initialScale = new Vector3(0f, lifeSliderTransform.localScale.y, lifeSliderTransform.localScale.z);
+        lifeSliderTransform.localScale = initialScale;
+
+        Vector3 finalScale = new Vector3(5f, lifeSliderTransform.localScale.y, lifeSliderTransform.localScale.z);
+
+        lifeSliderTransform.gameObject.SetActive(true);
+        lifeSliderTransform.transform.DOScale(finalScale, 1f).SetEase(Ease.OutQuad);
     }
 
     private void HandleConversation(bool conversationStarted)
@@ -496,11 +539,21 @@ public class GameDirector : MonoBehaviour
             var initialText = counterText.text.Split(' ')[0] + " " + counterText.text.Split(' ')[1];
             int counter = 0;
             counterText.text = initialText + " " + counter;
-            
+
+            int imageCounter = 0;
             Image[] waveImages = canvas.transform.GetChild(5).GetComponentsInChildren<Image>();
+            Color color;
             foreach (Image waveImage in waveImages)
             {
-                waveImage.color = Color.white;
+                if (imageCounter != 0)
+                {
+                    if (ColorUtility.TryParseHtmlString("#FFFFFF48", out color))
+                    {
+                        waveImage.color = color;
+                    }
+                }
+
+                imageCounter++;
             }
 
             enemyWaveCount = 0;
@@ -932,9 +985,9 @@ public class GameDirector : MonoBehaviour
                 {
                     Image[] waveImages = canvas.transform.GetChild(5).GetComponentsInChildren<Image>();
                     Color color;
-                    if (ColorUtility.TryParseHtmlString("#FFAA66", out color))
+                    if (ColorUtility.TryParseHtmlString("#FFAA6648", out color))
                     {
-                        waveImages[enemyWaveCount - 1].color = color;
+                        waveImages[enemyWaveCount].color = color;
                     }
                 }
                 
@@ -948,7 +1001,10 @@ public class GameDirector : MonoBehaviour
                         EnemySpawn enemySpawn = enemySpawnGO.GetComponent<EnemySpawn>();
 
                         enemySpawn.Initialize(wavePair.Key, wavePair.Value);
-                        enemySpawn.DoSpawn();
+                        Sequence delayWaveSequence = DOTween.Sequence();
+                        delayWaveSequence
+                            .AppendInterval(1)
+                            .AppendCallback(() => enemySpawn.DoSpawn());
                     }
 
                     enemyWaveCount++;

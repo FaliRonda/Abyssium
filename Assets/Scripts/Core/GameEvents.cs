@@ -17,6 +17,7 @@ public static class GameEvents
     public struct EnemyDied
     {
         public EnemyAI enemy;
+        public bool isBoss;
     }
 
     public struct NPCVanished {}
@@ -49,4 +50,13 @@ public static class GameEvents
     {
         public EnemyAI enemyAI;
     }
+
+    public struct BossDied {}
+
+    public struct BossSpawned
+    {
+        public int bossLife;
+    }
+
+    public struct BossDamaged {}
 }

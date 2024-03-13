@@ -9,4 +9,5 @@ public class SummonNodeParametersSO : ScriptableObject
     public float anticipacionDuration;
     public float whiteHitPercentage = 0.25f;
     public float timeBetweenSummons;
+    public Color castingColor = Color.white;
 }

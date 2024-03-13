@@ -10,29 +10,24 @@ public class EnemySpawn : MonoBehaviour
     public bool debug;
 
     private GameObject fxGO;
+    private Sequence fxSpawnSequence;
 
     private void Awake()
     {
         fxGO = gameObject.transform.GetChild(0).gameObject;
         fxGO.SetActive(false);
-    }
-
-    public void DoSpawn()
-    {
-        Sequence spawnSequence = DOTween.Sequence();
-        spawnSequence
-            .AppendInterval(spawnTime)
-            .AppendCallback(SpawnEnemy);
+        
+        this.EventSubscribe<GameEvents.BossDied>(e => { fxSpawnSequence.Kill(); });
     }
 
     [Button]
-    public void SpawnEnemy()
+    public void DoSpawn()
     {
         fxGO.gameObject.SetActive(true);
         //Core.Audio.Play(SOUND_TYPE.EnemySpawn, 1, 0, 0.03f);
         Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/Spawn", transform);
         
-        Sequence fxSpawnSequence = DOTween.Sequence();
+        fxSpawnSequence = DOTween.Sequence();
         fxSpawnSequence
             .AppendInterval(spawnTime)
             .AppendCallback(() =>
@@ -41,6 +36,10 @@ public class EnemySpawn : MonoBehaviour
                 GameObject enemy = Instantiate(enemyPrefab, transform.parent);
                 enemy.transform.position = transform.position;
                 Core.Event.Fire(new GameEvents.EnemySpawned(){ enemyAI = enemy.GetComponentInChildren<EnemyAI>() });
+                Destroy(gameObject);
+            })
+            .OnKill(() =>
+            {
                 Destroy(gameObject);
             });
     }

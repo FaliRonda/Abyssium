@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Ju.Extensions;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -12,6 +13,8 @@ public class Bullet : MonoBehaviour
         lifeTime = bulletLifeTime;
         Vector3 position = transform.position;
         transform.position = new Vector3(position.x, 0.3f, position.z);
+        
+        this.EventSubscribe<GameEvents.BossDied>(e => { DestroyBullet(); });
     }
     
     public void StartShoot(Vector3 direction)

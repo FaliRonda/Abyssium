@@ -46,24 +46,26 @@ public class BTSummonNode : BTNode
 
         float whiteHitTargetValue = 1 - summonNodeParameters.whiteHitPercentage;
 
+        Color castingColor = summonNodeParameters.castingColor;
+        
         summonSequence = DOTween.Sequence();
         summonSequence
             .Append(DOTween.To(() => 1, x => {
                 whiteHitTargetValue = x;
-                UpdateWhiteHitValue(x);
+                UpdateCastingGrading(x, castingColor);
             }, whiteHitTargetValue, summonNodeParameters.anticipacionDuration))
             .AppendCallback(() =>
             {
-                UpdateWhiteHitValue(1);
+                UpdateCastingGrading(1, castingColor);
                 SummonEnemies();
             })
             .OnKill(() =>
             {
-                UpdateWhiteHitValue(1);
+                UpdateCastingGrading(1, castingColor);
             });
     }
     
-    private void UpdateWhiteHitValue(float value)
+    private void UpdateCastingGrading(float value, Color color)
     {
         if (propertyBlock == null)
             propertyBlock = new MaterialPropertyBlock();
@@ -71,7 +73,8 @@ public class BTSummonNode : BTNode
         Renderer renderer = enemySprite.GetComponent<Renderer>();
         
         Material mat = renderer.material;
-        mat.SetFloat("_AlphaHit", value);
+        mat.SetFloat("_AlphaCasting", value);
+        mat.SetColor("_ColorCasting", color);
 
         renderer.material = mat;
     }
@@ -109,6 +112,14 @@ public class BTSummonNode : BTNode
         {
             waitBetweenSummons = false;
         });
+    }
+    
+    public override void ResetNode(bool enemyDied)
+    {
+        if (enemyDied)
+        {
+            summonSequence.Kill();
+        }
     }
 
     public override void InitializeNode(Dictionary<string, object> parameters)

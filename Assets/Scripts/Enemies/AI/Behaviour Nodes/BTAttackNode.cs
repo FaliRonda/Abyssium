@@ -113,6 +113,8 @@ public class BTAttackNode : BTNode
         
         Vector3 anticipationDirection = (enemyPosition - targetPosition).normalized * attackNodeParameters.anticipationDistance;
         float whiteHitTargetValue = 1 - attackNodeParameters.whiteHitPercentage;
+
+        Color castingColor = attackNodeParameters.castingColor;
         
         attackSequence
             .AppendCallback(() => { enemyAnimator.Play("Enemy_attack"); })
@@ -120,7 +122,7 @@ public class BTAttackNode : BTNode
             .Join(DOTween.To(() => 1, x =>
             {
                 whiteHitTargetValue = x;
-                UpdateWhiteHitValue(x);
+                UpdateCastingGrading(x, castingColor);
             }, whiteHitTargetValue, attackNodeParameters.anticipacionDuration));
 
         Vector3 attackDirection = (targetPosition - enemyPosition).normalized * attackNodeParameters.attackMovementDistance;
@@ -128,7 +130,7 @@ public class BTAttackNode : BTNode
         attackSequence
             .AppendCallback(() =>
             {
-                UpdateWhiteHitValue(1);
+                UpdateCastingGrading(1, castingColor);
                 enemyAI.attackCollider.isTrigger = false;
             })
             .Append(enemyTransform.DOMove(enemyPosition + attackDirection, attackNodeParameters.attackMovementDuration))
@@ -137,7 +139,7 @@ public class BTAttackNode : BTNode
             .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; })
             .OnKill(() =>
             {
-                UpdateWhiteHitValue(1);
+                UpdateCastingGrading(1, castingColor);
                 StandAfterAttack();
 
                 Sequence waitAndDisableColliderSequence = DOTween.Sequence();
@@ -189,7 +191,7 @@ public class BTAttackNode : BTNode
             });
     }
 
-    private void UpdateWhiteHitValue(float value)
+    private void UpdateCastingGrading(float value, Color color)
     {
         if (propertyBlock == null)
             propertyBlock = new MaterialPropertyBlock();
@@ -197,7 +199,8 @@ public class BTAttackNode : BTNode
         Renderer renderer = enemySprite.GetComponent<Renderer>();
         
         Material mat = renderer.material;
-        mat.SetFloat("_AlphaHit", value);
+        mat.SetFloat("_AlphaCasting", value);
+        mat.SetColor("_ColorCasting", color);
 
         renderer.material = mat;
     }
@@ -216,7 +219,6 @@ public class BTAttackNode : BTNode
     {
         Debug.DrawRay(ray.origin, ray.direction.normalized * attackNodeParameters.enemyRayMaxDistance, color);
         hits = Physics.RaycastAll(ray.origin, ray.direction, attackNodeParameters.enemyRayMaxDistance);
-        Debug.Log("Hits: " + hits.Length);
     }
     
     private bool EnemyRayHitLayer(int layer)
@@ -256,7 +258,15 @@ public class BTAttackNode : BTNode
 
     public override void ResetNode()
     {
-        if (!attackNodeParameters.jumpAttack)
+        if (!attackNodeParameters.jumpAttack && !attackNodeParameters.stoppedByStun)
+        {
+            attackSequence.Kill();
+        }
+    }
+    
+    public override void ResetNode(bool enemyDied)
+    {
+        if (enemyDied)
         {
             attackSequence.Kill();
         }

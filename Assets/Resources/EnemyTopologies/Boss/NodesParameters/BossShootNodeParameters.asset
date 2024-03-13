@@ -23,3 +23,4 @@ MonoBehaviour:
   timeBetweenBullets: 0.5
   isRadialShoot: 1
   numberOfRadialBullets: 20
+  castingColor: {r: 1, g: 0.37908494, b: 0, a: 1}

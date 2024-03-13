@@ -14,4 +14,5 @@ public class ShootNodeParametersSO : ScriptableObject
     public float timeBetweenBullets;
     public bool isRadialShoot;
     public int numberOfRadialBullets;
+    public Color castingColor = Color.white;
 }

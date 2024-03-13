@@ -18,4 +18,5 @@ public class AttackNodeParametersSO : ScriptableObject
     public float jumpHeight;
     public float jumpDuration;
     public bool stoppedByStun = true;
+    public Color castingColor = Color.white;
 }

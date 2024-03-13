@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -10,6 +11,7 @@ using Sequence = DG.Tweening.Sequence;
 public class EnemyAI : MonoBehaviour
 {
     public bool aIActive;
+    public bool isBoss = false;
     // Reference to the player
     public Transform playerTransform;
     public Transform chasePivotTransform;
@@ -64,6 +66,12 @@ public class EnemyAI : MonoBehaviour
         playerTransform = pjTransform;
         
         this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
+        this.EventSubscribe<GameEvents.BossDied>(e => Die());
+
+        if (isBoss)
+        {
+            Core.Event.Fire(new GameEvents.BossSpawned(){bossLife = lifeAmount});
+        }
         
         SpriteRenderer[] enemySprites = GetComponentsInChildren<SpriteRenderer>();
         enemySprite = enemySprites[0];
@@ -136,6 +144,11 @@ public class EnemyAI : MonoBehaviour
             isDead = lifeAmount <= 0;
             
             enemyInvulnerable = true;
+
+            if (isBoss)
+            {
+                Core.Event.Fire(new GameEvents.BossDamaged(){});
+            }
             
             Sequence invulnerableSequence = DOTween.Sequence();
             invulnerableSequence
@@ -216,6 +229,13 @@ public class EnemyAI : MonoBehaviour
         isDead = true;
         aIActive = false;
         attackCollider.enabled = false;
+
+        bool enemyDied = true;
+        
+        if (isBoss)
+        {
+            Core.Event.Fire(new GameEvents.BossDied(){});
+        }
         
         Dropper dropper = GetComponent<Dropper>();
         if (dropper != null && itemToDrop != null)
@@ -298,6 +318,14 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == Layers.WALL_LAYER || other.gameObject.layer == Layers.DOOR_LAYER)
+        {
+            knockbackSequence.Kill();
+        }
+    }
+
     private void HitPlayer(GameObject other)
     {
         Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/AttackHit", transform);
@@ -310,6 +338,14 @@ public class EnemyAI : MonoBehaviour
         foreach (BTSelector nodeTree in nodeTrees)
         {
             nodeTree.ResetNodes();
+        }
+    }
+    
+    public void ResetAINodes(bool enemyDied)
+    {
+        foreach (BTSelector nodeTree in nodeTrees)
+        {
+            nodeTree.ResetNodes(enemyDied);
         }
     }
     

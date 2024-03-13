@@ -12,16 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7ba407ffd758524fb65764bc42f3869, type: 3}
   m_Name: BossAttackNodeParameters
   m_EditorClassIdentifier: 
-  attackVisibilityDistance: 2.75
-  standAfterAttackCD: 0.9
-  anticipationDistance: 0.4
-  anticipacionDuration: 0.75
-  attackMovementDistance: 2.5
+  attackVisibilityDistance: 3
+  standAfterAttackCD: 0.7
+  anticipationDistance: 0.5
+  anticipacionDuration: 0.5
+  attackMovementDistance: 3
   attackMovementDuration: 0.15
   enemyRayMaxDistance: 0.25
-  waitForNextAttackCD: 4.5
+  waitForNextAttackCD: 4
   whiteHitPercentage: 0.25
   jumpAttack: 0
   jumpHeight: 0
   jumpDuration: 0
   stoppedByStun: 0
+  castingColor: {r: 1, g: 1, b: 1, a: 1}

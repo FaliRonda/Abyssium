@@ -61,24 +61,26 @@ public class BTShootNode : BTNode
 
         float whiteHitTargetValue = 1 - shootNodeParameters.whiteHitPercentage;
 
+        Color castingColor = shootNodeParameters.castingColor;
+        
         shootSequence = DOTween.Sequence();
         shootSequence
             .Append(DOTween.To(() => 1, x => {
                 whiteHitTargetValue = x;
-                UpdateWhiteHitValue(x);
+                UpdateCastingGrading(x, castingColor);
             }, whiteHitTargetValue, shootNodeParameters.anticipacionDuration))
             .AppendCallback(() =>
             {
-                UpdateWhiteHitValue(1);
+                UpdateCastingGrading(1, castingColor);
                 ShootBullets();
             })
             .OnKill(() =>
             {
-                UpdateWhiteHitValue(1);
+                UpdateCastingGrading(1, castingColor);
             });
     }
     
-    private void UpdateWhiteHitValue(float value)
+    private void UpdateCastingGrading(float value, Color color)
     {
         if (propertyBlock == null)
             propertyBlock = new MaterialPropertyBlock();
@@ -86,7 +88,8 @@ public class BTShootNode : BTNode
         Renderer renderer = enemySprite.GetComponent<Renderer>();
         
         Material mat = renderer.material;
-        mat.SetFloat("_AlphaHit", value);
+        mat.SetFloat("_AlphaCasting", value);
+        mat.SetColor("_ColorCasting", color);
 
         renderer.material = mat;
     }
