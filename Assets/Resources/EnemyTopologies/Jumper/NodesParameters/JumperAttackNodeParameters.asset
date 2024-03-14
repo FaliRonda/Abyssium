@@ -23,5 +23,7 @@ MonoBehaviour:
   whiteHitPercentage: 0.25
   jumpAttack: 1
   jumpHeight: 2
-  jumpDuration: 0.5
+  jumpDuration: 0.6
   stoppedByStun: 0
+  castingColor: {r: 1, g: 1, b: 1, a: 1}
+  stoppedByHitPlayer: 0

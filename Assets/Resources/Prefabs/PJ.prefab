@@ -5270,7 +5270,7 @@ MonoBehaviour:
   playerRotationSpeed: 1
   playerRollFactor: 2.5
   rollCooldown: 0.35
-  invulnerableAfterDashCD: 0.3
+  invulnerableAfterDashCD: 0.2
   playerRayMaxDistance: 0.75
   attackImpulseFactor: 0.5
   combo1AttackCooldown: 0.4
@@ -5597,10 +5597,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1.5
+  m_Radius: 0.75
+  m_Height: 1.75
   m_Direction: 1
-  m_Center: {x: 0, y: 0.15, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2803312628783158039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5614,8 +5614,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponDamage: 1
-  weaponHeight: 1.5
-  weaponCenter: 0.25
+  hitBoxCenterY: 0
+  hitBoxRadius: 0.75
+  hitBoxHeight: 1.75
   weaponCd: 0.5
 --- !u!54 &7105326444436832605
 Rigidbody:

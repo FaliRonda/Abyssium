@@ -115,6 +115,8 @@ public class BTAttackNode : BTNode
         float whiteHitTargetValue = 1 - attackNodeParameters.whiteHitPercentage;
 
         Color castingColor = attackNodeParameters.castingColor;
+
+        Vector3 attackDirection = (playerTransform.position - enemyPosition).normalized * attackNodeParameters.attackMovementDistance;
         
         attackSequence
             .AppendCallback(() => { enemyAnimator.Play("Enemy_attack"); })
@@ -125,7 +127,6 @@ public class BTAttackNode : BTNode
                 UpdateCastingGrading(x, castingColor);
             }, whiteHitTargetValue, attackNodeParameters.anticipacionDuration));
 
-        Vector3 attackDirection = (targetPosition - enemyPosition).normalized * attackNodeParameters.attackMovementDistance;
 
         attackSequence
             .AppendCallback(() =>
@@ -154,10 +155,13 @@ public class BTAttackNode : BTNode
         Vector3 targetPosition = playerTransform.position;
         var position = enemyTransform.position;
 
+        SpriteRenderer shadowSprite = enemyAI.GetComponentsInChildren<SpriteRenderer>()[1];
+        
         attackSequence
             .AppendCallback(() =>
             {
                 enemyAI.attackCollider.isTrigger = false;
+                shadowSprite.enabled = false;
             })
             .Append(enemyTransform.DOJump(targetPosition, attackNodeParameters.jumpHeight, 1, attackNodeParameters.jumpDuration))
             .SetEase(Ease.Linear)
@@ -171,6 +175,7 @@ public class BTAttackNode : BTNode
             .OnKill(() =>
             {
                 attackPlaying = false;
+                shadowSprite.enabled = true;
                 StandAfterAttack();
 
                 Sequence waitAndDisableColliderSequence = DOTween.Sequence();
@@ -258,17 +263,31 @@ public class BTAttackNode : BTNode
 
     public override void ResetNode()
     {
-        if (!attackNodeParameters.jumpAttack && !attackNodeParameters.stoppedByStun)
+        if (attackNodeParameters.jumpAttack)
+        {
+            return;
+        }
+
+        if (attackNodeParameters.stoppedByStun && enemyAI.enemyStunned)
+        {
+            attackSequence.Kill();
+        }
+
+        if (enemyAI.playerDamaged)
         {
             attackSequence.Kill();
         }
     }
     
-    public override void ResetNode(bool enemyDied)
+    public override void ResetNode(bool forceReset)
     {
-        if (enemyDied)
+        if (forceReset)
         {
             attackSequence.Kill();
+        }
+        else
+        {
+            this.ResetNode();
         }
     }
     

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a43b2a46bfff3974a96d145e75e827c9, type: 3}
   m_Name: BossChaseNodeParameters
   m_EditorClassIdentifier: 
-  visibilityRadius: 5
+  visibilityRadius: 8
   minimumDistanceToPlayer: 0.8
   lightRadius: 2
-  chaseSpeed: 3.25
+  chaseSpeed: 3.5
   chaseInLightSpeed: 0.5
   stoppedByStun: 0

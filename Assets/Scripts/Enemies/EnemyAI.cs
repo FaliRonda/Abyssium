@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Ju.Extensions;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using Random = System.Random;
@@ -43,7 +44,8 @@ public class EnemyAI : MonoBehaviour
     private bool spriteBlinking = false;
     private float damagedBlinkingCounter;
     private bool enemyInvulnerable;
-    private bool isDead = false;
+    [HideInInspector]
+    public bool isDead = false;
     
     private SpriteRenderer enemySprite;
     private SpriteRenderer shadowSprite;
@@ -59,6 +61,8 @@ public class EnemyAI : MonoBehaviour
     private Sequence knockbackSequence;
     private int currentTreeIndex = -1;
     private BTSelector currentTree;
+    [HideInInspector]
+    public bool playerDamaged;
 
 
     public void Initialize(Transform pjTransform)
@@ -160,6 +164,16 @@ public class EnemyAI : MonoBehaviour
             PlayDamagedAnimation();
             PlayDamagedKnockbackAnimation();
 
+            if (!enemyStunned)
+            {
+                enemyStunned = true;
+                
+                Sequence stunnedSequence = DOTween.Sequence();
+                stunnedSequence
+                    .AppendInterval(stunnedCD)
+                    .AppendCallback(() => enemyStunned = false);
+            }
+            
             foreach (BTSelector nodeTree in nodeTrees)
             {
                 if (isDead)
@@ -172,15 +186,6 @@ public class EnemyAI : MonoBehaviour
                 }
             }
 
-            if (!enemyStunned)
-            {
-                enemyStunned = true;
-                
-                Sequence stunnedSequence = DOTween.Sequence();
-                stunnedSequence
-                    .AppendInterval(stunnedCD)
-                    .AppendCallback(() => enemyStunned = false);
-            }
             
             Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
             Core.CameraEffects.StartShakingEffect(damagedCamShakeIntensity, damagedCamShakeFrequency, damagedCamShakeDuration);
@@ -323,14 +328,17 @@ public class EnemyAI : MonoBehaviour
         if (other.gameObject.layer == Layers.WALL_LAYER || other.gameObject.layer == Layers.DOOR_LAYER)
         {
             knockbackSequence.Kill();
+            bool force = true;
+            ResetAINodes(force);
         }
     }
 
     private void HitPlayer(GameObject other)
     {
         Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/AttackHit", transform);
-        other.GetComponent<PJ>().GetDamage(transform);
+        playerDamaged = other.GetComponent<PJ>().GetDamage(transform);
         ResetAINodes();
+        playerDamaged = false;
     }
 
     public void ResetAINodes()
@@ -341,11 +349,11 @@ public class EnemyAI : MonoBehaviour
         }
     }
     
-    public void ResetAINodes(bool enemyDied)
+    public void ResetAINodes(bool force)
     {
         foreach (BTSelector nodeTree in nodeTrees)
         {
-            nodeTree.ResetNodes(enemyDied);
+            nodeTree.ResetNodes(force);
         }
     }
     

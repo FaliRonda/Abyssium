@@ -6,13 +6,11 @@ using Sequence = DG.Tweening.Sequence;
 public class Weapon : MonoBehaviour
 {
     public int weaponDamage = 1;
-    public float weaponHeight = 1.5f;
-    public float weaponCenter = 0.25f;
+    public float hitBoxCenterY = 0.25f;
+    public float hitBoxRadius = 0.25f;
+    public float hitBoxHeight = 1.5f;
     public float weaponCd = 0.1f;
 
-    private float initialWeaponHeight;
-    private float initialWeaponCenter;
-    
     private CapsuleCollider weaponCollider;
     
     private bool currentlyAttacking = false;
@@ -20,29 +18,26 @@ public class Weapon : MonoBehaviour
     private int initialWeaponDamage;
     private float initialWeaponRangeValue;
     private float initialWeaponCd;
-    [HideInInspector]
     public Sequence attackingSequence;
 
     private void Start()
     {
         weaponCollider = GetComponent<CapsuleCollider>();
 
-        initialWeaponHeight = weaponHeight;
-        initialWeaponCenter = weaponCenter;
-
         UpdateWeaponRange();
         
         weaponCollider.enabled = false;
 
         initialWeaponDamage = weaponDamage;
-        initialWeaponRangeValue = weaponHeight;
+        initialWeaponRangeValue = hitBoxHeight;
         initialWeaponCd = weaponCd;
     }
 
     private void UpdateWeaponRange()
     {
-        weaponCollider.height = weaponHeight;
-        weaponCollider.center = new Vector3(0, weaponCenter, 0);
+        weaponCollider.center = new Vector3(0, hitBoxCenterY, 0);
+        weaponCollider.radius = hitBoxRadius;
+        weaponCollider.height = hitBoxHeight;
     }
 
 
@@ -54,11 +49,12 @@ public class Weapon : MonoBehaviour
             other.gameObject.GetComponent<EnemyAI>().GetDamage(weaponDamage);
         }
         
-        if (other.gameObject.layer == Layers.BULLET_LAYER)
+        // Descomentar para destruir las balas a espadazos
+        /*if (other.gameObject.layer == Layers.BULLET_LAYER)
         {
             Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/Weapons/Sword1_Hit1", transform);
             Destroy(other.gameObject);
-        }
+        }*/
     }
 
     public void DoAttack()
@@ -89,8 +85,8 @@ public class Weapon : MonoBehaviour
     public void UptadeWeaponStats(Item item)
     {
         weaponDamage = item.weaponDamage;
-        weaponHeight = item.weaponHeight;
-        weaponCenter = item.weaponCenter;
+        hitBoxHeight = item.weaponHeight;
+        hitBoxCenterY = item.weaponCenter;
         weaponCd = item.weaponCd;
 
         UpdateWeaponRange();
@@ -99,7 +95,7 @@ public class Weapon : MonoBehaviour
     public void ResetValues()
     {
         weaponDamage = initialWeaponDamage;
-        weaponHeight = initialWeaponRangeValue;
+        hitBoxHeight = initialWeaponRangeValue;
         weaponCd = initialWeaponCd;
     }
 }

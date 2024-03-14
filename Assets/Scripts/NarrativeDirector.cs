@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.UI;
 
 public class NarrativeDirector : MonoBehaviour
 {
+    public string combatDemoText;
     public GameObject narrativeCurtain;
     public TMP_Text narrativeText;
     
@@ -106,5 +108,17 @@ public class NarrativeDirector : MonoBehaviour
         curtainImage.color = originalCurtainColor;
         narrativeText.color = originalTextColor;
         narrativeCurtain.SetActive(false);
+    }
+
+    public void ShowCombatEndNarrative()
+    {
+        narrativeCurtain.SetActive(true);
+            
+        Sequence showCurtainSequence = DOTween.Sequence();
+
+        showCurtainSequence
+            .Append(DOTween.To(() => curtainImage.color, x => curtainImage.color = x, originalCurtainColor, 1f)
+                .SetEase(Ease.OutQuad))
+            .AppendCallback(() => { narrativeText.text = combatDemoText; });
     }
 }

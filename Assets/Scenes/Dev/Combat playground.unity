@@ -15298,6 +15298,10 @@ PrefabInstance:
       propertyPath: enemyWaves.Array.data[3]
       value: 
       objectReference: {fileID: 11400000, guid: d143695f38184a84292c5d66499902a5, type: 2}
+    - target: {fileID: 3737344189665620795, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: combatDemoText
+      value: Thank you for playing the combat prototype!
+      objectReference: {fileID: 0}
     - target: {fileID: 4723417635908149436, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: m_Name
       value: Scene Infrastructure
@@ -15381,6 +15385,10 @@ PrefabInstance:
     - target: {fileID: 7831101800969326877, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9182475316119719589, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

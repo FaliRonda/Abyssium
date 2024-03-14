@@ -106,10 +106,8 @@ public class BTShootNode : BTNode
         {
             if (!shootNodeParameters.isRadialShoot)
             {
-                var bullet = InstanceBullet();
-
                 Vector3 direction = playerTransform.position - enemyTransform.position;
-                
+                var bullet = InstanceBullet(direction);
                 bullet.StartShoot(direction);
             }
             else
@@ -118,7 +116,7 @@ public class BTShootNode : BTNode
                 
                 foreach (Vector3 direction in radialDirections)
                 {
-                    var bullet = InstanceBullet();
+                    var bullet = InstanceBullet(direction);
                     bullet.StartShoot(direction);
                 }
             }
@@ -142,10 +140,10 @@ public class BTShootNode : BTNode
         }
     }
 
-    private Bullet InstanceBullet()
+    private Bullet InstanceBullet(Vector3 direction)
     {
         GameObject bulletGO = Object.Instantiate(shootNodeParameters.bulletPrefab);
-        bulletGO.transform.position = enemyTransform.position;
+        bulletGO.transform.position = enemyTransform.position + direction.normalized * 0.5f;
         Bullet bullet = bulletGO.GetComponent<Bullet>();
         bullet.Initialize(shootNodeParameters.bulletSpeed, shootNodeParameters.bulletLifeTime);
         return bullet;
@@ -156,7 +154,7 @@ public class BTShootNode : BTNode
         Vector3[] directions = new Vector3[shootNodeParameters.numberOfRadialBullets];
         float angleIncrement = 360f / shootNodeParameters.numberOfRadialBullets;
 
-        for (int i = 0; i <shootNodeParameters.numberOfRadialBullets; i++)
+        for (int i = 0; i < shootNodeParameters.numberOfRadialBullets; i++)
         {
             float angle = i * angleIncrement;
             directions[i] = Quaternion.Euler(0, angle, 0) * Vector3.forward;
@@ -165,9 +163,9 @@ public class BTShootNode : BTNode
         return directions;
     }
     
-    public override void ResetNode(bool enemyDied)
+    public override void ResetNode(bool force)
     {
-        if (enemyDied)
+        if (force)
         {
             shootSequence.Kill();
             isShooting = false;

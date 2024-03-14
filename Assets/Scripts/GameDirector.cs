@@ -159,6 +159,7 @@ public class GameDirector : MonoBehaviour
             {
                 canvas.transform.GetChild(4).gameObject.SetActive(true);
                 canvas.transform.GetChild(5).gameObject.SetActive(true);
+                canvas.transform.GetChild(6).gameObject.SetActive(false);
             }
 
             this.EventSubscribe<GameEvents.EnemyDied>(e => EnemyDied(e.enemy));
@@ -535,6 +536,8 @@ public class GameDirector : MonoBehaviour
         
         if (combatDemo)
         {
+            canvas.transform.GetChild(6).gameObject.SetActive(false);
+            
             var counterText = canvas.transform.GetChild(4).GetComponentInChildren<TMP_Text>();
             var initialText = counterText.text.Split(' ')[0] + " " + counterText.text.Split(' ')[1];
             int counter = 0;
@@ -981,9 +984,10 @@ public class GameDirector : MonoBehaviour
 
             if (enemies.Count == 0)
             {
-                if (enemyWaveCount > 0)
+                Image[] waveImages = canvas.transform.GetChild(5).GetComponentsInChildren<Image>();
+                
+                if (enemyWaveCount > 0 && enemyWaveCount < waveImages.Length)
                 {
-                    Image[] waveImages = canvas.transform.GetChild(5).GetComponentsInChildren<Image>();
                     Color color;
                     if (ColorUtility.TryParseHtmlString("#FFAA6648", out color))
                     {
@@ -1008,6 +1012,10 @@ public class GameDirector : MonoBehaviour
                     }
 
                     enemyWaveCount++;
+                }
+                else
+                {
+                    narrativeDirector.ShowCombatEndNarrative();
                 }
             }
         }

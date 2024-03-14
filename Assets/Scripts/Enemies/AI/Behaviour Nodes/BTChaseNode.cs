@@ -96,6 +96,11 @@ public class BTChaseNode : BTNode
         ResetChasing();
     }
     
+    public override void ResetNode(bool force)
+    {
+        ResetChasing();
+    }
+    
     public override void DrawGizmos()
     {
         Gizmos.color = Color.yellow;

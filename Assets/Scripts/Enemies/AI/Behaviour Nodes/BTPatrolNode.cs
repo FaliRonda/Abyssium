@@ -131,4 +131,9 @@ public class BTPatrolNode : BTNode
         isWalking = false;
         stepFMODAudio.stop(STOP_MODE.ALLOWFADEOUT);
     }
+    
+    public override void ResetNode(bool force)
+    {
+        this.ResetNode();
+    }
 }
