@@ -178,7 +178,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -10075,6 +10075,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aIActive: 1
+  isBoss: 0
   playerTransform: {fileID: 0}
   chasePivotTransform: {fileID: 0}
   lifeAmount: 6
@@ -10093,7 +10094,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4b2f227042d15964b8046ff45819a9ed, type: 2}
   attackInCD: 0
   enemyStunned: 0
+  isDead: 0
   attackCollider: {fileID: 0}
+  playerDamaged: 0
 --- !u!114 &7984870695088626944
 MonoBehaviour:
   m_ObjectHideFlags: 0
