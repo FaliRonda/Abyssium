@@ -6,35 +6,42 @@ using UnityEngine.InputSystem;
 
 public class GamepadVibrationService : IService
 {
-    private Gamepad gamepad;
+    private Gamepad[] gamepads;
     private float currentIntensity;
     private TweenerCore<float,float,FloatOptions> vibrationSequence;
 
-    public void Initialize() {
-        gamepad = Gamepad.current;
+    public void Initialize()
+    {
+        gamepads = Gamepad.all.ToArray();
     }
 
     public void SetControllerVibration(float intensity, float duration)
     {
-        currentIntensity = 0;
-        
-        if (gamepad != null)
+        foreach (Gamepad gamepad in gamepads)
         {
-            vibrationSequence = DOTween.To(() => currentIntensity, x => currentIntensity = x, intensity, duration)
-                .OnUpdate(() => {
-                    gamepad.SetMotorSpeeds(currentIntensity, currentIntensity);
-                })
-                .SetEase(Ease.OutBack)
-                .OnComplete(() => { gamepad.SetMotorSpeeds(0, 0); });
+            currentIntensity = 0;
+            
+            if (gamepads != null)
+            {
+                vibrationSequence = DOTween.To(() => currentIntensity, x => currentIntensity = x, intensity, duration)
+                    .OnUpdate(() => {
+                        gamepad.SetMotorSpeeds(currentIntensity, currentIntensity);
+                    })
+                    .SetEase(Ease.OutBack)
+                    .OnComplete(() => { gamepad.SetMotorSpeeds(0, 0); });
+            }
         }
     }
 
     public void StopVibration()
     {
-        if (gamepad != null)
+        foreach (Gamepad gamepad in gamepads)
         {
-            vibrationSequence.Kill();
-            gamepad.SetMotorSpeeds(0, 0);
+            if (gamepads != null)
+            {
+                vibrationSequence.Kill();
+                gamepad.SetMotorSpeeds(0, 0);
+            }
         }
     }
 }
