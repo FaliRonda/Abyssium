@@ -196,12 +196,18 @@ public class BTAttackNode : BTNode
 
     private void ShowJumpParticles()
     {
-        ParticleSystem jumpParticles = enemyTransform.GetComponentsInChildren<ParticleSystem>()[1];
+        ParticleSystem originalJumpParticles = enemyTransform.GetComponentsInChildren<ParticleSystem>()[1];
+        GameObject jumpParticlesCopy = GameObject.Instantiate(originalJumpParticles.gameObject, enemyTransform.parent);
+        jumpParticlesCopy.transform.position = enemyTransform.position;
+
+        ParticleSystem jumpParticles = jumpParticlesCopy.GetComponent<ParticleSystem>();
+        
         jumpParticles.Play();
         jumpParticles.transform.DOScale(new Vector3(5, 5, 5), 1)
             .OnComplete(() =>
             {
                 jumpParticles.transform.localScale = new Vector3(1, 1, 1);
+                GameObject.Destroy(jumpParticlesCopy);
             });
     }
 
