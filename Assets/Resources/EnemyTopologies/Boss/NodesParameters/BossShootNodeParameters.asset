@@ -15,12 +15,12 @@ MonoBehaviour:
   bulletLifeTime: 12
   bulletSpeed: 2
   attackVisibilityDistance: 10
-  shootCD: 3
+  shootCD: 10
   bulletPrefab: {fileID: 9109705668636447229, guid: 91d5333cb5df9944290653861e1eeaef, type: 3}
-  anticipacionDuration: 0.75
+  anticipacionDuration: 1.25
   whiteHitPercentage: 0.25
   bulletsPerShoot: 3
-  timeBetweenBullets: 0.5
+  timeBetweenBullets: 0.4
   isRadialShoot: 1
   numberOfRadialBullets: 20
   castingColor: {r: 1, g: 0.37908494, b: 0, a: 1}

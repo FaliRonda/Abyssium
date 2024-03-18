@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f57196053c5c7fd4c87a4c498b94b3cd, type: 3}
   m_Name: BossSummonNodeParameters
   m_EditorClassIdentifier: 
-  standAfterSummonCD: 2
+  standAfterSummonCD: 1
   spawnPrefab: {fileID: 6006028703950835352, guid: 4625c35d94a9ca045ac3a75847acf705, type: 3}
   enemiesToSpawn:
   - {fileID: 11400000, guid: 362926ea3fa07834696b562dace638d7, type: 2}
   - {fileID: 11400000, guid: 4069c2ad39713234aa96be8c7cec4f4d, type: 2}
-  anticipacionDuration: 1
+  anticipacionDuration: 2
   whiteHitPercentage: 0.25
-  timeBetweenSummons: 10
+  timeBetweenSummons: 20
   castingColor: {r: 0, g: 0.39860106, b: 1, a: 1}

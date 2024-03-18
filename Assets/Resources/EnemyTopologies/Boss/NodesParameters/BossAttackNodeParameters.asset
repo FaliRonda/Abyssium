@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: BossAttackNodeParameters
   m_EditorClassIdentifier: 
   attackVisibilityDistance: 3
-  standAfterAttackCD: 1
+  standAfterAttackCD: 1.5
   anticipationDistance: 0.65
   anticipacionDuration: 0.65
   attackMovementDistance: 6
   attackMovementDuration: 0.25
-  enemyRayMaxDistance: 0.25
-  waitForNextAttackCD: 4
+  enemyRayMaxDistance: 0.75
+  waitForNextAttackCD: 1.5
   whiteHitPercentage: 0.25
   jumpAttack: 0
   jumpHeight: 0
