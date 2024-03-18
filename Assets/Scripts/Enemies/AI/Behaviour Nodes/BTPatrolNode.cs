@@ -72,6 +72,7 @@ public class BTPatrolNode : BTNode
         randomDirection.y = 0; // Asegurar que el punto esté en el mismo plano que el suelo
         randomDirection.Normalize(); // Normalizar el vector para asegurarse de que tenga una longitud de 1
         Vector3 randomPoint = enemyTransform.position + randomDirection * Random.Range(patrolNodeParameters.innerRadius, patrolNodeParameters.outerRadius);
+        randomPoint = new Vector3(randomPoint.x, 0, randomPoint.z);
 
         RaycastHit[] hits = Physics.RaycastAll(enemyTransform.position, randomPoint - enemyTransform.position, patrolNodeParameters.outerRadius);
         

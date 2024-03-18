@@ -57,10 +57,11 @@ public class BTAttackNode : BTNode
                 if (!attackPlaying && !enemyAI.attackInCD && (!enemyAI.enemyStunned || !attackNodeParameters.stoppedByStun))
                 {
                     lastPlayerDirectionBeforeAttack = playerDirection;
-                    Attack(playerDirection);
-
-                    WaitForNextAttack();
-                    return BTNodeState.Running;
+                    if (Attack(playerDirection))
+                    {
+                        WaitForNextAttack();
+                        return BTNodeState.Running;
+                    }
                 }
             }
         }
@@ -78,7 +79,7 @@ public class BTAttackNode : BTNode
             .AppendCallback(() => { enemyAI.attackInCD = false; });
     }
 
-    private void Attack(Vector3 direction)
+    private bool Attack(Vector3 direction)
     {
         attackPlaying = true;
         
@@ -98,15 +99,15 @@ public class BTAttackNode : BTNode
 
         if (!attackNodeParameters.jumpAttack)
         {
-            DoLinealAttack();
+            return DoLinealAttack();
         }
         else
         {
-            DoJumpAttack();
+            return DoJumpAttack();
         }
     }
 
-    private void DoLinealAttack()
+    private bool DoLinealAttack()
     {
         Vector3 enemyPosition = enemyTransform.position;
         Vector3 targetPosition = playerTransform.position;
@@ -148,41 +149,49 @@ public class BTAttackNode : BTNode
                     .AppendInterval(0.1f)
                     .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; });
             });
+        return true;
     }
     
-    private void DoJumpAttack()
+    private bool DoJumpAttack()
     {
         Vector3 targetPosition = playerTransform.position;
-        var position = enemyTransform.position;
 
-        SpriteRenderer shadowSprite = enemyAI.GetComponentsInChildren<SpriteRenderer>()[1];
+        EnemyRaycastHit(Color.green, attackNodeParameters.attackMovementDistance);
+        if (!EnemyRayHitLayer(Layers.WALL_LAYER) & !EnemyRayHitLayer(Layers.DOOR_LAYER))
+        {
+            SpriteRenderer shadowSprite = enemyAI.GetComponentsInChildren<SpriteRenderer>()[1];
+            
+            attackSequence
+                .AppendCallback(() =>
+                {
+                    enemyAI.attackCollider.isTrigger = false;
+                    shadowSprite.enabled = false;
+                })
+                .Append(enemyTransform.DOJump(targetPosition, attackNodeParameters.jumpHeight, 1, attackNodeParameters.jumpDuration))
+                .SetEase(Ease.Linear)
+                .AppendCallback(() =>
+                {
+                    ShowJumpParticles();
+                })
+                .AppendCallback(StandAfterAttack)
+                .AppendInterval(0.2f)
+                .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; })
+                .OnKill(() =>
+                {
+                    attackPlaying = false;
+                    shadowSprite.enabled = true;
+                    StandAfterAttack();
+
+                    Sequence waitAndDisableColliderSequence = DOTween.Sequence();
+                    waitAndDisableColliderSequence
+                        .AppendInterval(0.1f)
+                        .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; });
+                });
+            return true;
+        }
         
-        attackSequence
-            .AppendCallback(() =>
-            {
-                enemyAI.attackCollider.isTrigger = false;
-                shadowSprite.enabled = false;
-            })
-            .Append(enemyTransform.DOJump(targetPosition, attackNodeParameters.jumpHeight, 1, attackNodeParameters.jumpDuration))
-            .SetEase(Ease.Linear)
-            .AppendCallback(() =>
-            {
-                ShowJumpParticles();
-            })
-            .AppendCallback(StandAfterAttack)
-            .AppendInterval(0.2f)
-            .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; })
-            .OnKill(() =>
-            {
-                attackPlaying = false;
-                shadowSprite.enabled = true;
-                StandAfterAttack();
-
-                Sequence waitAndDisableColliderSequence = DOTween.Sequence();
-                waitAndDisableColliderSequence
-                    .AppendInterval(0.1f)
-                    .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; });
-            });
+        attackPlaying = false;
+        return false;
     }
 
     private void ShowJumpParticles()
@@ -220,10 +229,15 @@ public class BTAttackNode : BTNode
         });
     }
 
+    private void EnemyRaycastHit(Color color, float attackMovementDistance)
+    {
+        Debug.DrawRay(ray.origin, ray.direction.normalized * attackMovementDistance, color);
+        hits = Physics.RaycastAll(ray.origin, ray.direction, attackMovementDistance);
+    }
+    
     private void EnemyRaycastHit(Color color)
     {
-        Debug.DrawRay(ray.origin, ray.direction.normalized * attackNodeParameters.enemyRayMaxDistance, color);
-        hits = Physics.RaycastAll(ray.origin, ray.direction, attackNodeParameters.enemyRayMaxDistance);
+        EnemyRaycastHit(color, attackNodeParameters.enemyRayMaxDistance);
     }
     
     private bool EnemyRayHitLayer(int layer)
