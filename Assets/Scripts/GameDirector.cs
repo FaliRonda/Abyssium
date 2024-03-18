@@ -661,7 +661,6 @@ public class GameDirector : MonoBehaviour
             cameraDirector = Camera.main.GetComponent<CameraDirector>();
             cameraDirector.Initialize(pj.transform);
             Core.CameraEffects.Initialize(cameraDirector.cameraTD, cameraDirector.camera3D);
-            Core.GamepadVibrationService.Initialize();
         }
         else
         {

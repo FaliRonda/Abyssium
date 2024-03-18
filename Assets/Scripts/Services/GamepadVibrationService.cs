@@ -10,15 +10,15 @@ public class GamepadVibrationService : IService
     private float currentIntensity;
     private TweenerCore<float,float,FloatOptions> vibrationSequence;
 
-    public void Initialize()
-    {
-        gamepads = Gamepad.all.ToArray();
-    }
-
     public void SetControllerVibration(float intensity, float duration)
     {
+        gamepads = Gamepad.all.ToArray();
         foreach (Gamepad gamepad in gamepads)
         {
+            if (gamepad.name.Contains("DualShock5"))
+            {
+                intensity *= 0.5f;
+            }
             currentIntensity = 0;
             
             if (gamepads != null)
@@ -35,6 +35,7 @@ public class GamepadVibrationService : IService
 
     public void StopVibration()
     {
+        gamepads = Gamepad.all.ToArray();
         foreach (Gamepad gamepad in gamepads)
         {
             if (gamepads != null)
