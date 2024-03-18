@@ -318,7 +318,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a582b103eee4869459673da0f89b8120, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1733,6 +1733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51c4960edb7d9194ea6f9c9dafcbcebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  combatDemoText: 
   narrativeCurtain: {fileID: 6005206428841161141}
   narrativeText: {fileID: 9182475316119719589}
   narrativeDialogues:
@@ -1784,6 +1785,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 0
+  combatDemo: 0
+  spawnPrefab: {fileID: 0}
+  enemyWaves: []
   timeLoopDuration: 45
   moon: {fileID: 6706644522015070761}
   canvas: {fileID: 5989185473858205096}
