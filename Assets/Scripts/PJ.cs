@@ -678,6 +678,7 @@ public class PJ : MonoBehaviour
         
         if (!pjInvulnerable)
         {
+            pjInvulnerable = true;
             damaged = true;
             
             //Core.Audio.Play(SOUND_TYPE.PjHitted, 1, 0, 0.5f);
@@ -743,7 +744,6 @@ public class PJ : MonoBehaviour
 
     IEnumerator SpriteBlinking()
     {
-        pjInvulnerable = true;
         while (damagedBlinkingCounter > 0)
         {
             if (!spriteBlinking)
