@@ -334,12 +334,9 @@ public class PJ : MonoBehaviour
 
         direction = FixDiagonalSpeedMovement(direction);
 
-        if (PjRaycastHit(Color.blue))
+        if (PjRayHitLayer(Layers.WALL_LAYER, true) || PjRayHitLayer(Layers.DOOR_LAYER, true))
         {
-            if (PjRayHitLayer(Layers.WALL_LAYER) || PjRayHitLayer(Layers.DOOR_LAYER))
-            {
-                direction = Vector3.zero;
-            }
+            direction = Vector3.zero;
         }
 
         if (stepReady && controlInputData.inputDirection != Vector3.zero)
@@ -427,10 +424,38 @@ public class PJ : MonoBehaviour
         ray = new Ray(transform.position, lastDirection);
     }
 
-    private bool PjRayHitLayer(int layer)
+    private bool PjRayHitLayer(int layer, bool isConeRay = false)
     {
         bool layerHit = false;
+        
+        Debug.DrawRay(ray.origin, ray.direction, Color.blue);
+        hits = Physics.RaycastAll(ray.origin, ray.direction, playerRayMaxDistance);
+        
         foreach (RaycastHit hit in hits)
+        {
+            if (hit.transform.gameObject.layer == layer)
+            {
+                layerHit = true;
+            }
+        }
+
+        if (isConeRay)
+        {
+            layerHit = RaycastRotatedDirection(layer, layerHit, 45f);
+            layerHit = RaycastRotatedDirection(layer, layerHit, -45f);
+        }
+
+        return layerHit;
+    }
+
+    private bool RaycastRotatedDirection(int layer, bool layerHit, float angle)
+    {
+        Vector3 rotatedDirection = Quaternion.Euler(0, angle, 0) * ray.direction;
+        Ray coneRay = new Ray(transform.position, rotatedDirection);
+        Debug.DrawRay(coneRay.origin, coneRay.direction * initialPlayerRayMaxDistance, Color.red);
+        RaycastHit[] coreHits = Physics.RaycastAll(coneRay.origin, coneRay.direction, playerRayMaxDistance);
+
+        foreach (RaycastHit hit in coreHits)
         {
             if (hit.transform.gameObject.layer == layer)
             {
@@ -683,7 +708,7 @@ public class PJ : MonoBehaviour
         lastDirection = damagedDirection;
         UpdatePjRay();
         
-        if (!PjRaycastHit(Color.green, 1.5f) || !PjRayHitLayer(Layers.WALL_LAYER))
+        if (!PjRaycastHit(Color.blue, 1.5f) || !PjRayHitLayer(Layers.WALL_LAYER))
         {
             lastDirection = previousLastDirection;
             pjIsBeingDamaged = true;
@@ -700,8 +725,8 @@ public class PJ : MonoBehaviour
     
     private void PlayAttackImpulseAnimation()
     {
-        Debug.DrawRay(transform.position, lastDirection, Color.green);
-        if (!PjRaycastHit(Color.green) || !PjRayHitLayer(Layers.WALL_LAYER))
+        Debug.DrawRay(transform.position, lastDirection, Color.blue);
+        if (!PjRaycastHit(Color.blue) || !PjRayHitLayer(Layers.WALL_LAYER))
         {
             pjIsImpulsing = true;
             

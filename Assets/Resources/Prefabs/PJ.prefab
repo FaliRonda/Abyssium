@@ -5183,7 +5183,7 @@ SpriteRenderer:
   m_SortingLayerID: -1353953791
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 868325527, guid: 2f38180d859d911428fa4c67e486a91c, type: 3}
+  m_Sprite: {fileID: 721087758, guid: d672a80922a624a4cb10cfdc21d66d92, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5251,7 +5251,7 @@ Transform:
   - {fileID: 2888062125780753977}
   - {fileID: 5222517852068585327}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1799084693320912194
 MonoBehaviour:
@@ -5289,8 +5289,8 @@ MonoBehaviour:
   spriteBlinkingFrecuency: 0.1
   damagedGamepadVibrationIntensity: 1
   damagedGamepadVibrationDuration: 0.25
-  debugAttack: 0
-  canRoll: 0
+  debugAttack: 1
+  canRoll: 1
 --- !u!54 &8550691314693124260
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5340,7 +5340,7 @@ CapsuleCollider:
   m_Radius: 0.25
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!1 &7828840499791485495
 GameObject:
   m_ObjectHideFlags: 0
