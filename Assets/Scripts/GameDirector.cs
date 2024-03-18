@@ -101,6 +101,7 @@ public class GameDirector : MonoBehaviour
     private InputAction CameraRotationAction;
     private InputAction CameraRotationMouseAction;
     private InputAction CloseAction;
+    private InputAction RestartAction;
 
     private static bool IsSceneGameLoader => SceneManager.GetActiveScene().name == "GameLoader";
     private static bool IsSceneT1C0F0 => SceneManager.GetActiveScene().name == "T1C0F0";
@@ -246,6 +247,7 @@ public class GameDirector : MonoBehaviour
             CameraRotationAction = playerInput.actions["CameraRotation"];
             CameraRotationMouseAction = playerInput.actions["CameraRotationMouse"];
             CloseAction = playerInput.actions["Close"];
+            RestartAction = playerInput.actions["Restart"];
         }
 
         if (!debugMode)
@@ -335,6 +337,12 @@ public class GameDirector : MonoBehaviour
         {
             Application.Quit();
         }
+        
+        if (RestartAction.triggered)
+        {
+            timeLoopDuration = 0;
+        }
+        
         if (!demoEnded && cameraDirector != null && !cameraDirector.CamerasTransitionBlending() && (!timeLoopEnded || debugMode))
         {
             if ((debugMode || combatDemo) && CameraChangeAction.triggered)
