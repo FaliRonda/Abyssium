@@ -46,7 +46,7 @@ public class BTShootNode : BTNode
             }
         }
         
-        return BTNodeState.Failure;
+        return BTNodeState.NextTree;
     }
 
     private void Shoot(Vector3 direction)
