@@ -72,6 +72,7 @@ public class CameraDirector : MonoBehaviour
     {
         cameraTD.Follow = pjTransform;
         cameraBlending.Follow = pjTransform;
+        camera3D.LookAt = pjTransform;
         camera3D.Follow = pjTransform;
     }
 }
