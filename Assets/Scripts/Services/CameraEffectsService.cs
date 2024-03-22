@@ -13,7 +13,7 @@ public class CameraEffectsService : IService
     private bool shakingActive;
     private float originalScreenX;
     private float originalScreenY;
-    private CinemachineVirtualCamera cameraToShake;
+    private CinemachineVirtualCamera currentCamera;
     private TweenerCore<Vector3, Vector3, VectorOptions> shakeMovement;
     private Sequence shakeMovementSequence;
 
@@ -28,7 +28,7 @@ public class CameraEffectsService : IService
     public void StartShakingEffect(float shakeIntensity, float shakeFrequency, float shakeDuration)
     {
         shakingActive = true;
-        cameraToShake = GameState.gameIn3D ? camera3D : cameraTD;
+        currentCamera = GameState.gameIn3D ? camera3D : cameraTD;
 
         Sequence shakeDurationCDSequence = DOTween.Sequence();
         shakeDurationCDSequence
@@ -51,11 +51,11 @@ public class CameraEffectsService : IService
         
         shakeMovementSequence
             .Append(DOTween.To(() => 0,
-                x => cameraToShake.GetCinemachineComponent<CinemachineFramingTransposer>().m_ScreenX =
+                x => currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_ScreenX =
                     originalScreenX + x, randomValue.x * shakeIntensity, shakeFrequency)
             .SetEase(Ease.OutBack))
             .Join(DOTween.To(() => 0,
-                    x => cameraToShake.GetCinemachineComponent<CinemachineFramingTransposer>().m_ScreenY =
+                    x => currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_ScreenY =
                         originalScreenY + x, randomValue.y * shakeIntensity, shakeFrequency)
                 .SetEase(Ease.OutBack))
             .OnComplete(() =>
@@ -71,14 +71,14 @@ public class CameraEffectsService : IService
     private void ResetCameraOffset(float shakeDuration)
     {
         DOTween.To(() => originalScreenX,
-                x => cameraToShake.GetCinemachineComponent<CinemachineFramingTransposer>()
+                x => currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>()
                     .m_ScreenX = x,
                 originalScreenX,
                 shakeDuration)
             .SetEase(Ease.OutBack);
 
         DOTween.To(() => originalScreenY,
-                x => cameraToShake.GetCinemachineComponent<CinemachineFramingTransposer>()
+                x => currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>()
                     .m_ScreenY = x,
                 originalScreenY,
                 shakeDuration)
@@ -93,5 +93,19 @@ public class CameraEffectsService : IService
     public void ZoomIn(int zoomDuration)
     {
         DOTween.To(() => cameraTD.m_Lens.OrthographicSize, x => cameraTD.m_Lens.OrthographicSize = x, 5f, zoomDuration);
+    }
+
+    public void SetPJVisibility(bool showPJ)
+    {
+        if (showPJ)
+        {
+            Camera.main.cullingMask = -1;
+        }
+        else
+        {
+            int cullingMask = Camera.main.cullingMask;
+            cullingMask &= ~(1 << Layers.PJ_LAYER);
+            Camera.main.cullingMask = cullingMask;
+        }
     }
 }

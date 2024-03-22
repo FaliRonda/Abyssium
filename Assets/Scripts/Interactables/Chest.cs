@@ -1,16 +1,20 @@
+using Cinemachine;
 using Puzzles;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class Chest : Interactable
 {
-    [FormerlySerializedAs("combinationPuzzle")] public CombinationPuzzleSO combinationPuzzleData;
+    public CombinationPuzzleSO combinationPuzzleData;
     private PJ pj;
-    [FormerlySerializedAs("puzzleSolved")] public bool puzzleIsSolved;
+    [HideInInspector] public bool puzzleIsSolved;
+    private CinemachineVirtualCamera puzzleCamera;
 
     public override void Interact(PJ pj)
     {
+        puzzleCamera = GetComponentInChildren<CinemachineVirtualCamera>();
         this.pj = pj;
+        
         if (!IsInteracting())
         {
             SetInteracting(true);
@@ -20,11 +24,27 @@ public class Chest : Interactable
 
     private void StartPuzzle()
     {
+        SwtichToCameraToPuzzle(true);
         Core.Event.Fire(new GameEvents.StartCombinationPuzzle(){combinationPuzzleData = combinationPuzzleData, originInteractable = this});
     }
-    
+
+    public void SwtichToCameraToPuzzle(bool setPuzzleCamera)
+    {
+        if (setPuzzleCamera)
+        {
+            Core.CameraEffects.SetPJVisibility(false);
+            puzzleCamera.Priority = 50;
+        }
+        else
+        {
+            Core.CameraEffects.SetPJVisibility(true);
+            puzzleCamera.Priority = 0;
+        }
+    }
+
     public void PuzzleExit()
     {
+        SwtichToCameraToPuzzle(false);
         SetInteracting(false);
         pj.SetDoingAction(false);
     }

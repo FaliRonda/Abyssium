@@ -1,3 +1,4 @@
+using Cinemachine;
 using DG.Tweening;
 using Ju.Extensions;
 using Puzzles;
@@ -9,8 +10,9 @@ public class CombinationPuzzle : MonoBehaviour
 {
     private CombinationPuzzleSO combinationPuzzleData;
     private Interactable originInteractable;
-    private Button[] optionButtons;
-    private int selectedButtonIndex;
+    private Image[] optionImages;
+    private Image[] optionArrows;
+    private int selectedImageIndex;
     private int[] selectedSymbolsIndex;
     private bool symbolSelected;
     private bool buttonSelected;
@@ -28,6 +30,8 @@ public class CombinationPuzzle : MonoBehaviour
         {
             this.combinationPuzzleData = combinationPuzzleData;
             this.originInteractable = originInteractable;
+            
+            chest = (Chest)originInteractable;
 
             InitializePuzzleUI();
         }
@@ -35,49 +39,64 @@ public class CombinationPuzzle : MonoBehaviour
         {
             ShowPuzzleUI();
         }
-        
+
         Core.Event.Fire(new GameEvents.PuzzleRunning(){puzzle = this});
     }
 
     private void ShowPuzzleUI()
     {
-        foreach (Button button in optionButtons)
+        foreach (Image button in optionImages)
         {
             button.gameObject.SetActive(true);
         }
+        
+        optionArrows[selectedImageIndex].gameObject.SetActive(true);
     }
     
     private void HidePuzzleUI()
     {
-        foreach (Button button in optionButtons)
+        foreach (Image button in optionImages)
         {
             button.gameObject.SetActive(false);
         }
+
+        optionImages[selectedImageIndex].GetComponentInChildren<Outline>().enabled = false;
+        
+        if (selectedImageIndex < optionArrows.Length - 1)
+        {
+            optionArrows[selectedImageIndex].gameObject.SetActive(false);
+        }
+
+        selectedImageIndex = 0;
     }
 
     private void InitializePuzzleUI()
     {
-        chest = (Chest)originInteractable;
-        
-        int buttonsCount = transform.childCount;
-        optionButtons = new Button[buttonsCount];
+        int buttonsCount = transform.GetChild(0).childCount;
+        optionImages = new Image[buttonsCount];
+        optionArrows = new Image[buttonsCount];
         selectedSymbolsIndex = new int[buttonsCount];
         
         for (int buttonIndex = 0; buttonIndex < buttonsCount; buttonIndex++)
         {
-            GameObject currentButtonGO = transform.GetChild(buttonIndex).gameObject;
-            currentButtonGO.SetActive(true);
-            optionButtons[buttonIndex] = currentButtonGO.GetComponentInChildren<Button>();
-            
+            GameObject currentImageGO = transform.GetChild(0).GetChild(buttonIndex).gameObject;
+
+            currentImageGO.SetActive(true);
+            optionImages[buttonIndex] = currentImageGO.GetComponentInChildren<Image>();
+
             if (buttonIndex < buttonsCount - 1)
             {
-                TMP_Text optionText = optionButtons[buttonIndex].GetComponentInChildren<TMP_Text>();
+                GameObject currentArrowsGO = transform.GetChild(1).GetChild(buttonIndex).gameObject;
+                optionArrows[buttonIndex] = currentArrowsGO.GetComponentInChildren<Image>();
+                
+                TMP_Text optionText = optionImages[buttonIndex].GetComponentInChildren<TMP_Text>();
                 optionText.text = combinationPuzzleData.symbolsDictionary[buttonIndex].symbols[selectedSymbolsIndex[buttonIndex]];
             }
             
         }
         
-        optionButtons[selectedButtonIndex].GetComponentInChildren<Outline>().enabled = true;
+        optionImages[selectedImageIndex].GetComponentInChildren<Outline>().enabled = true;
+        optionArrows[selectedImageIndex].gameObject.SetActive(true);
 
         puzzleInitialized = true;
     }
@@ -86,7 +105,7 @@ public class CombinationPuzzle : MonoBehaviour
     {
         if (!chest.puzzleIsSolved)
         {
-            UpdateSelectedButton(controlInputData.inputDirection);
+            UpdateSelectedImage(controlInputData.inputDirection);
             UpdateSelectedSymbol(controlInputData.inputDirection);
 
             CheckExit(interactActionTriggered);
@@ -118,12 +137,13 @@ public class CombinationPuzzle : MonoBehaviour
                     .AppendCallback(() =>
                     {
                         //sonido
-                        optionButtons[selectedButtonIndex].GetComponentInChildren<Outline>().enabled = false;
+                        optionImages[selectedImageIndex].GetComponentInChildren<Outline>().enabled = false;
                         chest.PuzzleSolved();
                     }) 
                     .AppendInterval(2f)
                     .AppendCallback(() =>
                     {
+                        chest.SwtichToCameraToPuzzle(false);
                         HidePuzzleUI();
                         Core.Event.Fire(new GameEvents.PuzzleSolved(){puzzleID = combinationPuzzleData.puzzleID});
                     });
@@ -133,42 +153,42 @@ public class CombinationPuzzle : MonoBehaviour
 
     private void UpdateSelectedSymbol(Vector3 inputDirection)
     {
-        if (!symbolSelected && selectedButtonIndex < optionButtons.Length - 1)
+        if (!symbolSelected && selectedImageIndex < optionImages.Length - 1)
         {
             // Update the current button's symbol index
             if (inputDirection.y == 1)
             {
-                if (selectedSymbolsIndex[selectedButtonIndex] + 1 <
-                    combinationPuzzleData.symbolsDictionary[selectedButtonIndex].symbols.Count)
+                if (selectedSymbolsIndex[selectedImageIndex] + 1 <
+                    combinationPuzzleData.symbolsDictionary[selectedImageIndex].symbols.Count)
                 {
-                    selectedSymbolsIndex[selectedButtonIndex]++;
+                    selectedSymbolsIndex[selectedImageIndex]++;
                 }
                 else
                 {
-                    selectedSymbolsIndex[selectedButtonIndex] = 0;
+                    selectedSymbolsIndex[selectedImageIndex] = 0;
                 }
 
                 symbolSelected = true;
             }
             else if (inputDirection.y == -1)
             {
-                if (selectedSymbolsIndex[selectedButtonIndex] > 0)
+                if (selectedSymbolsIndex[selectedImageIndex] > 0)
                 {
-                    selectedSymbolsIndex[selectedButtonIndex]--;
+                    selectedSymbolsIndex[selectedImageIndex]--;
                 }
                 else
                 {
-                    selectedSymbolsIndex[selectedButtonIndex] =
-                        combinationPuzzleData.symbolsDictionary[selectedButtonIndex].symbols.Count - 1;
+                    selectedSymbolsIndex[selectedImageIndex] =
+                        combinationPuzzleData.symbolsDictionary[selectedImageIndex].symbols.Count - 1;
                 }
                 
                 symbolSelected = true;
             }
 
-            if (selectedButtonIndex < optionButtons.Length - 1)
+            if (selectedImageIndex < optionImages.Length - 1)
             {
-                optionButtons[selectedButtonIndex].GetComponentInChildren<TMP_Text>().text =
-                    combinationPuzzleData.symbolsDictionary[selectedButtonIndex].symbols[selectedSymbolsIndex[selectedButtonIndex]];
+                optionImages[selectedImageIndex].GetComponentInChildren<TMP_Text>().text =
+                    combinationPuzzleData.symbolsDictionary[selectedImageIndex].symbols[selectedSymbolsIndex[selectedImageIndex]];
             }
         } else if (inputDirection.y == 0)
         {
@@ -178,7 +198,7 @@ public class CombinationPuzzle : MonoBehaviour
 
     private void CheckExit(bool interactActionTriggered)
     {
-        if (selectedButtonIndex == optionButtons.Length - 1 && interactActionTriggered)
+        if (selectedImageIndex == optionImages.Length - 1 && interactActionTriggered)
         {
             HidePuzzleUI();
             
@@ -188,25 +208,36 @@ public class CombinationPuzzle : MonoBehaviour
         }
     }
 
-    public void UpdateSelectedButton(Vector3 inputDirection)
+    public void UpdateSelectedImage(Vector3 inputDirection)
     {
         if (!buttonSelected)
         {
-            optionButtons[selectedButtonIndex].GetComponentInChildren<Outline>().enabled = false;
-            
-            if (inputDirection.x == 1 && (selectedButtonIndex + 1 < optionButtons.Length))
+            optionImages[selectedImageIndex].GetComponentInChildren<Outline>().enabled = false;
+
+            if (selectedImageIndex < optionArrows.Length - 1)
             {
-                selectedButtonIndex++;
-                buttonSelected = true;
-            }
-            else if (inputDirection.x == -1 && selectedButtonIndex > 0)
-            {
-                selectedButtonIndex--;
-                buttonSelected = true;
+                optionArrows[selectedImageIndex].gameObject.SetActive(false);
             }
             
-            optionButtons[selectedButtonIndex].GetComponentInChildren<Outline>().enabled = true;
-        } else if (inputDirection.x == 0)
+            if (inputDirection.x == 1 && (selectedImageIndex + 1 < optionImages.Length))
+            {
+                selectedImageIndex++;
+                buttonSelected = true;
+            }
+            else if (inputDirection.x == -1 && selectedImageIndex > 0)
+            {
+                selectedImageIndex--;
+                buttonSelected = true;
+            }
+            
+            optionImages[selectedImageIndex].GetComponentInChildren<Outline>().enabled = true;
+            
+            if (selectedImageIndex < optionArrows.Length - 1)
+            {
+                optionArrows[selectedImageIndex].gameObject.SetActive(true);
+            }
+        }
+        else if (inputDirection.x == 0)
         {
             buttonSelected = false;
         }
