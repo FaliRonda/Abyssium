@@ -5,7 +5,7 @@ using Sequence = DG.Tweening.Sequence;
 
 public class BTShootNode : BTNode
 {
-    private Enemies.CODE_NAMES enemyCode;
+    private Enemies.ENEMY_TYPE enemyCode;
     private bool waitForNextShoot;
     private bool isShooting;
     private ShootNodeParametersSO shootNodeParameters;
@@ -14,7 +14,7 @@ public class BTShootNode : BTNode
     private int bulletsCreated;
     private bool shootCDReady;
 
-    public BTShootNode(Enemies.CODE_NAMES enemyCode)
+    public BTShootNode(Enemies.ENEMY_TYPE enemyCode)
     {
         this.enemyCode = enemyCode;
     }

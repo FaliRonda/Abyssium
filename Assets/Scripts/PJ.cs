@@ -786,4 +786,9 @@ public class PJ : MonoBehaviour
     {
         transform.eulerAngles += new Vector3(0, 180, 0);
     }
+
+    public void SetDoingAction(bool value)
+    {
+        pjDoingAction = value;
+    }
 }

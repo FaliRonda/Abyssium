@@ -5,7 +5,7 @@ using Sequence = DG.Tweening.Sequence;
 
 public class BTSummonNode : BTNode
 {
-    private Enemies.CODE_NAMES enemyCode;
+    private Enemies.ENEMY_TYPE enemyCode;
     private bool standAfterSummon;
     private SummonNodeParametersSO summonNodeParameters;
     private Sequence summonSequence;
@@ -15,7 +15,7 @@ public class BTSummonNode : BTNode
     private Sequence standAfterSummonSequence;
     private Sequence waitBetweenSummonSequence;
 
-    public BTSummonNode(Enemies.CODE_NAMES enemyCode)
+    public BTSummonNode(Enemies.ENEMY_TYPE enemyCode)
     {
         this.enemyCode = enemyCode;
     }

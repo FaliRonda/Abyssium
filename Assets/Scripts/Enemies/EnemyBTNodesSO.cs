@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New EnemyBTNodes", menuName = "AI/Enemy Behavior Tree Nodes Conf")]
 public class EnemyBTNodesSO : ScriptableObject
 {
-    public Enemies.CODE_NAMES enemyCode;
+    public Enemies.ENEMY_TYPE enemyCode;
     
     public enum BEHAVIOURS {
         Attack,

@@ -5,7 +5,7 @@ using Sequence = DG.Tweening.Sequence;
 
 public class BTAttackNode : BTNode
 {
-    private Enemies.CODE_NAMES enemyCode;
+    private Enemies.ENEMY_TYPE enemyCode;
     private bool attackPlaying;
     private Ray ray;
     private RaycastHit[] hits;
@@ -17,7 +17,7 @@ public class BTAttackNode : BTNode
     private Sequence waitForNextAttackSequence;
     private bool waitAfterAttackFinished;
 
-    public BTAttackNode(Enemies.CODE_NAMES enemyCode)
+    public BTAttackNode(Enemies.ENEMY_TYPE enemyCode)
     {
         this.enemyCode = enemyCode;
     }

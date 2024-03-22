@@ -121,6 +121,9 @@ public class GameDirector : MonoBehaviour
 
     private Dictionary<string,FloorData> loopPersistentData;
     private EventInstance combatDemoMusic;
+    
+    private bool puzzleInCourse;
+    private CombinationPuzzle currentPuzzle;
 
     private struct FloorData
     {
@@ -177,6 +180,25 @@ public class GameDirector : MonoBehaviour
             this.EventSubscribe<GameEvents.NPCVanished>(e => EndDemo());
             this.EventSubscribe<GameEvents.NPCDialogue>(e => HandleConversation(e.started));
             this.EventSubscribe<GameEvents.NPCMemoryGot>(e => Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["MemoryGot"]));
+            
+            this.EventSubscribe<GameEvents.PuzzleRunning>(e =>
+            {
+                currentPuzzle = e.puzzle;
+                puzzleInCourse = true;
+            });
+            
+            this.EventSubscribe<GameEvents.PuzzlePaused>(e =>
+            {
+                puzzleInCourse = false;
+                currentPuzzle = null;
+            });
+            
+            this.EventSubscribe<GameEvents.PuzzleSolved>(e =>
+            {
+                puzzleInCourse = false;
+                currentPuzzle = null;
+            });
+            
             this.EventSubscribe<GameEvents.BossCombatReached>(e => StartBossCombat());
             this.EventSubscribe<GameEvents.OrbGot>(e =>
             {
@@ -351,36 +373,43 @@ public class GameDirector : MonoBehaviour
             }
             else if (pj != null && !narrativeDirector.IsShowingNarrative && !controlBlocked)
             {
-                // Player
                 ControlInputData controlInputData = GetControlInputDataValues();
                 
-                pj.DoUpdate(controlInputData);
+                if (!puzzleInCourse)
+                {
+                    // Player
+                    pj.DoUpdate(controlInputData);
 
-                if (enemies != null && !controlBlocked)
-                {
-                    foreach (EnemyAI enemy in enemies)
+                    if (enemies != null && !controlBlocked)
                     {
-                        enemy.DoUpdate();
+                        foreach (EnemyAI enemy in enemies)
+                        {
+                            enemy.DoUpdate();
+                        }
                     }
-                }
-                
-                if (Core.Dialogue.ChoicesInScreen)
-                {
-                    Core.Dialogue.SelectChoicesWithControl(controlInputData.inputDirection);
+                    
+                    if (Core.Dialogue.ChoicesInScreen)
+                    {
+                        Core.Dialogue.SelectChoicesWithControl(controlInputData.inputDirection);
+                        if (InteractAction.triggered)
+                        {
+                            Core.Dialogue.ChoiceSelected(-1);
+                        }
+                    }
+                    
                     if (InteractAction.triggered)
                     {
-                        Core.Dialogue.ChoiceSelected(-1);
+                        pj.DoMainAction();
+                    }
+                    
+                    if (RollAction.triggered)
+                    {
+                        pj.DoRoll(controlInputData);
                     }
                 }
-                
-                if (InteractAction.triggered)
+                else
                 {
-                    pj.DoMainAction();
-                }
-                
-                if (RollAction.triggered)
-                {
-                    pj.DoRoll(controlInputData);
+                    currentPuzzle.HandleInput(controlInputData, InteractAction.triggered);
                 }
 
             } else if (narrativeDirector.IsShowingNarrative && !narrativeDirector.IsTypingText && InteractAction.triggered)

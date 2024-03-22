@@ -6,12 +6,12 @@ public class BTChaseNode : BTNode
 {
     public bool isShadow;
 
-    private Enemies.CODE_NAMES enemyCode;
+    private Enemies.ENEMY_TYPE enemyCode;
     private bool currentlyChasing;
     private ChaseNodeParametersSO chaseNodeParameters;
     private EventInstance stepFMODAudio;
 
-    public BTChaseNode(Enemies.CODE_NAMES enemyCode)
+    public BTChaseNode(Enemies.ENEMY_TYPE enemyCode)
     {
         this.enemyCode = enemyCode;
     }

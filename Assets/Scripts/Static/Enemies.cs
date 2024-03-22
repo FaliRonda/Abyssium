@@ -7,7 +7,7 @@ public static class Enemies
     private const string nodesParameters = "/NodesParameters/";
     private const string nodeParameters = "NodeParameters";
     
-    public enum CODE_NAMES {
+    public enum ENEMY_TYPE {
         Stalker,
         Jumper,
         Shooter,
@@ -16,17 +16,17 @@ public static class Enemies
         Boss,
     }
     
-    public static Dictionary<CODE_NAMES, string> enemiesNamesDictionary = new Dictionary<CODE_NAMES, string>
+    public static Dictionary<ENEMY_TYPE, string> enemiesNamesDictionary = new Dictionary<ENEMY_TYPE, string>
     {
-        { CODE_NAMES.Stalker, "Stalker" },
-        { CODE_NAMES.Jumper, "Jumper" },
-        { CODE_NAMES.Shooter, "Shooter" },
-        { CODE_NAMES.DarkHunter, "DarkHunter" },
-        { CODE_NAMES.DarkHunterSlower, "DarkHunterSlower" },
-        { CODE_NAMES.Boss, "Boss" },
+        { ENEMY_TYPE.Stalker, "Stalker" },
+        { ENEMY_TYPE.Jumper, "Jumper" },
+        { ENEMY_TYPE.Shooter, "Shooter" },
+        { ENEMY_TYPE.DarkHunter, "DarkHunter" },
+        { ENEMY_TYPE.DarkHunterSlower, "DarkHunterSlower" },
+        { ENEMY_TYPE.Boss, "Boss" },
     };
 
-    public static string EnemiesParametersPathDictionary(CODE_NAMES enemyCode, string nodeName)
+    public static string EnemiesParametersPathDictionary(ENEMY_TYPE enemyCode, string nodeName)
     {
         string path = enemyTopologies;
         

@@ -7,7 +7,7 @@ public class BTSelector : BTNode
 {
     public List<BTNode> nodes;
 
-    public BTSelector(EnemyBTNodesSO.BEHAVIOURS[] behaviours, Enemies.CODE_NAMES enemyCode)
+    public BTSelector(EnemyBTNodesSO.BEHAVIOURS[] behaviours, Enemies.ENEMY_TYPE enemyCode)
     {
         nodes = new List<BTNode>();
         

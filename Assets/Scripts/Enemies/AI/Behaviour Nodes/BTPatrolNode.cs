@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class BTPatrolNode : BTNode
 {
-    private Enemies.CODE_NAMES enemyCode;
+    private Enemies.ENEMY_TYPE enemyCode;
     private bool isWalking;
     private Vector3 nextDestination;
     private PatrolNodeParametersSO patrolNodeParameters;
     private bool calculatingNextDestination;
     private EventInstance stepFMODAudio;
 
-    public BTPatrolNode(Enemies.CODE_NAMES enemyCode)
+    public BTPatrolNode(Enemies.ENEMY_TYPE enemyCode)
     {
         this.enemyCode = enemyCode;
     }

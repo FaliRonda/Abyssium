@@ -1,18 +1,42 @@
+using Puzzles;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Chest : Interactable
 {
+    [FormerlySerializedAs("combinationPuzzle")] public CombinationPuzzleSO combinationPuzzleData;
+    private PJ pj;
+    [FormerlySerializedAs("puzzleSolved")] public bool puzzleIsSolved;
+
     public override void Interact(PJ pj)
     {
-        Debug.Log("Chest Interacting");
-        // Activar la UI la primera vez
+        this.pj = pj;
+        if (!IsInteracting())
+        {
+            SetInteracting(true);
+            StartPuzzle();
+        }
+    }
 
-        // Detectar las flechas para seleccionar los botones mientras esté activo
+    private void StartPuzzle()
+    {
+        Core.Event.Fire(new GameEvents.StartCombinationPuzzle(){combinationPuzzleData = combinationPuzzleData, originInteractable = this});
+    }
+    
+    public void PuzzleExit()
+    {
+        SetInteracting(false);
+        pj.SetDoingAction(false);
+    }
+    
+    public void PuzzleSolved()
+    {
+        GetComponentInChildren<Animator>().Play("OpenChest");
+        // Sonido
 
-        // Actualizar el valor del seleccionado
-
-        // Comprobar si la combinación actual es la correcta
-
-        // Cerrar la UI si la opción es la última
+        puzzleIsSolved = true;
+        SetInteracting(false);
+        SetCanInteract(false);
+        pj.SetDoingAction(false);
     }
 }

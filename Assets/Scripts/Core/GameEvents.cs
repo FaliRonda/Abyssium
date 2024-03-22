@@ -1,4 +1,5 @@
-﻿using UnityEngine.Serialization;
+﻿using Puzzles;
+using UnityEngine.Serialization;
 
 public static class GameEvents
 {
@@ -59,4 +60,24 @@ public static class GameEvents
     }
 
     public struct BossDamaged {}
+
+    public struct StartCombinationPuzzle
+    {
+        public CombinationPuzzleSO combinationPuzzleData;
+        public Interactable originInteractable;
+    }
+
+    public struct PuzzleRunning
+    {
+        public CombinationPuzzle puzzle;
+    }
+
+    public struct PuzzlePaused
+    {
+    }
+
+    public struct PuzzleSolved
+    {
+        public int puzzleID;
+    }
 }
