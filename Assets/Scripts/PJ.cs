@@ -179,6 +179,9 @@ public class PJ : MonoBehaviour
             pjAnimator.Play("PJ_roll");
             GameObject dashAnimationInstance = Instantiate(pjDashAnimator.gameObject, transform.parent);
             dashAnimationInstance.transform.position = transform.position;
+
+            RotateDashSprite(dashAnimationInstance.transform);
+            
             dashAnimationInstance.GetComponent<Animator>().Play("Roll");
             
             Debug.DrawRay(transform.position, lastDirection, Color.red);
@@ -204,7 +207,41 @@ public class PJ : MonoBehaviour
             
         }
     }
-    
+
+    private void RotateDashSprite(Transform dashTransform)
+    {
+        // Top direction
+        if (lastDirection.x == 0 && lastDirection.z == 1)
+        {
+            dashTransform.eulerAngles = new Vector3(80, -90, 0);
+        }
+        // Diagonal right-top direction
+        else if (lastDirection.x > 0 && lastDirection.z > 0)
+        {
+            dashTransform.eulerAngles = new Vector3(45, -45, 0);
+        }
+        // Diagonal left-top direction
+        else if (lastDirection.x < 0 && lastDirection.z > 0)
+        {
+            dashTransform.eulerAngles = new Vector3(45, 45, 0);
+        }
+        // Diagonal right-bottom direction
+        else if (lastDirection.x > 0 && lastDirection.z < 0)
+        {
+            dashTransform.eulerAngles = new Vector3(45, 45, 0);
+        }
+        // Diagonal left-bottom direction
+        else if (lastDirection.x < 0 && lastDirection.z < 0)
+        {
+            dashTransform.eulerAngles = new Vector3(45, -45, 0);
+        }
+        // Bottom direction
+        else if (lastDirection.x == 0 && lastDirection.z < 0)
+        {
+            dashTransform.eulerAngles = new Vector3(80, 90, 0);
+        }
+    }
+
     private void StopMovementSequencesWhenHitWall()
     {
         if (PjRaycastHit(Color.yellow) && (PjRayHitLayer(Layers.WALL_LAYER) || PjRayHitLayer(Layers.DOOR_LAYER)))
@@ -255,7 +292,8 @@ public class PJ : MonoBehaviour
         
         if (!GameState.gameIn3D && inputDirection != Vector3.zero)
         {
-            endDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
+            Vector3 directionalInput = Get8DirecionInput(inputDirection);
+            endDirection = new Vector3(directionalInput.normalized.x, 0, directionalInput.normalized.y);
         }
         else
         {
@@ -275,6 +313,53 @@ public class PJ : MonoBehaviour
             endPosition = new Vector3(position.x + endDirection.x, 0, position.z + endDirection.z);
         }
         return endPosition;
+    }
+
+    private Vector3 Get8DirecionInput(Vector3 inputDirection)
+    {
+        Vector3 directionalInput = new Vector3();
+        // Top direction
+        if (inputDirection.x == 0 && inputDirection.y == 1)
+        {
+            directionalInput = new Vector3(0, 1, 0);
+        }
+        // Diagonal right-top direction
+        else if (inputDirection.x > 0 && inputDirection.y > 0)
+        {
+            directionalInput = new Vector3(1, 1, 0);
+        }
+        // Right-forward direction
+        else if (inputDirection.x > 0 && inputDirection.y == 0)
+        {
+            directionalInput = new Vector3(1, 0, 0);
+        }
+        // Diagonal right-bottom direction
+        else if (inputDirection.x > 0 && inputDirection.y < 0)
+        {
+            directionalInput = new Vector3(1, -1, 0);
+        }
+        // Bottom direction
+        else if (inputDirection.x == 0 && inputDirection.y < 0)
+        {
+            directionalInput = new Vector3(0, -1, 0);
+        }
+        // Diagonal left-bottom direction
+        else if (inputDirection.x < 0 && inputDirection.y < 0)
+        {
+            directionalInput = new Vector3(-1, -1, 0);
+        }
+        // Left-forward direction
+        else if (inputDirection.x < 0 && inputDirection.y == 0)
+        {
+            directionalInput = new Vector3(-1, 0, 0);
+        }
+        // Diagonal left-top direction
+        else if (inputDirection.x < 0 && inputDirection.y > 0)
+        {
+            directionalInput = new Vector3(-1, 1, 0);
+        }
+
+        return directionalInput;
     }
 
     private void StartRollCoolown()
