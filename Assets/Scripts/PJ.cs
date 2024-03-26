@@ -1,7 +1,5 @@
 using System.Collections;
 using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 using Ju.Extensions;
 using UnityEngine;
 
@@ -46,7 +44,11 @@ public class PJ : MonoBehaviour
     
     private ParticleSystem pjStepDust;
     private Animator pjAnimator;
+    private Animator pjWeaponAnimator;
+    private Animator pjDashAnimator;
     private SpriteRenderer pjSprite;
+    private SpriteRenderer pjAttackSprite;
+    private SpriteRenderer pjDashSprite;
     private CapsuleCollider pjCollider;
     
     private Quaternion initialPlayerRotation;
@@ -79,7 +81,11 @@ public class PJ : MonoBehaviour
     {
         pjStepDust = GetComponentInChildren<ParticleSystem>();
         pjSprite = GetComponentInChildren<SpriteRenderer>();
+        pjAttackSprite = GetComponentsInChildren<SpriteRenderer>()[3];
+        pjDashSprite = GetComponentsInChildren<SpriteRenderer>()[4];
         pjAnimator = GetComponentInChildren<Animator>();
+        pjWeaponAnimator = GetComponentsInChildren<Animator>()[1];
+        pjDashAnimator = GetComponentsInChildren<Animator>()[2];
         pjCollider = GetComponent<CapsuleCollider>();
 
         initialPlayerRotation = transform.rotation;
@@ -171,13 +177,16 @@ public class PJ : MonoBehaviour
             Vector3 endPosition = GetRollEndPosition(controlInputData);
             SetSpriteXOrientation(controlInputData.inputDirection.x);
             pjAnimator.Play("PJ_roll");
+            GameObject dashAnimationInstance = Instantiate(pjDashAnimator.gameObject, transform.parent);
+            dashAnimationInstance.transform.position = transform.position;
+            dashAnimationInstance.GetComponent<Animator>().Play("Roll");
             
             Debug.DrawRay(transform.position, lastDirection, Color.red);
             if (!PjRaycastHit(Color.red) || !PjRayHitLayer(Layers.WALL_LAYER))
             {
                 rollingSequence = DOTween.Sequence();
                 rollingSequence
-                    .Append(transform.DOMove(endPosition, animLength))
+                    .Append(transform.DOMove(endPosition, 0.2f))
                     .OnComplete(StopRolling)
                     .OnKill(StopRolling);
 
@@ -413,6 +422,8 @@ public class PJ : MonoBehaviour
         }
         
         pjSprite.flipX = flipX;
+        pjAttackSprite.flipX = flipX;
+        pjDashSprite.flipX = flipX;
     }
 
     #endregion
@@ -621,13 +632,13 @@ public class PJ : MonoBehaviour
         switch (count)
         {
             case 1:
-                ShowAttackFeedback(combo1AttackCooldown);
+                ShowAttackFeedback(combo1AttackCooldown, 1);
                 break;
             case 2:
-                ShowAttackFeedback(combo2AttackCooldown);
+                ShowAttackFeedback(combo2AttackCooldown, 2);
                 break;
             case 3:
-                ShowAttackFeedback(combo3AttackCooldown);
+                ShowAttackFeedback(combo3AttackCooldown, 3);
                 // Aquí podrías ejecutar una acción especial o el golpe final del combo
                 // Luego resetea el combo
                 comboCount = 0;
@@ -637,9 +648,10 @@ public class PJ : MonoBehaviour
         }
     }
 
-    private void ShowAttackFeedback(float comboAttackCooldown)
+    private void ShowAttackFeedback(float comboAttackCooldown, int comboIndex)
     {
-        pjAnimator.Play("PJ_attack");
+        pjAnimator.Play("PJ_attack" + comboIndex);
+        pjWeaponAnimator.Play("Attack" + comboIndex);
         //Core.Audio.Play(SOUND_TYPE.SwordAttack, 1, 0.1f, 0.01f);
         Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/Weapons/Sword1_Attack1", transform);
 

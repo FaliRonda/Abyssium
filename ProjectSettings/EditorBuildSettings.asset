@@ -36,7 +36,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Tower1/Cicle2/T1C2F1.unity
     guid: feb28eb9fec40f0468fa8a458fa5eb46
   - enabled: 1
-    path: Assets/Scenes/Dev/Combat playground.unity
+    path: Assets/Scenes/Prototypes/Combat playground.unity
     guid: e791bb8d72f7a8d48b4cb69d2df45145
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 4b66d4bfc5345664c8b7b34ac35c3b63, type: 2}

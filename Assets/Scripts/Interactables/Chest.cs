@@ -1,7 +1,6 @@
 using Cinemachine;
 using Puzzles;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Chest : Interactable
 {
