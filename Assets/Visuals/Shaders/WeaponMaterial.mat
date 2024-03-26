@@ -65,6 +65,6 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 0}
     - _ColorCasting: {r: 1, g: 1, b: 1, a: 0}
-    - _EmissionColor: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 0}
+    - _EmissionColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
     - _HitColor: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
