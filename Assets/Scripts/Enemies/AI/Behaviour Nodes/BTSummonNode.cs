@@ -69,6 +69,22 @@ public class BTSummonNode : BTNode
             {
                 UpdateCastingGrading(1, castingColor);
             });
+        
+        standAfterSummonSequence = DOTween.Sequence();
+        standAfterSummonSequence.AppendInterval(summonNodeParameters.anticipacionDuration);
+        standAfterSummonSequence.AppendInterval(summonNodeParameters.standAfterSummonCD);
+        standAfterSummonSequence.AppendCallback(() =>
+        {
+            standAfterSummon = false;
+        });
+        
+        waitBetweenSummonSequence = DOTween.Sequence();
+        waitBetweenSummonSequence.AppendInterval(summonNodeParameters.anticipacionDuration);
+        waitBetweenSummonSequence.AppendInterval(summonNodeParameters.timeBetweenSummons);
+        waitBetweenSummonSequence.AppendCallback(() =>
+        {
+            waitBetweenSummons = false;
+        });
     }
     
     private void UpdateCastingGrading(float value, Color color)
@@ -104,20 +120,6 @@ public class BTSummonNode : BTNode
         {
             canSummon = false;
         }
-        
-        standAfterSummonSequence = DOTween.Sequence();
-        standAfterSummonSequence.AppendInterval(summonNodeParameters.standAfterSummonCD);
-        standAfterSummonSequence.AppendCallback(() =>
-        {
-            standAfterSummon = false;
-        });
-        
-        waitBetweenSummonSequence = DOTween.Sequence();
-        waitBetweenSummonSequence.AppendInterval(summonNodeParameters.timeBetweenSummons);
-        waitBetweenSummonSequence.AppendCallback(() =>
-        {
-            waitBetweenSummons = false;
-        });
     }
     
     public override void ResetNode(bool enemyDied)
