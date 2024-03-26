@@ -432,7 +432,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ee853dc943b165a4898b405fb7f5ba85, type: 2}
   attackInCD: 0
   enemyStunned: 0
+  isDead: 0
   attackCollider: {fileID: 0}
+  playerDamaged: 0
 --- !u!114 &476646763585741070
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,9 +15,9 @@ MonoBehaviour:
   bulletLifeTime: 12
   bulletSpeed: 2
   attackVisibilityDistance: 10
-  shootCD: 10
+  shootCD: 8
   bulletPrefab: {fileID: 9109705668636447229, guid: 91d5333cb5df9944290653861e1eeaef, type: 3}
-  anticipacionDuration: 1.25
+  anticipacionDuration: 1.5
   whiteHitPercentage: 0.25
   bulletsPerShoot: 3
   timeBetweenBullets: 0.4

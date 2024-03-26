@@ -14,28 +14,34 @@ public class BTSummonNode : BTNode
     private int enemyWaveCount;
     private Sequence standAfterSummonSequence;
     private Sequence waitBetweenSummonSequence;
+    private bool canSummon;
 
     public BTSummonNode(Enemies.ENEMY_TYPE enemyCode)
     {
         this.enemyCode = enemyCode;
+        canSummon = true;
     }
 
     public override BTNodeState Execute()
     {
-        if (standAfterSummon)
+        if (canSummon)
         {
+            if (standAfterSummon)
+            {
+                return BTNodeState.Running;
+            }
+            
+            if (waitBetweenSummons)
+            {
+                return BTNodeState.NextTree;
+            }
+
+            Vector3 direction = playerTransform.position - enemyTransform.position;
+            Summon(direction);
+
             return BTNodeState.Running;
         }
-        
-        if (waitBetweenSummons)
-        {
-            return BTNodeState.NextTree;
-        }
-
-        Vector3 direction = playerTransform.position - enemyTransform.position;
-        Summon(direction);
-
-        return BTNodeState.Running;
+        return BTNodeState.NextTree;
     }
 
     private void Summon(Vector3 direction)
@@ -96,7 +102,7 @@ public class BTSummonNode : BTNode
         
         if (enemyWaveCount >= summonNodeParameters.enemiesToSpawn.Length)
         {
-            enemyWaveCount = 0;
+            canSummon = false;
         }
         
         standAfterSummonSequence = DOTween.Sequence();

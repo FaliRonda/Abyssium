@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackVisibilityDistance: 3
   standAfterAttackCD: 1.5
-  anticipationDistance: 0.65
-  anticipacionDuration: 0.65
+  anticipationDistance: 0.75
+  anticipacionDuration: 0.75
   attackMovementDistance: 6
   attackMovementDuration: 0.25
   enemyRayMaxDistance: 0.75

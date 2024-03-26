@@ -16,6 +16,8 @@ MonoBehaviour:
     keys:
     - {x: -6, y: 0, z: 0}
     - {x: 6, y: 0, z: 0}
+    - {x: 0, y: 0, z: 4.5}
     values:
     - {fileID: 4534807983829593676, guid: 952e7d341d873314a82ed32d672e9e82, type: 3}
     - {fileID: 4534807983829593676, guid: 952e7d341d873314a82ed32d672e9e82, type: 3}
+    - {fileID: 3368591435065734892, guid: b670d2ef60def5843b60fabb10ae38c0, type: 3}
