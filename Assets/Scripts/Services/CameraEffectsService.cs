@@ -16,6 +16,8 @@ public class CameraEffectsService : IService
     private CinemachineVirtualCamera currentCamera;
     private TweenerCore<Vector3, Vector3, VectorOptions> shakeMovement;
     private Sequence shakeMovementSequence;
+    private GameObject tempCenterGO;
+    private Transform pjTransform;
 
     public void Initialize(CinemachineVirtualCamera cameraTD, CinemachineVirtualCamera camera3D)
     {
@@ -107,5 +109,24 @@ public class CameraEffectsService : IService
             cullingMask &= ~(1 << Layers.PJ_LAYER);
             Camera.main.cullingMask = cullingMask;
         }
+    }
+
+    public void ToCenter()
+    {
+        currentCamera = GameState.gameIn3D ? camera3D : cameraTD;
+        pjTransform = currentCamera.Follow;
+        
+        tempCenterGO = GameObject.Instantiate(new GameObject(), pjTransform.parent.parent);
+        tempCenterGO.transform.position = Vector3.zero;
+
+        currentCamera.Follow = tempCenterGO.transform;
+    }
+
+    public void ToPlayer()
+    {
+        currentCamera = GameState.gameIn3D ? camera3D : cameraTD;
+        GameObject.Destroy(tempCenterGO);
+
+        currentCamera.Follow = pjTransform;
     }
 }

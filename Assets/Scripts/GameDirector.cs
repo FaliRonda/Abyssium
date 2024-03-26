@@ -84,7 +84,7 @@ public class GameDirector : MonoBehaviour
     private bool pjCameFromAbove;
     private bool pjCameFromDoor;
     private bool isNewCycleOrLoop = true;
-    private int enemyWaveCount;
+    private int enemyWaveIndex;
 
     private Bloom bloom;
     private ChromaticAberration chromaticAberration;
@@ -120,7 +120,7 @@ public class GameDirector : MonoBehaviour
     private bool orbLateralDialogShown;
 
     private Dictionary<string,FloorData> loopPersistentData;
-    private EventInstance combatDemoMusic;
+    private EventInstance backgroundMusic;
     
     private bool puzzleInCourse;
     private CombinationPuzzle currentPuzzle;
@@ -172,7 +172,7 @@ public class GameDirector : MonoBehaviour
             this.EventSubscribe<GameEvents.BossDied>(e =>
             {
                 timeLoopPaused = true;
-                combatDemoMusic.stop(STOP_MODE.ALLOWFADEOUT);
+                backgroundMusic.stop(STOP_MODE.ALLOWFADEOUT);
                 Transform lifeSliderTransform = canvas.transform.GetChild(6);
                 lifeSliderTransform.gameObject.SetActive(false);
             });
@@ -248,7 +248,7 @@ public class GameDirector : MonoBehaviour
 
             if (combatDemo)
             {
-                combatDemoMusic = Core.Audio.PlayFMODAudio("event:/Music/MVP_CombatDemoScene_Music", transform);
+                backgroundMusic = Core.Audio.PlayFMODAudio("event:/Music/MVP_CombatDemoScene_Music", transform);
                 Core.Audio.PlayFMODAudio("event:/Background/MVP_CombatDemoScene_BackgroundSFX", transform);
             }
             else
@@ -596,7 +596,7 @@ public class GameDirector : MonoBehaviour
                 imageCounter++;
             }
 
-            enemyWaveCount = 0;
+            enemyWaveIndex = 0;
         }
         
         if (timeLoopEnded)
@@ -1022,32 +1022,62 @@ public class GameDirector : MonoBehaviour
             {
                 Image[] waveImages = canvas.transform.GetChild(5).GetComponentsInChildren<Image>();
                 
-                if (enemyWaveCount > 0 && enemyWaveCount < waveImages.Length)
+                if (enemyWaveIndex > 0 && enemyWaveIndex < waveImages.Length)
                 {
                     Color color;
                     if (ColorUtility.TryParseHtmlString("#FFAA6648", out color))
                     {
-                        waveImages[enemyWaveCount].color = color;
+                        waveImages[enemyWaveIndex].color = color;
                     }
                 }
                 
-                if (enemyWaveCount < enemyWaves.Count)
+                if (enemyWaveIndex < enemyWaves.Count)
                 {
-                    var nextWave = enemyWaves[enemyWaveCount];
-
-                    foreach (KeyValuePair<Vector3, GameObject> wavePair in nextWave.waveParametersDictionary)
+                    if (enemyWaveIndex == enemyWaves.Count - 1)
                     {
-                        GameObject enemySpawnGO = Instantiate(spawnPrefab, transform.parent.parent);
-                        EnemySpawn enemySpawn = enemySpawnGO.GetComponent<EnemySpawn>();
+                        controlBlocked = true;
+                        timeLoopPaused = true;
 
-                        enemySpawn.Initialize(wavePair.Key, wavePair.Value);
-                        Sequence delayWaveSequence = DOTween.Sequence();
-                        delayWaveSequence
-                            .AppendInterval(1)
-                            .AppendCallback(() => enemySpawn.DoSpawn());
+                        pj.PlayIdle();
+                        backgroundMusic.stop(STOP_MODE.ALLOWFADEOUT);
+
+                        List<GameObject> instantiatedEnemies = new List<GameObject>();
+                        
+                        Sequence bossSequence = DOTween.Sequence();
+
+                        bossSequence
+                            .AppendCallback(() => Core.CameraEffects.ToCenter())
+                            .AppendInterval(1f)
+                            .AppendCallback(() =>
+                            {
+                                instantiatedEnemies = InstantiateNextWave();
+                                instantiatedEnemies[0].GetComponent<EnemyAI>().aIActive = false;
+                            })
+                            .AppendInterval(4f)
+                            .AppendCallback(() =>
+                            {
+                                Core.CameraEffects.StartShakingEffect(0.4f, 0.03f, 1f);
+                                Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Boss/AngryScream", transform);
+                            })
+                            .AppendInterval(2f)
+                            .AppendCallback(() => Core.CameraEffects.ToPlayer())
+                            .AppendInterval(1f)
+                            .AppendCallback(() =>
+                            {
+                                backgroundMusic = Core.Audio.PlayFMODAudio("event:/Music/MVP_Tower1_BossMusic", transform);
+                            })
+                            .AppendInterval(1f)
+                            .AppendCallback(() =>
+                            {
+                                controlBlocked = false;
+                                timeLoopPaused = false;
+                                instantiatedEnemies[0].GetComponent<EnemyAI>().aIActive = true;
+                            });
                     }
-
-                    enemyWaveCount++;
+                    else
+                    {
+                        InstantiateNextWave();
+                    }
                 }
                 else
                 {
@@ -1121,6 +1151,27 @@ public class GameDirector : MonoBehaviour
         {
             SetGameState(false, enemyDied);
         }
+    }
+
+    private List<GameObject> InstantiateNextWave()
+    {
+        List<GameObject> enemies = new List<GameObject>();
+        var nextWave = enemyWaves[enemyWaveIndex];
+
+        foreach (KeyValuePair<Vector3, GameObject> wavePair in nextWave.waveParametersDictionary)
+        {
+            GameObject enemySpawnGO = Instantiate(spawnPrefab, transform.parent.parent);
+            EnemySpawn enemySpawn = enemySpawnGO.GetComponent<EnemySpawn>();
+
+            enemySpawn.Initialize(wavePair.Key, wavePair.Value);
+            Sequence delayWaveSequence = DOTween.Sequence();
+            delayWaveSequence
+                .AppendInterval(1)
+                .AppendCallback(() => enemies.Add(enemySpawn.DoSpawn()));
+        }
+
+        enemyWaveIndex++;
+        return enemies;
     }
 
     #endregion
