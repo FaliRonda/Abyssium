@@ -367,7 +367,7 @@ public class GameDirector : MonoBehaviour
         
         if (!demoEnded && cameraDirector != null && !cameraDirector.CamerasTransitionBlending() && (!timeLoopEnded || debugMode))
         {
-            if ((debugMode || combatDemo) && CameraChangeAction.triggered)
+            if (debugMode && !combatDemo && CameraChangeAction.triggered)
             {
                 ForceSwitchGamePerspective();
             }
