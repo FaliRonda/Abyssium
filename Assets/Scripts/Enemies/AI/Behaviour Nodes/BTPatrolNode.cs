@@ -133,7 +133,7 @@ public class BTPatrolNode : BTNode
         stepFMODAudio.stop(STOP_MODE.ALLOWFADEOUT);
     }
     
-    public override void ResetNode(bool force)
+    public override void ResetNode(bool force, bool enemyDead)
     {
         this.ResetNode();
     }

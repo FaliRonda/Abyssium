@@ -96,7 +96,7 @@ public class BTChaseNode : BTNode
         ResetChasing();
     }
     
-    public override void ResetNode(bool force)
+    public override void ResetNode(bool force, bool enemyDead)
     {
         ResetChasing();
     }

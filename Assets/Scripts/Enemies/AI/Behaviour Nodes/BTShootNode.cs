@@ -163,9 +163,9 @@ public class BTShootNode : BTNode
         return directions;
     }
     
-    public override void ResetNode(bool force)
+    public override void ResetNode(bool force, bool enemyDead)
     {
-        if (force)
+        if (enemyDead)
         {
             shootSequence.Kill();
             isShooting = false;

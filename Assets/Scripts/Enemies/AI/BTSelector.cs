@@ -71,11 +71,11 @@ public class BTSelector : BTNode
         }
     }
 
-    public void ResetNodes(bool force)
+    public void ResetNodes(bool force, bool enemyDead)
     {
         foreach (BTNode node in nodes)
         {
-            node.ResetNode(force);
+            node.ResetNode(force, enemyDead);
         }
     }
     

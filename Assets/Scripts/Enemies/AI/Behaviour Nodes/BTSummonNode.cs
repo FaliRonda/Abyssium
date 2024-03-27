@@ -122,9 +122,9 @@ public class BTSummonNode : BTNode
         }
     }
     
-    public override void ResetNode(bool enemyDied)
+    public override void ResetNode(bool force, bool enemyDead)
     {
-        if (enemyDied)
+        if (enemyDead)
         {
             summonSequence.Kill();
         }

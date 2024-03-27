@@ -11,7 +11,7 @@ public class Weapon : MonoBehaviour
     public float hitBoxHeight = 1.5f;
     public float weaponCd = 0.1f;
 
-    private CapsuleCollider weaponCollider;
+    private Collider weaponCollider;
     
     private bool currentlyAttacking = false;
 
@@ -22,9 +22,9 @@ public class Weapon : MonoBehaviour
 
     private void Start()
     {
-        weaponCollider = GetComponent<CapsuleCollider>();
+        weaponCollider = GetComponentInChildren<Collider>();
 
-        UpdateWeaponRange();
+        //UpdateWeaponRange();
         
         weaponCollider.enabled = false;
 
@@ -35,9 +35,10 @@ public class Weapon : MonoBehaviour
 
     private void UpdateWeaponRange()
     {
-        weaponCollider.center = new Vector3(0, hitBoxCenterY, 0);
+        /*weaponCollider.center = new Vector3(0, hitBoxCenterY, 0);
         weaponCollider.radius = hitBoxRadius;
         weaponCollider.height = hitBoxHeight;
+        */
     }
 
 
@@ -46,7 +47,7 @@ public class Weapon : MonoBehaviour
         if (other.gameObject.layer == Layers.ENEMY_LAYER)
         {
             Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/Weapons/Sword1_Hit1", transform);
-            other.gameObject.GetComponent<EnemyAI>().GetDamage(weaponDamage);
+            other.gameObject.GetComponentInParent<EnemyAI>().GetDamage(weaponDamage);
         }
         
         // Descomentar para destruir las balas a espadazos

@@ -330,6 +330,7 @@ public class GameDirector : MonoBehaviour
     {
         enemies.Remove(defeatedEnemy);
         CheckEnemiesInScene(true);
+        Destroy(defeatedEnemy.gameObject.transform.parent.gameObject, 1);
     }
 
     private void EnemySpawned(EnemyAI spawnEnemy)
@@ -802,6 +803,8 @@ public class GameDirector : MonoBehaviour
     {
         timeLoopEnded = true;
         //Core.Audio.Play(SOUND_TYPE.Bell, 1, 0, 0.01f);
+        backgroundMusic.stop(STOP_MODE.ALLOWFADEOUT);
+        backgroundMusic = Core.Audio.PlayFMODAudio("event:/Music/MVP_CombatDemoScene_Music", transform);
         Core.Audio.PlayFMODAudio("event:/IngameUI/TimeLoop/Timeloop_end_Bell", transform);
         Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/Die", transform);
 

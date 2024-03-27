@@ -36,7 +36,11 @@ public class BTAttackNode : BTNode
         
         if (attackPlaying)
         {
-            if (EnemyRayHitLayer(Layers.WALL_LAYER) || EnemyRayHitLayer(Layers.DOOR_LAYER) || EnemyRayHitLayer(Layers.PJ_LAYER))
+            if (EnemyRayHitLayer(Layers.WALL_LAYER) || EnemyRayHitLayer(Layers.DOOR_LAYER))
+            {
+                attackSequence.Kill();
+            }
+            if (EnemyRayHitLayer(Layers.PJ_LAYER) && !attackNodeParameters.jumpAttack)
             {
                 attackSequence.Kill();
             }
@@ -160,11 +164,15 @@ public class BTAttackNode : BTNode
         if (!EnemyRayHitLayer(Layers.WALL_LAYER) & !EnemyRayHitLayer(Layers.DOOR_LAYER))
         {
             SpriteRenderer shadowSprite = enemyAI.GetComponentsInChildren<SpriteRenderer>()[1];
+            SphereCollider attackCollider = (SphereCollider)enemyAI.attackCollider;
+            MeshCollider damageCollider = enemyAI.GetComponentInChildren<MeshCollider>();
             
             attackSequence
                 .AppendCallback(() =>
                 {
-                    enemyAI.attackCollider.isTrigger = false;
+                    damageCollider.enabled = false;
+                    attackCollider.isTrigger = false;
+                    attackCollider.radius *= 2;
                     shadowSprite.enabled = false;
                 })
                 .Append(enemyTransform.DOJump(targetPosition, attackNodeParameters.jumpHeight, 1, attackNodeParameters.jumpDuration))
@@ -174,10 +182,10 @@ public class BTAttackNode : BTNode
                     ShowJumpParticles();
                 })
                 .AppendCallback(StandAfterAttack)
-                .AppendInterval(0.2f)
-                .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; })
+                .AppendInterval(0.1f)
                 .OnKill(() =>
                 {
+                    attackCollider.radius /= 2;
                     attackPlaying = false;
                     shadowSprite.enabled = true;
                     StandAfterAttack();
@@ -185,7 +193,11 @@ public class BTAttackNode : BTNode
                     Sequence waitAndDisableColliderSequence = DOTween.Sequence();
                     waitAndDisableColliderSequence
                         .AppendInterval(0.1f)
-                        .AppendCallback(() => { enemyAI.attackCollider.isTrigger = true; });
+                        .AppendCallback(() =>
+                        {
+                            damageCollider.enabled = true;
+                            attackCollider.isTrigger = true;
+                        });
                 });
             return true;
         }
@@ -299,9 +311,9 @@ public class BTAttackNode : BTNode
         }
     }
     
-    public override void ResetNode(bool forceReset)
+    public override void ResetNode(bool force, bool enemyDead)
     {
-        if (forceReset)
+        if (force || enemyDead)
         {
             attackSequence.Kill();
         }

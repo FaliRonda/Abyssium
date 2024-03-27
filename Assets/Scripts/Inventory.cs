@@ -26,6 +26,7 @@ public class Inventory : MonoBehaviour
     private Light lanternEnv;
     private Light lanternPj;
     private float lastAngle;
+    private float lastZAngle;
 
     private void Start()
     {
@@ -35,6 +36,7 @@ public class Inventory : MonoBehaviour
         lanternPj.enabled = hasLantern;
         
         lastAngle = -90;
+        lastZAngle = 0;
         
         bool activeWeaponFilled = false;
         
@@ -78,11 +80,11 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private void RotateItem(float xRotation, float yRotation, float zRotation, GameObject item, bool gameIn3D)
+    private void RotateItem(float xRotation, float yRotation, float zRotation, GameObject item, bool gameIn3D, float duration)
     {
         if (item.gameObject.name.Contains("pivot"))
         {
-            item.transform.DORotate(new Vector3(xRotation, yRotation, zRotation), 0.2f);
+            item.transform.DORotate(new Vector3(xRotation, yRotation, zRotation), duration);
             /*if (!gameIn3D)
             {
                 item.transform.DORotate(new Vector3(xRotation, yRotation, zRotation), 0.2f);
@@ -104,12 +106,23 @@ public class Inventory : MonoBehaviour
     
     private void RotateLight(GameObject item, GameDirector.ControlInputData controlInputData, bool gameIn3D)
     {
-        RotateItem(0, -CalculateRotationAngle(controlInputData), 0, item, gameIn3D);
+        RotateItem(0, -CalculateRotationAngle(controlInputData), 0, item, gameIn3D, 0.2f);
     }
 
     private void RotateWeapon(GameObject item, GameDirector.ControlInputData controlInputData, bool gameIn3D)
     {
-        RotateItem(0, -CalculateRotationAngle(controlInputData), 0, item, gameIn3D);
+        Vector3 direction = controlInputData.inputDirection;
+
+        if (direction.x < 0)
+        {
+            lastZAngle = 180;
+        }
+        else if (direction.x > 0)
+        {
+            lastZAngle = 0;
+        }
+        
+        RotateItem(-45, 0, lastZAngle, item, gameIn3D, 0.01f);
     }
 
     private float CalculateRotationAngle(GameDirector.ControlInputData controlInputData)
@@ -119,6 +132,7 @@ public class Inventory : MonoBehaviour
         var x = controlInputData.inputDirection.x;
         var y = controlInputData.inputDirection.y;
         
+        /*
         if (x == 0 && y > 0)
         {
             angle = 0;
@@ -150,6 +164,14 @@ public class Inventory : MonoBehaviour
         else if (x < 0 && y > 0)
         {
             angle = 45;
+        }*/
+
+        if (x > 0)
+        {
+            angle = -90;
+        } else if (x < 0)
+        {
+            angle = 90;
         }
 
         lastAngle = angle;

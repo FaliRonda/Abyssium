@@ -1,9 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Ju.Extensions;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using Random = System.Random;
@@ -54,7 +52,7 @@ public class EnemyAI : MonoBehaviour
 
     private Quaternion defaultEnemySpriteRotation;
     [HideInInspector]
-    public SphereCollider attackCollider;
+    public Collider attackCollider;
 
     private Ray ray;
     private RaycastHit[] hits;
@@ -82,7 +80,7 @@ public class EnemyAI : MonoBehaviour
         shadowSprite = enemySprites[1];
         enemyAnimator = GetComponentInChildren<Animator>();
         enemyDamagedParticles = GetComponentInChildren<ParticleSystem>();
-        attackCollider = gameObject.GetComponentsInChildren<SphereCollider>()[0];
+        attackCollider = gameObject.GetComponentsInChildren<Collider>()[0];
 
         defaultEnemySpriteRotation = enemySprite.transform.rotation;
 
@@ -178,11 +176,11 @@ public class EnemyAI : MonoBehaviour
             {
                 if (isDead)
                 {
-                    nodeTree.ResetNodes(true);
+                    nodeTree.ResetNodes(false, true);
                 }
                 else
                 {
-                    nodeTree.ResetNodes(false);
+                    nodeTree.ResetNodes(false, false);
                 }
             }
 
@@ -234,6 +232,7 @@ public class EnemyAI : MonoBehaviour
         isDead = true;
         aIActive = false;
         attackCollider.enabled = false;
+        GetComponentInChildren<MeshCollider>().enabled = false;
 
         bool enemyDied = true;
         
@@ -328,8 +327,7 @@ public class EnemyAI : MonoBehaviour
         if (other.gameObject.layer == Layers.WALL_LAYER || other.gameObject.layer == Layers.DOOR_LAYER)
         {
             knockbackSequence.Kill();
-            bool force = true;
-            ResetAINodes(force);
+            ResetAINodes(true, false);
         }
     }
 
@@ -349,11 +347,11 @@ public class EnemyAI : MonoBehaviour
         }
     }
     
-    public void ResetAINodes(bool force)
+    public void ResetAINodes(bool force, bool enemyDead)
     {
         foreach (BTSelector nodeTree in nodeTrees)
         {
-            nodeTree.ResetNodes(force);
+            nodeTree.ResetNodes(force, enemyDead);
         }
     }
     
