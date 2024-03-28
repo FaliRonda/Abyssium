@@ -40,7 +40,7 @@ public class BTAttackNode : BTNode
             {
                 attackSequence.Kill();
             }
-            if (EnemyRayHitLayer(Layers.PJ_LAYER) && !attackNodeParameters.jumpAttack)
+            if (EnemyRayHitLayer(Layers.PJ_LAYER) && !playerTransform.GetComponent<PJ>().pjInvulnerable && !attackNodeParameters.jumpAttack)
             {
                 attackSequence.Kill();
             }
