@@ -172,14 +172,14 @@ public class GameDirector : MonoBehaviour
             }
 
             this.EventSubscribe<GameEvents.EnemyDied>(e => EnemyDied(e.enemy));
-            this.EventSubscribe<GameEvents.BossSpawned>(e => ShowBossLifeUI(e.bossLife));
-            this.EventSubscribe<GameEvents.BossDamaged>(e => UpdateBossLifeUI());
+            //this.EventSubscribe<GameEvents.BossSpawned>(e => ShowBossLifeUI(e.bossLife));
+            //this.EventSubscribe<GameEvents.BossDamaged>(e => UpdateBossLifeUI());
             this.EventSubscribe<GameEvents.BossDied>(e =>
             {
                 timeLoopPaused = true;
                 backgroundMusic.stop(STOP_MODE.ALLOWFADEOUT);
-                Transform lifeSliderTransform = canvas.transform.GetChild(6);
-                lifeSliderTransform.gameObject.SetActive(false);
+                //Transform lifeSliderTransform = canvas.transform.GetChild(6);
+                //lifeSliderTransform.gameObject.SetActive(false);
             });
             this.EventSubscribe<GameEvents.EnemySpawned>(e => EnemySpawned(e.enemyAI));
             this.EventSubscribe<GameEvents.NPCVanished>(e => EndDemo());
@@ -293,7 +293,6 @@ public class GameDirector : MonoBehaviour
 
         float currentLife = lifeSliderTransform.GetComponent<Slider>().value;
         float targetLife = currentLife - 1;
-        
         
         Sequence bossDamagedSequence = DOTween.Sequence();
         bossDamagedSequence
@@ -951,7 +950,7 @@ public class GameDirector : MonoBehaviour
         
         if (pj.inventory.HasWeapon || IsSceneT1C1Fm1 || combatDemo)
         {
-            timeLoopDuration -= 10;
+            timeLoopDuration -= 40;
         }
         else
         {

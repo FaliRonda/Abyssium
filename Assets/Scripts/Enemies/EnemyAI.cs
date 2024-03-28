@@ -4,6 +4,7 @@ using DG.Tweening;
 using Ju.Extensions;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = System.Random;
 using Sequence = DG.Tweening.Sequence;
 
@@ -61,6 +62,8 @@ public class EnemyAI : MonoBehaviour
     private BTSelector currentTree;
     [HideInInspector]
     public bool playerDamaged;
+    private Slider lifeSlider;
+    private Sequence lifeSliderCDSequence;
 
 
     public void Initialize(Transform pjTransform)
@@ -81,6 +84,23 @@ public class EnemyAI : MonoBehaviour
         enemyAnimator = GetComponentInChildren<Animator>();
         enemyDamagedParticles = GetComponentInChildren<ParticleSystem>();
         attackCollider = gameObject.GetComponentsInChildren<Collider>()[0];
+        
+        lifeSlider = gameObject.GetComponentInChildren<Slider>();
+        lifeSlider.maxValue = lifeAmount;
+        lifeSlider.value = lifeAmount;
+        lifeSlider.gameObject.SetActive(false);
+
+        if (isBoss)
+        {
+            Transform lifeSliderTransform = lifeSlider.transform;
+            Vector3 initialScale = new Vector3(0f, lifeSliderTransform.localScale.y, lifeSliderTransform.localScale.z);
+            lifeSliderTransform.localScale = initialScale;
+
+            Vector3 finalScale = new Vector3(5f, lifeSliderTransform.localScale.y, lifeSliderTransform.localScale.z);
+
+            lifeSliderTransform.gameObject.SetActive(true);
+            lifeSliderTransform.transform.DOScale(finalScale, 1f).SetEase(Ease.OutQuad);
+        }
 
         defaultEnemySpriteRotation = enemySprite.transform.rotation;
 
@@ -144,6 +164,8 @@ public class EnemyAI : MonoBehaviour
         {
             lifeAmount -= damageAmount;
             isDead = lifeAmount <= 0;
+
+            UpdateLifeUI();
             
             enemyInvulnerable = true;
 
@@ -195,6 +217,50 @@ public class EnemyAI : MonoBehaviour
         }
     }
     
+    private void UpdateLifeUI()
+    {
+        float currentLife = lifeSlider.value;
+        float targetLife = lifeAmount;
+        
+        Sequence lifeUISequence = DOTween.Sequence();
+
+        if (!isBoss)
+        {
+            lifeUISequence
+                .AppendCallback(() => { lifeSlider.gameObject.SetActive(true); });
+        }
+        
+        lifeUISequence
+            .AppendInterval(0.2f)
+            .Append(DOTween.To(() => currentLife, x =>
+            {
+                targetLife = x;
+                lifeSlider.value = x;
+            }, targetLife, 0.2f));
+
+        if (currentLife == 1)
+        {
+            lifeUISequence
+                .AppendCallback(() =>
+                {
+                    lifeSlider.GetComponentsInChildren<Image>()[1].enabled = false;
+                });
+        }
+        
+        if (!isBoss)
+        {
+            if (lifeSliderCDSequence != null)
+            {
+                lifeSliderCDSequence.Kill();
+            }
+
+            lifeSliderCDSequence = DOTween.Sequence();
+            lifeSliderCDSequence
+                .AppendInterval(1f)
+                .AppendCallback(() => { lifeSlider.gameObject.SetActive(false); });
+        }
+    }
+    
     private void PlayDamagedKnockbackAnimation()
     {
         Vector3 position = transform.position;
@@ -231,6 +297,7 @@ public class EnemyAI : MonoBehaviour
     {
         isDead = true;
         aIActive = false;
+        lifeSlider.gameObject.SetActive(false);
         attackCollider.enabled = false;
         GetComponentInChildren<MeshCollider>().enabled = false;
 
