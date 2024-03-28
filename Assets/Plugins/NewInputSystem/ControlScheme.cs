@@ -344,6 +344,17 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
+                    ""name"": """",
+                    ""id"": ""fae9724a-f2ed-43c0-aa10-408b87d3f220"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Close"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
                     ""name"": ""Mouse"",
                     ""id"": ""20e0b98e-ba6e-4774-a0af-2c79334bf7d7"",
                     ""path"": ""2DVector(mode=2)"",
@@ -391,6 +402,17 @@ public partial class @ControlScheme: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""0cf5c3fc-ccf9-4684-bca4-8ebcf297a191"",
                     ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""23dcb38b-9f18-4f5e-8d9d-c7755b3e72d7"",
+                    ""path"": ""<Gamepad>/select"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
