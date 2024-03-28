@@ -117,7 +117,7 @@ public class CameraEffectsService : IService
         pjTransform = currentCamera.Follow;
         
         tempCenterGO = GameObject.Instantiate(new GameObject(), pjTransform.parent.parent);
-        tempCenterGO.transform.position = Vector3.zero;
+        tempCenterGO.transform.position = new Vector3(0, 0, 2.5f);
 
         currentCamera.Follow = tempCenterGO.transform;
     }

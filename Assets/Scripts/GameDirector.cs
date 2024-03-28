@@ -134,16 +134,21 @@ public class GameDirector : MonoBehaviour
     #endregion
 
     #region Unity Events
-    
+
+    private void Awake()
+    {
+        initialTimeLoopDuration = timeLoopDuration;
+        GameState.initialTimeLoopDuration = initialTimeLoopDuration;
+        GameState.timeLoopDuration = initialTimeLoopDuration;
+        GameState.debugMode = debugMode;
+    }
+
     private void Start()
     {
 #if !UNITY_EDITOR
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
 #endif
-        initialTimeLoopDuration = timeLoopDuration;
-        GameState.debugMode = debugMode;
-
         if (isInitialLoad)
         {
             if (!debugMode)
@@ -477,6 +482,8 @@ public class GameDirector : MonoBehaviour
                 EndTimeLoop();
             }
         }
+
+        GameState.timeLoopDuration = timeLoopDuration;
     }
 
     private void OnDestroy()
@@ -586,11 +593,21 @@ public class GameDirector : MonoBehaviour
             Color color;
             foreach (Image waveImage in waveImages)
             {
-                if (imageCounter != 0)
+                if (imageCounter != 0 && imageCounter < waveImages.Length - 1)
                 {
-                    if (ColorUtility.TryParseHtmlString("#FFFFFF48", out color))
+                    if (ColorUtility.TryParseHtmlString("#431E1B", out color))
                     {
                         waveImage.color = color;
+                        if (imageCounter == 1)
+                        {
+                            waveImage.gameObject.GetComponents<Outline>()[0].enabled = true;
+                            waveImage.gameObject.GetComponents<Outline>()[1].enabled = false;
+                        }
+                        else
+                        {
+                            waveImage.gameObject.GetComponents<Outline>()[0].enabled = false;
+                            waveImage.gameObject.GetComponents<Outline>()[1].enabled = true;
+                        }
                     }
                 }
 
@@ -1028,9 +1045,17 @@ public class GameDirector : MonoBehaviour
                 if (enemyWaveIndex > 0 && enemyWaveIndex < waveImages.Length)
                 {
                     Color color;
-                    if (ColorUtility.TryParseHtmlString("#FFAA6648", out color))
+                    if (ColorUtility.TryParseHtmlString("#276343", out color))
                     {
                         waveImages[enemyWaveIndex].color = color;
+                        waveImages[enemyWaveIndex].GetComponents<Outline>()[0].enabled = false;
+                        waveImages[enemyWaveIndex].GetComponents<Outline>()[1].enabled = true;
+
+                        if (enemyWaveIndex < waveImages.Length - 2)
+                        {
+                            waveImages[enemyWaveIndex+1].GetComponents<Outline>()[0].enabled = true;
+                            waveImages[enemyWaveIndex+1].GetComponents<Outline>()[1].enabled = false;
+                        }
                     }
                 }
                 
@@ -1049,6 +1074,7 @@ public class GameDirector : MonoBehaviour
                         Sequence bossSequence = DOTween.Sequence();
 
                         bossSequence
+                            .AppendInterval(2f)
                             .AppendCallback(() => Core.CameraEffects.ToCenter())
                             .AppendInterval(1f)
                             .AppendCallback(() =>
