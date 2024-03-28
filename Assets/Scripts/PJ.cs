@@ -69,7 +69,7 @@ public class PJ : MonoBehaviour
     private RaycastHit[] hits;
     private Sequence rollingSequence;
     private Interactable interactableInContact;
-    private bool pjInvulnerable;
+    [HideInInspector] public bool pjInvulnerable;
     private bool pjIsBeingDamaged;
     private bool stepReady = true;
     private Sequence knockbackSequence;
@@ -192,7 +192,6 @@ public class PJ : MonoBehaviour
                 rollingSequence = DOTween.Sequence();
                 rollingSequence
                     .Append(transform.DOMove(endPosition, 0.2f))
-                    .OnComplete(StopRolling)
                     .OnKill(StopRolling);
 
                 var emissionModule = pjStepDust.emission;
