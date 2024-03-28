@@ -15,8 +15,11 @@ public class TimeMoonUI : MonoBehaviour
         float timeProgress = Mathf.Clamp01(GameState.timeLoopDuration / GameState.initialTimeLoopDuration);
         float angle = timeProgress * Mathf.PI;
 
-        float x = centerPoint.position.x + (semiejeX * (Screen.width/3840)) * Mathf.Cos(angle);
-        float y = centerPoint.position.y + (semiejeY * (Screen.height/2160)) * Mathf.Sin(angle);
+        float semiejeXResized = semiejeX * ((float)Screen.width / 3840);
+        float semiejeYResized = semiejeY * ((float)Screen.height / 2160);
+
+        float x = centerPoint.position.x + semiejeXResized * Mathf.Cos(angle);
+        float y = centerPoint.position.y + semiejeYResized * Mathf.Sin(angle);
 
         sunSymbol.rectTransform.position = new Vector3(x, y, 0);
     }
