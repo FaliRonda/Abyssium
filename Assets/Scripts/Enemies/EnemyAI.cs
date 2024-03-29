@@ -180,7 +180,6 @@ public class EnemyAI : MonoBehaviour
                 .AppendCallback(() => enemyInvulnerable = false);
             
             //Core.Audio.Play(SOUND_TYPE.PjImpact, 1, 0.1f, 0.05f);
-            Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/GetDamage", transform);
             PlayDamagedAnimation();
             PlayDamagedKnockbackAnimation();
 
@@ -213,6 +212,17 @@ public class EnemyAI : MonoBehaviour
             if (isDead)
             {
                 Die();
+            }
+            else
+            {
+                if (isBoss)
+                {
+                    Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Boss/GetDamage", transform);
+                }
+                else
+                {
+                    Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/GetDamage", transform);
+                }
             }
         }
     }
@@ -316,7 +326,14 @@ public class EnemyAI : MonoBehaviour
 
         enemyAnimator.Play("Enemy_die");
         //Core.Audio.Play(SOUND_TYPE.EnemyDied, 1, 0.05f, 0.01f);
-        Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/Die", transform);
+        if (isBoss)
+        {
+            Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Boss/Die", transform);
+        }
+        else
+        {
+            Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/Die", transform);
+        }
         shadowSprite.enabled = false;
         float animLength = Core.AnimatorHelper.GetAnimLength(enemyAnimator, "Enemy_die");
         Core.AnimatorHelper.DoOnAnimationFinish(animLength, () =>
@@ -324,6 +341,8 @@ public class EnemyAI : MonoBehaviour
             enemySprite.GetComponent<LookCameraOn3D>().rotateCameraOn3DActive = false;
             Core.Event.Fire(new GameEvents.EnemyDied(){ enemy = this});
         });
+        
+        ResetAINodes(false, true);
     }
 
     private void PlayDamagedAnimation()

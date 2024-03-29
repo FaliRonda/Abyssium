@@ -135,6 +135,6 @@ public class BTPatrolNode : BTNode
     
     public override void ResetNode(bool force, bool enemyDead)
     {
-        this.ResetNode();
+        ResetNode();
     }
 }
