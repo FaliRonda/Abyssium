@@ -353,6 +353,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Dash 90x55_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 110
+        width: 90
+        height: 55
+      alignment: 9
+      pivot: {x: 0.6, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31a5a7b0345a71748807d718363443fd
+      internalID: 929250655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -367,6 +388,7 @@ TextureImporter:
       Dash 90x55_0: -779353801
       Dash 90x55_1: -1206972304
       Dash 90x55_10: -1000938426
+      Dash 90x55_11: 929250655
       Dash 90x55_2: 284668275
       Dash 90x55_3: -939029955
       Dash 90x55_4: -856450466

@@ -62,7 +62,7 @@ public class PJ : MonoBehaviour
     private bool rollReady = true;
     private bool attackReady = true;
     private float lastAttackInputTime;
-    private bool bufferedAttack;
+    private bool pjRollingAttack;
     private float initialPlayerRayMaxDistance;
     
     private Ray ray;
@@ -160,12 +160,14 @@ public class PJ : MonoBehaviour
     {
         if (!pjIsRolling && rollReady && canRoll)
         {
+            
             pjDoingAction = true;
             pjIsRolling = true;
             pjInvulnerable = true;
 
             pjCollider.isTrigger = true;
             inventory.GetActiveWeapon().attackingSequence.Kill();
+            pjWeaponAnimator.Play("Empty");
             
             //Core.Audio.Play(SOUND_TYPE.PjDash, 1f, 0.1f, 0.01f);
             Core.Audio.PlayFMODAudio("event:/Characters/Player/Exploration/Dash", transform);
@@ -616,7 +618,13 @@ public class PJ : MonoBehaviour
     
     private void PjActionFalseWhenAnimFinish(float animLength)
     {
-        Core.AnimatorHelper.DoOnAnimationFinish(animLength, () => { pjDoingAction = false; });
+            Core.AnimatorHelper.DoOnAnimationFinish(animLength, () =>
+            {
+                if (!pjRollingAttack)
+                {
+                    pjDoingAction = false;
+            }   
+            });
     }
 
     #endregion
@@ -650,21 +658,29 @@ public class PJ : MonoBehaviour
         }
         else if (pjIsRolling) // Attack on dash Input Buffer
         {
-            bufferedAttack = true;
-            float animLength = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_roll");
-            Sequence sequence = DOTween.Sequence();
-            sequence.AppendInterval(animLength).AppendCallback((() =>
+            pjRollingAttack = true;
+            
+            pjAnimator.Play("PJ_rollattack");
+            pjWeaponAnimator.Play("RollAttack");
+            float animLength = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_rollattack");
+            
+            Weapon activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
+            if (activeWeapon != null)
             {
-                if (bufferedAttack && !pjIsRolling && inventory.HasWeapon)
+                activeWeapon.DoAttack();
+            }
+            
+            Sequence dashAttackSequence = DOTween.Sequence();
+            dashAttackSequence
+                .AppendInterval(animLength)
+                .AppendCallback(() =>
                 {
-                    Attack();
-                }
-
-                bufferedAttack = false;
-            }));
+                    comboCount = 0;
+                    pjRollingAttack = false;
+                    pjDoingAction = false;
+                });
         }
 
-        // Actualiza el tiempo de la última pulsación
         lastAttackInputTime = Time.time;
     }
 
@@ -718,13 +734,13 @@ public class PJ : MonoBehaviour
         switch (count)
         {
             case 1:
-                ShowAttackFeedback(combo1AttackCooldown, 1);
+                ShowAttackFeedback(combo1AttackCooldown, count);
                 break;
             case 2:
-                ShowAttackFeedback(combo2AttackCooldown, 2);
+                ShowAttackFeedback(combo2AttackCooldown, count);
                 break;
             case 3:
-                ShowAttackFeedback(combo3AttackCooldown, 3);
+                ShowAttackFeedback(combo3AttackCooldown, count);
                 // Aquí podrías ejecutar una acción especial o el golpe final del combo
                 // Luego resetea el combo
                 comboCount = 0;
