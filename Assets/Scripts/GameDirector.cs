@@ -86,9 +86,9 @@ public class GameDirector : MonoBehaviour
     private bool isNewCycleOrLoop = true;
     private int enemyWaveIndex;
 
-    private Bloom bloom;
     private ChromaticAberration chromaticAberration;
     private Vignette vignette;
+    private Bloom bloom;
     private SceneDirector sceneDirector;
     private Vector2 inputDirection = Vector2.zero;
 
@@ -938,15 +938,27 @@ public class GameDirector : MonoBehaviour
         {
             enemy.ResetAINodes();
         }
+        Sequence damagedFeedbackSequence = DOTween.Sequence();
+        damagedFeedbackSequence
+            .Append(DOTween.To(() => bloom.intensity.value, x => bloom.intensity.value = x, 2f, 0.2f)
+                .SetEase(Ease.OutQuad))
+            .Join(DOTween.To(() => chromaticAberration.intensity.value, x => chromaticAberration.intensity.value = x, 1f, 0.2f)
+                .SetEase(Ease.OutQuad))
+            .Append(DOTween.To(() => bloom.intensity.value, x => bloom.intensity.value = x, 0.05f, 0.2f)
+                .SetEase(Ease.OutQuad))
+            .Join(DOTween.To(() => chromaticAberration.intensity.value, x => chromaticAberration.intensity.value = x, 0.2f, 0.2f)
+                .SetEase(Ease.OutQuad));
         
-        Sequence sequence = DOTween.Sequence();
-        sequence.AppendInterval(deathFrameDuration).AppendCallback(() =>
-        {
-            timeLoopPaused = false;
-            controlBlocked = false;
-            //Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.1f);
-            Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/GetDamage", pj.transform);
-        });
+        Sequence deathFrameSequence = DOTween.Sequence();
+        deathFrameSequence
+            .AppendInterval(deathFrameDuration)
+            .AppendCallback(() =>
+            {
+                timeLoopPaused = false;
+                controlBlocked = false;
+                //Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.1f);
+                Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/GetDamage", pj.transform);
+            });
         
         if (pj.inventory.HasWeapon || IsSceneT1C1Fm1 || combatDemo)
         {

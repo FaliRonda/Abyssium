@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using Ju.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,20 @@ public class TimeMoonUI : MonoBehaviour
         float y = centerPoint.position.y + semiejeYResized * Mathf.Sin(angle);
 
         sunSymbol.rectTransform.position = new Vector3(x, y, 0);
+        
+        this.EventSubscribe<GameEvents.PlayerDamaged>(e => PlayerDamaged(e.deathFrameDuration));
+    }
+
+    private void PlayerDamaged(float deathFrameDuration)
+    {
+        Vector3 originalLocalScale = sunSymbol.transform.localScale;
+        Sequence damagedFeedbackSequence = DOTween.Sequence();
+        damagedFeedbackSequence
+            .Append(DOTween.To(() => sunSymbol.transform.localScale, x => sunSymbol.transform.localScale = x, originalLocalScale * 1.5f, 0.1f)
+                .SetEase(Ease.OutQuad))
+            .AppendInterval(0.2f)
+            .Append(DOTween.To(() => sunSymbol.transform.localScale, x => sunSymbol.transform.localScale = x, originalLocalScale, 0.2f)
+                .SetEase(Ease.OutQuad));
     }
 
     private void Update()
