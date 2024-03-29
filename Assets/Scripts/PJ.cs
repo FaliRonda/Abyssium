@@ -660,10 +660,13 @@ public class PJ : MonoBehaviour
         {
             pjRollingAttack = true;
             
+            Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/Weapons/Sword1_Attack1", transform);
+            
             pjAnimator.Play("PJ_rollattack");
             pjWeaponAnimator.Play("RollAttack");
+
             float animLength = Core.AnimatorHelper.GetAnimLength(pjAnimator, "PJ_rollattack");
-            
+
             Weapon activeWeapon = inventory.GetActiveWeapon() != null ? inventory.GetActiveWeapon() : null;
             if (activeWeapon != null)
             {
