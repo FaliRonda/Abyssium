@@ -231,12 +231,12 @@ public class EnemyAI : MonoBehaviour
         }
         
         lifeUISequence
-            .AppendInterval(0.2f)
+            .AppendInterval(0.1f)
             .Append(DOTween.To(() => currentLife, x =>
             {
                 targetLife = x;
                 lifeSlider.value = x;
-            }, targetLife, 0.2f));
+            }, targetLife, 0.1f));
 
         if (currentLife == 1)
         {
