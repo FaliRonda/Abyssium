@@ -1134,6 +1134,7 @@ public class GameDirector : MonoBehaviour
                     pj.PlayIdle();
                     
                     Core.CameraEffects.StartShakingEffect(0.4f, 0.04f, 1.5f);
+                    Core.GamepadVibrationService.SetControllerVibration(1.2f, 1.2f);
                     Sequence endFeedbackSequence = DOTween.Sequence();
                     endFeedbackSequence
                         .Append(DOTween.To(() => bloom.intensity.value, x => bloom.intensity.value = x, 5f, 0.1f)
