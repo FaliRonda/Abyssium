@@ -19,5 +19,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4069c2ad39713234aa96be8c7cec4f4d, type: 2}
   anticipacionDuration: 2
   whiteHitPercentage: 0.25
-  timeBetweenSummons: 20
+  timeBetweenSummons: 0
   castingColor: {r: 0, g: 0.39860106, b: 1, a: 1}

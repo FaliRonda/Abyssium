@@ -52,7 +52,7 @@ public class BTSummonNode : BTNode
 
         float whiteHitTargetValue = 1 - summonNodeParameters.whiteHitPercentage;
 
-        Color castingColor = summonNodeParameters.castingColor;
+        Color castingColor = new Color(summonNodeParameters.castingColor.r, summonNodeParameters.castingColor.g, summonNodeParameters.castingColor.b, enemySprite.color.a);
         
         summonSequence = DOTween.Sequence();
         summonSequence

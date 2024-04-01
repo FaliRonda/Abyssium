@@ -12,6 +12,7 @@ public class EnemyAI : MonoBehaviour
 {
     public bool aIActive;
     public bool isBoss = false;
+    public Material dissolveMaterial;
     // Reference to the player
     public Transform playerTransform;
     public Transform chasePivotTransform;
@@ -64,6 +65,10 @@ public class EnemyAI : MonoBehaviour
     public bool playerDamaged;
     private Slider lifeSlider;
     private Sequence lifeSliderCDSequence;
+    private bool thirdLifeReached;
+    private Material originalMaterial;
+    private int minionsCounter;
+    private bool bossDissolved;
 
 
     public void Initialize(Transform pjTransform)
@@ -72,6 +77,7 @@ public class EnemyAI : MonoBehaviour
         
         this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
         this.EventSubscribe<GameEvents.BossDied>(e => Die());
+        this.EventSubscribe<GameEvents.EnemyDied>(e => EnemyDied());
 
         if (isBoss)
         {
@@ -92,6 +98,12 @@ public class EnemyAI : MonoBehaviour
 
         if (isBoss)
         {
+            Image[] allSliderImages = lifeSlider.GetComponentsInChildren<Image>();
+            Image[] lifeThirdsIndicators = new Image[] {allSliderImages[allSliderImages.Length-1], allSliderImages[allSliderImages.Length-2]};
+
+            lifeThirdsIndicators[0].enabled = false;
+            lifeThirdsIndicators[1].enabled = false;
+            
             Transform lifeSliderTransform = lifeSlider.transform;
             Vector3 initialScale = new Vector3(0f, lifeSliderTransform.localScale.y, lifeSliderTransform.localScale.z);
             lifeSliderTransform.localScale = initialScale;
@@ -99,7 +111,12 @@ public class EnemyAI : MonoBehaviour
             Vector3 finalScale = new Vector3(5f, lifeSliderTransform.localScale.y, lifeSliderTransform.localScale.z);
 
             lifeSliderTransform.gameObject.SetActive(true);
-            lifeSliderTransform.transform.DOScale(finalScale, 1f).SetEase(Ease.OutQuad);
+            lifeSliderTransform.transform.DOScale(finalScale, 1f).SetEase(Ease.OutQuad)
+                .OnKill(() =>
+                {
+                    lifeThirdsIndicators[0].enabled = true;
+                    lifeThirdsIndicators[1].enabled = true;
+                });
         }
 
         defaultEnemySpriteRotation = enemySprite.transform.rotation;
@@ -125,23 +142,106 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    private void EnemyDied()
+    {
+        if (isBoss && bossDissolved)
+        {
+            minionsCounter--;
+
+            if (minionsCounter == 0)
+            {
+                BossReappear();
+            }
+        }
+    }
+
+    private void BossReappear()
+    {
+        Renderer renderer = enemySprite.GetComponent<Renderer>();
+        float nextValue = 0;
+
+        Sequence bossReappearingSequence = DOTween.Sequence();
+        
+        bossReappearingSequence
+            .AppendInterval(1f)
+            .Append(DOTween.To(() => renderer.material.GetFloat("_DissolveAmount"), x =>
+            {
+                nextValue = x;
+                renderer.material.SetFloat("_DissolveAmount", x);
+            }, 1.8f, 1f))
+            .AppendCallback(() =>
+            {
+                renderer.material = originalMaterial;
+                shadowSprite.enabled = true;
+                transform.GetComponentInChildren<MeshCollider>().enabled = true;
+                bossDissolved = false;
+            });
+
+    }
+
     public void DoUpdate()
     {
         if (!isDead && aIActive)
         {
-            Random random = new Random();
-            
-            if (currentTreeIndex == -1)
+            if (isBoss && thirdLifeReached)
             {
-                currentTreeIndex = random.Next(0, nodeTrees.Count);
-                currentTree = nodeTrees[currentTreeIndex];
+                ResetAINodes(true, false);
+                
+                thirdLifeReached = false;
+                bossDissolved = true;
+                Renderer renderer = enemySprite.GetComponent<Renderer>();
+                originalMaterial = renderer.material;
+                float targetValue = 0;
+                
+                Sequence dissolveSequence = DOTween.Sequence();
+                dissolveSequence
+                    .AppendCallback(() =>
+                    {
+                        transform.GetComponentInChildren<MeshCollider>().enabled = false;
+                        enemySprite.color = new Color(enemySprite.color.r, enemySprite.color.g, enemySprite.color.b,
+                            0.25f);
+                    })
+                    .Append(transform.DOMove(new Vector3(0, 0, 0), 1f))
+                    .AppendCallback(() =>
+                    {
+                        currentTree = nodeTrees[2];
+                        currentTree.Execute();
+                        minionsCounter = 3;
+                    })
+                    .AppendInterval(2)
+                    .AppendCallback(() =>
+                    {
+                        renderer.material = dissolveMaterial;
+                        renderer.material.SetFloat("_DissolveAmount", 1.8f);
+
+                        DOTween.To(() => renderer.material.GetFloat("_DissolveAmount"), x =>
+                        {
+                            targetValue = x;
+                            renderer.material.SetFloat("_DissolveAmount", x);
+                        }, 0, 1f)
+                            .OnKill(() =>
+                            {
+                                shadowSprite.enabled = false;
+                            });
+                    });
             }
-
-            var state = currentTree.Execute();
-
-            if (state == BTNodeState.NextTree)
+            else if (!bossDissolved)
             {
-                currentTreeIndex = -1;
+                Random random = new Random();
+                
+                while (currentTreeIndex == -1 || currentTreeIndex == 2)
+                {
+                    currentTreeIndex = random.Next(0, nodeTrees.Count);
+                }
+
+                currentTree = nodeTrees[currentTreeIndex];
+                
+                var state = currentTree.Execute();
+
+                if (state == BTNodeState.NextTree)
+                {
+                    currentTreeIndex = -1;
+                }
             }
         }
     }
@@ -167,6 +267,8 @@ public class EnemyAI : MonoBehaviour
         {
             lifeAmount -= damageAmount;
             isDead = lifeAmount <= 0;
+
+            thirdLifeReached = isBoss && lifeAmount % (lifeSlider.maxValue / 3) == 0;
 
             UpdateLifeUI();
             
