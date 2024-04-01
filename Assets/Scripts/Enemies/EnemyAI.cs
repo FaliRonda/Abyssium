@@ -281,7 +281,7 @@ public class EnemyAI : MonoBehaviour
         
         ray = new Ray(transform.position, damagedDirection);
         
-        if (!EnemyRaycastHit(Color.green, 1f) || !EnemyRayHitLayer(Layers.WALL_LAYER))
+        if (!EnemyRaycastHit(Color.green, 0.5f) || !EnemyRayHitLayer(Layers.WALL_LAYER))
         {
             knockbackSequence = DOTween.Sequence();
 
