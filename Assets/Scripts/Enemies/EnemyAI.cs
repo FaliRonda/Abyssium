@@ -427,9 +427,13 @@ public class EnemyAI : MonoBehaviour
 
     private void HitPlayer(GameObject other)
     {
-        Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/AttackHit", transform);
         playerDamaged = other.GetComponent<PJ>().GetDamage(transform);
-        ResetAINodes();
+
+        if (playerDamaged)
+        {
+            Core.Audio.PlayFMODAudio("event:/Characters/Enemies/Stalker/AttackHit", transform);
+            ResetAINodes();
+        }
         playerDamaged = false;
     }
 
