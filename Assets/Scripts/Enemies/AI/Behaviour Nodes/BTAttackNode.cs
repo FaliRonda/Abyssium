@@ -9,6 +9,7 @@ public class BTAttackNode : BTNode
     private bool attackPlaying;
     private Ray ray;
     private RaycastHit[] hits;
+    private Sequence anticipationMovementSequence;
     private Sequence attackSequence;
     private Vector3 lastPlayerDirectionBeforeAttack;
     private AttackNodeParametersSO attackNodeParameters;
@@ -16,6 +17,7 @@ public class BTAttackNode : BTNode
     private Sequence standAfterAttackSequence;
     private Sequence waitForNextAttackSequence;
     private bool waitAfterAttackFinished;
+    private bool anticipationPlaying;
 
     public BTAttackNode(Enemies.ENEMY_TYPE enemyCode)
     {
@@ -38,7 +40,14 @@ public class BTAttackNode : BTNode
         {
             if (EnemyRayHitLayer(Layers.WALL_LAYER) || EnemyRayHitLayer(Layers.DOOR_LAYER))
             {
-                attackSequence.Kill();
+                if (anticipationPlaying)
+                {
+                    anticipationMovementSequence.Kill();
+                }
+                else
+                {
+                    attackSequence.Kill();
+                }
             }
             if (EnemyRayHitLayer(Layers.PJ_LAYER) && !playerTransform.GetComponent<PJ>().pjInvulnerable && !attackNodeParameters.jumpAttack)
             {
@@ -122,11 +131,21 @@ public class BTAttackNode : BTNode
         Color castingColor = attackNodeParameters.castingColor;
 
         Vector3 attackDirection = (playerTransform.position - enemyPosition).normalized * attackNodeParameters.attackMovementDistance;
+
+        anticipationPlaying = true;
+        
+        anticipationMovementSequence = DOTween.Sequence();
+        anticipationMovementSequence
+            .Append(enemyTransform.DOMove(enemyPosition + anticipationDirection,
+                attackNodeParameters.anticipacionDuration))
+            .OnKill(() =>
+            {
+                anticipationPlaying = false;
+            });
         
         attackSequence
             .AppendCallback(() => { enemyAnimator.Play("Enemy_attack"); })
-            .Append(enemyTransform.DOMove(enemyPosition + anticipationDirection, attackNodeParameters.anticipacionDuration))
-            .Join(DOTween.To(() => 1, x =>
+            .Append(DOTween.To(() => 1, x =>
             {
                 whiteHitTargetValue = x;
                 UpdateCastingGrading(x, castingColor);
@@ -302,6 +321,7 @@ public class BTAttackNode : BTNode
 
         if (attackNodeParameters.stoppedByStun && enemyAI.enemyStunned)
         {
+            anticipationMovementSequence.Kill();
             attackSequence.Kill();
         }
 
@@ -313,9 +333,20 @@ public class BTAttackNode : BTNode
     
     public override void ResetNode(bool force, bool enemyDead)
     {
-        if (force || enemyDead)
+        if (enemyDead)
         {
+            anticipationMovementSequence.Kill();
             attackSequence.Kill();
+        } else if (force)
+        {
+            if (anticipationPlaying)
+            {
+                anticipationMovementSequence.Kill();
+            }
+            else if (attackPlaying)
+            {
+                attackSequence.Kill();
+            }
         }
         else
         {

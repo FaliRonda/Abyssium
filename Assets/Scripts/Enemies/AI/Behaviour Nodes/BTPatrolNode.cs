@@ -80,7 +80,7 @@ public class BTPatrolNode : BTNode
         foreach (RaycastHit hit in hits)
         {
             // Comprobar si alguno de los hits golpea una pared
-            if (hit.collider != null && hit.collider.gameObject.layer == Layers.WALL_LAYER)
+            if (hit.collider != null && (hit.collider.gameObject.layer == Layers.WALL_LAYER || hit.collider.gameObject.layer == Layers.DOOR_LAYER))
             {
                 foundWall = true;
                 break;

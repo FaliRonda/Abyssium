@@ -414,13 +414,22 @@ public class EnemyAI : MonoBehaviour
         {
             HitPlayer(other.gameObject);
         }
+        
+        if (other.gameObject.layer == Layers.WALL_LAYER || other.gameObject.layer == Layers.DOOR_LAYER)
+        {
+            ResetAINodes(true, false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == Layers.WALL_LAYER || other.gameObject.layer == Layers.DOOR_LAYER)
         {
-            knockbackSequence.Kill();
+            if (knockbackSequence != null)
+            {
+                knockbackSequence.Kill();
+            }
+
             ResetAINodes(true, false);
         }
     }
