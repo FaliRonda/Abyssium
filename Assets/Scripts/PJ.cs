@@ -552,7 +552,7 @@ public class PJ : MonoBehaviour
         Vector3 rotatedDirection = Quaternion.Euler(0, angle, 0) * ray.direction;
         Ray coneRay = new Ray(transform.position, rotatedDirection);
         Debug.DrawRay(coneRay.origin, coneRay.direction * initialPlayerRayMaxDistance, Color.red);
-        RaycastHit[] coreHits = Physics.RaycastAll(coneRay.origin, coneRay.direction, playerRayMaxDistance);
+        RaycastHit[] coreHits = Physics.RaycastAll(coneRay.origin, coneRay.direction, playerRayMaxDistance * 0.75f);
 
         foreach (RaycastHit hit in coreHits)
         {

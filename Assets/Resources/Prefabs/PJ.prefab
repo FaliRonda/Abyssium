@@ -218,7 +218,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.15625, y: 1.65625}
+  m_Size: {x: 2.8125, y: 1.71875}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -5591,7 +5591,7 @@ MonoBehaviour:
   playerRollFactor: 2.5
   rollCooldown: 0.35
   invulnerableAfterDashCD: 0.2
-  playerRayMaxDistance: 0.75
+  playerRayMaxDistance: 0.5
   attackImpulseFactor: 0.75
   combo1AttackCooldown: 0.35
   combo2AttackCooldown: 0.35
@@ -5611,6 +5611,7 @@ MonoBehaviour:
   damagedGamepadVibrationDuration: 0.25
   debugAttack: 1
   canRoll: 1
+  pjInvulnerable: 0
 --- !u!54 &8550691314693124260
 Rigidbody:
   m_ObjectHideFlags: 0
