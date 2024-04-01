@@ -127,19 +127,22 @@ public class EnemyAI : MonoBehaviour
 
     public void DoUpdate()
     {
-        Random random = new Random();
-        
-        if (currentTreeIndex == -1)
+        if (!isDead && aIActive)
         {
-            currentTreeIndex = random.Next(0, nodeTrees.Count);
-            currentTree = nodeTrees[currentTreeIndex];
-        }
+            Random random = new Random();
+            
+            if (currentTreeIndex == -1)
+            {
+                currentTreeIndex = random.Next(0, nodeTrees.Count);
+                currentTree = nodeTrees[currentTreeIndex];
+            }
 
-        var state = currentTree.Execute();
+            var state = currentTree.Execute();
 
-        if (state == BTNodeState.NextTree)
-        {
-            currentTreeIndex = -1;
+            if (state == BTNodeState.NextTree)
+            {
+                currentTreeIndex = -1;
+            }
         }
     }
 
@@ -339,9 +342,14 @@ public class EnemyAI : MonoBehaviour
         Core.AnimatorHelper.DoOnAnimationFinish(animLength, () =>
         {
             enemySprite.GetComponent<LookCameraOn3D>().rotateCameraOn3DActive = false;
-            Core.Event.Fire(new GameEvents.EnemyDied(){ enemy = this});
         });
-        
+        Sequence delaySequence = DOTween.Sequence();
+        delaySequence
+            .AppendInterval(0.01f)
+            .AppendCallback(() =>
+            {
+                Core.Event.Fire(new GameEvents.EnemyDied() { enemy = this });
+            });
         ResetAINodes(false, true);
     }
 

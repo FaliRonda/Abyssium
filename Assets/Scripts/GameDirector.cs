@@ -333,6 +333,8 @@ public class GameDirector : MonoBehaviour
 
     private void EnemyDied(EnemyAI defeatedEnemy)
     {
+        Core.CameraEffects.RemoveTransformFromTargetGroup(defeatedEnemy.transform.parent);
+        
         enemies.Remove(defeatedEnemy);
         CheckEnemiesInScene(true);
         Destroy(defeatedEnemy.gameObject.transform.parent.gameObject, 1);
@@ -342,6 +344,7 @@ public class GameDirector : MonoBehaviour
     {
         spawnEnemy.Initialize(pjGO.transform);
         enemies.Add(spawnEnemy);
+        Core.CameraEffects.AddTransformToTargetGroup(spawnEnemy.transform.parent, spawnEnemy.isBoss ? 3f : 2f, 1f);
     }
 
     private void UpdateCurrentFloorEndedNPCDialogue(NPC npc, DialogueSO lastDialogue)
@@ -707,7 +710,7 @@ public class GameDirector : MonoBehaviour
         {
             cameraDirector = Camera.main.GetComponent<CameraDirector>();
             cameraDirector.Initialize(pj.transform);
-            Core.CameraEffects.Initialize(cameraDirector.cameraTD, cameraDirector.camera3D);
+            Core.CameraEffects.Initialize(cameraDirector.cameraTD, cameraDirector.camera3D, cameraDirector.cameraTargetGroup);
         }
         else
         {

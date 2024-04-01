@@ -10,6 +10,7 @@ public class CameraDirector : MonoBehaviour
     public CinemachineVirtualCamera cameraTD;
     public CinemachineVirtualCamera cameraBlending;
     public CinemachineVirtualCamera camera3D;
+    public CinemachineTargetGroup cameraTargetGroup;
 
     public LayerMask cullingMask3D;
     private LayerMask _savedLayerMask;
@@ -70,7 +71,11 @@ public class CameraDirector : MonoBehaviour
 
     public void Initialize(Transform pjTransform)
     {
-        cameraTD.Follow = pjTransform;
+        while (cameraTargetGroup.m_Targets.Length > 0)
+        {
+            cameraTargetGroup.RemoveMember(cameraTargetGroup.m_Targets[0].target);
+        }
+        cameraTargetGroup.AddMember(pjTransform, 4f, 4f);
         cameraBlending.Follow = pjTransform;
         camera3D.LookAt = pjTransform;
         camera3D.Follow = pjTransform;

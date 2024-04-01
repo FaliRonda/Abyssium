@@ -1,14 +1,19 @@
-﻿using Cinemachine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Cinemachine;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Ju.Services;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CameraEffectsService : IService
 {
     public CinemachineVirtualCamera cameraTD;
     public CinemachineVirtualCamera camera3D;
+    public CinemachineTargetGroup cameraTargetGroup;
     
     private bool shakingActive;
     private float originalScreenX;
@@ -19,10 +24,11 @@ public class CameraEffectsService : IService
     private GameObject tempCenterGO;
     private Transform pjTransform;
 
-    public void Initialize(CinemachineVirtualCamera cameraTD, CinemachineVirtualCamera camera3D)
+    public void Initialize(CinemachineVirtualCamera cameraTD, CinemachineVirtualCamera camera3D, CinemachineTargetGroup cameraTargetGroup)
     {
         this.cameraTD = cameraTD;
         this.camera3D = camera3D;
+        this.cameraTargetGroup = cameraTargetGroup;
         originalScreenX = 0.5f;
         originalScreenY = 0.5f;
     }
@@ -115,18 +121,27 @@ public class CameraEffectsService : IService
     {
         currentCamera = GameState.gameIn3D ? camera3D : cameraTD;
         pjTransform = currentCamera.Follow;
-        
+
         tempCenterGO = GameObject.Instantiate(new GameObject(), pjTransform.parent.parent);
         tempCenterGO.transform.position = new Vector3(0, 0, 2.5f);
 
-        currentCamera.Follow = tempCenterGO.transform;
+        cameraTargetGroup.AddMember(tempCenterGO.transform, 5, 3f);
     }
 
     public void ToPlayer()
     {
         currentCamera = GameState.gameIn3D ? camera3D : cameraTD;
+        cameraTargetGroup.RemoveMember(cameraTargetGroup.m_Targets[cameraTargetGroup.m_Targets.Length - 2].target);
         GameObject.Destroy(tempCenterGO);
+    }
 
-        currentCamera.Follow = pjTransform;
+    public void AddTransformToTargetGroup(Transform instantiatedEnemy, float weight, float radius)
+    {
+        cameraTargetGroup.AddMember(instantiatedEnemy, weight, radius);
+    }
+
+    public void RemoveTransformFromTargetGroup(Transform defeatedEnemy)
+    {
+        cameraTargetGroup.RemoveMember(defeatedEnemy);
     }
 }

@@ -107,7 +107,7 @@ public class BTSummonNode : BTNode
 
         foreach (KeyValuePair<Vector3, GameObject> wavePair in nextWave.waveParametersDictionary)
         {
-            GameObject enemySpawnGO = GameObject.Instantiate(summonNodeParameters.spawnPrefab, enemyTransform.parent);
+            GameObject enemySpawnGO = GameObject.Instantiate(summonNodeParameters.spawnPrefab, enemyTransform.parent.parent);
             EnemySpawn enemySpawn = enemySpawnGO.GetComponent<EnemySpawn>();
 
             enemySpawn.Initialize(wavePair.Key, wavePair.Value);
