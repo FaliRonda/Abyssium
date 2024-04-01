@@ -52,4 +52,12 @@ public class EnemySpawn : MonoBehaviour
         transform.position = spawnPosition;
         enemyPrefab = enemyGO;
     }
+
+    public GameObject DoSpawn(float duration, float scale)
+    {
+        spawnTime = duration;
+        fxGO.transform.localScale *= scale;
+
+        return DoSpawn();
+    }
 }

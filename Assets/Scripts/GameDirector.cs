@@ -1093,10 +1093,9 @@ public class GameDirector : MonoBehaviour
                             .AppendInterval(1f)
                             .AppendCallback(() =>
                             {
-                                instantiatedEnemies = InstantiateNextWave();
-                                instantiatedEnemies[0].GetComponent<EnemyAI>().aIActive = false;
+                                instantiatedEnemies = InstantiateNextWave(true);
                             })
-                            .AppendInterval(4f)
+                            .AppendInterval(5f)
                             .AppendCallback(() =>
                             {
                                 Core.CameraEffects.StartShakingEffect(0.4f, 0.03f, 1f);
@@ -1119,7 +1118,7 @@ public class GameDirector : MonoBehaviour
                     }
                     else
                     {
-                        InstantiateNextWave();
+                        InstantiateNextWave(false);
                     }
                 }
                 else
@@ -1196,7 +1195,7 @@ public class GameDirector : MonoBehaviour
         }
     }
 
-    private List<GameObject> InstantiateNextWave()
+    private List<GameObject> InstantiateNextWave(bool isBoss)
     {
         List<GameObject> enemies = new List<GameObject>();
         var nextWave = enemyWaves[enemyWaveIndex];
@@ -1210,7 +1209,17 @@ public class GameDirector : MonoBehaviour
             Sequence delayWaveSequence = DOTween.Sequence();
             delayWaveSequence
                 .AppendInterval(1)
-                .AppendCallback(() => enemies.Add(enemySpawn.DoSpawn()));
+                .AppendCallback(() =>
+                {
+                    if (isBoss)
+                    {
+                        enemies.Add(enemySpawn.DoSpawn(2, 2.5f));
+                    }
+                    else
+                    {
+                        enemies.Add(enemySpawn.DoSpawn());
+                    }
+                });
         }
 
         enemyWaveIndex++;

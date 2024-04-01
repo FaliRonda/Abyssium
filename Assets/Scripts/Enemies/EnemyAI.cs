@@ -208,7 +208,7 @@ public class EnemyAI : MonoBehaviour
                         currentTree.Execute();
                         minionsCounter = 3;
                     })
-                    .AppendInterval(2)
+                    .AppendInterval(2.1f)
                     .AppendCallback(() =>
                     {
                         renderer.material = dissolveMaterial;
