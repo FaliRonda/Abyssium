@@ -23,6 +23,7 @@ public class CameraEffectsService : IService
     private Sequence shakeMovementSequence;
     private GameObject tempCenterGO;
     private Transform pjTransform;
+    private Sequence shakeDurationCDSequence;
 
     public void Initialize(CinemachineVirtualCamera cameraTD, CinemachineVirtualCamera camera3D, CinemachineTargetGroup cameraTargetGroup)
     {
@@ -31,14 +32,17 @@ public class CameraEffectsService : IService
         this.cameraTargetGroup = cameraTargetGroup;
         originalScreenX = 0.5f;
         originalScreenY = 0.5f;
+        shakeDurationCDSequence = DOTween.Sequence();
+        shakeMovementSequence = DOTween.Sequence();
     }
     
     public void StartShakingEffect(float shakeIntensity, float shakeFrequency, float shakeDuration)
     {
+        shakeDurationCDSequence.Kill();
         shakingActive = true;
         currentCamera = GameState.gameIn3D ? camera3D : cameraTD;
 
-        Sequence shakeDurationCDSequence = DOTween.Sequence();
+        shakeDurationCDSequence = DOTween.Sequence();
         shakeDurationCDSequence
             .AppendInterval(shakeDuration)
             .AppendCallback(() =>
@@ -56,7 +60,6 @@ public class CameraEffectsService : IService
         Vector2 randomValue = Random.insideUnitCircle / 2f;
 
         shakeMovementSequence = DOTween.Sequence();
-        
         shakeMovementSequence
             .Append(DOTween.To(() => 0,
                 x => currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_ScreenX =
