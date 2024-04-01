@@ -179,18 +179,19 @@ public class PJ : MonoBehaviour
             Vector3 endPosition = GetRollEndPosition(controlInputData);
             SetSpriteXOrientation(controlInputData.inputDirection.x);
             pjAnimator.Play("PJ_roll");
-            GameObject dashFXInstance = Instantiate(pjDashAnimator.gameObject, transform.parent);
-            dashFXInstance.transform.position = transform.position;
-
-            RotateDashSprite(dashFXInstance.transform);
-
-            Animator dashFXAnimator = dashFXInstance.GetComponent<Animator>();
-            dashFXAnimator.Play("Roll");
-            Destroy(dashFXInstance,  1);
             
             Debug.DrawRay(transform.position, lastDirection, Color.red);
             if (!PjRaycastHit(Color.red) || !PjRayHitLayer(Layers.WALL_LAYER))
             {
+                GameObject dashFXInstance = Instantiate(pjDashAnimator.gameObject, transform.parent);
+                dashFXInstance.transform.position = transform.position;
+
+                RotateDashSprite(dashFXInstance.transform);
+
+                Animator dashFXAnimator = dashFXInstance.GetComponent<Animator>();
+                dashFXAnimator.Play("Roll");
+                Destroy(dashFXInstance,  1);
+                
                 rollingSequence = DOTween.Sequence();
                 rollingSequence
                     .Append(transform.DOMove(endPosition, 0.2f))
