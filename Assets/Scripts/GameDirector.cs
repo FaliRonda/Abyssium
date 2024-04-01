@@ -26,6 +26,7 @@ public class GameDirector : MonoBehaviour
     
     public bool debugMode;
     public bool combatDemo;
+    public bool explorationDemo;
     public GameObject spawnPrefab;
     public List<EnemyWaveSO> enemyWaves;
     public float timeLoopDuration = 10f;
@@ -372,7 +373,7 @@ public class GameDirector : MonoBehaviour
         
         if (!demoEnded && cameraDirector != null && !cameraDirector.CamerasTransitionBlending() && (!timeLoopEnded || debugMode))
         {
-            if (debugMode && !combatDemo && CameraChangeAction.triggered)
+            if (debugMode && explorationDemo && CameraChangeAction.triggered)
             {
                 ForceSwitchGamePerspective();
             }
