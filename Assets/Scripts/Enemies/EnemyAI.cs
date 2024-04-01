@@ -383,13 +383,12 @@ public class EnemyAI : MonoBehaviour
         
         ray = new Ray(transform.position, damagedDirection);
         
-        if (!EnemyRaycastHit(Color.green, 0.5f) || !EnemyRayHitLayer(Layers.WALL_LAYER))
+        if (!EnemyRaycastHit(Color.green, 1f) || !EnemyRayHitLayer(Layers.WALL_LAYER))
         {
             knockbackSequence = DOTween.Sequence();
 
             knockbackSequence
                 .Append(transform.DOMove(position + new Vector3(damagedDirection.x, 0, damagedDirection.z), 0.2f));
-            knockbackSequence.Play();
         }
 
     }
@@ -519,6 +518,11 @@ public class EnemyAI : MonoBehaviour
         
         if (other.gameObject.layer == Layers.WALL_LAYER || other.gameObject.layer == Layers.DOOR_LAYER)
         {
+            if (knockbackSequence != null)
+            {
+                knockbackSequence.Kill();
+            }
+            
             ResetAINodes(true, false);
         }
     }
