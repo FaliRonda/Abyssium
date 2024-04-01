@@ -39,13 +39,14 @@ public class CameraEffectsService : IService
     public void StartShakingEffect(float shakeIntensity, float shakeFrequency, float shakeDuration)
     {
         shakeDurationCDSequence.Kill();
+        ResetCameraOffset(shakeFrequency);
         shakingActive = true;
         currentCamera = GameState.gameIn3D ? camera3D : cameraTD;
 
         shakeDurationCDSequence = DOTween.Sequence();
         shakeDurationCDSequence
             .AppendInterval(shakeDuration)
-            .AppendCallback(() =>
+            .OnComplete(() =>
             {
                 shakingActive = false;
                 shakeMovementSequence.Kill();
