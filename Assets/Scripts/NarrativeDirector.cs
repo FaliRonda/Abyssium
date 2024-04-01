@@ -112,13 +112,15 @@ public class NarrativeDirector : MonoBehaviour
 
     public void ShowCombatEndNarrative()
     {
+        curtainImage.color = initialCurtainColor;
         narrativeCurtain.SetActive(true);
             
         Sequence showCurtainSequence = DOTween.Sequence();
 
         showCurtainSequence
-            .Append(DOTween.To(() => curtainImage.color, x => curtainImage.color = x, originalCurtainColor, 1f)
+            .Append(DOTween.To(() => curtainImage.color, x => curtainImage.color = x, originalCurtainColor, 2f)
                 .SetEase(Ease.OutQuad))
+            .AppendInterval(1f)
             .AppendCallback(() => { narrativeText.text = combatDemoText; });
     }
 }

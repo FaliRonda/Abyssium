@@ -14678,6 +14678,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6005206428841161141, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7158898870885404308, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: towerFloors.Array.size
       value: 1
@@ -14692,6 +14696,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9179641313704857092, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9182475316119719589, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 1465768036833087298, guid: a582b103eee4869459673da0f89b8120, type: 2}
+    - target: {fileID: 9182475316119719589, guid: a39173f3558c0ce43bb34dd621daad60, type: 3}
+      propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -69,6 +69,7 @@ public class EnemyAI : MonoBehaviour
     private Material originalMaterial;
     private int minionsCounter;
     private bool bossDissolved;
+    private Image[] lifeThirdsIndicators;
 
 
     public void Initialize(Transform pjTransform)
@@ -99,7 +100,7 @@ public class EnemyAI : MonoBehaviour
         if (isBoss)
         {
             Image[] allSliderImages = lifeSlider.GetComponentsInChildren<Image>();
-            Image[] lifeThirdsIndicators = new Image[] {allSliderImages[allSliderImages.Length-1], allSliderImages[allSliderImages.Length-2]};
+            lifeThirdsIndicators = new Image[] {allSliderImages[allSliderImages.Length-1], allSliderImages[allSliderImages.Length-2]};
 
             lifeThirdsIndicators[0].enabled = false;
             lifeThirdsIndicators[1].enabled = false;
@@ -185,6 +186,17 @@ public class EnemyAI : MonoBehaviour
         {
             if (isBoss && thirdLifeReached)
             {
+                if (lifeAmount > 7)
+                {
+                    lifeThirdsIndicators[1].color = new Color(lifeThirdsIndicators[1].color.r,
+                        lifeThirdsIndicators[1].color.g * 2, lifeThirdsIndicators[1].color.b * 2);
+                }
+                else
+                {
+                    lifeThirdsIndicators[0].color = new Color(lifeThirdsIndicators[0].color.r,
+                        lifeThirdsIndicators[0].color.g * 2, lifeThirdsIndicators[0].color.b * 2);
+                }
+                
                 ResetAINodes(true, false);
                 
                 thirdLifeReached = false;
@@ -285,7 +297,10 @@ public class EnemyAI : MonoBehaviour
                 .AppendCallback(() => enemyInvulnerable = false);
             
             //Core.Audio.Play(SOUND_TYPE.PjImpact, 1, 0.1f, 0.05f);
-            PlayDamagedAnimation();
+            if (!isDead)
+            {
+                PlayDamagedAnimation();
+            }
             PlayDamagedKnockbackAnimation();
 
             if (!enemyStunned)
@@ -312,6 +327,7 @@ public class EnemyAI : MonoBehaviour
 
             
             Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
+            Core.CameraEffects.StartShakingEffect(damagedCamShakeIntensity, damagedCamShakeFrequency, damagedCamShakeDuration);
             Core.CameraEffects.StartShakingEffect(damagedCamShakeIntensity, damagedCamShakeFrequency, damagedCamShakeDuration);
 
             if (isDead)
@@ -428,7 +444,10 @@ public class EnemyAI : MonoBehaviour
             dropper.Drop(itemToDrop);
         }
 
-        enemyAnimator.Play("Enemy_die");
+        if (!isBoss)
+        {
+            enemyAnimator.Play("Enemy_die");
+        }
         //Core.Audio.Play(SOUND_TYPE.EnemyDied, 1, 0.05f, 0.01f);
         if (isBoss)
         {
@@ -446,7 +465,27 @@ public class EnemyAI : MonoBehaviour
         });
         Sequence delaySequence = DOTween.Sequence();
         delaySequence
-            .AppendInterval(0.01f)
+            .AppendInterval(0.01f);
+        if (isBoss)
+        {
+            Renderer renderer = enemySprite.GetComponent<Renderer>();
+            float targetValue = 0;
+
+            delaySequence
+                .AppendCallback(() =>
+                {
+                    renderer.material = dissolveMaterial;
+                    renderer.material.SetColor("_ColorDissolve", Color.red);
+                    renderer.material.SetFloat("_DissolveAmount", 1.8f);
+
+                    DOTween.To(() => renderer.material.GetFloat("_DissolveAmount"), x =>
+                    {
+                        targetValue = x;
+                        renderer.material.SetFloat("_DissolveAmount", x);
+                    }, 0, 3f);
+                });
+        }   
+        delaySequence
             .AppendCallback(() =>
             {
                 Core.Event.Fire(new GameEvents.EnemyDied() { enemy = this });

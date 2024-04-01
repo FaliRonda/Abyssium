@@ -336,7 +336,14 @@ public class GameDirector : MonoBehaviour
         
         enemies.Remove(defeatedEnemy);
         CheckEnemiesInScene(true);
-        Destroy(defeatedEnemy.gameObject.transform.parent.gameObject, 1);
+        if (!defeatedEnemy.isBoss)
+        {
+            Destroy(defeatedEnemy.gameObject.transform.parent.gameObject, 1);
+        }
+        else
+        {
+            Destroy(defeatedEnemy.gameObject.transform.parent.gameObject, 4);
+        }
     }
 
     private void EnemySpawned(EnemyAI spawnEnemy)
@@ -1123,7 +1130,25 @@ public class GameDirector : MonoBehaviour
                 }
                 else
                 {
-                    narrativeDirector.ShowCombatEndNarrative();
+                    controlBlocked = true;
+                    pj.PlayIdle();
+                    
+                    Core.CameraEffects.StartShakingEffect(0.4f, 0.04f, 1.5f);
+                    Sequence endFeedbackSequence = DOTween.Sequence();
+                    endFeedbackSequence
+                        .Append(DOTween.To(() => bloom.intensity.value, x => bloom.intensity.value = x, 5f, 0.1f)
+                            .SetEase(Ease.OutQuad))
+                        .Join(DOTween.To(() => chromaticAberration.intensity.value, x => chromaticAberration.intensity.value = x, 5f, 0.1f)
+                            .SetEase(Ease.OutQuad))
+                        .AppendInterval(1f)
+                        .Append(DOTween.To(() => bloom.intensity.value, x => bloom.intensity.value = x, 0.05f, 1.5f)
+                            .SetEase(Ease.OutQuad))
+                        .Join(DOTween.To(() => chromaticAberration.intensity.value, x => chromaticAberration.intensity.value = x, 0.2f, 1.5f)
+                            .SetEase(Ease.OutQuad))
+                        .AppendCallback(() =>
+                        {
+                            narrativeDirector.ShowCombatEndNarrative();
+                        });
                 }
             }
         }

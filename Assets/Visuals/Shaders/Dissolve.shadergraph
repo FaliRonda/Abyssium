@@ -1548,7 +1548,7 @@
     "m_DefaultRefNameVersion": 0,
     "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Color_2ED9CBC6",
-    "m_OverrideReferenceName": "",
+    "m_OverrideReferenceName": "_ColorDissolve",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
