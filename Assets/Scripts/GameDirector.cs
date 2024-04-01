@@ -78,7 +78,6 @@ public class GameDirector : MonoBehaviour
     private CameraDirector cameraDirector;
     private bool gameIn3D;
     private bool isInitialLoad = true;
-    private bool timeLoopEnded;
     private bool timeLoopPaused;
     private float initialTimeLoopDuration;
     private float secondsCounter = 0;
@@ -374,7 +373,7 @@ public class GameDirector : MonoBehaviour
             timeLoopDuration = 0;
         }
         
-        if (!demoEnded && cameraDirector != null && !cameraDirector.CamerasTransitionBlending() && (!timeLoopEnded || debugMode))
+        if (!demoEnded && cameraDirector != null && !cameraDirector.CamerasTransitionBlending() && (!GameState.timeLoopEnded || debugMode))
         {
             if (debugMode && explorationDemo && CameraChangeAction.triggered)
             {
@@ -455,7 +454,7 @@ public class GameDirector : MonoBehaviour
         // If time loop is not disabled
         if (timeLoopDuration != -1)
         {
-            if (timeLoopDuration > 0 && !timeLoopEnded && !timeLoopPaused)
+            if (timeLoopDuration > 0 && !GameState.timeLoopEnded && !timeLoopPaused)
             {
                 timeLoopDuration -= Time.deltaTime;
                 UpdateMoonRotation();
@@ -474,7 +473,7 @@ public class GameDirector : MonoBehaviour
                     Core.Audio.Play(SOUND_TYPE.ClockTikTak, 2, 0, volume);
                 }
             }
-            else if (!timeLoopEnded && !timeLoopPaused)
+            else if (!GameState.timeLoopEnded && !timeLoopPaused)
             {
                 if (IsSceneT1C2Fm2)
                 {
@@ -620,11 +619,11 @@ public class GameDirector : MonoBehaviour
             enemyWaveIndex = 0;
         }
         
-        if (timeLoopEnded)
+        if (GameState.timeLoopEnded)
         {
             // Restart time loop
             timeLoopDuration = initialTimeLoopDuration;
-            timeLoopEnded = false;
+            GameState.timeLoopEnded = false;
         }
 
         // When a new scene has been loaded, the new cycle or loop processing has been done
@@ -821,7 +820,7 @@ public class GameDirector : MonoBehaviour
 
     private void EndTimeLoop()
     {
-        timeLoopEnded = true;
+        GameState.timeLoopEnded = true;
         //Core.Audio.Play(SOUND_TYPE.Bell, 1, 0, 0.01f);
         backgroundMusic.stop(STOP_MODE.ALLOWFADEOUT);
         backgroundMusic = Core.Audio.PlayFMODAudio("event:/Music/MVP_CombatDemoScene_Music", transform);
@@ -896,7 +895,7 @@ public class GameDirector : MonoBehaviour
     {
         List<string> cycle2Floors = new List<string>(){"T1C2F1", "T1C2F0", "T1C2F-1", "T1C2F-2"};
         int cycle2InitialFloor = 1;
-        timeLoopEnded = true;
+        GameState.timeLoopEnded = true;
         isNewCycleOrLoop = true;
         controlBlocked = false;
         initialTimeLoopDuration = cycle2LoopDuration;

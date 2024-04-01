@@ -5,4 +5,5 @@
     public static bool combatDemo;
     public static float initialTimeLoopDuration;
     public static float timeLoopDuration;
+    public static bool timeLoopEnded;
 }

@@ -790,28 +790,30 @@ public class PJ : MonoBehaviour
 
     public bool GetDamage(Transform damager)
     {
-        Vector3 damagerPosition = damager.position;
         bool damaged = false;
-        
-        if (!pjInvulnerable)
+        if (!GameState.timeLoopEnded)
         {
-            pjInvulnerable = true;
-            damaged = true;
+            Vector3 damagerPosition = damager.position;
             
-            //Core.Audio.Play(SOUND_TYPE.PjHitted, 1, 0, 0.5f);
-            Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/GetImpact", transform);
-            Core.Audio.PlayFMODAudio("event:/IngameUI/TimeLoop/Timeloop_MoveFordward", transform);
-            Core.Event.Fire(new GameEvents.PlayerDamaged(){deathFrameDuration = deathFrameDuration});
-            Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
-            
-            Sequence deathFrameSequence = DOTween.Sequence();
-            deathFrameSequence.AppendInterval(deathFrameDuration).AppendCallback(() =>
+            if (!pjInvulnerable)
             {
-                PlayDamagedKnockbackAnimation(damagerPosition);
-                Core.CameraEffects.StartShakingEffect(damagedCamShakeIntensity, damageCamShakeFrequency, damagedCamShakeDuration);
+                pjInvulnerable = true;
+                damaged = true;
                 
-            });
-            
+                //Core.Audio.Play(SOUND_TYPE.PjHitted, 1, 0, 0.5f);
+                Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/GetImpact", transform);
+                Core.Audio.PlayFMODAudio("event:/IngameUI/TimeLoop/Timeloop_MoveFordward", transform);
+                Core.Event.Fire(new GameEvents.PlayerDamaged(){deathFrameDuration = deathFrameDuration});
+                Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
+                
+                Sequence deathFrameSequence = DOTween.Sequence();
+                deathFrameSequence.AppendInterval(deathFrameDuration).AppendCallback(() =>
+                {
+                    PlayDamagedKnockbackAnimation(damagerPosition);
+                    Core.CameraEffects.StartShakingEffect(damagedCamShakeIntensity, damageCamShakeFrequency, damagedCamShakeDuration);
+                    
+                });
+            }
         }
 
         return damaged;
