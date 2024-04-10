@@ -23,7 +23,7 @@ public static class GameEvents
 
     public struct NPCVanished {}
 
-    public struct NPCDialogue
+    public struct ConversableDialogue
     {
         public bool started;
     }
@@ -35,9 +35,9 @@ public static class GameEvents
         public float deathFrameDuration;
     }
 
-    public struct NPCDialogueEnded
+    public struct ConversableDialogueEnded
     {
-        public NPC npc;
+        public Conversable conversable;
         public DialogueSO lastDialogue;
     }
 

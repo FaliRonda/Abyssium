@@ -18,7 +18,7 @@ public class DialogueService : IService
     
     private List<GameObject> conversationDialogueChoicesGO = new List<GameObject>();
     private List<TMP_Text> conversationDialogueChoicesText = new List<TMP_Text>();
-    private NPC currentNPC;
+    private Conversable currentConversable;
 
     private Transform lateralDialogsTransform;
     private GameObject lateralDialogPrefab;
@@ -29,9 +29,9 @@ public class DialogueService : IService
     private bool isShowingText;
     private Sequence textShowSequence;
 
-    public void StartConversation(NPC npc)
+    public void StartConversation(Conversable conversable)
     {
-        currentNPC = npc;
+        currentConversable = conversable;
         gameUIGO.SetActive(true);
     }
 
@@ -135,10 +135,10 @@ public class DialogueService : IService
 
         if (haveChoices)
         {
-            currentNPC.isSelectingChoice = true;
+            currentConversable.isSelectingChoice = true;
             for (int i = 0; i < choicesCount; i++)
             {
-                currentNPC.currentChoices.Add(choices[i]);
+                currentConversable.currentChoices.Add(choices[i]);
                 ShowChoice(i, choices[i]);
             }
         }
@@ -189,7 +189,7 @@ public class DialogueService : IService
         }
         
         ResetChoices();
-        currentNPC.ChoiceSelected(choiceIndex);
+        currentConversable.ChoiceSelected(choiceIndex);
     }
 
     private void ResetChoices()

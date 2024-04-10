@@ -183,7 +183,7 @@ public class GameDirector : MonoBehaviour
             });
             this.EventSubscribe<GameEvents.EnemySpawned>(e => EnemySpawned(e.enemyAI));
             this.EventSubscribe<GameEvents.NPCVanished>(e => EndDemo());
-            this.EventSubscribe<GameEvents.NPCDialogue>(e => HandleConversation(e.started));
+            this.EventSubscribe<GameEvents.ConversableDialogue>(e => HandleConversation(e.started));
             this.EventSubscribe<GameEvents.NPCMemoryGot>(e => Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["MemoryGot"]));
             
             this.EventSubscribe<GameEvents.PuzzleRunning>(e =>
@@ -233,7 +233,7 @@ public class GameDirector : MonoBehaviour
             });
             this.EventSubscribe<GameEvents.LoadInitialFloorSceneEvent>(e => sceneDirector.LoadInitialFloor());
             
-            this.EventSubscribe<GameEvents.NPCDialogueEnded>(e => UpdateCurrentFloorEndedNPCDialogue(e.npc, e.lastDialogue));
+            this.EventSubscribe<GameEvents.ConversableDialogueEnded>(e => UpdateCurrentFloorEndedConversableDialogue(e.conversable, e.lastDialogue));
             
             UpdateGameState();
             
@@ -255,6 +255,10 @@ public class GameDirector : MonoBehaviour
             {
                 backgroundMusic = Core.Audio.PlayFMODAudio("event:/Music/MVP_CombatDemoScene_Music", transform);
                 Core.Audio.PlayFMODAudio("event:/Background/MVP_CombatDemoScene_BackgroundSFX", transform);
+            }
+            else if (explorationDemo)
+            {
+                backgroundMusic = Core.Audio.PlayFMODAudio("event:/Music/MVP_ExplorationDemoScene_Music", transform);
             }
             else
             {
@@ -353,12 +357,12 @@ public class GameDirector : MonoBehaviour
         Core.CameraEffects.AddTransformToTargetGroup(spawnEnemy.transform.parent, spawnEnemy.isBoss ? 3f : 2f, 1f);
     }
 
-    private void UpdateCurrentFloorEndedNPCDialogue(NPC npc, DialogueSO lastDialogue)
+    private void UpdateCurrentFloorEndedConversableDialogue(Conversable conversable, DialogueSO lastDialogue)
     {
         FloorData currentFloorData = loopPersistentData[SceneManager.GetActiveScene().name];
-        if (!currentFloorData.NPCsDialogues.ContainsKey(npc.name))
+        if (!currentFloorData.NPCsDialogues.ContainsKey(conversable.name))
         {
-            currentFloorData.NPCsDialogues.Add(npc.name, lastDialogue);
+            currentFloorData.NPCsDialogues.Add(conversable.name, lastDialogue);
             loopPersistentData[SceneManager.GetActiveScene().name] = currentFloorData;
         }
     }
@@ -382,7 +386,7 @@ public class GameDirector : MonoBehaviour
         
         if (!demoEnded && cameraDirector != null && !cameraDirector.CamerasTransitionBlending() && (!GameState.timeLoopEnded || debugMode))
         {
-            if (debugMode && explorationDemo && CameraChangeAction.triggered)
+            if (debugMode && explorationDemo && !GameState.gameIn3D)
             {
                 ForceSwitchGamePerspective();
             }
@@ -417,7 +421,7 @@ public class GameDirector : MonoBehaviour
                         pj.DoMainAction();
                     }
                     
-                    if (RollAction.triggered)
+                    if (RollAction.triggered && !explorationDemo)
                     {
                         pj.DoRoll(controlInputData);
                     }

@@ -7,7 +7,8 @@ public class Interactable : MonoBehaviour, I_Interactable
     private bool isInteracting = false;
     private bool canInteract = false;
     protected SpriteRenderer interactableSprite;
-    protected SkinnedMeshRenderer interactableMesh;
+    protected MeshRenderer interactableMesh;
+    protected SkinnedMeshRenderer interactableSkinnedMesh;
     protected Collider interactableCollider;
     private bool gameIn3D = false;
 
@@ -15,7 +16,8 @@ public class Interactable : MonoBehaviour, I_Interactable
     {
         //Try get material from sprite
         interactableSprite = GetComponent<SpriteRenderer>() != null ? GetComponent<SpriteRenderer>(): GetComponentInChildren<SpriteRenderer>();
-        interactableMesh = GetComponent<SkinnedMeshRenderer>() != null ? GetComponent<SkinnedMeshRenderer>() : GetComponentInChildren<SkinnedMeshRenderer>();
+        interactableMesh = GetComponent<MeshRenderer>() != null ? GetComponent<MeshRenderer>() : GetComponentInChildren<MeshRenderer>();
+        interactableSkinnedMesh = GetComponent<SkinnedMeshRenderer>() != null ? GetComponent<SkinnedMeshRenderer>() : GetComponentInChildren<SkinnedMeshRenderer>();
         interactableCollider = GetComponent<Collider>() != null ? GetComponent<Collider>() : GetComponentInChildren<Collider>();
 
         if (interactableSprite != null)
@@ -25,6 +27,10 @@ public class Interactable : MonoBehaviour, I_Interactable
         else  if (interactableMesh != null)
         {
             material = interactableMesh.material;
+        }
+        else  if (interactableSkinnedMesh != null)
+        {
+            material = interactableSkinnedMesh.material;
         }
         
         this.EventSubscribe<GameEvents.SwitchPerspectiveEvent>(e => Switch2D3D(e.gameIn3D));
@@ -73,6 +79,6 @@ public class Interactable : MonoBehaviour, I_Interactable
     
     public virtual void Interact(PJ pj)
     {
-        throw new System.NotImplementedException();
+        Debug.LogWarning("Interact method not implemented.");
     }
 }
