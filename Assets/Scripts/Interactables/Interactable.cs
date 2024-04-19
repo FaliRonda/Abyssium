@@ -1,8 +1,11 @@
 using Ju.Extensions;
+using TMPro;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour, I_Interactable
 {
+    public string tooltipText;
+    
     private Material material;
     private bool isInteracting = false;
     private bool canInteract = false;
@@ -11,6 +14,9 @@ public class Interactable : MonoBehaviour, I_Interactable
     protected SkinnedMeshRenderer interactableSkinnedMesh;
     protected Collider interactableCollider;
     private bool gameIn3D = false;
+    protected bool interactionEndedOnce;
+    protected bool interactionStartedOnce;
+    protected Canvas tooltipCanvas;
 
     private void Awake()
     {
@@ -19,6 +25,12 @@ public class Interactable : MonoBehaviour, I_Interactable
         interactableMesh = GetComponent<MeshRenderer>() != null ? GetComponent<MeshRenderer>() : GetComponentInChildren<MeshRenderer>();
         interactableSkinnedMesh = GetComponent<SkinnedMeshRenderer>() != null ? GetComponent<SkinnedMeshRenderer>() : GetComponentInChildren<SkinnedMeshRenderer>();
         interactableCollider = GetComponent<Collider>() != null ? GetComponent<Collider>() : GetComponentInChildren<Collider>();
+        tooltipCanvas = GetComponentInChildren<Canvas>();
+
+        if (tooltipCanvas != null)
+        {
+            tooltipCanvas.GetComponentInChildren<TMP_Text>().text = tooltipText;
+        }
 
         if (interactableSprite != null)
         {
@@ -75,10 +87,23 @@ public class Interactable : MonoBehaviour, I_Interactable
     {
         int activeIntValue = GameState.gameIn3D && isActive ? 1 : 0;
         material.SetInt("_OutlineActive", activeIntValue);
+
+        if (interactionEndedOnce && tooltipCanvas != null && tooltipText != "")
+        {
+            tooltipCanvas.enabled = isActive;
+        }
     }
     
-    public virtual void Interact(PJ pj)
+    public virtual void Interact(PJ pj, bool cancel)
     {
         Debug.LogWarning("Interact method not implemented.");
+    }
+    
+    public void UpdateTooltipText(string newTooltipText)
+    {
+        if (tooltipCanvas != null)
+        {
+            tooltipCanvas.GetComponentInChildren<TMP_Text>().text = newTooltipText;
+        }
     }
 }

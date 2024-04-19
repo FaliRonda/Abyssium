@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: OpenBookText 2
   m_EditorClassIdentifier: 
-  dialogueText: Texto 2
+  dialogueText: To cast these spells, arrange runic symbols and light sacred candles
+    in a circle. Mastery demands precise ritualistic orchestration.
   choices: []
   drop: {fileID: 0}
   isLateral: 0

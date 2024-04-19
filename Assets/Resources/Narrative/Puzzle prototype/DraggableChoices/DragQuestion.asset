@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
+  m_Name: DragQuestion
+  m_EditorClassIdentifier: 
+  dialogueText: Do you want to grab it?
+  choices:
+  - {fileID: 11400000, guid: 6596ab95ea9ee8f4db791a843a302251, type: 2}
+  - {fileID: 11400000, guid: ed175974585ec3248906fc1b095864d0, type: 2}
+  drop: {fileID: 0}
+  isLateral: 0
+  isSpeakingNPC: 0
+  conversationCharacterPortrait: {fileID: 0}
+  lateralCharacterPortrait: {fileID: 0}
+  lateralDialogLifeTime: 6
+  playSuspenseMusic: 0

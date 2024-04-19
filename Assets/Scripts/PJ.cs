@@ -68,12 +68,13 @@ public class PJ : MonoBehaviour
     private Ray ray;
     private RaycastHit[] hits;
     private Sequence rollingSequence;
-    private Interactable interactableInContact;
+    [HideInInspector] public Interactable interactableInContact;
     [HideInInspector] public bool pjInvulnerable;
     private bool pjIsBeingDamaged;
     private bool stepReady = true;
     private Sequence knockbackSequence;
     private Sequence impulseSequence;
+    [HideInInspector] public Draggable currentDraggable;
 
     #region Unity events
     
@@ -624,7 +625,7 @@ public class PJ : MonoBehaviour
                 if (!pjRollingAttack)
                 {
                     pjDoingAction = false;
-            }   
+                }   
             });
     }
 
@@ -632,7 +633,7 @@ public class PJ : MonoBehaviour
 
     #region Main Action
     
-    public void DoMainAction()
+    public void DoMainAction(bool cancel)
     {
         if (gameIn3D)
         {
@@ -642,7 +643,7 @@ public class PJ : MonoBehaviour
             }
             else
             {
-                Interact();
+                Interact(cancel);
             }
         }
         else
@@ -688,14 +689,14 @@ public class PJ : MonoBehaviour
         lastAttackInputTime = Time.time;
     }
 
-    private bool Interact()
+    private void Interact(bool cancel)
     {
         pjDoingAction = true;
         
         if (interactableInContact != null)
         { 
             PlayIdle();
-            interactableInContact.Interact(this);
+            interactableInContact.Interact(this, cancel);
            
             if (!interactableInContact.IsInteracting())
             {
@@ -706,8 +707,6 @@ public class PJ : MonoBehaviour
         {
             pjDoingAction = false;
         }
-
-        return pjDoingAction;
     }
 
     private void Attack()

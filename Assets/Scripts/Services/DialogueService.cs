@@ -38,6 +38,7 @@ public class DialogueService : IService
     public void HideCanvas()
     {
         gameUIGO.SetActive(false);
+        textShowSequence.Kill();
     }
 
     public void Initialize(Canvas canvas)
@@ -107,6 +108,8 @@ public class DialogueService : IService
         }
         
         textShowSequence = DOTween.Sequence();
+
+        currentConversable.isSelectingChoice = dialogue.choices.Length > 0;
         
         textShowSequence
             .Append(DOTween.To(() => charIndex, x => charIndex = x, dialogue.dialogueText.Length, dialogue.dialogueText.Length * typingConfig.typingSpeed)
@@ -117,30 +120,31 @@ public class DialogueService : IService
                 .OnKill(() =>
                 {
                     isShowingText = false;
-                    CheckAndShowChoices(dialogue);
+                    if (currentConversable.isSelectingChoice)
+                    {
+                        ShowChoices(dialogue);
+                    }
                 })
                 .OnComplete(() =>
                 {
                     isShowingText = false;
-                    CheckAndShowChoices(dialogue);
+                    if (currentConversable.isSelectingChoice)
+                    {
+                        ShowChoices(dialogue);
+                    }
                 })
             );
     }
 
-    private void CheckAndShowChoices(DialogueSO dialogue)
+    private void ShowChoices(DialogueSO dialogue)
     {
         ChoiceSO[] choices = dialogue.choices;
-        int choicesCount = choices.Length;
-        bool haveChoices = choicesCount > 0;
 
-        if (haveChoices)
+        currentConversable.isSelectingChoice = true;
+        for (int i = 0; i < choices.Length; i++)
         {
-            currentConversable.isSelectingChoice = true;
-            for (int i = 0; i < choicesCount; i++)
-            {
-                currentConversable.currentChoices.Add(choices[i]);
-                ShowChoice(i, choices[i]);
-            }
+            currentConversable.currentChoices.Add(choices[i]);
+            ShowChoice(i, choices[i]);
         }
     }
 
@@ -163,15 +167,15 @@ public class DialogueService : IService
         Core.Audio.PlayFMODAudio("event:/IngameUI/Dialogue/Newdialogue", gameUIGO.transform);
     }
     
-    public void SelectChoicesWithControl(Vector3 inputDirection)
+    public void SelectChoicesWithGamepad(Vector3 inputDirection)
     {
-        if (inputDirection.y == 1)
+        if (inputDirection.x == -1)
         {
             preselectedChoiceIndex = 0;
             conversationDialogueChoicesGO[0].GetComponentInChildren<Outline>().enabled = true;
             conversationDialogueChoicesGO[1].GetComponentInChildren<Outline>().enabled = false;
         }
-        else if (inputDirection.y == -1)
+        else if (inputDirection.x == 1)
         {
             preselectedChoiceIndex = 1;
             conversationDialogueChoicesGO[0].GetComponentInChildren<Outline>().enabled = false;

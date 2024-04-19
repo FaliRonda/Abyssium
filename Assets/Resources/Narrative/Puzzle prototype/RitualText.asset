@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: RitualText
   m_EditorClassIdentifier: 
-  dialogueText: Texto 3
+  dialogueText: "There are runes painted on the floor in a circle, and candles of
+    different sizes positioned in a way that doesn't seem trivial... someone has
+    prepared it meticulously.\r"
   choices: []
   drop: {fileID: 0}
   isLateral: 0

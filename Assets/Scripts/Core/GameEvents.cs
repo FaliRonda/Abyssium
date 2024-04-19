@@ -80,4 +80,10 @@ public static class GameEvents
     {
         public int puzzleID;
     }
+
+    public class PlayerCarryDraggable
+    {
+        public Draggable grabbedDraggable;
+        public Draggable replacedDraggable;
+    }
 }

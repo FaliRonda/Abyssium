@@ -9,7 +9,7 @@ public class Chest : Interactable
     [HideInInspector] public bool puzzleIsSolved;
     private CinemachineVirtualCamera puzzleCamera;
 
-    public override void Interact(PJ pj)
+    public override void Interact(PJ pj, bool cancel)
     {
         puzzleCamera = GetComponentInChildren<CinemachineVirtualCamera>();
         this.pj = pj;

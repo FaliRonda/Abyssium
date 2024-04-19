@@ -1,32 +1,49 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Conversable : Interactable
 {
     public DialogueSO[] dialogues;
     public DialogueSO[] finalDialogues;
 
-    public DialogueSO[] dialoguesToShow;
-    public DialogueSO lastDialog;
-    public bool dialogueEnded;
-    
-    private int dialogueIndex = 0;
-    public List<ChoiceSO> currentChoices = new List<ChoiceSO>();
-    public bool isSelectingChoice;
+    [HideInInspector] public DialogueSO[] dialoguesToShow;
+    [HideInInspector] public DialogueSO lastDialog;
+    [HideInInspector] public bool dialogueEnded;
+
+    protected bool loopContent;
+    protected int dialogueIndex = 0;
+    [HideInInspector] public List<ChoiceSO> currentChoices = new List<ChoiceSO>();
+    [HideInInspector] public bool isSelectingChoice;
     private bool choiceSelected;
     private bool memoryFound;
     private DialogueSO lastChoiceDialog;
+    protected DialogueSO[] originalDialogues;
+    protected bool dialoguesExtended;
 
-    public override void Interact(PJ pj)
+    protected virtual void Start()
     {
-        if (isSelectingChoice)
+        originalDialogues = dialogues;
+    }
+
+    public override void Interact(PJ pj, bool cancel)
+    {
+        if (Core.Dialogue.IsShowingText && lastDialog != null)
         {
-            isSelectingChoice = false;
+            if (!cancel)
+            {
+                Core.Dialogue.ShowFullCurrentText(lastDialog);
+            }
+            else if (!isSelectingChoice)
+            {
+                EndDialogue();
+            }
         }
         else
         {
-            if (Core.Dialogue.IsShowingText)
+            
+            if (isSelectingChoice && !cancel)
             {
-                Core.Dialogue.ShowFullCurrentText(lastDialog);
+                isSelectingChoice = false;
             }
             else
             {
@@ -35,7 +52,7 @@ public class Conversable : Interactable
                     memoryFound = true;
                     dialoguesToShow = finalDialogues;
                 }
-                else if (choiceSelected || dialogueEnded) // Dialogue ended
+                else if ((choiceSelected || dialogueEnded) && !loopContent) // Dialogue ended
                 {
                     dialoguesToShow = new DialogueSO[] {lastDialog};
                 }
@@ -43,15 +60,28 @@ public class Conversable : Interactable
                 {
                     dialoguesToShow = dialogues;
                 }
-                
 
-                if (!IsInteracting())
+                if (!cancel)
                 {
-                    StartDialogue();
-                }
-                else
+                    if (!IsInteracting())
+                    {
+                        if (!interactionStartedOnce)
+                        {
+                            interactionStartedOnce = true;
+                        }
+                        
+                        StartDialogue();
+                    }
+                    else
+                    {
+                        ContinueDialog();
+                    }
+                } else
                 {
-                    ContinueDialog();
+                    if (!isSelectingChoice)
+                    {
+                        EndDialogue();
+                    }
                 }
             }
         }
@@ -75,7 +105,7 @@ public class Conversable : Interactable
         }
     }
 
-    private void ShowNextDialog()
+    protected void ShowNextDialog()
     {
         Core.Audio.PlayFMODAudio("event:/IngameUI/Dialogue/Newdialogue", transform);
         // Hay más diálogos que mostrar
@@ -113,7 +143,7 @@ public class Conversable : Interactable
     {
         SetInteracting(false);
         Core.Dialogue.HideCanvas();
-        
+
         Core.Event.Fire(new GameEvents.ConversableDialogue(){ started = false });
         Core.Event.Fire(new GameEvents.ConversableDialogueEnded() {conversable = this, lastDialogue = lastDialog});
 
@@ -124,6 +154,13 @@ public class Conversable : Interactable
             Vanish();
         }
 
+        if (!interactionEndedOnce)
+        {
+            interactionEndedOnce = true;
+        }
+        
+        ResetDialoguesToOriginal();
+        
         dialogueEnded = true;
     }
 
@@ -133,7 +170,7 @@ public class Conversable : Interactable
         Destroy(this.gameObject);
     }
 
-    public void ChoiceSelected(int choiceIndex)
+    public virtual void ChoiceSelected(int choiceIndex)
     {
         choiceSelected = true;
         lastChoiceDialog = currentChoices[choiceIndex].nextDialogue;
@@ -150,5 +187,63 @@ public class Conversable : Interactable
 
         dialogueIndex++;
         ShowNextDialog();
+    }
+    
+    public void ExtendDialogues(DialogueSO newDialogue)
+    {
+        if (!dialoguesExtended)
+        {
+            dialoguesExtended = true;
+        }
+        DialogueSO[] extendedDialogues = new DialogueSO[dialogues.Length + 1];
+
+        for (int dialogueIndex = 0; dialogueIndex < dialogues.Length; dialogueIndex++)
+        {
+            extendedDialogues[dialogueIndex] = dialogues[dialogueIndex];
+        }
+
+        extendedDialogues[dialogues.Length] = newDialogue;
+
+        dialogues = extendedDialogues;
+
+        RefreshDialoguesToShow();
+    }
+    
+    public void ExtendOriginalDialogues(DialogueSO newDialogue)
+    {
+        DialogueSO[] extendedDialogues = new DialogueSO[originalDialogues.Length + 1];
+
+        for (int dialogueIndex = 0; dialogueIndex < originalDialogues.Length; dialogueIndex++)
+        {
+            extendedDialogues[dialogueIndex] = originalDialogues[dialogueIndex];
+        }
+
+        extendedDialogues[originalDialogues.Length] = newDialogue;
+
+        originalDialogues = extendedDialogues;
+
+        RefreshDialoguesToShowWithOriginal();
+    }
+
+    protected void ResetDialoguesToOriginal()
+    {
+        dialogues = originalDialogues;
+        dialoguesExtended = false;
+    }
+
+    protected void RefreshDialoguesToShow()
+    {
+        dialoguesToShow = dialogues;
+    }
+
+    protected void RefreshDialoguesToShowWithOriginal()
+    {
+        dialoguesToShow = originalDialogues;
+    }
+    
+    public void ShowExtraDialog(DialogueSO extraDialogue)
+    {
+        lastDialog = extraDialogue;
+        Core.Dialogue.ShowText(extraDialogue);
     }
 }

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: OpenBookText 3
   m_EditorClassIdentifier: 
-  dialogueText: Texto 3
+  dialogueText: "Exercise caution when delving into these ancient arts. Mastery may
+    bring power, but heed the warnings of history.\r"
   choices: []
   drop: {fileID: 0}
   isLateral: 0

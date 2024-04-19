@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using DG.Tweening;
 
@@ -11,32 +12,56 @@ public class EmissionGlow : MonoBehaviour
 
     private Material material;
     private Color emissionColor = Color.magenta;
-    
+    private Sequence glowSequence;
+    private Color originalColor;
+
     private void Start()
     {
-        foreach (Material currentMaterial in GetComponent<Renderer>().materials)
+        InitializeGlowEffect();
+    }
+
+    private void OnEnable()
+    {
+        InitializeGlowEffect();
+    }
+
+    private void InitializeGlowEffect()
+    {
+        if (material == null)
         {
-            if (currentMaterial.HasProperty("_EmissionColor"))
+            Renderer renderer = GetComponent<Renderer>();
+            renderer = renderer == null ? GetComponentInChildren<Renderer>() : renderer;
+            
+            foreach (Material currentMaterial in renderer.materials)
             {
-                material = currentMaterial;
+                if (currentMaterial.HasProperty("_EmissionColor"))
+                {
+                    material = currentMaterial;
+                }
             }
+
+            if (material == null || !material.HasProperty("_EmissionColor"))
+            {
+                Debug.LogError("El material proporcionado no tiene emisión o es nulo.");
+                return;
+            }
+
+            originalColor = material.GetColor("_EmissionColor");
+            
+            if (emissionColor == Color.magenta)
+            {
+                emissionColor = originalColor;
+            }
+            material.SetColor("_EmissionColor", emissionColor * minIntensity);
+
         }
         
-        if (material == null || !material.HasProperty("_EmissionColor"))
-        {
-            Debug.LogError("El material proporcionado no tiene emisión o es nulo.");
-            return;
-        }
-
-        emissionColor = material.GetColor("_EmissionColor");
-        material.SetColor("_EmissionColor", emissionColor * minIntensity);
-
         StartEmissionAnimation();
     }
 
     private void StartEmissionAnimation()
     {
-        Sequence glowSequence = DOTween.Sequence();
+        glowSequence = DOTween.Sequence();
 
         glowSequence
             .Append(material.DOColor(emissionColor * maxIntensity, "_EmissionColor", transitionDuration)
@@ -45,6 +70,34 @@ public class EmissionGlow : MonoBehaviour
             .Append(material.DOColor(emissionColor * minIntensity, "_EmissionColor", transitionDuration)
                 .SetEase(Ease.InOutCubic))
             .AppendInterval(timeDarkDuration)
-            .OnComplete(StartEmissionAnimation);
+            .OnComplete(() =>
+            {
+                if (enabled)
+                {
+                    StartEmissionAnimation();
+                }
+                else
+                {
+                    material.SetColor("_EmissionColor", originalColor);
+                }
+            });
+    }
+
+    public void SetEmissionColor(Color runesReactionColor)
+    {
+        emissionColor = runesReactionColor;
+    }
+
+    private void OnDisable()
+    {
+        emissionColor = originalColor;
+    }
+
+    private void OnDestroy()
+    {
+        if (material != null && originalColor != Color.clear)
+        {
+            material.SetColor("_EmissionColor", originalColor);
+        }
     }
 }

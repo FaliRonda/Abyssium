@@ -6,4 +6,5 @@
     public static float initialTimeLoopDuration;
     public static float timeLoopDuration;
     public static bool timeLoopEnded;
+    public static bool controlBlocked;
 }

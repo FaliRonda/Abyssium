@@ -28,7 +28,7 @@ public class Item : Interactable
         MEMORY
     }
 
-    public override void Interact(PJ pj)
+    public override void Interact(PJ pj, bool cancel)
     {
         Core.Audio.Play(SOUND_TYPE.ItemGot, 1, 0, 0.05f);
         pj.CollectItem(this);

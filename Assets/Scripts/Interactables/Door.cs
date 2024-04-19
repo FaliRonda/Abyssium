@@ -29,7 +29,7 @@ public class Door : Interactable
         doorBoxCollider = colliders[1];
     }
 
-    public override void Interact(PJ pj)
+    public override void Interact(PJ pj, bool cancel)
     {
         if (CanInteract())
         {

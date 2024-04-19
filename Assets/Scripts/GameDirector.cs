@@ -7,7 +7,6 @@ using FMOD.Studio;
 using Ju.Extensions;
 using Sirenix.OdinInspector;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
@@ -111,7 +110,6 @@ public class GameDirector : MonoBehaviour
     private static bool IsSceneT1C1IT2Fm1 => SceneManager.GetActiveScene().name == "T1C1IT2F-1";
     private static bool IsSceneT1C2Fm2 => SceneManager.GetActiveScene().name == "T1C2F-2";
     private bool doorLockedAttemptOpen;
-    private bool controlBlocked;
     private bool firstTimeDamaged;
     private bool neverDamaged = true;
     private bool bossDefeated;
@@ -227,7 +225,7 @@ public class GameDirector : MonoBehaviour
             {
                 pj.PlayIdle();
                 pjCameFromDoor = true;
-                controlBlocked = true;
+                GameState.controlBlocked = true;
                 pjCameFromAbove = e.toFloorBelow;
                 sceneDirector.LoadNewFloorScene(e.toFloorBelow);
             });
@@ -390,7 +388,7 @@ public class GameDirector : MonoBehaviour
             {
                 ForceSwitchGamePerspective();
             }
-            else if (pj != null && !narrativeDirector.IsShowingNarrative && !controlBlocked)
+            else if (pj != null && !narrativeDirector.IsShowingNarrative && !GameState.controlBlocked)
             {
                 ControlInputData controlInputData = GetControlInputDataValues();
                 
@@ -399,7 +397,7 @@ public class GameDirector : MonoBehaviour
                     // Player
                     pj.DoUpdate(controlInputData);
 
-                    if (enemies != null && !controlBlocked)
+                    if (enemies != null && !GameState.controlBlocked)
                     {
                         foreach (EnemyAI enemy in enemies)
                         {
@@ -409,7 +407,7 @@ public class GameDirector : MonoBehaviour
                     
                     if (Core.Dialogue.ChoicesInScreen)
                     {
-                        Core.Dialogue.SelectChoicesWithControl(controlInputData.inputDirection);
+                        Core.Dialogue.SelectChoicesWithGamepad(controlInputData.inputDirection);
                         if (InteractAction.triggered)
                         {
                             Core.Dialogue.ChoiceSelected(-1);
@@ -418,12 +416,19 @@ public class GameDirector : MonoBehaviour
                     
                     if (InteractAction.triggered)
                     {
-                        pj.DoMainAction();
+                        pj.DoMainAction(false);
                     }
                     
-                    if (RollAction.triggered && !explorationDemo)
+                    if (RollAction.triggered)
                     {
-                        pj.DoRoll(controlInputData);
+                        if (!GameState.gameIn3D)
+                        {
+                            pj.DoRoll(controlInputData);
+                        }
+                        else
+                        {
+                            pj.DoMainAction(true);
+                        }
                     }
                 }
                 else
@@ -702,7 +707,7 @@ public class GameDirector : MonoBehaviour
 
         if (pjCameFromDoor)
         {
-            controlBlocked = false;
+            GameState.controlBlocked = false;
             pjCameFromDoor = false;
 
             pj.Rotate180();
@@ -739,7 +744,7 @@ public class GameDirector : MonoBehaviour
         Sequence smoothnessSequence = DOTween.Sequence();
 
         timeLoopPaused = true;
-        controlBlocked = true;
+        GameState.controlBlocked = true;
 
         vignetteSequence.AppendInterval(2f)
             .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.75f, 0.3f)
@@ -776,7 +781,7 @@ public class GameDirector : MonoBehaviour
             .AppendCallback(() =>
             {
                 timeLoopPaused = false;
-                controlBlocked = false;
+                GameState.controlBlocked = false;
                 Core.PositionRecorder.StartRecording(pj.transform, moon.transform);
                 Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["T1C0F0"]);
                 //Core.Audio.Play(SOUND_TYPE.Bell, 1, 0, 0.01f);
@@ -800,7 +805,7 @@ public class GameDirector : MonoBehaviour
         if (IsSceneT1C1Fm1 && firstTimeDamaged)
         {
             firstTimeDamaged = false;
-            controlBlocked = true;
+            GameState.controlBlocked = true;
             timeLoopPaused = true;
 
             pj.PlayIdle();
@@ -819,7 +824,7 @@ public class GameDirector : MonoBehaviour
                 .AppendInterval(2f)
                 .AppendCallback(() =>
                 {
-                    controlBlocked = false;
+                    GameState.controlBlocked = false;
                     timeLoopPaused = false;
                 });
         }
@@ -908,7 +913,7 @@ public class GameDirector : MonoBehaviour
         int cycle2InitialFloor = 1;
         GameState.timeLoopEnded = true;
         isNewCycleOrLoop = true;
-        controlBlocked = false;
+        GameState.controlBlocked = false;
         initialTimeLoopDuration = cycle2LoopDuration;
         Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["T1C2F0"]);
         sceneDirector.SetTowerFloorScenes(cycle2Floors, cycle2InitialFloor);
@@ -946,7 +951,7 @@ public class GameDirector : MonoBehaviour
     private void PlayerDamaged(float deathFrameDuration)
     {
         timeLoopPaused = true;
-        controlBlocked = true;
+        GameState.controlBlocked = true;
         
         foreach (EnemyAI enemy in enemies)
         {
@@ -969,7 +974,7 @@ public class GameDirector : MonoBehaviour
             .AppendCallback(() =>
             {
                 timeLoopPaused = false;
-                controlBlocked = false;
+                GameState.controlBlocked = false;
                 //Core.Audio.Play(SOUND_TYPE.PjDamaged, 1, 0.1f, 0.1f);
                 Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/GetDamage", pj.transform);
             });
@@ -1016,7 +1021,7 @@ public class GameDirector : MonoBehaviour
     {
         if (!bossDefeated)
         {
-            controlBlocked = true;
+            GameState.controlBlocked = true;
             timeLoopPaused = true;
 
             pj.PlayIdle();
@@ -1043,7 +1048,7 @@ public class GameDirector : MonoBehaviour
                 .AppendCallback(() =>
                 {
                     Core.Audio.Play(SOUND_TYPE.BossMusic, 1, 0, 0.03f);
-                    controlBlocked = false;
+                    GameState.controlBlocked = false;
                     timeLoopPaused = false;
                     enemies[0].aIActive = true;
                 });
@@ -1088,7 +1093,7 @@ public class GameDirector : MonoBehaviour
                 {
                     if (enemyWaveIndex == enemyWaves.Count - 1)
                     {
-                        controlBlocked = true;
+                        GameState.controlBlocked = true;
                         timeLoopPaused = true;
 
                         pj.PlayIdle();
@@ -1122,7 +1127,7 @@ public class GameDirector : MonoBehaviour
                             .AppendInterval(1f)
                             .AppendCallback(() =>
                             {
-                                controlBlocked = false;
+                                GameState.controlBlocked = false;
                                 timeLoopPaused = false;
                                 instantiatedEnemies[0].GetComponent<EnemyAI>().aIActive = true;
                             });
@@ -1134,7 +1139,7 @@ public class GameDirector : MonoBehaviour
                 }
                 else
                 {
-                    controlBlocked = true;
+                    GameState.controlBlocked = true;
                     pj.PlayIdle();
                     
                     Core.CameraEffects.StartShakingEffect(0.4f, 0.04f, 1.5f);
@@ -1162,7 +1167,7 @@ public class GameDirector : MonoBehaviour
             if (IsSceneT1C1IT2Fm1)
             {
                 timeLoopPaused = true;
-                controlBlocked = true;
+                GameState.controlBlocked = true;
                 Sequence angryGodSequence = DOTween.Sequence();
 
                 angryGodSequence
@@ -1189,7 +1194,7 @@ public class GameDirector : MonoBehaviour
                 {
                     bossDefeated = true;
                     timeLoopPaused = true;
-                    controlBlocked = true;
+                    GameState.controlBlocked = true;
                     
                     pj.PlayIdle();
                     Core.Audio.StopAll();
@@ -1279,7 +1284,7 @@ public class GameDirector : MonoBehaviour
         {
             if (enemyDied)
             {
-                controlBlocked = true;
+                GameState.controlBlocked = true;
                 pj.PlayIdle();
                 
                 Sequence vignetteSequence = DOTween.Sequence();
@@ -1299,7 +1304,7 @@ public class GameDirector : MonoBehaviour
                     })
                     .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.5f, 0.3f)
                         .SetEase(Ease.OutQuad))
-                    .AppendCallback(() => { controlBlocked = false; });
+                    .AppendCallback(() => { GameState.controlBlocked = false; });
             }
             else
             {
@@ -1349,5 +1354,31 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IS
         {
             this[keys[i]] = values[i];
         }
+    }
+    
+    public TKey GetKeyFromValue(TValue value)
+    {
+        TKey key = default(TKey);
+        foreach (KeyValuePair<TKey, TValue> pair in this)
+        {
+            if (pair.Value.Equals(value))
+            {
+                return pair.Key;
+            }
+        }
+
+        return key;
+    }
+    
+    public TValue GetValueFromKey(TKey key)
+    {
+        TValue value = default(TValue);
+
+        if (keys.Contains(key))
+        {
+            value = values[keys.IndexOf(key)];
+        }
+
+        return value;
     }
 }
