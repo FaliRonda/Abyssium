@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 
 public class EmissionGlow : MonoBehaviour
 {
@@ -99,5 +100,19 @@ public class EmissionGlow : MonoBehaviour
         {
             material.SetColor("_EmissionColor", originalColor);
         }
+    }
+
+    public void UpdateValues(float maxIntensity, float minIntensity, float transitionDuration, float timeLightDuration, float timeDarkDuration)
+    {
+        this.maxIntensity = maxIntensity;
+        this.minIntensity = minIntensity;
+        this.transitionDuration = transitionDuration;
+        this.timeLightDuration = timeLightDuration;
+        this.timeDarkDuration = timeDarkDuration;
+    }
+
+    public void StopEmission()
+    {
+        enabled = false;
     }
 }

@@ -7,18 +7,12 @@ public class BlockedKeyCombinationReaction : CombinationReaction
     public GameObject runes;
     public Color runesReactionColor;
 
-    private Material runesMaterial;
-
     public override void DoReaction(Conversable conversable)
     {
         base.DoReaction(conversable);
 
         if (!reactionPerformed)
         {
-            if (runesMaterial == null)
-            {
-                runesMaterial = runes.GetComponent<MeshRenderer>().sharedMaterial;
-            }
             runes.GetComponent<EmissionGlow>().SetEmissionColor(runesReactionColor);
             runes.GetComponent<EmissionGlow>().enabled = true;
             

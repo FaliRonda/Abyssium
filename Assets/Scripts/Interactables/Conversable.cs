@@ -19,6 +19,8 @@ public class Conversable : Interactable
     private DialogueSO lastChoiceDialog;
     protected DialogueSO[] originalDialogues;
     protected bool dialoguesExtended;
+    [HideInInspector] public PJ pj;
+    private bool disableOnConversationEnded;
 
     protected virtual void Start()
     {
@@ -27,6 +29,7 @@ public class Conversable : Interactable
 
     public override void Interact(PJ pj, bool cancel)
     {
+        this.pj = pj;
         if (Core.Dialogue.IsShowingText && lastDialog != null)
         {
             if (!cancel)
@@ -162,6 +165,14 @@ public class Conversable : Interactable
         ResetDialoguesToOriginal();
         
         dialogueEnded = true;
+
+        if (disableOnConversationEnded)
+        {
+            interactableCollider.enabled = false;
+            SetOutlineVisibility(false);
+            enabled = false;
+            pj.interactableInContact = null;
+        }
     }
 
     private void Vanish()
@@ -245,5 +256,10 @@ public class Conversable : Interactable
     {
         lastDialog = extraDialogue;
         Core.Dialogue.ShowText(extraDialogue);
+    }
+
+    public void DissableOnConversationEnded()
+    {
+        disableOnConversationEnded = true;
     }
 }

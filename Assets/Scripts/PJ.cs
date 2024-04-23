@@ -132,7 +132,7 @@ public class PJ : MonoBehaviour
         {
             if (interactableInContact == null || !interactableInContact.IsInteracting())
             {
-                if (interactableInContact == null)
+                if (interactableInContact == null && other.GetComponent<Interactable>().CanInteract())
                 {
                     interactableInContact = other.GetComponent<Interactable>();
                     interactableInContact.SetOutlineVisibility(true);
@@ -698,7 +698,7 @@ public class PJ : MonoBehaviour
             PlayIdle();
             interactableInContact.Interact(this, cancel);
            
-            if (!interactableInContact.IsInteracting())
+            if (interactableInContact == null || !interactableInContact.IsInteracting())
             {
                 pjDoingAction = false;
             }

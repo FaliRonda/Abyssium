@@ -77,20 +77,18 @@ public class Interactable : MonoBehaviour, I_Interactable
             SetOutlineVisibility(false);
         }
     }
-
-    private bool OtherIsPlayer(Collider other)
-    {
-        return other.gameObject.layer == Layers.PJ_LAYER;
-    }
     
     public void SetOutlineVisibility(bool isActive)
     {
-        int activeIntValue = GameState.gameIn3D && isActive ? 1 : 0;
-        material.SetInt("_OutlineActive", activeIntValue);
-
-        if (interactionEndedOnce && tooltipCanvas != null && tooltipText != "")
+        if (canInteract)
         {
-            tooltipCanvas.enabled = isActive;
+            int activeIntValue = GameState.gameIn3D && isActive ? 1 : 0;
+            material.SetInt("_OutlineActive", activeIntValue);
+
+            if (interactionEndedOnce && tooltipCanvas != null && tooltipText != "")
+            {
+                tooltipCanvas.enabled = isActive;
+            }
         }
     }
     

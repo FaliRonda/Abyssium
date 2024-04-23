@@ -7,7 +7,6 @@ public class Draggable : Conversable
     private DialogueSO currentQuestion;
     private DialogueSO grabQuestion;
     private DialogueSO replaceQuestion;
-    private PJ pj;
 
     protected override void Start()
     {
@@ -39,7 +38,6 @@ public class Draggable : Conversable
         }
         
         base.Interact(pj, cancel);
-        this.pj = pj;
         
         if (tooltipCanvas != null && !tooltipCanvas.enabled && interactionEndedOnce)
         {

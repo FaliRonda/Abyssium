@@ -188,4 +188,13 @@ public class DropPoint : Conversable
 
         return true;
     }
+
+    public void ResetDropPoint()
+    {
+        for (int i = 0; i < dropPoints.Count; i++)
+        {
+            droppedDraggables[i] = null;
+            availableDropPoints[i] = true;
+        }
+    }
 }
