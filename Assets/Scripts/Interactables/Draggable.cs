@@ -3,6 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class Draggable : Conversable
 {
+    public string grabAudioEvent;
     private bool canBeDragged;
     private DialogueSO currentQuestion;
     private DialogueSO grabQuestion;
@@ -60,6 +61,7 @@ public class Draggable : Conversable
     {
         if (canBeDragged && choiceIndex == 0)
         {
+            Core.Audio.PlayFMODAudio(grabAudioEvent, transform);
             Core.Event.Fire(new GameEvents.PlayerCarryDraggable() { grabbedDraggable = this, replacedDraggable = pj.currentDraggable });
             
             if (pj.currentDraggable != null)

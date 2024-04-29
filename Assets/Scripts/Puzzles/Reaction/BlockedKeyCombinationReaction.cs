@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class BlockedKeyCombinationReaction : CombinationReaction
 {
@@ -13,6 +12,8 @@ public class BlockedKeyCombinationReaction : CombinationReaction
 
         if (!reactionPerformed)
         {
+            runes.GetComponent<EmissionGlow>().UpdateValues(30, 1, 0.75f, 0, 1);
+            runes.GetComponent<EmissionGlow>().UpdateAudioEvent("event:/Puzzle/Rituals/UnblockCombinationGlow");
             runes.GetComponent<EmissionGlow>().SetEmissionColor(runesReactionColor);
             runes.GetComponent<EmissionGlow>().enabled = true;
             

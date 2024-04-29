@@ -21,7 +21,6 @@ public class DropPoint : Conversable
     private DialogueSO dropQuestion;
     private DialogueSO dropFull;
     private Draggable currentDraggable;
-    [HideInInspector] public PJ pj;
     private CombinationReaction currentCombinationReaction;
 
     protected override void Start()
@@ -130,6 +129,7 @@ public class DropPoint : Conversable
 
                 if (dropped)
                 {
+                    Core.Audio.PlayFMODAudio("event:/Puzzle/Draggables/Drop", transform);
                     // Quitar el objeto UI
                     
                     currentDraggable.transform.position = dropPoints[dropPointIndex].position;

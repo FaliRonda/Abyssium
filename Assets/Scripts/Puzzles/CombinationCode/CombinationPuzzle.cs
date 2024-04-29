@@ -1,5 +1,6 @@
 using Cinemachine;
 using DG.Tweening;
+using FMOD.Studio;
 using Ju.Extensions;
 using Puzzles;
 using TMPro;
@@ -155,6 +156,10 @@ public class CombinationPuzzle : MonoBehaviour
     {
         if (!symbolSelected && selectedImageIndex < optionImages.Length - 1)
         {
+            if (inputDirection.y != 0)
+            {
+                Core.Audio.PlayFMODAudio("event:/Puzzle/Chest/SymbolUpdate", transform);
+            }
             // Update the current button's symbol index
             if (inputDirection.y == 1)
             {
@@ -221,11 +226,13 @@ public class CombinationPuzzle : MonoBehaviour
             
             if (inputDirection.x == 1 && (selectedImageIndex + 1 < optionImages.Length))
             {
+                Core.Audio.PlayFMODAudio("event:/Puzzle/Chest/PositionUpdate", transform);
                 selectedImageIndex++;
                 buttonSelected = true;
             }
             else if (inputDirection.x == -1 && selectedImageIndex > 0)
             {
+                Core.Audio.PlayFMODAudio("event:/Puzzle/Chest/PositionUpdate", transform);
                 selectedImageIndex--;
                 buttonSelected = true;
             }

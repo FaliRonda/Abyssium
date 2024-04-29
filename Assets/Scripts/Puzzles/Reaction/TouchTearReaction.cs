@@ -16,7 +16,11 @@ public class TouchTearReaction : PuzzleYesChoiceDraggablesReaction
             Sequence tearMovementSequence = DOTween.Sequence();
             conversable.ExtendDialogues(tearFallDialgue);
             reactionPerformed = true;
+            
+            conversable.DissableOnConversationEnded();
 
+            Core.Audio.PlayFMODAudio("event:/Puzzle/PuzzleHints/TearFall", transform);
+            
             tearMovementSequence
                 .Append(moonTear.transform.DOMoveZ(initialPosition.z - 0.5f, 0.2f))
                 .Join(moonTear.transform.DOMoveY(0.1f, 0.5f))
@@ -25,7 +29,6 @@ public class TouchTearReaction : PuzzleYesChoiceDraggablesReaction
                 {
                     moonTear.GetComponent<Collider>().enabled = true;
                     moonTear.GetComponent<EmissionGlow>().enabled = true;
-                    
                 });
         }
     }

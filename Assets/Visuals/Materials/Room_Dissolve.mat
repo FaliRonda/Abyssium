@@ -46,6 +46,7 @@ Material:
     - _DissolveAmount: 0
     m_Colors:
     - Color_2ED9CBC6: {r: 0, g: 3.121569, b: 4, a: 0}
+    - _ColorDissolve: {r: 0, g: 3.121569, b: 4, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2817319106956664554
 MonoBehaviour:

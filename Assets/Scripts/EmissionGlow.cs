@@ -1,10 +1,10 @@
-using System;
 using UnityEngine;
 using DG.Tweening;
-using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 
 public class EmissionGlow : MonoBehaviour
 {
+    public string audioEvent;
+    
     public float maxIntensity = 1f;
     public float minIntensity = 0f;
     public float transitionDuration = 1f;
@@ -65,7 +65,8 @@ public class EmissionGlow : MonoBehaviour
         glowSequence = DOTween.Sequence();
 
         glowSequence
-            .Append(material.DOColor(emissionColor * maxIntensity, "_EmissionColor", transitionDuration)
+            .AppendCallback(() => Core.Audio.PlayFMODAudio(audioEvent, transform))
+            .Join(material.DOColor(emissionColor * maxIntensity, "_EmissionColor", transitionDuration)
                 .SetEase(Ease.InOutCubic))
             .AppendInterval(timeLightDuration)
             .Append(material.DOColor(emissionColor * minIntensity, "_EmissionColor", transitionDuration)
@@ -114,5 +115,10 @@ public class EmissionGlow : MonoBehaviour
     public void StopEmission()
     {
         enabled = false;
+    }
+
+    public void UpdateAudioEvent(string audioEvent)
+    {
+        this.audioEvent = audioEvent;
     }
 }

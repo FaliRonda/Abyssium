@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: MythBook2Text2
   m_EditorClassIdentifier: 
-  dialogueText: "Taro returns with an army seeking to kill Banuk to gain immortality
-    through the faith of mortals. After a long war, Banuk defeats Taro but is devastated
-    and withdraws from the world.\r"
+  dialogueText: "After centuries of exile, Taro returns with a powerful army, seeking
+    to obtain his mother's immortality through the faith of mortals. This sparks
+    the war of loss, lasting 24 centuries. Eventually, Banuk, in a desperate act,
+    eliminates Taro, feeling shattered by her own actions. She decides to depart
+    from the world, leaving Lema as the sole deity for humans to worship.\r"
   choices: []
   drop: {fileID: 0}
   isLateral: 0

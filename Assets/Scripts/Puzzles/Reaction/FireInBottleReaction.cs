@@ -13,7 +13,7 @@ public class FireInBottleReaction : PuzzleYesChoiceDraggablesReaction
         
         if (!reactionPerformed)
         {
-            // Cambiar el icono de la UI
+            Core.Audio.PlayFMODAudio("event:/Puzzle/PuzzleHints/FireEssence", transform);
             
             Renderer renderer = magicBottle.GetComponentInChildren<Renderer>();
             Material[] materials = renderer.materials;

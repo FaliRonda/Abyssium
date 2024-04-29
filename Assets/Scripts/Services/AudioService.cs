@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using DG.Tweening;
+using FMOD.Studio;
 using FMODUnity;
 using Ju.Services;
 using UnityEngine;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public enum SOUND_TYPE
 {
@@ -32,12 +35,20 @@ public class AudioService : IService
     private AudioConfigSO audioConfig;
     private Dictionary<SOUND_TYPE, AudioClip> soundDictionary;
     private GameObject audioGO;
-    private FMOD.Studio.EventInstance soundEvent;
+    private EventInstance soundEvent;
+    private bool waitBetweenSameAudio;
+    private string lastEventName;
+    private List<Sequence> infiniteAudioSequences;
+    private EventInstance backgroundMusic;
+    private float originalBackgroundVolume;
+    private List<EventInstance> fmodAudios;
 
     public void Initialize(GameObject audioGO)
     {
         InitializeSoundDictionary();
         this.audioGO = audioGO;
+        infiniteAudioSequences = new List<Sequence>();
+        fmodAudios = new List<EventInstance>();
     }
     
     private void InitializeSoundDictionary()
@@ -68,7 +79,7 @@ public class AudioService : IService
         };
     }
 
-    public void Play(SOUND_TYPE soundType, float pitch, float randomRange, float volume)
+    public void PlayUnityAudio(SOUND_TYPE soundType, float pitch, float randomRange, float volume)
     {
         if (soundDictionary.TryGetValue(soundType, out AudioClip audioClip))
         {
@@ -93,16 +104,8 @@ public class AudioService : IService
             Debug.LogError("SoundType no encontrado en el diccionario.");
         }
     }
-    
-    public FMOD.Studio.EventInstance PlayFMODAudio(string eventName, Transform parentTransform)
-    {
-        soundEvent = RuntimeManager.CreateInstance(eventName);
-        soundEvent.set3DAttributes(RuntimeUtils.To3DAttributes(parentTransform));
-        soundEvent.start();
-        return soundEvent;
-    }
 
-    public void StopAll()
+    public void StopAllUnityAudios()
     {
         AudioSource[] audios = audioGO.GetComponentsInChildren<AudioSource>();
 
@@ -111,5 +114,91 @@ public class AudioService : IService
             audio.Stop();
             GameObject.Destroy(audio.gameObject);
         }
+    }
+    
+    public EventInstance PlayFMODAudio(string eventName, Transform parentTransform)
+    {
+        soundEvent = RuntimeManager.CreateInstance(eventName);
+        soundEvent.set3DAttributes(RuntimeUtils.To3DAttributes(parentTransform));
+        
+        if (lastEventName != eventName || !waitBetweenSameAudio)
+        {
+            lastEventName = eventName;
+
+            waitBetweenSameAudio = true;
+            Sequence waitBetweenSameAudioSequence = DOTween.Sequence();
+            waitBetweenSameAudioSequence
+                .AppendInterval(0.1f)
+                .AppendCallback(() => { waitBetweenSameAudio = false; });
+        
+            soundEvent.start();
+
+            if (eventName.Contains("DemoScene_Music"))
+            {
+                backgroundMusic = soundEvent;
+                backgroundMusic.getVolume(out originalBackgroundVolume);
+            }
+        }
+
+        fmodAudios.Add(soundEvent);
+        
+        return soundEvent;
+    }
+
+    public bool FMODAudioIsPlaying(EventInstance eventInstance)
+    {
+        eventInstance.getPlaybackState(out var playbackState);
+        return playbackState != PLAYBACK_STATE.STOPPED;
+    }
+
+    public void PlayInfiniteFMODAudio(string eventName, Transform transform, float delay)
+    {
+        EventInstance instance = new EventInstance();
+        Sequence infiniteAudioSequence = DOTween.Sequence();
+        infiniteAudioSequences.Add(infiniteAudioSequence);
+        
+        infiniteAudioSequence
+            .AppendCallback(() =>
+            {
+                instance = PlayFMODAudio(eventName, transform);
+            })
+            .AppendInterval(delay)
+            .SetLoops(-1)
+            .OnKill((() => instance.stop(STOP_MODE.ALLOWFADEOUT)));
+    }
+    
+    public void StopAllInfiniteFMODAudio()
+    {
+        foreach (Sequence sequence in infiniteAudioSequences)
+        {
+            sequence.Kill();
+        }
+    }
+
+    public void ResetFMODBackgroundVolume()
+    {
+        backgroundMusic.getVolume(out float currentVolume);
+        DOTween.To(() => currentVolume, x =>
+        {
+            backgroundMusic.setVolume(x);
+        }, originalBackgroundVolume, 0.5f);
+    }
+
+    public void UpdateFMODBackgroundVolume(float factor)
+    {
+        DOTween.To(() => originalBackgroundVolume, x =>
+        {
+            backgroundMusic.setVolume(x);
+        }, originalBackgroundVolume * factor, 0.5f);
+    }
+
+    public void StopAllFMODAudios()
+    {
+        foreach (EventInstance fmodAudio in fmodAudios)
+        {
+            fmodAudio.stop(STOP_MODE.ALLOWFADEOUT);
+        }
+        
+        fmodAudios.Clear();
     }
 }

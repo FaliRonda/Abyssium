@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: MythBook4Text2
   m_EditorClassIdentifier: 
-  dialogueText: "Lema, containing a part of Taro, splits into multiple versions to
-    prevent the full birth of his counterpart. He withdraws to seek a solution, while
-    some kingdoms suffer conflicts between their different aspects.\r"
+  dialogueText: "Realizing his imperfection and containing a fragment of Taro's soul,
+    Lema creates different versions of himself to dilute that part and prolong his
+    existence. He withdraws to the Throne of Loss in search of an alternative solution
+    while observing how different cultures interpret his story and create mythologies
+    around him and Taro.\r"
   choices: []
   drop: {fileID: 0}
   isLateral: 0

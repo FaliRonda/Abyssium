@@ -23,25 +23,25 @@ MonoBehaviour:
     values:
     - symbols:
       - q
-      - s
+      - N
       - d
       - f
       - A
     - symbols:
       - q
-      - w
+      - X
       - N
       - e
-      - r
+      - A
     - symbols:
-      - z
+      - X
       - c
       - v
       - O
       - b
     - symbols:
-      - X
       - u
-      - i
-      - o
+      - X
+      - A
+      - O
       - p

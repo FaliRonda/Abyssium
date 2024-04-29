@@ -28,6 +28,8 @@ public class DialogueService : IService
     private int preselectedChoiceIndex;
     private bool isShowingText;
     private Sequence textShowSequence;
+    private bool playOnNextDialogue;
+    private bool playingAudio;
 
     public void StartConversation(Conversable conversable)
     {
@@ -102,11 +104,6 @@ public class DialogueService : IService
         int charIndex = 0;
         conversationDialogueText.text = "";
 
-        if (dialogue.playSuspenseMusic)
-        {
-            Core.Audio.Play(SOUND_TYPE.EndMusic, 1, 0, 0.03f);
-        }
-        
         textShowSequence = DOTween.Sequence();
 
         currentConversable.isSelectingChoice = dialogue.choices.Length > 0;

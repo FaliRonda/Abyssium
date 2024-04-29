@@ -8,7 +8,7 @@ public class PuzzleHint : Conversable
     public List<Draggable> unblockableDraggables;
     
     public List<Draggable> interactingDraggables;
-    
+
     [HideInInspector] public bool informationHidden;
     private PuzzleInformationHiddenReaction[] informationHiddenReactions;
     private PuzzleInformationHiddenCarryingDraggableReaction[] informationHiddenDraggablesReactions;
@@ -93,7 +93,7 @@ public class PuzzleHint : Conversable
                 pendingReactions.Clear();
             }
         }
-
+        
         base.Interact(pj, cancel);
     }
     

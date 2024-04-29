@@ -49,6 +49,9 @@ public class BlockSpecialDraggableReaction : SpecialDraggableInteractionReaction
             conversable.SetOutlineVisibility(false);
             conversable.SetCanInteract(false);
 
+            Core.Audio.UpdateFMODBackgroundVolume(0.25f);
+            Core.Audio.PlayFMODAudio("event:/Puzzle/Rituals/UnblockCinematic", transform);
+            
             blockMovementSequence
                 .AppendInterval(1f)
                 .Append(runesCamera.transform.DOMoveY(maxHeight + 1, movementDuration).SetEase(Ease.InOutQuad))
@@ -70,7 +73,7 @@ public class BlockSpecialDraggableReaction : SpecialDraggableInteractionReaction
                             bloom.tint.value = dissolveColor;
 
                             DOTween.To(() => bloom.intensity.value, x => bloom.intensity.value = x, 2f, 0.2f)
-                                .SetEase(Ease.OutQuad)
+                                .SetEase(Ease.InOutElastic)
                                 .OnComplete(() =>
                                 {
                                     DOTween.To(() => bloom.intensity.value, x => bloom.intensity.value = x, 0.05f,
@@ -89,7 +92,6 @@ public class BlockSpecialDraggableReaction : SpecialDraggableInteractionReaction
                         }
 
                         ritualDropPoint.ResetDropPoint();
-                        
 
                         DissolveDraggable(gameObject, () => { EndReaction(conversable, originalBloomColor, originalLightColor, key); });
                     }));
@@ -111,6 +113,7 @@ public class BlockSpecialDraggableReaction : SpecialDraggableInteractionReaction
         key.parent = transform.parent.parent;
         gameObject.SetActive(false);
         key.DOJump(new Vector3(key.position.x, 0, key.position.z + 3), 1, 1, 2f)
+            .AppendInterval(1)
             .OnComplete(() =>
             {
                 key.GetComponent<Collider>().enabled = true;
@@ -125,6 +128,8 @@ public class BlockSpecialDraggableReaction : SpecialDraggableInteractionReaction
                 Core.CameraEffects.SetPJVisibility(true);
                 conversable.SetOutlineVisibility(true);
                 conversable.SetCanInteract(true);
+                
+                Core.Audio.ResetFMODBackgroundVolume();
 
                 runes.GetComponent<EmissionGlow>().StopEmission();
             });

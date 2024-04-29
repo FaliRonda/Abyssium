@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: MythBook1Text2
   m_EditorClassIdentifier: 
-  dialogueText: "In the beginning of times, Banuk, the creator, fails to grant immortality
-    to her mortal sons, Taro and Lema, who become mortal beings in conflict.\r"
+  dialogueText: In the primeval era, Banuk emerges as the sole deity, shaping the
+    world's wonders but unable to grant immortality. Her sons, Taro and Lema, born
+    mortal, bring strife with their conflicting natures. Banuk, torn by their discord,
+    sends them into exile, marking the beginning of a tumultuous journey for all.
   choices: []
   drop: {fileID: 0}
   isLateral: 0

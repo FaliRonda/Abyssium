@@ -149,7 +149,7 @@ public class GameDirector : MonoBehaviour
 #endif
         if (isInitialLoad)
         {
-            if (!debugMode)
+            if (!debugMode || explorationDemo)
             {
                 SceneManager.sceneLoaded += OnSceneLoaded;
             }
@@ -162,11 +162,18 @@ public class GameDirector : MonoBehaviour
             Core.Dialogue.Initialize(canvas);
 
             GameState.combatDemo = combatDemo;
+            GameState.explorationDemo = explorationDemo;
             if (combatDemo)
             {
                 canvas.transform.GetChild(4).gameObject.SetActive(true);
                 canvas.transform.GetChild(5).gameObject.SetActive(true);
                 canvas.transform.GetChild(6).gameObject.SetActive(false);
+            }
+
+            if (explorationDemo)
+            {
+                Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["Exploration playground"]);
+                FindObjectOfType<NPC>().SetOutlineVisibility(true);
             }
 
             this.EventSubscribe<GameEvents.EnemyDied>(e => EnemyDied(e.enemy));
@@ -182,7 +189,10 @@ public class GameDirector : MonoBehaviour
             this.EventSubscribe<GameEvents.EnemySpawned>(e => EnemySpawned(e.enemyAI));
             this.EventSubscribe<GameEvents.NPCVanished>(e => EndDemo());
             this.EventSubscribe<GameEvents.ConversableDialogue>(e => HandleConversation(e.started));
-            this.EventSubscribe<GameEvents.NPCMemoryGot>(e => Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["MemoryGot"]));
+            if (!explorationDemo)
+            {
+                this.EventSubscribe<GameEvents.NPCMemoryGot>(e => Core.Dialogue.ShowLateralDialogs(sceneLateralDialogs["MemoryGot"]));
+            }
             
             this.EventSubscribe<GameEvents.PuzzleRunning>(e =>
             {
@@ -382,13 +392,14 @@ public class GameDirector : MonoBehaviour
             timeLoopDuration = 0;
         }
         
+        if (explorationDemo && !GameState.gameIn3D)
+        {
+            ForceSwitchGamePerspective();
+        }
+        
         if (!demoEnded && cameraDirector != null && !cameraDirector.CamerasTransitionBlending() && (!GameState.timeLoopEnded || debugMode))
         {
-            if (debugMode && explorationDemo && !GameState.gameIn3D)
-            {
-                ForceSwitchGamePerspective();
-            }
-            else if (pj != null && !narrativeDirector.IsShowingNarrative && !GameState.controlBlocked)
+            if (pj != null && !narrativeDirector.IsShowingNarrative && !GameState.controlBlocked)
             {
                 ControlInputData controlInputData = GetControlInputDataValues();
                 
@@ -486,15 +497,15 @@ public class GameDirector : MonoBehaviour
                         volume = 0.03f;
                     }
                     
-                    Core.Audio.Play(SOUND_TYPE.ClockTikTak, 2, 0, volume);
+                    Core.Audio.PlayUnityAudio(SOUND_TYPE.ClockTikTak, 2, 0, volume);
                 }
             }
             else if (!GameState.timeLoopEnded && !timeLoopPaused)
             {
                 if (IsSceneT1C2Fm2)
                 {
-                    Core.Audio.StopAll();
-                    Core.Audio.Play(SOUND_TYPE.BackgroundMusic, 1, 0, 0.03f);
+                    Core.Audio.StopAllUnityAudios();
+                    Core.Audio.PlayUnityAudio(SOUND_TYPE.BackgroundMusic, 1, 0, 0.03f);
                 }
                 
                 EndTimeLoop();
@@ -531,7 +542,13 @@ public class GameDirector : MonoBehaviour
         {
             if (IsSceneT1C2Fm2)
             {
-                Core.Audio.StopAll();
+                Core.Audio.StopAllUnityAudios();
+            }
+
+            if (explorationDemo)
+            {
+                GameState.controlBlocked = false;
+                GameState.gameIn3D = false;
             }
             CheckEnemiesInScene(false);
         }
@@ -696,7 +713,15 @@ public class GameDirector : MonoBehaviour
             }
             else if (!IsPersistentPlayer(player))
             {
-                Destroy(player.gameObject);
+                if (!explorationDemo)
+                {
+                    Destroy(player.gameObject);
+                }
+                else
+                {
+                    Destroy(pj.gameObject);
+                    pj = player;
+                }
             }
         }
 
@@ -775,7 +800,7 @@ public class GameDirector : MonoBehaviour
             .AppendCallback(() =>
             {
                 moon.GetComponentInChildren<Light>().enabled = true;
-                Core.Audio.Play(SOUND_TYPE.Spotlight, 1, 0, 0.03f);
+                Core.Audio.PlayUnityAudio(SOUND_TYPE.Spotlight, 1, 0, 0.03f);
             })
             .AppendInterval(2f)
             .AppendCallback(() =>
@@ -791,7 +816,7 @@ public class GameDirector : MonoBehaviour
     
     private void UpdateGameState()
     {
-        GameState.gameIn3D = this.gameIn3D;
+        GameState.gameIn3D = gameIn3D;
     }
     
     private void UpdateMoonRotation()
@@ -839,12 +864,24 @@ public class GameDirector : MonoBehaviour
         GameState.timeLoopEnded = true;
         //Core.Audio.Play(SOUND_TYPE.Bell, 1, 0, 0.01f);
         backgroundMusic.stop(STOP_MODE.ALLOWFADEOUT);
-        backgroundMusic = Core.Audio.PlayFMODAudio("event:/Music/MVP_CombatDemoScene_Music", transform);
+        if (combatDemo)
+        {
+            backgroundMusic = Core.Audio.PlayFMODAudio("event:/Music/MVP_CombatDemoScene_Music", transform);
+        } else if (explorationDemo)
+        {
+            backgroundMusic = Core.Audio.PlayFMODAudio("event:/Music/MVP_ExplorationDemoScene_Music", transform);
+        }
         Core.Audio.PlayFMODAudio("event:/IngameUI/TimeLoop/Timeloop_end_Bell", transform);
         Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/Die", transform);
 
         if (!IsSceneT1C0F0)
         {
+            if (explorationDemo)
+            {
+                GameState.controlBlocked = true;
+                pj.PlayIdle();
+            }
+            
             Sequence endTimeLoopSequence = DOTween.Sequence();
             endTimeLoopSequence
                 .AppendInterval(3f)
@@ -877,10 +914,13 @@ public class GameDirector : MonoBehaviour
             StartCycle1Iteration2();
             pj.ResetItems();
         }
+        else if (explorationDemo)
+        {
+            GameState.controlBlocked = true;
+            Core.Event.Fire(new GameEvents.LoadInitialFloorSceneEvent());
+        }
         else if (!debugMode)
         {
-            isNewCycleOrLoop = true;
-            pj.ResetItems();
             Core.Event.Fire(new GameEvents.LoadInitialFloorSceneEvent());
         }
     }
@@ -1025,7 +1065,7 @@ public class GameDirector : MonoBehaviour
             timeLoopPaused = true;
 
             pj.PlayIdle();
-            Core.Audio.StopAll();
+            Core.Audio.StopAllUnityAudios();
 
             Sequence bossSequence = DOTween.Sequence();
 
@@ -1033,7 +1073,7 @@ public class GameDirector : MonoBehaviour
                 .AppendInterval(2f)
                 .AppendCallback(() =>
                 {
-                    Core.Audio.Play(SOUND_TYPE.BossDoorClosed, 1, 0, 0.05f);
+                    Core.Audio.PlayUnityAudio(SOUND_TYPE.BossDoorClosed, 1, 0, 0.05f);
                     Core.CameraEffects.StartShakingEffect(3, 0.2f, 1);
                     FindObjectOfType<BossDoor>().Appear();
                 })
@@ -1047,7 +1087,7 @@ public class GameDirector : MonoBehaviour
                 .AppendInterval(2)
                 .AppendCallback(() =>
                 {
-                    Core.Audio.Play(SOUND_TYPE.BossMusic, 1, 0, 0.03f);
+                    Core.Audio.PlayUnityAudio(SOUND_TYPE.BossMusic, 1, 0, 0.03f);
                     GameState.controlBlocked = false;
                     timeLoopPaused = false;
                     enemies[0].aIActive = true;
@@ -1197,7 +1237,7 @@ public class GameDirector : MonoBehaviour
                     GameState.controlBlocked = true;
                     
                     pj.PlayIdle();
-                    Core.Audio.StopAll();
+                    Core.Audio.StopAllUnityAudios();
                     
                     Sequence bossdefeated = DOTween.Sequence();
 
@@ -1211,7 +1251,7 @@ public class GameDirector : MonoBehaviour
                         .AppendInterval(4)
                         .AppendCallback(() =>
                         {
-                            Core.Audio.Play(SOUND_TYPE.BossDoorClosed, 1, 0, 0.05f);
+                            Core.Audio.PlayUnityAudio(SOUND_TYPE.BossDoorClosed, 1, 0, 0.05f);
                             Core.CameraEffects.StartShakingEffect(3, 0.2f, 1);
                             FindObjectOfType<BossDoor>().Disappear();
                         })
@@ -1224,7 +1264,7 @@ public class GameDirector : MonoBehaviour
                 }
                 
             }
-        } else if (gameIn3D)
+        } else if (GameState.gameIn3D)
         {
             SetGameState(false, enemyDied);
         }
@@ -1267,16 +1307,16 @@ public class GameDirector : MonoBehaviour
 
     private void ForceSwitchGamePerspective()
     {
-        SetGameState(!gameIn3D, false);
+        SetGameState(!GameState.gameIn3D, false);
     }
 
     private void UpdateCameraPerspective(bool enemyDied)
     {
-        if (!gameIn3D)
+        if (!GameState.gameIn3D)
         {
             vignette.intensity.value = 0.55f;
             vignette.smoothness.value = 0.55f;
-            Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = this.gameIn3D });
+            Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = GameState.gameIn3D });
             //Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
             Core.Audio.PlayFMODAudio("event:/IngameUI/Camera/CameraToBehind", transform);
         }
@@ -1298,7 +1338,7 @@ public class GameDirector : MonoBehaviour
                         .SetEase(Ease.OutQuad))
                     .AppendCallback(() =>
                     {
-                        Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = this.gameIn3D });
+                        Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = GameState.gameIn3D });
                         // Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
                         Core.Audio.PlayFMODAudio("event:/IngameUI/Camera/CameraToBehind", transform);
                     })
@@ -1308,7 +1348,7 @@ public class GameDirector : MonoBehaviour
             }
             else
             {
-                Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = this.gameIn3D });
+                Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = GameState.gameIn3D });
                 // Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
                 Core.Audio.PlayFMODAudio("event:/IngameUI/Camera/CameraToTop", transform);
             }

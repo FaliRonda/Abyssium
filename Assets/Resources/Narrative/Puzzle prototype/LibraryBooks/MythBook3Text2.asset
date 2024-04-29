@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fe813a1d72a7b449acdce0c8e2f1e5, type: 3}
   m_Name: MythBook3Text2
   m_EditorClassIdentifier: 
-  dialogueText: "Lema returns after centuries of absence and discovers Taro's tomb.
-    Without fully understanding what happened, he seeks Banuk to provide guidance
-    to her followers.\r"
+  dialogueText: "After countless centuries in exile, Lema returns and discovers the
+    Throne of Loss, honoring those who fell in the war. He seeks his mother to share
+    his discovery about immortality but instead finds Taro's tomb, realizing the
+    magnitude of his mother's sacrifice.\r"
   choices: []
   drop: {fileID: 0}
   isLateral: 0

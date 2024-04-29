@@ -9,6 +9,7 @@ public class TakePowdersFromDrawersReaction : PuzzleYesChoiceDraggablesReaction
     {
         if (!reactionStarted && !reactionPerformed)
         {
+            Core.Audio.PlayFMODAudio("event:/Puzzle/PuzzleHints/DrawersOpen", transform);
             conversable.ExtendDialogues(powdersInDeskDialogue);
             
             powders.SetActive(true);

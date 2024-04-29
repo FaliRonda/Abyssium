@@ -51,11 +51,20 @@ public class Chest : Interactable
     public void PuzzleSolved()
     {
         GetComponentInChildren<Animator>().Play("OpenChest");
-        // Sonido
+        Core.Audio.PlayFMODAudio("event:/Puzzle/Chest/ChestOpen", transform);
 
         puzzleIsSolved = true;
+        interactableCollider.enabled = false;
+        pj.interactableInContact = null;
         SetInteracting(false);
+        SetOutlineVisibility(false);
         SetCanInteract(false);
         pj.SetDoingAction(false);
+
+        Item fakeMemory = new Item();
+        fakeMemory.itemType = Item.ITEM_TYPE.KEY;
+        fakeMemory.keyId = Item.KEY_IDS.MEMORY;
+        
+        pj.inventory.AddItem(fakeMemory);
     }
 }

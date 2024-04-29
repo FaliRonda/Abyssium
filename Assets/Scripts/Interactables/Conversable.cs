@@ -1,8 +1,12 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Conversable : Interactable
 {
+    [FormerlySerializedAs("interactionAudioEventName")] public string conversatingAudioEventName;
+    public string conversationEndAudioEventName;
     public DialogueSO[] dialogues;
     public DialogueSO[] finalDialogues;
 
@@ -15,7 +19,6 @@ public class Conversable : Interactable
     [HideInInspector] public List<ChoiceSO> currentChoices = new List<ChoiceSO>();
     [HideInInspector] public bool isSelectingChoice;
     private bool choiceSelected;
-    private bool memoryFound;
     private DialogueSO lastChoiceDialog;
     protected DialogueSO[] originalDialogues;
     protected bool dialoguesExtended;
@@ -24,6 +27,7 @@ public class Conversable : Interactable
 
     protected virtual void Start()
     {
+        loopContent = true;
         originalDialogues = dialogues;
     }
 
@@ -52,7 +56,6 @@ public class Conversable : Interactable
             {
                 if (pj.inventory.HasNPCMemory)
                 {
-                    memoryFound = true;
                     dialoguesToShow = finalDialogues;
                 }
                 else if ((choiceSelected || dialogueEnded) && !loopContent) // Dialogue ended
@@ -108,12 +111,16 @@ public class Conversable : Interactable
         }
     }
 
-    protected void ShowNextDialog()
+    protected virtual void ShowNextDialog()
     {
-        Core.Audio.PlayFMODAudio("event:/IngameUI/Dialogue/Newdialogue", transform);
         // Hay más diálogos que mostrar
         if (dialogueIndex < dialoguesToShow.Length)
         {
+            if (conversatingAudioEventName != "")
+            {
+                Core.Audio.PlayFMODAudio(conversatingAudioEventName, transform);
+            }
+            
             lastDialog = dialoguesToShow[dialogueIndex];
             Core.Dialogue.ShowText(dialoguesToShow[dialogueIndex]);
 
@@ -131,6 +138,11 @@ public class Conversable : Interactable
         // Se muestra el último diálogo a raíz de una respuesta
         else if (lastChoiceDialog != null)
         {
+            if (conversatingAudioEventName != "")
+            {
+                Core.Audio.PlayFMODAudio(conversatingAudioEventName, transform);
+            }
+
             lastDialog = lastChoiceDialog;
             Core.Dialogue.ShowText(lastChoiceDialog);
             lastChoiceDialog = null;
@@ -138,6 +150,11 @@ public class Conversable : Interactable
         // Termina la conversación
         else
         {
+            if (conversationEndAudioEventName != "")
+            {
+                Core.Audio.PlayFMODAudio(conversationEndAudioEventName, transform);
+            }
+
             EndDialogue();
         }
     }
@@ -151,11 +168,6 @@ public class Conversable : Interactable
         Core.Event.Fire(new GameEvents.ConversableDialogueEnded() {conversable = this, lastDialogue = lastDialog});
 
         dialogueIndex = 0;
-
-        if (memoryFound)
-        {
-            Vanish();
-        }
 
         if (!interactionEndedOnce)
         {
@@ -173,12 +185,6 @@ public class Conversable : Interactable
             enabled = false;
             pj.interactableInContact = null;
         }
-    }
-
-    private void Vanish()
-    {
-        Core.Event.Fire(new GameEvents.NPCVanished());
-        Destroy(this.gameObject);
     }
 
     public virtual void ChoiceSelected(int choiceIndex)

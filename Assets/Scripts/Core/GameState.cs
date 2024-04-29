@@ -7,4 +7,5 @@
     public static float timeLoopDuration;
     public static bool timeLoopEnded;
     public static bool controlBlocked;
+    public static bool explorationDemo;
 }
