@@ -21,25 +21,53 @@ using Vignette = UnityEngine.Rendering.Universal.Vignette;
 
 public class GameDirector : MonoBehaviour
 {
-    #region Public variables
-    
     public bool debugMode;
     public bool combatDemo;
     public bool explorationDemo;
+    
+    // Spawner Service
     public GameObject spawnPrefab;
+    
+    // Room manager
     public List<EnemyWaveSO> enemyWaves;
+    private List<EnemyAI> enemies;
+    private int enemyWaveIndex;
+    
+    // Time loop manager
     public float timeLoopDuration = 10f;
     public GameObject moon;
+    private bool timeLoopPaused;
+    private float initialTimeLoopDuration;
+    private float secondsCounter = 0;
+    
+    // UI Manager
     public Canvas canvas;
+    
+    // PP Service
     public Volume postprocessing;
     public NarrativeDirector narrativeDirector;
+    private ChromaticAberration chromaticAberration;
+    private Vignette vignette;
+    private Bloom bloom;
+    
+    // Audio Service
     public GameObject audioGO;
+    private EventInstance backgroundMusic;
+    
+    // Input service
     public ControlScheme control = null;
-    
-    public float cycle1LoopDuration = 120f;
-    public float cycle2LoopDuration = 300f;
-    
     public PlayerInput playerInput;
+    private Vector2 inputDirection = Vector2.zero;
+
+    // ACTIONS
+    private InputAction MoveAction;
+    private InputAction RollAction;
+    private InputAction InteractAction;
+    private InputAction CameraChangeAction;
+    private InputAction CameraRotationAction;
+    private InputAction CameraRotationMouseAction;
+    private InputAction CloseAction;
+    private InputAction RestartAction;
     
     public struct ControlInputData
     {
@@ -56,7 +84,38 @@ public class GameDirector : MonoBehaviour
             this.cameraMouseRotation = cameraMouseRotation;
         }
     }
-
+    
+    // Floor Manager
+    public float cycle1LoopDuration = 120f;
+    public float cycle2LoopDuration = 300f;
+    private bool pjCameFromAbove;
+    private bool pjCameFromDoor;
+    private bool isNewCycleOrLoop = true;
+    private SceneDirector sceneDirector;
+    
+    private struct FloorData
+    {
+        public bool enemiesDefeated;
+        public Dictionary<string,DialogueSO> NPCsDialogues;
+    }
+    
+    private static bool IsSceneGameLoader => SceneManager.GetActiveScene().name == "GameLoader";
+    private static bool IsSceneT1C0F0 => SceneManager.GetActiveScene().name == "T1C0F0";
+    private static bool IsSceneT1C1F0 => SceneManager.GetActiveScene().name == "T1C1F0";
+    private static bool IsSceneT1C1Fm1 => SceneManager.GetActiveScene().name == "T1C1F-1";
+    private static bool IsSceneT1C1IT2F0 => SceneManager.GetActiveScene().name == "T1C1IT2F0";
+    private static bool IsSceneT1C1IT2Fm1 => SceneManager.GetActiveScene().name == "T1C1IT2F-1";
+    private static bool IsSceneT1C2Fm2 => SceneManager.GetActiveScene().name == "T1C2F-2";
+    
+    
+    private bool doorLockedAttemptOpen;
+    private bool firstTimeDamaged;
+    private bool neverDamaged = true;
+    private bool bossDefeated;
+    
+    // Dialogue Manager
+    private bool orbLateralDialogShown;
+    
     [System.Serializable]
     public class DialogueDictionary : SerializableDictionary<DialogueSO, int> { }
     
@@ -65,72 +124,21 @@ public class GameDirector : MonoBehaviour
     
     [ShowInInspector, DictionaryDrawerSettings(KeyLabel = "Escena", ValueLabel = "Lateral Dialogs")]
     public SceneDialogueDictionary sceneLateralDialogs = new SceneDialogueDictionary();
-    
 
-    #endregion
-    
-    #region Private variables
-
-    private PJ pj;
-    private GameObject pjGO;
-    private List<EnemyAI> enemies;
-    private CameraDirector cameraDirector;
+    // Game State
     private bool gameIn3D;
     private bool isInitialLoad = true;
-    private bool timeLoopPaused;
-    private float initialTimeLoopDuration;
-    private float secondsCounter = 0;
-    private bool pjCameFromAbove;
-    private bool pjCameFromDoor;
-    private bool isNewCycleOrLoop = true;
-    private int enemyWaveIndex;
-
-    private ChromaticAberration chromaticAberration;
-    private Vignette vignette;
-    private Bloom bloom;
-    private SceneDirector sceneDirector;
-    private Vector2 inputDirection = Vector2.zero;
-
-
-    //INPUT ACTIONS
-    private InputAction MoveAction;
-    private InputAction RollAction;
-    private InputAction InteractAction;
-    private InputAction CameraChangeAction;
-    private InputAction CameraRotationAction;
-    private InputAction CameraRotationMouseAction;
-    private InputAction CloseAction;
-    private InputAction RestartAction;
-
-    private static bool IsSceneGameLoader => SceneManager.GetActiveScene().name == "GameLoader";
-    private static bool IsSceneT1C0F0 => SceneManager.GetActiveScene().name == "T1C0F0";
-    private static bool IsSceneT1C1F0 => SceneManager.GetActiveScene().name == "T1C1F0";
-    private static bool IsSceneT1C1Fm1 => SceneManager.GetActiveScene().name == "T1C1F-1";
-    private static bool IsSceneT1C1IT2F0 => SceneManager.GetActiveScene().name == "T1C1IT2F0";
-    private static bool IsSceneT1C1IT2Fm1 => SceneManager.GetActiveScene().name == "T1C1IT2F-1";
-    private static bool IsSceneT1C2Fm2 => SceneManager.GetActiveScene().name == "T1C2F-2";
-    private bool doorLockedAttemptOpen;
-    private bool firstTimeDamaged;
-    private bool neverDamaged = true;
-    private bool bossDefeated;
     private bool demoEnded;
     
-    private bool orbLateralDialogShown;
-
-    private Dictionary<string,FloorData> loopPersistentData;
-    private EventInstance backgroundMusic;
     
+    // Game Director
+    private PJ pj;
+    private GameObject pjGO;
+    private CameraDirector cameraDirector;
+    private Dictionary<string,FloorData> loopPersistentData;
     private bool puzzleInCourse;
     private CombinationPuzzle currentPuzzle;
-
-    private struct FloorData
-    {
-        public bool enemiesDefeated;
-        public Dictionary<string,DialogueSO> NPCsDialogues;
-    }
-
-    #endregion
-
+    
     #region Unity Events
 
     private void Awake()
