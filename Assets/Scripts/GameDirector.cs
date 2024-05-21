@@ -10,14 +10,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
-using Bloom = UnityEngine.Rendering.Universal.Bloom;
-using ChromaticAberration = UnityEngine.Rendering.Universal.ChromaticAberration;
 using ColorUtility = UnityEngine.ColorUtility;
 using InputAction = UnityEngine.InputSystem.InputAction;
 using Sequence = DG.Tweening.Sequence;
-using Vignette = UnityEngine.Rendering.Universal.Vignette;
+using UnityEngine.Rendering;
 
 public class GameDirector : MonoBehaviour
 {
@@ -42,13 +39,10 @@ public class GameDirector : MonoBehaviour
     
     // UI Manager
     public Canvas canvas;
+    public NarrativeDirector narrativeDirector;
     
     // PP Service
     public Volume postprocessing;
-    public NarrativeDirector narrativeDirector;
-    private ChromaticAberration chromaticAberration;
-    private Vignette vignette;
-    private Bloom bloom;
     
     // Audio Service
     public GameObject audioGO;
@@ -253,14 +247,11 @@ public class GameDirector : MonoBehaviour
             
             UpdateGameState();
             
-            postprocessing.profile.TryGet(out vignette);
-            postprocessing.profile.TryGet(out bloom);
-            postprocessing.profile.TryGet(out chromaticAberration);
+            Core.PostProcessingService.Initialize(postprocessing);
 
             if (IsSceneGameLoader)
             {
-                vignette.intensity.value = 1;
-                vignette.smoothness.value = 1;
+                Core.PostProcessingService.SetEffectValue(PostProcessingService.EFFECTS.VIGNETTE, 1);
                 moon.GetComponentInChildren<Light>().enabled = false;
             }
 
@@ -461,27 +452,21 @@ public class GameDirector : MonoBehaviour
                 if (IsSceneT1C1IT2Fm1)
                 {
                     Sequence godNarrativeEnded = DOTween.Sequence();
-                    godNarrativeEnded.
-                        AppendCallback(() =>
+                    godNarrativeEnded.AppendCallback(() =>
                         {
                             //Core.Audio.Play(SOUND_TYPE.Bell, 1,0, 0.01f);
                             Core.Audio.PlayFMODAudio("event:/IngameUI/TimeLoop/Timeloop_end_Bell", transform);
                         })
                         .AppendInterval(2f)
-                        .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1f, 1f)
-                            .SetEase(Ease.OutQuad))
-                        .Join(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 1f, 1f)
-                            .SetEase(Ease.OutQuad))
+                        .AppendCallback(() =>
+                            Core.PostProcessingService.PlayBlinkEffectAnimation(
+                                PostProcessingService.EFFECTS.VIGNETTE, 1, 1, 1, 0))
                         .AppendCallback(() =>
                         {
                             timeLoopPaused = false;
                             pj.ResetItems();
                             StartCycle2();
-                        })
-                        .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.5f, 1f)
-                            .SetEase(Ease.OutQuad))
-                        .Join(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 0.5f, 1f)
-                            .SetEase(Ease.OutQuad));
+                        });
                 }
             }
         }
@@ -772,38 +757,11 @@ public class GameDirector : MonoBehaviour
 
     private void StartT1C0F0GameFlow()
     {
-
-        Sequence vignetteSequence = DOTween.Sequence();
-        Sequence smoothnessSequence = DOTween.Sequence();
-
         timeLoopPaused = true;
         GameState.controlBlocked = true;
 
-        vignetteSequence.AppendInterval(2f)
-            .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.75f, 0.3f)
-                .SetEase(Ease.OutQuad))
-            .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1f, 0.3f)
-                .SetEase(Ease.OutQuad))
-            .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.75f, 0.3f)
-                .SetEase(Ease.OutQuad))
-            .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1f, 0.3f)
-                .SetEase(Ease.OutQuad))
-            .AppendInterval(1f)
-            .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.55f, 1f)
-                .SetEase(Ease.OutQuad));
-        
-        smoothnessSequence.AppendInterval(2f)
-            .Append(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 0.75f, 0.3f)
-                .SetEase(Ease.OutQuad))
-            .Append(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 1f, 0.3f)
-                .SetEase(Ease.OutQuad))
-            .Append(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 0.75f, 0.3f)
-                .SetEase(Ease.OutQuad))
-            .Append(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 1f, 0.3f)
-                .SetEase(Ease.OutQuad))
-            .AppendInterval(1f)
-            .Append(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 0.55f, 1f)
-                .SetEase(Ease.OutQuad))
+        Sequence blinkingSequence = Core.PostProcessingService.ConceptProtoStartVignetteBlinkingEffect();
+        blinkingSequence
             .AppendInterval(2f)
             .AppendCallback(() =>
             {
@@ -893,15 +851,9 @@ public class GameDirector : MonoBehaviour
             Sequence endTimeLoopSequence = DOTween.Sequence();
             endTimeLoopSequence
                 .AppendInterval(3f)
-                .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1f, 2f)
-                    .SetEase(Ease.OutQuad))
-                .Join(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 1f, 2f)
-                    .SetEase(Ease.OutQuad))
-                .AppendCallback(() => { EndLoopLogic(); })
-                .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.5f, 1f)
-                    .SetEase(Ease.OutQuad))
-                .Join(DOTween.To(() => vignette.smoothness.value, x => vignette.smoothness.value = x, 0.5f, 1f)
-                    .SetEase(Ease.OutQuad));
+                .AppendCallback(() =>
+                    Core.PostProcessingService.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.VIGNETTE, 1, 2, 1, 0))
+                .AppendCallback(() => EndLoopLogic());
         }
         else
         {
@@ -1005,17 +957,10 @@ public class GameDirector : MonoBehaviour
         {
             enemy.ResetAINodes();
         }
-        Sequence damagedFeedbackSequence = DOTween.Sequence();
-        damagedFeedbackSequence
-            .Append(DOTween.To(() => bloom.intensity.value, x => bloom.intensity.value = x, 2f, 0.2f)
-                .SetEase(Ease.OutQuad))
-            .Join(DOTween.To(() => chromaticAberration.intensity.value, x => chromaticAberration.intensity.value = x, 1f, 0.2f)
-                .SetEase(Ease.OutQuad))
-            .Append(DOTween.To(() => bloom.intensity.value, x => bloom.intensity.value = x, 0.05f, 0.2f)
-                .SetEase(Ease.OutQuad))
-            .Join(DOTween.To(() => chromaticAberration.intensity.value, x => chromaticAberration.intensity.value = x, 0.2f, 0.2f)
-                .SetEase(Ease.OutQuad));
         
+        Core.PostProcessingService.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.BLOOM, 2, 0.2f , 0.2f, 0);
+        Core.PostProcessingService.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.CHROMATIC_ABERRATION, 1, 0.2f , 0.2f, 0);
+
         Sequence deathFrameSequence = DOTween.Sequence();
         deathFrameSequence
             .AppendInterval(deathFrameDuration)
@@ -1192,17 +1137,11 @@ public class GameDirector : MonoBehaviour
                     
                     Core.CameraEffects.StartShakingEffect(0.4f, 0.04f, 1.5f);
                     Core.GamepadVibrationService.SetControllerVibration(1.2f, 1.2f);
-                    Sequence endFeedbackSequence = DOTween.Sequence();
-                    endFeedbackSequence
-                        .Append(DOTween.To(() => bloom.intensity.value, x => bloom.intensity.value = x, 5f, 0.1f)
-                            .SetEase(Ease.OutQuad))
-                        .Join(DOTween.To(() => chromaticAberration.intensity.value, x => chromaticAberration.intensity.value = x, 5f, 0.1f)
-                            .SetEase(Ease.OutQuad))
-                        .AppendInterval(1f)
-                        .Append(DOTween.To(() => bloom.intensity.value, x => bloom.intensity.value = x, 0.05f, 1.5f)
-                            .SetEase(Ease.OutQuad))
-                        .Join(DOTween.To(() => chromaticAberration.intensity.value, x => chromaticAberration.intensity.value = x, 0.2f, 1.5f)
-                            .SetEase(Ease.OutQuad))
+                    
+                    Core.PostProcessingService.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.BLOOM, 5, 0.1f, 1.5f, 0);
+                    Sequence blinkEffectSequence = Core.PostProcessingService.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.CHROMATIC_ABERRATION, 5, 0.1f, 1.5f, 0);
+
+                    blinkEffectSequence
                         .AppendCallback(() =>
                         {
                             narrativeDirector.ShowCombatEndNarrative();
@@ -1322,8 +1261,7 @@ public class GameDirector : MonoBehaviour
     {
         if (!GameState.gameIn3D)
         {
-            vignette.intensity.value = 0.55f;
-            vignette.smoothness.value = 0.55f;
+            Core.PostProcessingService.SetEffectValue(PostProcessingService.EFFECTS.VIGNETTE, 0.55f);
             Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = GameState.gameIn3D });
             //Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
             Core.Audio.PlayFMODAudio("event:/IngameUI/Camera/CameraToBehind", transform);
@@ -1334,24 +1272,14 @@ public class GameDirector : MonoBehaviour
             {
                 GameState.controlBlocked = true;
                 pj.PlayIdle();
-                
-                Sequence vignetteSequence = DOTween.Sequence();
 
-                vignetteSequence
-                    .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1f, 0.1f)
-                        .SetEase(Ease.OutQuad))
-                    .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.75f, 1f)
-                        .SetEase(Ease.OutQuad))
-                    .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1f, 0.1f)
-                        .SetEase(Ease.OutQuad))
-                    .AppendCallback(() =>
-                    {
-                        Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = GameState.gameIn3D });
-                        // Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
-                        Core.Audio.PlayFMODAudio("event:/IngameUI/Camera/CameraToBehind", transform);
-                    })
-                    .Append(DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0.5f, 0.3f)
-                        .SetEase(Ease.OutQuad))
+                Sequence cameraSwitchBlinkSequence = Core.PostProcessingService.CameraSwitchBlinkAnimation(() =>
+                {
+                    Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = GameState.gameIn3D });
+                    Core.Audio.PlayFMODAudio("event:/IngameUI/Camera/CameraToBehind", transform);
+                });
+                
+                cameraSwitchBlinkSequence
                     .AppendCallback(() => { GameState.controlBlocked = false; });
             }
             else
