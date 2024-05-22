@@ -326,7 +326,7 @@ public class EnemyAI : MonoBehaviour
             }
 
             
-            Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
+            Core.GamepadVibration.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
             Core.CameraEffects.StartShakingEffect(damagedCamShakeIntensity, damagedCamShakeFrequency, damagedCamShakeDuration);
             Core.CameraEffects.StartShakingEffect(damagedCamShakeIntensity, damagedCamShakeFrequency, damagedCamShakeDuration);
 

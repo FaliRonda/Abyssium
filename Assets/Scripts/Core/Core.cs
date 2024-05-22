@@ -26,9 +26,7 @@ public static class Core
     public static PositionRecorderService PositionRecorder =>        ServiceContainer.Get<PositionRecorderService>();
     public static AudioService Audio =>                              ServiceContainer.Get<AudioService>();
     public static CameraEffectsService CameraEffects =>              ServiceContainer.Get<CameraEffectsService>();
-    public static GamepadVibrationService GamepadVibrationService => ServiceContainer.Get<GamepadVibrationService>();
-    public static PostProcessingService PostProcessingService =>    ServiceContainer.Get<PostProcessingService>();
-    //public static IPrefabPoolService Pool =>                   ServiceContainer.Get<IPrefabPoolService>();
-
-    // ... add more shorthands as you need
+    public static GamepadVibrationService GamepadVibration =>        ServiceContainer.Get<GamepadVibrationService>();
+    public static PostProcessingService PostProcessing =>            ServiceContainer.Get<PostProcessingService>();
+    public static PlayerInputService PlayerInput =>                  ServiceContainer.Get<PlayerInputService>();
 }

@@ -27,6 +27,7 @@ public class Inventory : MonoBehaviour
     private Light lanternPj;
     private float lastAngle;
     private float lastZAngle;
+    private PlayerInputService.ControlInputData controlInputData;
 
     private void Start()
     {
@@ -62,17 +63,18 @@ public class Inventory : MonoBehaviour
         transform.position = new Vector3(position.x, transform.position.y, position.z);
     }
 
-    public void RotateItems(bool gameIn3D, GameDirector.ControlInputData controlInputData)
+    public void RotateItems(bool gameIn3D, PlayerInputService.ControlInputData controlInputData)
     {
+        this.controlInputData = controlInputData;
         foreach (GameObject item in items)
         {
             switch (item.layer)
             {
                 case Layers.WEAPON_LAYER:
-                    RotateWeapon(item, controlInputData, gameIn3D);
+                    RotateWeapon(item, gameIn3D);
                     break;
                 case Layers.LIGHT_LAYER:
-                    RotateLight(item, controlInputData, gameIn3D);
+                    RotateLight(item, gameIn3D);
                     break;
                 default:
                     break;
@@ -104,12 +106,12 @@ public class Inventory : MonoBehaviour
         }
     }
     
-    private void RotateLight(GameObject item, GameDirector.ControlInputData controlInputData, bool gameIn3D)
+    private void RotateLight(GameObject item, bool gameIn3D)
     {
-        RotateItem(0, -CalculateRotationAngle(controlInputData), 0, item, gameIn3D, 0.2f);
+        RotateItem(0, -CalculateRotationAngle(), 0, item, gameIn3D, 0.2f);
     }
 
-    private void RotateWeapon(GameObject item, GameDirector.ControlInputData controlInputData, bool gameIn3D)
+    private void RotateWeapon(GameObject item, bool gameIn3D)
     {
         Vector3 direction = controlInputData.inputDirection;
 
@@ -125,7 +127,7 @@ public class Inventory : MonoBehaviour
         RotateItem(-45, 0, lastZAngle, item, gameIn3D, 0.01f);
     }
 
-    private float CalculateRotationAngle(GameDirector.ControlInputData controlInputData)
+    private float CalculateRotationAngle()
     {
         float angle = lastAngle;
         

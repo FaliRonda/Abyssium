@@ -102,14 +102,14 @@ public class CombinationPuzzle : MonoBehaviour
         puzzleInitialized = true;
     }
 
-    public void HandleInput(GameDirector.ControlInputData controlInputData, bool interactActionTriggered)
+    public void HandleInput(PlayerInputService.ControlInputData controlInputData)
     {
         if (!chest.puzzleIsSolved)
         {
             UpdateSelectedImage(controlInputData.inputDirection);
             UpdateSelectedSymbol(controlInputData.inputDirection);
 
-            CheckExit(interactActionTriggered);
+            CheckExit(Core.PlayerInput.ActionTriggered(PlayerInputService.ACTION_TYPE.INTERACT));
         }
 
         CheckSolution();

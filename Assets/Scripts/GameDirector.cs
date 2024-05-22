@@ -49,35 +49,9 @@ public class GameDirector : MonoBehaviour
     private EventInstance backgroundMusic;
     
     // Input service
-    public ControlScheme control = null;
-    public PlayerInput playerInput;
-    private Vector2 inputDirection = Vector2.zero;
-
-    // ACTIONS
-    private InputAction MoveAction;
-    private InputAction RollAction;
-    private InputAction InteractAction;
-    private InputAction CameraChangeAction;
-    private InputAction CameraRotationAction;
-    private InputAction CameraRotationMouseAction;
-    private InputAction CloseAction;
-    private InputAction RestartAction;
     
-    public struct ControlInputData
-    {
-        public Vector3 movementDirection;
-        public Vector3 inputDirection;
-        public Vector2 cameraRotation;
-        public Vector2 cameraMouseRotation;
-
-        public ControlInputData(Vector3 movementDirection, Vector3 inputDirection, Vector2 cameraRotation, Vector2 cameraMouseRotation)
-        {
-            this.movementDirection = movementDirection;
-            this.inputDirection = inputDirection;
-            this.cameraRotation = cameraRotation;
-            this.cameraMouseRotation = cameraMouseRotation;
-        }
-    }
+    
+    
     
     // Floor Manager
     public float cycle1LoopDuration = 120f;
@@ -132,7 +106,7 @@ public class GameDirector : MonoBehaviour
     private Dictionary<string,FloorData> loopPersistentData;
     private bool puzzleInCourse;
     private CombinationPuzzle currentPuzzle;
-    
+
     #region Unity Events
 
     private void Awake()
@@ -247,11 +221,11 @@ public class GameDirector : MonoBehaviour
             
             UpdateGameState();
             
-            Core.PostProcessingService.Initialize(postprocessing);
+            Core.PostProcessing.Initialize(postprocessing);
 
             if (IsSceneGameLoader)
             {
-                Core.PostProcessingService.SetEffectValue(PostProcessingService.EFFECTS.VIGNETTE, 1);
+                Core.PostProcessing.SetEffectValue(PostProcessingService.EFFECTS.VIGNETTE, 1);
                 moon.GetComponentInChildren<Light>().enabled = false;
             }
 
@@ -274,18 +248,6 @@ public class GameDirector : MonoBehaviour
             }
             
             isInitialLoad = false;
-        }
-        
-        if (playerInput)
-        {
-            MoveAction = playerInput.actions["Move"];
-            RollAction = playerInput.actions["Roll"];
-            InteractAction = playerInput.actions["Action"];
-            CameraChangeAction = playerInput.actions["CameraChange"];
-            CameraRotationAction = playerInput.actions["CameraRotation"];
-            CameraRotationMouseAction = playerInput.actions["CameraRotationMouse"];
-            CloseAction = playerInput.actions["Close"];
-            RestartAction = playerInput.actions["Restart"];
         }
 
         if (!debugMode)
@@ -381,12 +343,12 @@ public class GameDirector : MonoBehaviour
     
     void Update()
     {
-        if (CloseAction.triggered)
+        if (Core.PlayerInput.ActionTriggered(PlayerInputService.ACTION_TYPE.CLOSE))
         {
             Application.Quit();
         }
         
-        if (RestartAction.triggered)
+        if (Core.PlayerInput.ActionTriggered(PlayerInputService.ACTION_TYPE.RESTART))
         {
             timeLoopDuration = 0;
         }
@@ -400,7 +362,7 @@ public class GameDirector : MonoBehaviour
         {
             if (pj != null && !narrativeDirector.IsShowingNarrative && !GameState.controlBlocked)
             {
-                ControlInputData controlInputData = GetControlInputDataValues();
+                PlayerInputService.ControlInputData controlInputData = Core.PlayerInput.GetControlInputDataValues();
                 
                 if (!puzzleInCourse)
                 {
@@ -418,22 +380,22 @@ public class GameDirector : MonoBehaviour
                     if (Core.Dialogue.ChoicesInScreen)
                     {
                         Core.Dialogue.SelectChoicesWithGamepad(controlInputData.inputDirection);
-                        if (InteractAction.triggered)
+                        if (Core.PlayerInput.ActionTriggered(PlayerInputService.ACTION_TYPE.INTERACT))
                         {
                             Core.Dialogue.ChoiceSelected(-1);
                         }
                     }
                     
-                    if (InteractAction.triggered)
+                    if (Core.PlayerInput.ActionTriggered(PlayerInputService.ACTION_TYPE.INTERACT))
                     {
                         pj.DoMainAction(false);
                     }
                     
-                    if (RollAction.triggered)
+                    if (Core.PlayerInput.ActionTriggered(PlayerInputService.ACTION_TYPE.ROLL))
                     {
                         if (!GameState.gameIn3D)
                         {
-                            pj.DoRoll(controlInputData);
+                            pj.DoRoll();
                         }
                         else
                         {
@@ -443,10 +405,10 @@ public class GameDirector : MonoBehaviour
                 }
                 else
                 {
-                    currentPuzzle.HandleInput(controlInputData, InteractAction.triggered);
+                    currentPuzzle.HandleInput(controlInputData);
                 }
 
-            } else if (narrativeDirector.IsShowingNarrative && !narrativeDirector.IsTypingText && InteractAction.triggered)
+            } else if (narrativeDirector.IsShowingNarrative && !narrativeDirector.IsTypingText && Core.PlayerInput.ActionTriggered(PlayerInputService.ACTION_TYPE.INTERACT))
             {
                 narrativeDirector.EndNarrative();
                 if (IsSceneT1C1IT2Fm1)
@@ -459,7 +421,7 @@ public class GameDirector : MonoBehaviour
                         })
                         .AppendInterval(2f)
                         .AppendCallback(() =>
-                            Core.PostProcessingService.PlayBlinkEffectAnimation(
+                            Core.PostProcessing.PlayBlinkEffectAnimation(
                                 PostProcessingService.EFFECTS.VIGNETTE, 1, 1, 1, 0))
                         .AppendCallback(() =>
                         {
@@ -510,7 +472,7 @@ public class GameDirector : MonoBehaviour
 
     private void OnDestroy()
     {
-        Core.GamepadVibrationService.StopVibration();
+        Core.GamepadVibration.StopVibration();
     }
 
     #endregion
@@ -550,8 +512,8 @@ public class GameDirector : MonoBehaviour
 
     private void InitializeGameDirector()
     {
-        
         InitializePlayer();
+        Core.PlayerInput.Initialize(pj, GetComponent<PlayerInput>());
         InitializeCameraDirector();
         SetPlayerSpawnPoint();
 
@@ -760,7 +722,7 @@ public class GameDirector : MonoBehaviour
         timeLoopPaused = true;
         GameState.controlBlocked = true;
 
-        Sequence blinkingSequence = Core.PostProcessingService.ConceptProtoStartVignetteBlinkingEffect();
+        Sequence blinkingSequence = Core.PostProcessing.ConceptProtoStartVignetteBlinkingEffect();
         blinkingSequence
             .AppendInterval(2f)
             .AppendCallback(() =>
@@ -852,7 +814,7 @@ public class GameDirector : MonoBehaviour
             endTimeLoopSequence
                 .AppendInterval(3f)
                 .AppendCallback(() =>
-                    Core.PostProcessingService.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.VIGNETTE, 1, 2, 1, 0))
+                    Core.PostProcessing.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.VIGNETTE, 1, 2, 1, 0))
                 .AppendCallback(() => EndLoopLogic());
         }
         else
@@ -920,30 +882,6 @@ public class GameDirector : MonoBehaviour
         sceneDirector.LoadInitialFloor();
     }
 
-    private ControlInputData GetControlInputDataValues()
-    {
-        inputDirection = MoveAction.ReadValue<Vector2>();
-        Vector3 direction = new Vector3();
-        
-        if (inputDirection.x > 0)
-        {
-            direction += pj.transform.right;
-        } else if (inputDirection.x < 0)
-        {
-            direction += -pj.transform.right;
-        }
-            
-        if (inputDirection.y > 0)
-        {
-            direction += pj.transform.forward;
-        } else if (inputDirection.y < 0)
-        {
-            direction += -pj.transform.forward;
-        }
-
-        return new ControlInputData(direction, inputDirection, CameraRotationAction.ReadValue<Vector2>(), CameraRotationMouseAction.ReadValue<Vector2>());
-    }
-
     #endregion
 
     #region Event callbacks
@@ -958,8 +896,8 @@ public class GameDirector : MonoBehaviour
             enemy.ResetAINodes();
         }
         
-        Core.PostProcessingService.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.BLOOM, 2, 0.2f , 0.2f, 0);
-        Core.PostProcessingService.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.CHROMATIC_ABERRATION, 1, 0.2f , 0.2f, 0);
+        Core.PostProcessing.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.BLOOM, 2, 0.2f , 0.2f, 0);
+        Core.PostProcessing.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.CHROMATIC_ABERRATION, 1, 0.2f , 0.2f, 0);
 
         Sequence deathFrameSequence = DOTween.Sequence();
         deathFrameSequence
@@ -1136,10 +1074,10 @@ public class GameDirector : MonoBehaviour
                     pj.PlayIdle();
                     
                     Core.CameraEffects.StartShakingEffect(0.4f, 0.04f, 1.5f);
-                    Core.GamepadVibrationService.SetControllerVibration(1.2f, 1.2f);
+                    Core.GamepadVibration.SetControllerVibration(1.2f, 1.2f);
                     
-                    Core.PostProcessingService.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.BLOOM, 5, 0.1f, 1.5f, 0);
-                    Sequence blinkEffectSequence = Core.PostProcessingService.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.CHROMATIC_ABERRATION, 5, 0.1f, 1.5f, 0);
+                    Core.PostProcessing.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.BLOOM, 5, 0.1f, 1.5f, 0);
+                    Sequence blinkEffectSequence = Core.PostProcessing.PlayBlinkEffectAnimation(PostProcessingService.EFFECTS.CHROMATIC_ABERRATION, 5, 0.1f, 1.5f, 0);
 
                     blinkEffectSequence
                         .AppendCallback(() =>
@@ -1261,7 +1199,7 @@ public class GameDirector : MonoBehaviour
     {
         if (!GameState.gameIn3D)
         {
-            Core.PostProcessingService.SetEffectValue(PostProcessingService.EFFECTS.VIGNETTE, 0.55f);
+            Core.PostProcessing.SetEffectValue(PostProcessingService.EFFECTS.VIGNETTE, 0.55f);
             Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = GameState.gameIn3D });
             //Core.Audio.Play(SOUND_TYPE.CameraChange, 1 ,0, 0.01f);
             Core.Audio.PlayFMODAudio("event:/IngameUI/Camera/CameraToBehind", transform);
@@ -1273,7 +1211,7 @@ public class GameDirector : MonoBehaviour
                 GameState.controlBlocked = true;
                 pj.PlayIdle();
 
-                Sequence cameraSwitchBlinkSequence = Core.PostProcessingService.CameraSwitchBlinkAnimation(() =>
+                Sequence cameraSwitchBlinkSequence = Core.PostProcessing.CameraSwitchBlinkAnimation(() =>
                 {
                     Core.Event.Fire(new GameEvents.SwitchPerspectiveEvent() { gameIn3D = GameState.gameIn3D });
                     Core.Audio.PlayFMODAudio("event:/IngameUI/Camera/CameraToBehind", transform);

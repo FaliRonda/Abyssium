@@ -5,7 +5,6 @@ using Bloom = UnityEngine.Rendering.Universal.Bloom;
 using ChromaticAberration = UnityEngine.Rendering.Universal.ChromaticAberration;
 using Vignette = UnityEngine.Rendering.Universal.Vignette;
 using UnityEngine.Rendering;
-using UnityEngine.Windows.Speech;
 
 public class PostProcessingService : IService
 {

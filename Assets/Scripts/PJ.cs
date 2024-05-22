@@ -75,6 +75,7 @@ public class PJ : MonoBehaviour
     private Sequence knockbackSequence;
     private Sequence impulseSequence;
     [HideInInspector] public Draggable currentDraggable;
+    private PlayerInputService.ControlInputData controlInputData;
 
     #region Unity events
     
@@ -102,9 +103,10 @@ public class PJ : MonoBehaviour
         PjRaycastHit(Color.cyan);
     }
 
-    public void DoUpdate(GameDirector.ControlInputData controlInputData)
+    public void DoUpdate(PlayerInputService.ControlInputData controlInputData)
     {
-        UpdateLastDirection(controlInputData.movementDirection);
+        this.controlInputData = controlInputData;
+        UpdateLastDirection();
         UpdatePjRay();
         
         if (!pjDoingAction)
@@ -112,7 +114,7 @@ public class PJ : MonoBehaviour
             DoPjMovement(controlInputData);
             inventory.UpdatePosition(transform);
             
-            PjDoRotation(controlInputData);
+            PjDoRotation();
         }
         
         StopMovementSequencesWhenHitWall();
@@ -157,7 +159,7 @@ public class PJ : MonoBehaviour
 
     #region Roll
 
-    public void DoRoll(GameDirector.ControlInputData controlInputData)
+    public void DoRoll()
     {
         if (!pjIsRolling && rollReady && canRoll)
         {
@@ -177,7 +179,7 @@ public class PJ : MonoBehaviour
             
             PjActionFalseWhenAnimFinish(animLength);
 
-            Vector3 endPosition = GetRollEndPosition(controlInputData);
+            Vector3 endPosition = GetRollEndPosition();
             SetSpriteXOrientation(controlInputData.inputDirection.x);
             pjAnimator.Play("PJ_roll");
             
@@ -290,7 +292,7 @@ public class PJ : MonoBehaviour
         dustParticlesPlaying = false;
     }
 
-    private Vector3 GetRollEndPosition(GameDirector.ControlInputData controlInputData)
+    private Vector3 GetRollEndPosition()
     {
         Vector3 endDirection;
         Vector3 inputDirection = controlInputData.inputDirection;
@@ -378,7 +380,7 @@ public class PJ : MonoBehaviour
 
     #region Movement, rotation and orientation
 
-    private void PjDoRotation(GameDirector.ControlInputData controlInputData)
+    private void PjDoRotation()
     {
         float mouseX = 0;
         float mouseY = 0;
@@ -415,7 +417,7 @@ public class PJ : MonoBehaviour
         inventory.RotateItems(gameIn3D, controlInputData);
     }
 
-    private void DoPjMovement(GameDirector.ControlInputData controlInputData)
+    private void DoPjMovement(PlayerInputService.ControlInputData controlInputData)
     {
         Vector3 direction = controlInputData.movementDirection;
         
@@ -494,8 +496,9 @@ public class PJ : MonoBehaviour
         return direction;
     }
     
-    private void UpdateLastDirection(Vector3 direction)
+    private void UpdateLastDirection()
     {
+        Vector3 direction = controlInputData.movementDirection; 
         lastDirection = !pjDoingAction && !pjIsBeingDamaged ? (direction != Vector3.zero ? direction : lastDirection) : lastDirection;
     }
 
@@ -804,7 +807,7 @@ public class PJ : MonoBehaviour
                 Core.Audio.PlayFMODAudio("event:/Characters/Player/Combat/GetImpact", transform);
                 Core.Audio.PlayFMODAudio("event:/IngameUI/TimeLoop/Timeloop_MoveFordward", transform);
                 Core.Event.Fire(new GameEvents.PlayerDamaged(){deathFrameDuration = deathFrameDuration});
-                Core.GamepadVibrationService.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
+                Core.GamepadVibration.SetControllerVibration(damagedGamepadVibrationIntensity, damagedGamepadVibrationDuration);
                 
                 Sequence deathFrameSequence = DOTween.Sequence();
                 deathFrameSequence.AppendInterval(deathFrameDuration).AppendCallback(() =>
